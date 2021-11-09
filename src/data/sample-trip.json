@@ -1,0 +1,12 @@
+{
+  "uid": "dans",
+  "tripid": "dans-0",
+  "id": 0,
+  "name": "Road Trip to Eureka",
+  "createDate": 1636481973833,
+  "lastUpdated": 1636484013447,
+  "tripStartDate": "2021-06-12T07:00:00.000Z",
+  "tripEndDate": "2021-06-15T07:00:00.000Z",
+  "startCoordinate": [0, 0],
+  "endCoordinate": [10, 10]
+}
