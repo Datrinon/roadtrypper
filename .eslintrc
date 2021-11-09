@@ -3,20 +3,16 @@
     "react-app",
     "airbnb",
     "plugin:jsx-a11y/recommended",
-    "prettier",
-    "prettier/react"
   ],
   "plugins": [
-    "jsx-a11y",
-    "prettier"
+    "jsx-a11y"
   ],
   "rules": {
     "semi": 0,
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-    "prettier/prettier": [
-      "error", {
-        "semi": false
-      }
-    ]
+    "linebreak-style": "off" ,
+    "quotes": "off",
+    "comma-dangle": "off",
+    "no-unused-vars": "warn"
   }
 }
