@@ -13,6 +13,7 @@
     "linebreak-style": "off" ,
     "quotes": "off",
     "comma-dangle": "off",
-    "no-unused-vars": "warn"
+    "no-unused-vars": "warn",
+    "eol-last": "off"
   }
 }
