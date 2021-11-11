@@ -5,12 +5,13 @@ import { MemoryRouter } from "react-router-dom"
 import Studio from "./Studio"
 
 import { SAMPLE_DAYS } from "../../../data/sample-days";
+import SAMPLE_TRIP from "../../../data/sample-trip.json";
 
 describe("Trip Studio's UI elements visibility", () => {
   let studio;
 
   beforeEach(() => {
-    studio = render(<Studio />);
+    studio = render(<Studio tripData={SAMPLE_TRIP} tripDetailsData={SAMPLE_DAYS} />);
   })
 
   test('Should see an input for modifying the title of the Trip.', () => {
@@ -36,6 +37,14 @@ describe("Trip Studio's UI elements visibility", () => {
 
     expect(days.length).toBe(SAMPLE_DAYS.length);
   });
+
+  test('should see a map area.', () => {
+    const map = studio.getByTestId("map");
+
+    expect(map).toBeInTheDocument();
+    expect(map).toBeVisible();
+  })
+  
 })
 
 // TODO add to trip reducer in part 2 of tests

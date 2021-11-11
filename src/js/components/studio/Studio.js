@@ -6,8 +6,11 @@ import { SAMPLE_DAYS, MOCK_TRIP_ID } from '../../../data/sample-days';
 import SAMPLE_TRIP from "../../../data/sample-trip.json";
 
 import DayCard from './DayCard';
+import Map from "./Map";
 
 import PAGE_STATE from "../PageState";
+
+
 
 function Studio({ tripData, tripDetailsData }) {
   const abortController = new AbortController();
@@ -41,6 +44,7 @@ function Studio({ tripData, tripDetailsData }) {
       <div className="days">
         {pageState === PAGE_STATE.READY && mapDayDataToCards()}
       </div>
+      <Map />
     </div>
   )
 }
