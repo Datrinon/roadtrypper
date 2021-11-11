@@ -4,6 +4,7 @@ import "../../../css/Map.css";
 import { MapContainer, TileLayer, Marker, Popup, Tooltip } from 'react-leaflet';
 
 import L from "leaflet";
+import LeafletControlGeocoder from './LeafletControlGeocoder';
 
 const MapStyled = styled.div`
   height: 300px;
@@ -46,6 +47,7 @@ function Map() {
               Permanent Tooltip.
             </Tooltip>
           </Marker>
+        <LeafletControlGeocoder />
         </MapContainer>
       </MapStyled>
     </>
