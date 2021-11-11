@@ -3,17 +3,17 @@ import PropTypes from 'prop-types';
 import { TRIP_DETAIL_ACTIONS, tripDetailsReducer } from './tripDetailsReducer';
 
 import { SAMPLE_DAYS, MOCK_TRIP_ID } from '../../../data/sample-days';
-import SampleTrip from "../../../data/sample-trip.json";
+import SAMPLE_TRIP from "../../../data/sample-trip.json";
 
 import DayCard from './DayCard';
 
 import PAGE_STATE from "../PageState";
 
-function Studio({ projectId }) {
+function Studio({ tripData, tripDetailsData }) {
   const abortController = new AbortController();
   const [pageState, setPageState] = useState(PAGE_STATE.READY);
-  const [trip, setTrip] = useState(SampleTrip);
-  const [tripDetails, tripDetailsDispatch] = useReducer(tripDetailsReducer, SAMPLE_DAYS);
+  const [trip, setTrip] = useState(tripData);
+  const [tripDetails, tripDetailsDispatch] = useReducer(tripDetailsReducer, tripDetailsData);
 
 
   function mapDayDataToCards() {
@@ -46,11 +46,12 @@ function Studio({ projectId }) {
 }
 
 Studio.defaultProps = {
-  projectId: MOCK_TRIP_ID
+  tripData: SAMPLE_TRIP,
+  tripDetailsData: SAMPLE_DAYS
 }
 
 Studio.propTypes = {
-  projectId: PropTypes.string
+  
 }
 
 export default Studio;
