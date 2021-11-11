@@ -1,13 +1,15 @@
 import React from "react"
-import { render, fireEvent, screen } from "@testing-library/react"
+import { render, fireEvent, screen, act, waitFor } from "@testing-library/react"
 import "@testing-library/jest-dom/extend-expect"
 import { MemoryRouter } from "react-router-dom"
 import Studio from "./Studio"
 
+import { SAMPLE_DAYS } from "../../../data/sample-days";
+
 describe("Trip Studio's UI elements visibility", () => {
   let studio;
 
-  beforeAll(() => {
+  beforeEach(() => {
     studio = render(<Studio />);
   })
 
@@ -25,14 +27,15 @@ describe("Trip Studio's UI elements visibility", () => {
     expect(addPOIButton).toBeInTheDocument();
   });
 
-  test("should see clickable containers regarding each day of my trip (using sample data).", () => {
-    const mockId = -1;
+  test("should see clickable containers regarding each day of my trip (using the provided mock data).", () => {
+    // expect the mock data to have generated the same number of elements on the page.
 
-    studio = render(<Studio projectId={mockId} />);
+    // remember, do not depend on implementation details.
+    // that means not by the placement of the item or its CSS styling.
+    const days = studio.getAllByRole("heading", { level: 2, name: /day/i });
 
-    // 
+    expect(days.length).toBe(SAMPLE_DAYS.length);
   });
-  
 })
 
 // TODO add to trip reducer in part 2 of tests
