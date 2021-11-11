@@ -3,6 +3,7 @@ const MOCK_TRIP_ID = "dans-0";
 const SAMPLE_DAYS = [
   {
     tripid: "dans-0",
+    id: 0,
     order: 0,
     title: "Adventure Beginnings",
     pois: [
@@ -22,6 +23,7 @@ const SAMPLE_DAYS = [
   },
   {
     tripid: "dans-0",
+    id: 1,
     title: "Adventure Mid",
     order: 1,
     pois: [
@@ -47,6 +49,7 @@ const SAMPLE_DAYS = [
   },
   {
     tripid: "dans-0",
+    id: 2,
     order: 2,
     title: "The Great Capital",
     pois: [
