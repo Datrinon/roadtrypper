@@ -1,22 +1,34 @@
 import React, { useEffect, useState, useReducer } from 'react'
-import tripDetailsReducer from './tripDetailsReducer';
+import PropTypes from 'prop-types';
+import { TRIP_DETAIL_ACTIONS, tripDetailsReducer } from './tripDetailsReducer';
 
-function Studio({projectId}) {
+import { SAMPLE_DAYS, MOCK_TRIP_ID } from '../../../data/sample-days';
+import SampleTrip from "../../../data/sample-trip.json";
 
-  const [trip, tripDispatch] = useState(null);
-  const [tripDetails, tripDetailsDispatch] = useReducer(tripDetailsReducer, null);
-  
-  async function loadSampleData() {
-    await import("../../../data/sample-trip.json");
-    await import("../../../data/sample-days");
-    // todo use dispatch to load the sample days.
+import DayCard from './DayCard';
+
+import PAGE_STATE from "../PageState";
+
+function Studio({ projectId }) {
+  const abortController = new AbortController();
+  const [pageState, setPageState] = useState(PAGE_STATE.READY);
+  const [trip, setTrip] = useState(SampleTrip);
+  const [tripDetails, tripDetailsDispatch] = useReducer(tripDetailsReducer, SAMPLE_DAYS);
+
+
+  function mapDayDataToCards() {
+    const cards = tripDetails.map((day) => (
+      <DayCard
+        key={day.tripid + day.order}
+        data={day}
+      />
+    ));
+
+    return cards;
   }
 
   useEffect(() => {
-    if (projectId === -1) {
-      loadSampleData();
-    }
-  }, [projectId])
+  }, [])
 
   return (
     <div>
@@ -27,10 +39,18 @@ function Studio({projectId}) {
         <button className="add-POI" type="button">Add POI</button>
       </div>
       <div className="days">
-        
+        {pageState === PAGE_STATE.READY && mapDayDataToCards()}
       </div>
     </div>
   )
+}
+
+Studio.defaultProps = {
+  projectId: MOCK_TRIP_ID
+}
+
+Studio.propTypes = {
+  projectId: PropTypes.string
 }
 
 export default Studio;

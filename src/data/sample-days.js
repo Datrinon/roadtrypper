@@ -1,3 +1,5 @@
+const MOCK_TRIP_ID = "dans-0";
+
 const SAMPLE_DAYS = [
   {
     tripid: "dans-0",
@@ -70,4 +72,4 @@ const SAMPLE_DAYS = [
   },
 ];
 
-export default SAMPLE_DAYS;
+export { SAMPLE_DAYS, MOCK_TRIP_ID };
