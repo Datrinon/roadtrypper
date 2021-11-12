@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { FeatureGroup, Marker, Tooltip } from 'react-leaflet';
 /**
  * It's a group of markers 
@@ -12,9 +12,21 @@ import { FeatureGroup, Marker, Tooltip } from 'react-leaflet';
  * day. Requires the points of interests for that given day and the
  * user assigned color.
  */
-function DayPins({ pois, icon }) {
+function DayPins({ pois, icon, dayId, mapRef }) {
 
   const groupRef = useRef();
+
+  function addHandlerToDayCard() {
+    document.querySelector(`.day-card[data-id='${dayId}']`).onclick = () => {
+      const map = mapRef.current;
+      const group = groupRef.current;
+      map.flyToBounds(group.getBounds());
+    }
+  }
+
+  useEffect(() => {
+    addHandlerToDayCard();
+  }, []);
 
   return (
     <FeatureGroup ref={groupRef}>

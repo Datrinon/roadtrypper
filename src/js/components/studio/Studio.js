@@ -18,15 +18,6 @@ function Studio({ tripData, tripDetailsData }) {
   const [trip, setTrip] = useState(tripData);
   const [tripDetails, tripDetailsDispatch] = useReducer(tripDetailsReducer, tripDetailsData);
 
-  /*
-  ! ! !
-  Define a callback here and pass down into Map & DayPins.
-  ! ! !
-  */
- function onDayCardClick(mapRef, groupRef){
-
- }
-
   function mapDayDataToCards() {
     const cards = tripDetails.map((day) => (
       <DayCard
@@ -50,7 +41,7 @@ function Studio({ tripData, tripDetailsData }) {
         <button className="add-POI" type="button">Add POI</button>
       </div>
       <div className="days">
-        {pageState === COMPONENT_STATE.READY && mapDayDataToCards()}
+        {mapDayDataToCards()}
       </div>
       <Map daysData={tripDetails} />
     </div>

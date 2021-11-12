@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import "../../../css/Map.css";
 import { MapContainer, TileLayer, Marker, Popup, Tooltip, FeatureGroup } from 'react-leaflet';
@@ -25,6 +25,7 @@ const MapStyled = styled.div`
 
 function Map({ daysData }) {
 
+  const mapRef = useRef();
   const masterFeatureGroup = useRef();
 
   function placeDayPOIPins() {
@@ -37,21 +38,35 @@ function Map({ daysData }) {
       });
 
       return (
-        <DayPins key={index} pois={day.pois} icon={icon} />
+        <DayPins key={index} pois={day.pois} icon={icon} dayId={day.id} mapRef={mapRef}/>
       )
     });
   }
 
+  function showOverview() {
+    // debugger;
+    const map = mapRef.current;
+    const group = masterFeatureGroup.current;
+    map.fitBounds(group.getBounds());
+  }
+
+
   return (
     <>
-      <input placeholder="Click here to search a place..." />
+      <button onClick={showOverview}>See Overview</button>
       <MapStyled id="map" data-testid="map">
-        <MapContainer center={[37.34051, -121.97365]} zoom={8} scrollWheelZoom={false}>
+        <MapContainer
+          whenCreated= { mapInstance => { mapRef.current = mapInstance; showOverview(); }}
+          center={!!daysData ? [40.730610, -73.935242] : null}
+          zoom={8}
+          scrollWheelZoom={false}
+          >
           <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <FeatureGroup ref={masterFeatureGroup}>
+          <FeatureGroup
+            ref={masterFeatureGroup}>
             {placeDayPOIPins()}
           </FeatureGroup>
           <LeafletControlGeocoder />

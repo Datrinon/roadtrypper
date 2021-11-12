@@ -16,7 +16,7 @@ let Card = styled.div`
 
 function DayCard({ data }) {
   return (
-    <Card data-id={data.id}>
+    <Card data-id={data.id} className="day-card">
       <h2>Day {data.order + 1}: {data.title}</h2>
       <ul>
         {data.pois.map((point, index) => {
