@@ -20,6 +20,12 @@ describe("Trip Studio's UI elements visibility", () => {
     expect(label).toBeInTheDocument();
   })
 
+  test('Should see the title of existing trip inside the aforementioned input', () => {
+    const titleInput = studio.getByPlaceholderText("Untitled Trip");
+
+    expect(titleInput.value).toBe(SAMPLE_TRIP.title)
+  })
+
   test('should see buttons for adding days and adding points of interest', () => {
     const addDayButton = studio.getByRole("button", { name: /(Add|\+) Day/i });
     const addPOIButton = studio.getByRole("button", { name: /(Add|\+) POI/i });
@@ -45,6 +51,40 @@ describe("Trip Studio's UI elements visibility", () => {
     expect(map).toBeVisible();
   })
   
+  test('should see the same number of pins as POIs on the trip data.', () => {
+    const pins = studio.getAllByAltText(/Waypoint for/i);
+
+    let numPOIs = SAMPLE_DAYS.reduce((numPOIs, day) => {
+      numPOIs += day.pois.length;
+      return numPOIs;
+    }, 0);
+
+    expect(pins.length).toBe(numPOIs);
+
+  })
+  
 })
 
-// TODO add to trip reducer in part 2 of tests
+describe("Trip Studio UI's interactions", () => {
+  let studio;
+
+  beforeEach(() => {
+    studio = render(<Studio tripData={SAMPLE_TRIP} tripDetailsData={SAMPLE_DAYS} />);
+  })
+
+  test("Can edit the title of the project.", () => {
+    const titleInput = studio.getByPlaceholderText("Untitled Trip");
+    const dummyValue = "Road Trip to Preston!";
+
+    fireEvent.change(titleInput, {
+      target: {
+        value: dummyValue
+      }
+    })
+    
+    expect(titleInput.value).not.toBe(SAMPLE_TRIP.title);
+    expect(titleInput.value).toBe(dummyValue);
+  });
+
+  
+})
