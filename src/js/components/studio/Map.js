@@ -1,10 +1,16 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import styled from 'styled-components';
 import "../../../css/Map.css";
-import { MapContainer, TileLayer, Marker, Popup, Tooltip } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Tooltip, FeatureGroup } from 'react-leaflet';
 
 import L from "leaflet";
 import LeafletControlGeocoder from './LeafletControlGeocoder';
+import DayPin from './DayPins';
+
+const LeafIcon = L.Icon.extend({
+  options: {}
+});
+
 
 const MapStyled = styled.div`
   height: 300px;
@@ -12,12 +18,39 @@ const MapStyled = styled.div`
   border: 5px solid red;
 `
 
-function Map() {
+function Map({ daysData }) {
 
-  //  Create the Icon
-  const LeafIcon = L.Icon.extend({
-    options: {}
-  });
+  const masterFeatureGroup = useRef();
+
+  function convertDayToPin() {
+    featureGroupRefs.current = [];
+
+    let points = daysData.map(day => {
+
+      const icon = new LeafIcon({
+        iconUrl:
+          `https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|${day.color}&chf=a,s,ee00FFFF`
+      });
+
+      return (
+        <FeatureGroup ref={masterFeatureGroup}>
+          <DayPins pois={day.pois} icon={icon} />
+        </FeatureGroup>
+      );
+    });
+
+    <Marker position={[37.347, -121.97365]} icon={greenIcon} >
+      <Popup>
+        A pretty CSS3 popup.
+        <br />
+        Easily customizable.
+      </Popup>
+      <Tooltip direction="bottom" offset={[0, 20]} opacity={1} permanent={true}>
+        Permanent Tooltip.
+      </Tooltip>
+    </Marker >
+  }
+
 
   const blueIcon = new LeafIcon({
     iconUrl:
@@ -37,17 +70,8 @@ function Map() {
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <Marker position={[37.347, -121.97365]} icon={greenIcon}>
-            <Popup>
-              A pretty CSS3 popup.
-              <br />
-              Easily customizable.
-            </Popup>
-            <Tooltip direction="bottom" offset={[0, 20]} opacity={1} permanent={true}>
-              Permanent Tooltip.
-            </Tooltip>
-          </Marker>
-        <LeafletControlGeocoder />
+
+          <LeafletControlGeocoder />
         </MapContainer>
       </MapStyled>
     </>

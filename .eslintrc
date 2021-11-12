@@ -15,7 +15,7 @@
     "comma-dangle": "off",
     "no-unused-vars": "warn",
     "eol-last": "off",
-    "arrow-body-style": 1,
+    "arrow-body-style":"off",
     "padded-blocks":"off"
   }
 }

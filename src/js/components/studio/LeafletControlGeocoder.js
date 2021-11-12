@@ -38,6 +38,7 @@ function LeafletControlGeocoder() {
       geocoder
     }).on("markgeocode", function (e) {
       let latlng = e.geocode.center;
+      // For this, look at Leaflet docs to see how to use marker.
       L.marker(latlng, {icon: greenIcon })
         .addTo(map)
         .bindPopup(e.geocode.name)
