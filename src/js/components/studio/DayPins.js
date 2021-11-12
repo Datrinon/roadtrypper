@@ -36,7 +36,9 @@ function DayPins({ pois, icon, dayId, mapRef }) {
           // console.log(icon);
           return (<Marker key={index}
             position={poi.coordinates}
-            icon={icon}>
+            icon={icon}
+            alt={`Waypoint for ${poi.coordinates}`}
+            >
             <Tooltip direction="bottom" offset={[0, 20]} opacity={1} permanent={true}>
               <span className="poi-title">{poi.title}</span>
             </Tooltip>

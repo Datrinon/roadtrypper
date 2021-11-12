@@ -29,13 +29,24 @@ function Studio({ tripData, tripDetailsData }) {
     return cards;
   }
 
-  useEffect(() => {
-  }, [])
+  function onChangeTitle(e) {
+    setTrip({
+      ...trip,
+      title: e.target.value,
+      lastUpdated: Date.now()
+    });
+
+    console.log(trip);
+  }
 
   return (
     <div>
       <p>DEV MODE: STUDIO PAGE.</p>
-      <input className="title" placeholder="Untitled Trip" />
+      <input
+        className="trip-title"
+        placeholder="Untitled Trip"
+        value={trip.title}
+        onChange={onChangeTitle} />
       <div className="add-options">
         <button className="add-day" type="button">Add Day</button>
         <button className="add-POI" type="button">Add POI</button>
