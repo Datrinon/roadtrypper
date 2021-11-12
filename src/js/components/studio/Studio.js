@@ -8,13 +8,13 @@ import SAMPLE_TRIP from "../../../data/sample-trip.json";
 import DayCard from './DayCard';
 import Map from "./Map";
 
-import PAGE_STATE from "../PageState";
+import COMPONENT_STATE from "../ComponentState";
 
 
 
 function Studio({ tripData, tripDetailsData }) {
   const abortController = new AbortController();
-  const [pageState, setPageState] = useState(PAGE_STATE.READY);
+  const [pageState, setPageState] = useState(COMPONENT_STATE.READY);
   const [trip, setTrip] = useState(tripData);
   const [tripDetails, tripDetailsDispatch] = useReducer(tripDetailsReducer, tripDetailsData);
 
@@ -50,7 +50,7 @@ function Studio({ tripData, tripDetailsData }) {
         <button className="add-POI" type="button">Add POI</button>
       </div>
       <div className="days">
-        {pageState === PAGE_STATE.READY && mapDayDataToCards()}
+        {pageState === COMPONENT_STATE.READY && mapDayDataToCards()}
       </div>
       <Map daysData={tripDetails} />
     </div>

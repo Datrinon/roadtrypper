@@ -3,10 +3,10 @@
  * three states -- loading, ready, and not found.
  */
 
-const PAGE_STATE = {
+const COMPONENT_STATE = {
   LOADING: "loading",
   READY: "ready",
   NOT_FOUND: "not_found"
 }
 
-export default PAGE_STATE;
+export default COMPONENT_STATE;

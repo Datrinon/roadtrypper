@@ -6,7 +6,7 @@ const SAMPLE_DAYS = [
     id: 0,
     order: 0,
     title: "Adventure Beginnings",
-    color: "#0066ff",
+    color: "0066ff",
     pois: [
       {
         title: "Point Arena",
@@ -27,7 +27,7 @@ const SAMPLE_DAYS = [
     id: 1,
     title: "Adventure Mid",
     order: 1,
-    color: "#ff3300",
+    color: "ff3300",
     pois: [
       {
         title: "Point Charlie",
@@ -54,7 +54,7 @@ const SAMPLE_DAYS = [
     id: 2,
     order: 2,
     title: "The Great Capital",
-    color: "#00cc00",
+    color: "00cc00",
     pois: [
       {
         title: "Point Foxtrot",

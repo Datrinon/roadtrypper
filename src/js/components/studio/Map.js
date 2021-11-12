@@ -1,14 +1,19 @@
-import React, {useRef} from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 import "../../../css/Map.css";
 import { MapContainer, TileLayer, Marker, Popup, Tooltip, FeatureGroup } from 'react-leaflet';
 
 import L from "leaflet";
 import LeafletControlGeocoder from './LeafletControlGeocoder';
-import DayPin from './DayPins';
+import DayPins from './DayPins';
 
 const LeafIcon = L.Icon.extend({
   options: {}
+});
+
+const greenIcon = new LeafIcon({
+  iconUrl:
+    `https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|FF0000&chf=a,s,ee00FFFF`
 });
 
 
@@ -22,10 +27,9 @@ function Map({ daysData }) {
 
   const masterFeatureGroup = useRef();
 
-  function convertDayToPin() {
-    featureGroupRefs.current = [];
+  function placeDayPOIPins() {
 
-    let points = daysData.map(day => {
+    return daysData.map((day, index) => {
 
       const icon = new LeafIcon({
         iconUrl:
@@ -33,44 +37,23 @@ function Map({ daysData }) {
       });
 
       return (
-        <FeatureGroup ref={masterFeatureGroup}>
-          <DayPins pois={day.pois} icon={icon} />
-        </FeatureGroup>
-      );
+        <DayPins key={index} pois={day.pois} icon={icon} />
+      )
     });
-
-    <Marker position={[37.347, -121.97365]} icon={greenIcon} >
-      <Popup>
-        A pretty CSS3 popup.
-        <br />
-        Easily customizable.
-      </Popup>
-      <Tooltip direction="bottom" offset={[0, 20]} opacity={1} permanent={true}>
-        Permanent Tooltip.
-      </Tooltip>
-    </Marker >
   }
-
-
-  const blueIcon = new LeafIcon({
-    iconUrl:
-      "https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|abcdef&chf=a,s,ee00FFFF"
-  });
-  const greenIcon = new LeafIcon({
-    iconUrl:
-      "https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|2ecc71&chf=a,s,ee00FFFF"
-  });
 
   return (
     <>
       <input placeholder="Click here to search a place..." />
       <MapStyled id="map" data-testid="map">
-        <MapContainer center={[37.34051, -121.97365]} zoom={13} scrollWheelZoom={false}>
+        <MapContainer center={[37.34051, -121.97365]} zoom={8} scrollWheelZoom={false}>
           <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-
+          <FeatureGroup ref={masterFeatureGroup}>
+            {placeDayPOIPins()}
+          </FeatureGroup>
           <LeafletControlGeocoder />
         </MapContainer>
       </MapStyled>
