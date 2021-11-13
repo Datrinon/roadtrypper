@@ -9,6 +9,7 @@ import DayCard from './DayCard';
 import Map from "./Map";
 
 import COMPONENT_STATE from "../ComponentState";
+import PoiDetails from './POIDetails';
 
 
 
@@ -17,6 +18,7 @@ function Studio({ tripData, tripDetailsData }) {
   const [pageState, setPageState] = useState(COMPONENT_STATE.READY);
   const [trip, setTrip] = useState(tripData);
   const [tripDetails, tripDetailsDispatch] = useReducer(tripDetailsReducer, tripDetailsData);
+  const [activePin, setActivePin] = useState(null);
 
   function mapDayDataToCards() {
     const cards = tripDetails.map((day) => (
@@ -55,6 +57,7 @@ function Studio({ tripData, tripDetailsData }) {
         {mapDayDataToCards()}
       </div>
       <Map daysData={tripDetails} />
+      <PoiDetails />
     </div>
   )
 }

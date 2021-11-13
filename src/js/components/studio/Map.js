@@ -83,7 +83,7 @@ function Map({ daysData }) {
           whenCreated= { mapInstance => { mapRef.current = mapInstance; showOverview(); }}
           center={!!daysData ? calcCoordinateAverage() : [40.730610, -73.935242]}
           zoom={8}
-          scrollWheelZoom={false}
+          scrollWheelZoom={true}
           >
           <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
