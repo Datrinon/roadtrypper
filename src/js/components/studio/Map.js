@@ -42,7 +42,7 @@ function Map({ daysData, setActivePin }) {
           key={index}
           pois={day.pois}
           icon={icon}
-          dayId={day.id}
+          day={day}
           mapRef={mapRef}
           setActivePin={setActivePin}/>
       )

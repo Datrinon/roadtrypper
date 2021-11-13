@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react'
+import { SAMPLE_DAYS } from "../../../data/sample-days";
+
 
 function PoiDetails({ activePin }) {
   // convert to boolean + invert.
@@ -23,12 +25,17 @@ function PoiDetails({ activePin }) {
     setCollapsed(!activePin);
   }, [activePin]);
 
-
   return (
     <div className={`poi-details ${collapsed && "collapsed"}`}>
       {collapsed ? "(currently collapsed)" : "(not collapsed)"}
       Show Pin Details here.
-      {JSON.stringify(activePin)}
+      {!collapsed && (
+        <section className="poi-contents">
+          <h1>Day {activePin.day.order + 1}</h1>
+          <h2>{activePin.poi.title}</h2>
+          <p>{activePin.poi.description}</p>
+        </section>
+      )}
     </div>
   )
 }
