@@ -47,9 +47,33 @@ function Map({ daysData }) {
     // debugger;
     const map = mapRef.current;
     const group = masterFeatureGroup.current;
-    map.fitBounds(group.getBounds());
+    map.flyToBounds(group.getBounds());
   }
 
+  function calcCoordinateAverage() {
+    let numCoordinates = 0;
+    let total = daysData.reduce((sum, day) => {
+      let poi = day.pois.reduce((sum, poi) => {
+        sum.lat += poi.coordinates[0];
+        sum.long += poi.coordinates[1];
+
+        numCoordinates += 1;
+
+        return sum;
+      }, {lat: 0, long: 0});
+
+      sum.lat += poi.lat;
+      sum.long += poi.long;
+
+      return sum;
+    }, {lat: 0, long: 0})
+
+    total.lat = total.lat / numCoordinates;
+    total.long = total.long / numCoordinates;
+    console.log(total);
+
+    return [total.lat, total.long];
+  }
 
   return (
     <>
@@ -57,7 +81,7 @@ function Map({ daysData }) {
       <MapStyled id="map" data-testid="map">
         <MapContainer
           whenCreated= { mapInstance => { mapRef.current = mapInstance; showOverview(); }}
-          center={!!daysData ? [40.730610, -73.935242] : null}
+          center={!!daysData ? calcCoordinateAverage() : [40.730610, -73.935242]}
           zoom={8}
           scrollWheelZoom={false}
           >
