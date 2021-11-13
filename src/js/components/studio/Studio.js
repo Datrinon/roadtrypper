@@ -56,8 +56,8 @@ function Studio({ tripData, tripDetailsData }) {
       <div className="days">
         {mapDayDataToCards()}
       </div>
-      <Map daysData={tripDetails} />
-      <PoiDetails />
+      <Map daysData={tripDetails} setActivePin={setActivePin}/>
+      <PoiDetails activePin={activePin} />
     </div>
   )
 }

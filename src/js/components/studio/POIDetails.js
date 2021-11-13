@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 function PoiDetails({ activePin }) {
   // convert to boolean + invert.
@@ -6,9 +6,6 @@ function PoiDetails({ activePin }) {
   /*
   ! ! !
   Further steps. (Viewing)
-  1. Each time a POI is clicked (this handler is set in DayPins),
-  fire callback passed down from Studio to DayPins setting the
-  active pin.
   2. Give the active pin state to this PoiDetails prop 
   and then use that data to fill out the information.
   3. We should be able to see the day that this POI belongs to,
@@ -22,10 +19,16 @@ function PoiDetails({ activePin }) {
   1. A trash can should allow me to delete it, by the pencil icon.
   */
 
+  useEffect(() => {
+    setCollapsed(!activePin);
+  }, [activePin]);
+
+
   return (
     <div className={`poi-details ${collapsed && "collapsed"}`}>
       {collapsed ? "(currently collapsed)" : "(not collapsed)"}
       Show Pin Details here.
+      {JSON.stringify(activePin)}
     </div>
   )
 }

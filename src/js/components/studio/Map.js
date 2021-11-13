@@ -23,7 +23,7 @@ const MapStyled = styled.div`
   border: 5px solid red;
 `
 
-function Map({ daysData }) {
+function Map({ daysData, setActivePin }) {
 
   const mapRef = useRef();
   const masterFeatureGroup = useRef();
@@ -38,7 +38,13 @@ function Map({ daysData }) {
       });
 
       return (
-        <DayPins key={index} pois={day.pois} icon={icon} dayId={day.id} mapRef={mapRef}/>
+        <DayPins
+          key={index}
+          pois={day.pois}
+          icon={icon}
+          dayId={day.id}
+          mapRef={mapRef}
+          setActivePin={setActivePin}/>
       )
     });
   }
@@ -47,7 +53,8 @@ function Map({ daysData }) {
     // debugger;
     const map = mapRef.current;
     const group = masterFeatureGroup.current;
-    map.flyToBounds(group.getBounds());
+    map.flyToBounds(group.getBounds(), {padding: L.point(15, 15)});
+
   }
 
   function calcCoordinateAverage() {
@@ -82,7 +89,7 @@ function Map({ daysData }) {
         <MapContainer
           whenCreated= { mapInstance => { mapRef.current = mapInstance; showOverview(); }}
           center={!!daysData ? calcCoordinateAverage() : [40.730610, -73.935242]}
-          zoom={8}
+          zoom={13}
           scrollWheelZoom={true}
           >
           <TileLayer
