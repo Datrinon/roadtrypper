@@ -19,11 +19,11 @@ export default class Utility {
    * the original filename (w/ extension) being the key referencing the image.
    */
   // eslint-disable-next-line no-undef
-  // static importAllImages(r = require.context("../images", false, /\.(png|jpe?g|svg)$/)) {
-  //   let images = {};
-  //   r.keys().map((item) => { images[item.replace('./', '')] = r(item); });
-  //   return images;
-  // }
+//   function importSampleImages(r = require.context("../../../data/images", false, /\.(png|jpe?g|svg)$/)) {
+//     let images = {};
+//     r.keys().forEach((item) => { images[item.replace('./', '')] = r(item)["default"]; });
+//     return images;
+// }
 
   /**
    * Create an element with various classes. Wraps document.createElement.

@@ -11,11 +11,18 @@ import img2 from "../../../data/images/url02.jpg";
 import img3 from "../../../data/images/url03.jpg";
 import POIDetailsEditForm from './POIDetailsEditForm';
 
+// ! TODO Remove this later when finished debugging.
+function importSampleImages(r = require.context("../../../data/images", false, /\.(png|jpe?g|svg)$/)) {
+    let images = {};
+    r.keys().forEach((item) => { images[item.replace('./', '')] = r(item)["default"]; });
+    return images;
+}
 
 function PoiDetails({ activePin }) {
   // convert to boolean + invert.
   const [collapsed, setCollapsed] = useState(!activePin);
   const [editMode, setEditMode] = useState(false);
+  const [sampleImages, setSampleImages] = useState(importSampleImages());
   /*
   ! ! !
   (Editing)
@@ -26,6 +33,7 @@ function PoiDetails({ activePin }) {
   (Deletion)
   1. A trash can should allow me to delete it, by the pencil icon.
   */
+ console.log(JSON.stringify(sampleImages));
 
   useEffect(() => {
     setCollapsed(!activePin);
@@ -58,7 +66,7 @@ function PoiDetails({ activePin }) {
             return (
               <s.Thumbnail
                 key={index}
-                src={img1}
+                src={sampleImages[photo.path]}
                 onClick={showFullImage}
                 alt="some image." />
             );
