@@ -29,6 +29,10 @@ function DayPins({ pois, icon, day, mapRef, setActivePin }) {
     addHandlerToDayCard();
   }, []);
 
+  function onMarkerClick(day, poi, e) {
+    setActivePin({day, poi});
+  }
+
   return (
     <FeatureGroup ref={groupRef}>
       {
@@ -41,7 +45,7 @@ function DayPins({ pois, icon, day, mapRef, setActivePin }) {
             position={poi.coordinates}
             icon={icon}
             eventHandlers={{
-              click: () => { setActivePin({day, poi}) }
+              click: onMarkerClick.bind(null, day, poi)
             }}
             alt={`Waypoint for ${poi.coordinates}`}
             >
