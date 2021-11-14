@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit, faTrashAlt } from "@fortawesome/free-regular-svg-icons"
-import s from "./POIDetails.style";
 
+import * as s from "./POIDetails.style";
 import "../../../css/POIDetails.css";
 
 import { SAMPLE_DAYS } from "../../../data/sample-days";
@@ -32,6 +32,7 @@ function POIDetailsEditForm({ activePin }) {
             SAMPLE_DAYS.map((elem, index) => {
               return (
                 <option
+                  key={index}
                   value={index}
                 >
                   Day {index + 1}
@@ -43,7 +44,7 @@ function POIDetailsEditForm({ activePin }) {
         <s.EditModeInput
           className="edit title"
           defaultValue={activePin.poi.title} />
-        <s.EditModeTextbox
+        <s.EditModeTextBox
           className="edit desc"
           defaultValue={activePin.poi.description} />
       </div>

@@ -1,17 +1,13 @@
 import styled from 'styled-components';
 
+export const Thumbnail = styled.img`
+  width: 64px;
+  height: 64px;
+`
+export const EditModeInput = styled.input`
+  display: block;
+`
 
-const s = {
-  Thumbnail: styled.img`
-    width: 64px;
-    height: 64px;
-  `,
-  EditModeInput: styled.input`
-    display: block;
-  `,
-  EditModeTextBox: styled.input`
-    display: block;
-  `
-}
-
-export default s;
+export const EditModeTextBox = styled.textarea`
+  display: block;
+`

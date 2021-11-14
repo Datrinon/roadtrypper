@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit, faTrashAlt } from "@fortawesome/free-regular-svg-icons"
 
-import s from "./POIDetails.style";
+import * as s from "./POIDetails.style";
 import "../../../css/POIDetails.css";
 
 import { SAMPLE_DAYS } from "../../../data/sample-days";
