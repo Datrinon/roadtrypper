@@ -18,10 +18,12 @@ export const TripDetailsDispatch = React.createContext(null);
 export const TripDetailsContext = React.createContext(null);
 
 function Studio({ tripData, tripDetailsData }) {
-  const abortController = new AbortController();
-  const [pageState, setPageState] = useState(COMPONENT_STATE.READY);
+  const abortController = new AbortController(); // ! Use this later when you fetch data from fbase.
+  // const [pageState, setPageState] = useState(COMPONENT_STATE.READY);
   const [trip, setTrip] = useState(tripData);
-  const [tripDetails, tripDetailsDispatch] = useReducer(tripDetailsReducer, tripDetailsData);
+  const [tripDetails, tripDetailsDispatch] = useReducer(
+    tripDetailsReducer.bind(null, setTrip),
+    tripDetailsData);
   const [activePin, setActivePin] = useState(null);
 
   function mapDayDataToCards() {

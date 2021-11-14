@@ -1,18 +1,24 @@
 export const TRIP_DETAIL_ACTIONS = {
-  SET: "set"
+  EDIT: "edit"
 };
 
-export function tripDetailsReducer(state, action) {
+export function tripDetailsReducer(setTrip, state, action) {
   switch (action.type) {
-    case 'set': {
-      return action.payload;
-    }
-    case 'initialLoad': {
+    case 'edit': {
       break;
     }
     default:
       break;
   }
+
+  // Any time this reducer is called, we should update the last updated value
+  // of the trip.
+  setTrip(prevTrip => {
+    return {
+      ...prevTrip,
+      "lastUpdated": Date.now()
+    }
+  })
 
   return state;
 }
