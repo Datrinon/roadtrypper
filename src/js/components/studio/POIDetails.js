@@ -5,17 +5,13 @@ import { faEdit, faTrashAlt } from "@fortawesome/free-regular-svg-icons"
 import * as s from "./POIDetails.style";
 import "../../../css/POIDetails.css";
 
-import { SAMPLE_DAYS } from "../../../data/sample-days";
-import img1 from "../../../data/images/url01.jpg";
-import img2 from "../../../data/images/url02.jpg";
-import img3 from "../../../data/images/url03.jpg";
 import POIDetailsEditForm from './POIDetailsEditForm';
 
 // ! TODO Remove this later when finished debugging.
 function importSampleImages(r = require.context("../../../data/images", false, /\.(png|jpe?g|svg)$/)) {
-    let images = {};
-    r.keys().forEach((item) => { images[item.replace('./', '')] = r(item)["default"]; });
-    return images;
+  let images = {};
+  r.keys().forEach((item) => { images[item.replace('./', '')] = r(item)["default"]; });
+  return images;
 }
 
 function PoiDetails({ activePin }) {
@@ -33,16 +29,16 @@ function PoiDetails({ activePin }) {
   (Deletion)
   1. A trash can should allow me to delete it, by the pencil icon.
   */
- console.log(JSON.stringify(sampleImages));
+  console.log(JSON.stringify(sampleImages));
 
   useEffect(() => {
     setCollapsed(!activePin);
   }, [activePin]);
 
- 
+
   function renderEditMode() {
     return (
-      <POIDetailsEditForm activePin={activePin} />
+      <POIDetailsEditForm activePin={activePin} sampleImages={sampleImages} />
     )
   }
 
@@ -64,11 +60,16 @@ function PoiDetails({ activePin }) {
         {
           activePin.poi.photos.map((photo, index) => {
             return (
-              <s.Thumbnail
-                key={index}
-                src={sampleImages[photo.path]}
-                onClick={showFullImage}
-                alt="some image." />
+              <figure>
+                <s.Thumbnail
+                  key={index}
+                  src={sampleImages[photo.path]}
+                  onClick={showFullImage}
+                  alt="some image." />
+                {/* <figcaption>
+                  {photo.description}
+                </figcaption>  (Move this to the full image view.)*/}
+              </figure>
             );
           })
         }

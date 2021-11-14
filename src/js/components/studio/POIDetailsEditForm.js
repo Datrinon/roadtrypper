@@ -1,19 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faEdit, faTrashAlt } from "@fortawesome/free-regular-svg-icons"
+import { faTrashAlt } from "@fortawesome/free-regular-svg-icons"
 
 import * as s from "./POIDetails.style";
 import "../../../css/POIDetails.css";
+import { TripDetailsContext, TripDetailsDispatch } from './Studio';
 
-import { SAMPLE_DAYS } from "../../../data/sample-days";
-import img1 from "../../../data/images/url01.jpg";
-import img2 from "../../../data/images/url02.jpg";
-import img3 from "../../../data/images/url03.jpg";
-
-function POIDetailsEditForm({ activePin }) {
+function POIDetailsEditForm({ activePin, sampleImages }) {
 
   const [deleteCount, setDeleteCount] = useState(0);
 
+  const tripDetails = useContext(TripDetailsContext);
+  const dispatch = useContext(TripDetailsDispatch);
 
   function toggleDeletion(e) {
     e.currentTarget.classList.toggle("to-delete");
@@ -29,7 +27,7 @@ function POIDetailsEditForm({ activePin }) {
           id="day-select"
           defaultValue={activePin.day.order}>
           {
-            SAMPLE_DAYS.map((elem, index) => {
+            tripDetails.map((elem, index) => {
               return (
                 <option
                   key={index}
@@ -52,11 +50,16 @@ function POIDetailsEditForm({ activePin }) {
         {
           activePin.poi.photos.map((photo, index) => {
             return (
-              <s.Thumbnail
-                key={index}
-                src={img1}
-                onClick={toggleDeletion}
-                alt="some image." />
+              <div>
+                <s.Thumbnail
+                  key={index}
+                  src={sampleImages[photo.path]}
+                  onClick={toggleDeletion}
+                  alt="some image." />
+                <s.EditModeTextBox
+                  className="edit photo-desc"
+                  defaultValue={photo.description} />
+              </div>
             );
           })
         }
@@ -76,7 +79,7 @@ function POIDetailsEditForm({ activePin }) {
       </div>
       <div>
         <button
-          disabled={true}> 
+          disabled={true}>
           Save {/* The user can always save. They don't need a title or description. */}
         </button>
         <button>Cancel</button>

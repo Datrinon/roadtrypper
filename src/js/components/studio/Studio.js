@@ -12,6 +12,10 @@ import COMPONENT_STATE from "../ComponentState";
 import PoiDetails from './POIDetails';
 
 
+// Only the details need a dispatch and global context, the general
+// trip info can be passed around as normal state.
+export const TripDetailsDispatch = React.createContext(null);
+export const TripDetailsContext = React.createContext(null);
 
 function Studio({ tripData, tripDetailsData }) {
   const abortController = new AbortController();
@@ -42,23 +46,27 @@ function Studio({ tripData, tripDetailsData }) {
   }
 
   return (
-    <div>
-      <p>DEV MODE: STUDIO PAGE.</p>
-      <input
-        className="trip-title"
-        placeholder="Untitled Trip"
-        value={trip.title}
-        onChange={onChangeTitle} />
-      <div className="add-options">
-        <button className="add-day" type="button">Add Day</button>
-        <button className="add-POI" type="button">Add POI</button>
-      </div>
-      <div className="days">
-        {mapDayDataToCards()}
-      </div>
-      <Map daysData={tripDetails} setActivePin={setActivePin}/>
-      <PoiDetails activePin={activePin} />
-    </div>
+    <TripDetailsContext.Provider value={tripDetails}>
+      <TripDetailsDispatch.Provider value={tripDetailsDispatch}>
+        <div>
+          <p>DEV MODE: STUDIO PAGE.</p>
+          <input
+            className="trip-title"
+            placeholder="Untitled Trip"
+            value={trip.title}
+            onChange={onChangeTitle} />
+          <div className="add-options">
+            <button className="add-day" type="button">Add Day</button>
+            <button className="add-POI" type="button">Add POI</button>
+          </div>
+          <div className="days">
+            {mapDayDataToCards()}
+          </div>
+          <Map daysData={tripDetails} setActivePin={setActivePin} />
+          <PoiDetails activePin={activePin} />
+        </div>
+      </TripDetailsDispatch.Provider>
+    </TripDetailsContext.Provider>
   )
 }
 
@@ -68,7 +76,7 @@ Studio.defaultProps = {
 }
 
 Studio.propTypes = {
-  
+
 }
 
 export default Studio;
