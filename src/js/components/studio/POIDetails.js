@@ -33,6 +33,7 @@ function PoiDetails({ activePin }) {
 
   useEffect(() => {
     setCollapsed(!activePin);
+    console.log(activePin);
   }, [activePin]);
 
 

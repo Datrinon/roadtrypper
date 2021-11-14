@@ -8,6 +8,15 @@ import { TripDetailsContext, TripDetailsDispatch } from './Studio';
 
 function POIDetailsEditForm({ activePin, sampleImages }) {
 
+  // !
+  // Fix the form handlers to account for activePin.day and activePin.poi.
+
+  // make copy of the activePin's information.
+  // that way, we can make edits to the details without having to use
+  // defaultValue and without affecting the original information
+  // (not until the user presses save.)
+  const [pinInfo, setPinInfo] = useState(activePin);
+
   const [deleteCount, setDeleteCount] = useState(0);
 
   const tripDetails = useContext(TripDetailsContext);
@@ -19,13 +28,40 @@ function POIDetailsEditForm({ activePin, sampleImages }) {
     setDeleteCount(numPhotosToDelete);
   }
 
+  /**
+   * Called when the user presses the save button.
+   */
+  function updatePOI() {
+
+  }
+
+  function swapOrder() {
+
+  }
+
+  function handleFormChange(field, e) {
+    setPinInfo((prevInfo) => {
+      prevInfo.poi[field] = e.target.value;
+      return prevInfo;
+    })
+  }
+
+  function handlePhotoDescriptionChange(index, e) {
+    setPinInfo((prevInfo) => {
+      prevInfo.poi.photos[index].description = e.target.value;
+      return prevInfo;
+    });
+  }
+
   return (
     <>
       <div className="text-fields">
         <select
           name="day"
           id="day-select"
-          defaultValue={activePin.day.order}>
+          value={pinInfo.day.order}
+          onChange
+          >
           {
             tripDetails.map((elem, index) => {
               return (
@@ -39,16 +75,27 @@ function POIDetailsEditForm({ activePin, sampleImages }) {
             })
           }
         </select>
+        <select
+          name="order"
+          id="order-select"
+
+        >
+          
+        </select>
         <s.EditModeInput
           className="edit title"
-          defaultValue={activePin.poi.title} />
+          value={pinInfo.poi.title}
+          onChange={handleFormChange.bind(null, "title")}
+        />
         <s.EditModeTextBox
           className="edit desc"
-          defaultValue={activePin.poi.description} />
+          value={pinInfo.poi.description}
+          onChange={handleFormChange.bind(null, "description")}
+        />
       </div>
       <div className="photo-field">
         {
-          activePin.poi.photos.map((photo, index) => {
+          pinInfo.poi.photos.map((photo, index) => {
             return (
               <div>
                 <s.Thumbnail
@@ -58,7 +105,9 @@ function POIDetailsEditForm({ activePin, sampleImages }) {
                   alt="some image." />
                 <s.EditModeTextBox
                   className="edit photo-desc"
-                  defaultValue={photo.description} />
+                  value={photo.description}
+                  onChange={handlePhotoDescriptionChange.bind(null, index)}
+                />
               </div>
             );
           })
@@ -79,8 +128,10 @@ function POIDetailsEditForm({ activePin, sampleImages }) {
       </div>
       <div>
         <button
-          disabled={true}>
-          Save {/* The user can always save. They don't need a title or description. */}
+          disabled={true}
+          onClick={updatePOI}
+        >
+          Save
         </button>
         <button>Cancel</button>
       </div>
