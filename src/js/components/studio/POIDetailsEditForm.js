@@ -29,13 +29,10 @@ function POIDetailsEditForm({ activePin, sampleImages }) {
   }
 
   /**
-   * Called when the user presses the save button.
+   * Called when the user presses the save button; takes the copy made of the data and then
+   * sends that to dispatch.
    */
   function updatePOI() {
-
-  }
-
-  function swapOrder() {
 
   }
 
@@ -54,11 +51,12 @@ function POIDetailsEditForm({ activePin, sampleImages }) {
   }
 
   function movePOIToDiffDay(e) {
-    setPinInfo((prevInfo) => {
-      prevInfo
-    })
+    alert("TODO - Implement this");
+    // setPinInfo((prevInfo) => {
+    //   prevInfo
+    // })
 
-    activePin.poi.id;
+    // activePin.poi.id;
     // pop from current array using poi.id.
     // reset order of all elements in the array
     // move this element to the chosen array at the end.
@@ -73,8 +71,7 @@ function POIDetailsEditForm({ activePin, sampleImages }) {
           name="day"
           id="day-select"
           value={pinInfo.day.order}
-          onChange={movePOIToDiffDay}
-          >
+          onChange={movePOIToDiffDay}>
           {
             tripDetails.map((elem, index) => {
               return (
