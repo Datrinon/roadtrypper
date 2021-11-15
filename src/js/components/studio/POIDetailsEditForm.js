@@ -53,6 +53,19 @@ function POIDetailsEditForm({ activePin, sampleImages }) {
     });
   }
 
+  function movePOIToDiffDay(e) {
+    setPinInfo((prevInfo) => {
+      prevInfo
+    })
+
+    activePin.poi.id;
+    // pop from current array using poi.id.
+    // reset order of all elements in the array
+    // move this element to the chosen array at the end.
+    // regenerate order of all elements in the array.
+    // Yeah this needs to be denormalized, since you cannot mutate state.
+  }
+
   return (
     <>
       <div className="text-fields">
@@ -60,7 +73,7 @@ function POIDetailsEditForm({ activePin, sampleImages }) {
           name="day"
           id="day-select"
           value={pinInfo.day.order}
-          onChange
+          onChange={movePOIToDiffDay}
           >
           {
             tripDetails.map((elem, index) => {

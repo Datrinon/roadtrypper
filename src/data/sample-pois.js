@@ -7,19 +7,68 @@ const SAMPLE_POIS = [
     title: "Point Arena",
     coordinates: [37.769796221341544, -122.48632397567849],
     description: "We began by first visiting the beach.",
-    photos: [
-      {
-        path: "url01.jpg",
-        description: "A picture of the beach (01)."
-      },
-      {
-        path: "url02.jpg",
-        description: "A picture of the beach (02)."
-      },
-      {
-        path: "url03.jpg",
-        description: "A picture of the beach (03)."
-      }
-    ]
+  },
+  {
+    tripId: "dans-0",
+    dayId: 0,
+    id: 1,
+    order: 1,
+    title: "Point Bravo",
+    coordinates: [38.004782882158985, -122.54414829028939],
+    description: "We went to its sequel.",
+  },
+  {
+    tripId: "dans-0",
+    dayId: 1,
+    id: 2,
+    order: 2,
+    title: "Point Charlie",
+    coordinates: [38.44143980971588, -122.72341248007122],
+    description: "We went to its sequel, the beach.",
+  },
+  {
+    tripId: "dans-0",
+    dayId: 1,
+    id: 3,
+    order: 0,
+    title: "Point Delta",
+    coordinates: [39.20241934394004, -123.77596475597744],
+    description: "Subject Delta.",
+  },
+  {
+    tripId: "dans-0",
+    dayId: 1,
+    id: 4,
+    order: 1,
+    title: "Point Echo",
+    coordinates: [39.446531884721345, -123.80626325845876],
+    description: "Dust and echoes.",
+  },
+  {
+    tripId: "dans-0",
+    dayId: 2,
+    id: 5,
+    order: 0,
+    title: "Point Foxtrot",
+    coordinates: [40.800864341737125, -124.17428934474253],
+    description: "Whiskey Tango Foxtrot!!",
+  },
+  {
+    tripId: "dans-0",
+    dayId: 2,
+    id: 6,
+    order: 1,
+    title: "Point Golf",
+    coordinates: [40.95013460720063, -124.12410503664906],
+    description: "We went to Foxtrot's sequel.",
+  },
+  {
+    tripId: "dans-0",
+    dayId: 2,
+    id: 7,
+    order: 2,
+    title: "Point Hotel",
+    coordinates: [41.75653691963277, -124.17986118946551],
+    description: "We went to Golf's sequel.",
   }
 ]

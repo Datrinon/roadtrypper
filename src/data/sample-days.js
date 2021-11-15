@@ -198,4 +198,28 @@ const SAMPLE_DAYS = [
   },
 ];
 
+const SAMPLE_DAYS_v2 = [
+  {
+    tripId: "dans-0",
+    id: 0,
+    order: 0,
+    title: "Adventure Beginnings",
+    color: "0066ff",
+  },
+  {
+    tripid: "dans-0",
+    id: 1,
+    title: "Adventure Mid",
+    order: 1,
+    color: "ff3300",
+  },
+  {
+    tripid: "dans-0",
+    id: 2,
+    order: 2,
+    title: "The Great Capital",
+    color: "00cc00",
+  }
+]
+
 export { SAMPLE_DAYS, MOCK_TRIP_ID };
