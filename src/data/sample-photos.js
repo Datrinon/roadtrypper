@@ -1,4 +1,4 @@
-const photos = [
+const SAMPLE_PHOTOS = [
   {
     PoiId: 0,
     id: 0,
@@ -31,3 +31,5 @@ const photos = [
   }
 
 ]
+
+export default SAMPLE_PHOTOS;

@@ -4,7 +4,7 @@ import { faTrashAlt } from "@fortawesome/free-regular-svg-icons"
 
 import * as s from "./POIDetails.style";
 import "../../../css/POIDetails.css";
-import { TripDetailsContext, TripDetailsDispatch } from './Studio';
+import { TripContext, TripDispatch } from './Studio';
 
 function POIDetailsEditForm({ activePin, sampleImages }) {
 
@@ -19,8 +19,8 @@ function POIDetailsEditForm({ activePin, sampleImages }) {
 
   const [deleteCount, setDeleteCount] = useState(0);
 
-  const tripDetails = useContext(TripDetailsContext);
-  const dispatch = useContext(TripDetailsDispatch);
+  const tripDetails = useContext(TripContext);
+  const dispatch = useContext(TripDispatch);
 
   function toggleDeletion(e) {
     e.currentTarget.classList.toggle("to-delete");

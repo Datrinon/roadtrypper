@@ -1,33 +1,33 @@
 import React, { useEffect, useState, useReducer } from 'react'
 import PropTypes from 'prop-types';
-import { TRIP_DETAIL_ACTIONS, tripDetailsReducer } from './tripDetailsReducer';
+import { TRIP_ACTIONS, tripReducer } from './tripDetailsReducer';
 
-import { SAMPLE_DAYS, MOCK_TRIP_ID } from '../../../data/sample-days';
-import SAMPLE_TRIP from "../../../data/sample-trip.json";
+import { MOCK_TRIP_ID } from '../../../data/sample-days';
+import * as DB from "../../database/data.js";
 
+// Components
 import DayCard from './DayCard';
 import Map from "./Map";
-
-import COMPONENT_STATE from "../ComponentState";
 import PoiDetails from './POIDetails';
+
+// Page Loading Management
+import STATE from "../ComponentState";
 
 
 // Only the details need a dispatch and global context, the general
 // trip info can be passed around as normal state.
-export const TripDetailsDispatch = React.createContext(null);
-export const TripDetailsContext = React.createContext(null);
+export const TripDispatch = React.createContext(null);
+export const TripContext = React.createContext(null);
 
-function Studio({ tripData, tripDetailsData }) {
+
+function Studio({ tripId }) {
   const abortController = new AbortController(); // ! Use this later when you fetch data from fbase.
-  // const [pageState, setPageState] = useState(COMPONENT_STATE.READY);
-  const [trip, setTrip] = useState(tripData);
-  const [tripDetails, tripDetailsDispatch] = useReducer(
-    tripDetailsReducer.bind(null, setTrip),
-    tripDetailsData);
+  const [trip, tripDispatch] = useReducer(tripReducer, null);
+  const [pageState, setPageState] = useState(STATE.LOADING);
   const [activePin, setActivePin] = useState(null);
 
   function mapDayDataToCards() {
-    const cards = tripDetails.map((day) => (
+    const cards = trip.map((day) => (
       <DayCard
         key={day.tripid + day.order}
         data={day}
@@ -37,19 +37,40 @@ function Studio({ tripData, tripDetailsData }) {
     return cards;
   }
 
-  function onChangeTitle(e) {
-    setTrip({
-      ...trip,
-      title: e.target.value,
-      lastUpdated: Date.now()
-    });
+  useEffect(() => {
+    DB.loadProjectData(tripId, abortController)
+      .then((tripData) => {
+        tripDispatch({
+          type: 'load',
+          payload: tripData
+        });
 
-    console.log(trip);
+        setPageState(STATE.READY)
+      })
+      .catch((e) => console.log(e));
+    
+    return () => {
+      // Aborts any fetch request.
+      abortController.abort();
+    }
+  }, []);
+
+  function onChangeTitle(e) {
+    // setTrip({
+    //   ...trip,
+    //   title: e.target.value,
+    //   lastUpdated: Date.now()
+    // });
   }
 
+  if (pageState === STATE.LOADING) {
+    return <div>Loading</div>;
+  }
+
+  console.log(trip);
   return (
-    <TripDetailsContext.Provider value={tripDetails}>
-      <TripDetailsDispatch.Provider value={tripDetailsDispatch}>
+    <TripContext.Provider value={trip}>
+      <TripDispatch.Provider value={tripDispatch}>
         <div>
           <p>DEV MODE: STUDIO PAGE.</p>
           <input
@@ -64,21 +85,20 @@ function Studio({ tripData, tripDetailsData }) {
           <div className="days">
             {mapDayDataToCards()}
           </div>
-          <Map daysData={tripDetails} setActivePin={setActivePin} />
+          <Map daysData={trip} setActivePin={setActivePin} />
           <PoiDetails activePin={activePin} />
         </div>
-      </TripDetailsDispatch.Provider>
-    </TripDetailsContext.Provider>
+      </TripDispatch.Provider>
+    </TripContext.Provider>
   )
 }
 
 Studio.defaultProps = {
-  tripData: SAMPLE_TRIP,
-  tripDetailsData: SAMPLE_DAYS
+  tripId: MOCK_TRIP_ID
 }
 
 Studio.propTypes = {
-
+  tripId: PropTypes.string
 }
 
 export default Studio;

@@ -72,3 +72,5 @@ const SAMPLE_POIS = [
     description: "We went to Golf's sequel.",
   }
 ]
+
+export default SAMPLE_POIS;

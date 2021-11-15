@@ -222,4 +222,4 @@ const SAMPLE_DAYS_v2 = [
   }
 ]
 
-export { SAMPLE_DAYS, MOCK_TRIP_ID };
+export { SAMPLE_DAYS, SAMPLE_DAYS_v2, MOCK_TRIP_ID };
