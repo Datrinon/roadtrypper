@@ -23,14 +23,16 @@ const MapStyled = styled.div`
   border: 5px solid red;
 `
 
-function Map({ daysData, setActivePin }) {
+function Map({ data, setActivePin }) {
 
   const mapRef = useRef();
   const masterFeatureGroup = useRef();
 
   function placeDayPOIPins() {
 
-    return daysData.map((day, index) => {
+    return data.days.map((day, index) => {
+
+      const pois = data.pois.filter(poi => poi.dayId === day.id);
 
       const icon = new LeafIcon({
         iconUrl:
@@ -40,9 +42,9 @@ function Map({ daysData, setActivePin }) {
       return (
         <DayPins
           key={index}
-          pois={day.pois}
+          pois={pois}
           icon={icon}
-          day={day}
+          dayId={day.id}
           mapRef={mapRef}
           setActivePin={setActivePin}/>
       )
@@ -59,8 +61,11 @@ function Map({ daysData, setActivePin }) {
 
   function calcCoordinateAverage() {
     let numCoordinates = 0;
-    let total = daysData.reduce((sum, day) => {
-      let poi = day.pois.reduce((sum, poi) => {
+    let total = data.days.reduce((sum, day) => {
+
+      const pois = data.pois.filter(poi => poi.dayId === day.id);
+
+      let poi = pois.reduce((sum, poi) => {
         sum.lat += poi.coordinates[0];
         sum.long += poi.coordinates[1];
 
@@ -88,7 +93,7 @@ function Map({ daysData, setActivePin }) {
       <MapStyled id="map" data-testid="map">
         <MapContainer
           whenCreated= { mapInstance => { mapRef.current = mapInstance; showOverview(); }}
-          center={!!daysData ? calcCoordinateAverage() : [40.730610, -73.935242]}
+          center={!!data.pois ? calcCoordinateAverage() : [40.730610, -73.935242]}
           zoom={13}
           scrollWheelZoom={true}
           >

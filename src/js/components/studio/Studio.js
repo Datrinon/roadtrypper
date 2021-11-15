@@ -31,7 +31,7 @@ function Studio({ tripId }) {
 
       const pois = trip.pois.filter(poi => poi.dayId === day.id);
 
-      <DayCard
+      return <DayCard
         key={trip.general.uid + day.id}
         day={day}
         pois={pois}
@@ -89,7 +89,7 @@ function Studio({ tripId }) {
           <div className="days">
             {mapDayDataToCards()}
           </div>
-          <Map daysData={trip} setActivePin={setActivePin} />
+          <Map data={trip} setActivePin={setActivePin} />
           <PoiDetails activePin={activePin} />
         </div>
       </TripDispatch.Provider>

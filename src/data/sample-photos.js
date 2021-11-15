@@ -25,7 +25,7 @@ const SAMPLE_PHOTOS = [
   },
   {
     PoiId: 2,
-    id: 3,
+    id: 4,
     path: "url03.jpg",
     description: "A picture of the beach (03)."
   }

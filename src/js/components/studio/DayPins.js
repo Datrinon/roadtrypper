@@ -13,12 +13,12 @@ import { FeatureGroup, Marker, Tooltip } from 'react-leaflet';
  * day. Requires the points of interests for that given day and the
  * user assigned color.
  */
-function DayPins({ pois, icon, day, mapRef, setActivePin }) {
+function DayPins({ pois, dayId, icon, mapRef, setActivePin }) {
 
   const groupRef = useRef();
 
   function addHandlerToDayCard() {
-    document.querySelector(`.day-card[data-id='${day.id}']`).onclick = () => {
+    document.querySelector(`.day-card[data-id='${dayId}']`).onclick = () => {
       const map = mapRef.current;
       const group = groupRef.current;
       map.flyToBounds(group.getBounds(), {padding: L.point(25, 40), maxZoom: 14});
@@ -29,8 +29,8 @@ function DayPins({ pois, icon, day, mapRef, setActivePin }) {
     addHandlerToDayCard();
   }, []);
 
-  function onMarkerClick(day, poi, e) {
-    setActivePin({day, poi});
+  function onMarkerClick(poi) {
+    setActivePin(poi);
   }
 
   return (
@@ -45,7 +45,7 @@ function DayPins({ pois, icon, day, mapRef, setActivePin }) {
             position={poi.coordinates}
             icon={icon}
             eventHandlers={{
-              click: onMarkerClick.bind(null, day, poi)
+              click: onMarkerClick.bind(null, poi)
             }}
             alt={`Waypoint for ${poi.coordinates}`}
             >

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit, faTrashAlt } from "@fortawesome/free-regular-svg-icons"
 
@@ -6,6 +6,7 @@ import * as s from "./POIDetails.style";
 import "../../../css/POIDetails.css";
 
 import POIDetailsEditForm from './POIDetailsEditForm';
+import { TripContext } from './Studio';
 
 // ! TODO Remove this later when finished debugging.
 function importSampleImages(r = require.context("../../../data/images", false, /\.(png|jpe?g|svg)$/)) {
@@ -19,6 +20,10 @@ function PoiDetails({ activePin }) {
   const [collapsed, setCollapsed] = useState(!activePin);
   const [editMode, setEditMode] = useState(false);
   const [sampleImages, setSampleImages] = useState(importSampleImages());
+  const [day, setDay] = useState(null);
+  const [photos, setPhotos] = useState(null);
+
+  const trip = useContext(TripContext);
   /*
   ! ! !
   (Editing)
@@ -33,7 +38,10 @@ function PoiDetails({ activePin }) {
 
   useEffect(() => {
     setCollapsed(!activePin);
-    console.log(activePin);
+    if (!!activePin) {
+      setDay(trip.days.find(day => day.id === activePin.dayId));
+      setPhotos(trip.photos.filter(photo => photo.PoiId === activePin.id))
+    }
   }, [activePin]);
 
 
@@ -50,23 +58,20 @@ function PoiDetails({ activePin }) {
   function renderViewMode() {
     return (
       <>
-        <h1>Day {activePin.day.order + 1}</h1>
+        <h1>Day {day.order + 1}</h1>
         <h2>
-          {activePin.poi.title}
-          <span>
-            (Location (some_id)/{activePin.day.pois.length})
-          </span>
+          {activePin.title}
         </h2>
-        <p>{activePin.poi.description}</p>
+        <p>{activePin.description}</p>
         {
-          activePin.poi.photos.map((photo, index) => {
+          photos.map((photo, index) => {
             return (
               <figure>
                 <s.Thumbnail
-                  key={index}
+                  key={photo.id}
                   src={sampleImages[photo.path]}
                   onClick={showFullImage}
-                  alt="some image." />
+                  alt={photo.description} />
                 {/* <figcaption>
                   {photo.description}
                 </figcaption>  (Move this to the full image view.)*/}
