@@ -14,18 +14,18 @@ let Card = styled.div`
   }
 `;
 
-function DayCard({ data }) {
+function DayCard({ day, pois }) {
   return (
-    <Card data-id={data.id} className="day-card">
-      <h2>Day {data.order + 1}: {data.title}</h2>
+    <Card data-id={day.id} className="day-card">
+      <h2>Day {day.order + 1}: {day.title}</h2>
       <ul>
-        {data.pois.map((point, index) => {
+        {pois.map((poi) => {
           return (
             <li
-              key={data.id + index}
+              key={poi.id}
               className="day-point"
             >
-              {point.title}
+              {poi.title}
             </li>
           )
         })}

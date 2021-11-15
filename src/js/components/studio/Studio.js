@@ -27,12 +27,16 @@ function Studio({ tripId }) {
   const [activePin, setActivePin] = useState(null);
 
   function mapDayDataToCards() {
-    const cards = trip.map((day) => (
+    const cards = trip.days.map((day) => {
+
+      const pois = trip.pois.filter(poi => poi.dayId === day.id);
+
       <DayCard
-        key={day.tripid + day.order}
-        data={day}
+        key={trip.general.uid + day.id}
+        day={day}
+        pois={pois}
       />
-    ));
+    });
 
     return cards;
   }
