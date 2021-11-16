@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit, faTrashAlt } from "@fortawesome/free-regular-svg-icons"
+import styled from 'styled-components';
 
 import * as s from "./POIDetails.style";
 import "../../../css/POIDetails.css";
 
 import POIDetailsEditForm from './POIDetailsEditForm';
 import { TripContext } from './Studio';
+import HoverToEditInput from './HoverToEditInput';
 
 // ! TODO Remove this later when finished debugging.
 function importSampleImages(r = require.context("../../../data/images", false, /\.(png|jpe?g|svg)$/)) {
@@ -56,15 +58,25 @@ function PoiDetails({ activePin }) {
   }
 
   function renderViewMode() {
+
+    let dayDisplay = (
+      <input className="details-day" value={"test"} disabled />
+    );
+
+    let dayEdit = (
+      <input className="details-day" value={"test"} />
+    )
+
     return (
       <>
         <h1>Day {day.order + 1}</h1>
-        <h2>
+        <HoverToEditInput displayVer={dayDisplay} editVer={dayEdit} />
+        {/* <h2>
           {activePin.title}
-        </h2>
+        </h2> */}
         <p>{activePin.description}</p>
         {
-          photos.map((photo, index) => {
+          photos.map((photo) => {
             return (
               <figure>
                 <s.Thumbnail
@@ -89,18 +101,12 @@ function PoiDetails({ activePin }) {
       Show Pin Details here.
       {!collapsed && (
         <section className="poi-contents">
-          <button onClick={() => setEditMode((prevState) => !prevState)}>
-            <FontAwesomeIcon icon={faEdit} />
-            Edit
-          </button>
-          {editMode ?
-            renderEditMode() :
-            renderViewMode()
-          }
+          {renderViewMode()}
         </section>
       )}
     </div>
   )
 }
+
 
 export default PoiDetails
