@@ -9,6 +9,7 @@ import "../../../css/POIDetails.css";
 import POIDetailsEditForm from './POIDetailsEditForm';
 import { TripContext, TripDispatch } from './Studio';
 import HoverToEditInput from './HoverToEditInput';
+import { point } from 'leaflet';
 
 // ! TODO Remove this later when finished debugging.
 function importSampleImages(r = require.context("../../../data/images", false, /\.(png|jpe?g|svg)$/)) {
@@ -18,8 +19,10 @@ function importSampleImages(r = require.context("../../../data/images", false, /
 }
 
 function PoiDetails({ activePin }) {
+  const [activePoi, setActivePoi] = useState(activePin);
   const [collapsed, setCollapsed] = useState(!activePin);
   const [sampleImages, setSampleImages] = useState(importSampleImages());
+  const [sampleImages, setSampleImages] = useState(importSampleImages()); // debug, remove later.
   const [day, setDay] = useState(null);
   const [photos, setPhotos] = useState(null);
 
@@ -27,8 +30,13 @@ function PoiDetails({ activePin }) {
   const dispatch = useContext(TripDispatch);
 
   let dayEditRef = useRef();
+  let poiDayEditRef = useRef();
+  let dayTitleEditRef = useRef();
+  let poiTitleEditRef = useRef();
 
   function getPOIData() {
+  function updateData() {
+    setActivePoi(trip.pois.find(poi => poi.id === activePin.id));
     setDay(trip.days.find(day => day.id === activePin.dayId));
     setPhotos(trip.photos.filter(photo => photo.PoiId === activePin.id));
   }
@@ -37,6 +45,7 @@ function PoiDetails({ activePin }) {
     setCollapsed(!activePin);
     if (!!activePin) {
       getPOIData();
+      updateData();
     }
   }, [activePin, trip]);
 
@@ -87,16 +96,46 @@ function PoiDetails({ activePin }) {
       editVer={dayTitleEdit}
       onClickSave={onDayTitleSave} />)
     //#endregion
+
+    //#region POI Title
+    let poiTitleDisplay = (<h3 className="details poi title">{activePoi.title}</h3>) 
+    
+    let poiTitleEdit = (<input 
+      className="details"
+      defaultValue={activePoi.title}
+      ref={poiTitleEditRef}/>)
+
+    let onPoiTitleSave = () => {
+      dispatch({
+        type: "edit",
+        payload: {
+          type: "pois",
+          id: activePoi.id,
+          key: "title",
+          value: poiTitleEditRef.current.value,
+        }
+      });
+    }
+
+    let poiTitleElement = (
+      <HoverToEditInput
+        displayVer={poiTitleDisplay}
+        editVer={poiTitleEdit}
+        onClickSave={onPoiTitleSave} />);
+    //#endregion
+
+    let descriptionDisplay = (<p className="details desc">{activePoi.description}</p>)
+
+
     return (
       <>
-      <h1>Day {day.order + 1}</h1>
-      <HoverToEditInput
-        displayVer={dayDisplay}
-        editVer={dayEdit}
-        onClickSave={onDayTitleSave}
-        />
-      {/* <h2>
+        
+        
         {dayTitleElement}
+        {poiTitleElement}
+        
+        
+        {/* <h2>
         {activePin.title}
       </h2> */}
       <p>{activePin.description}</p>
@@ -112,6 +151,8 @@ function PoiDetails({ activePin }) {
                 onClick={showFullImage}
                 alt={photo.description} />
               {/* <figcaption>
+        <p>{activePoi.description}</p>
+        {
                 {photo.description}
               </figcaption>  (Move this to the full image view.)*/}
             </figure>
