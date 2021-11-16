@@ -59,19 +59,34 @@ function PoiDetails({ activePin }) {
         />
     )
   
+    let dayTitleDisplay = (<h2 className="details day">{day.title}</h2>);
+
+    //#region Day Title
+    let dayTitleEdit = (<input
+      className="details day-edit"
+      defaultValue={day.title}
+      ref={dayTitleEditRef} />);
+
     let onDayTitleSave = () => {
       dispatch({
         type: "edit",
         payload: {
           type: "days",
           id : day.id,
+          id: day.id,
           key: "title",
           value: dayEditRef.current.value,
+          value: dayTitleEditRef.current.value,
         }
       });
       
     };
 
+    let dayTitleElement = (<HoverToEditInput
+      displayVer={dayTitleDisplay}
+      editVer={dayTitleEdit}
+      onClickSave={onDayTitleSave} />)
+    //#endregion
     return (
       <>
       <h1>Day {day.order + 1}</h1>
@@ -81,6 +96,7 @@ function PoiDetails({ activePin }) {
         onClickSave={onDayTitleSave}
         />
       {/* <h2>
+        {dayTitleElement}
         {activePin.title}
       </h2> */}
       <p>{activePin.description}</p>
