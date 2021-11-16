@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit, faTrashAlt } from "@fortawesome/free-regular-svg-icons"
 
 
-function HoverToEditInput({ displayVer, editVer }) {
+function HoverToEditInput({ displayVer, editVer, onClickSave }) {
 
   const [visible, setVisible] = useState(false);
   const [editMode, setEditMode] = useState(false);
-
+  
   const HoverEditButton = styled.button`
     display: ${props => props.visible ? 'initial' : 'none'};
   `
@@ -31,7 +31,12 @@ function HoverToEditInput({ displayVer, editVer }) {
 
   useEffect(() => {
     if (editMode) {
-      window.onclick = exitEditMode;
+      window.addEventListener("click", exitEditMode); 
+    } else {
+      window.removeEventListener("click", exitEditMode);
+    }
+    return () => {
+      window.removeEventListener("click", exitEditMode);
     }
   }, [editMode]);
 
@@ -49,7 +54,7 @@ function HoverToEditInput({ displayVer, editVer }) {
         <FontAwesomeIcon icon={faEdit} />
       </HoverEditButton>
       <EditModeOptions visible={editMode}>
-        <button>Save</button>
+        <button onClick={() => {onClickSave(); setEditMode(false)}}>Save</button>
         <button onClick={() => setEditMode(false)}>Cancel</button>
       </EditModeOptions>
     </div>

@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 export const TRIP_ACTIONS = {
   LOAD: "load",
   EDIT: "edit"
@@ -9,8 +11,14 @@ export function tripReducer(state, action) {
       return action.payload;
     }
     case 'edit': {
+      const stateCopy = _.cloneDeep(state);
+      const {type, id, key, value} = action.payload;
+      console.log(stateCopy);
+      console.log ({type, id, key, value});
       
-      break;
+      stateCopy[type][id][key] = value;
+      
+      return stateCopy;
     }
     default:
       break;

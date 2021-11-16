@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit, faTrashAlt } from "@fortawesome/free-regular-svg-icons"
 import styled from 'styled-components';
@@ -7,7 +7,7 @@ import * as s from "./POIDetails.style";
 import "../../../css/POIDetails.css";
 
 import POIDetailsEditForm from './POIDetailsEditForm';
-import { TripContext } from './Studio';
+import { TripContext, TripDispatch } from './Studio';
 import HoverToEditInput from './HoverToEditInput';
 
 // ! TODO Remove this later when finished debugging.
@@ -18,80 +18,101 @@ function importSampleImages(r = require.context("../../../data/images", false, /
 }
 
 function PoiDetails({ activePin }) {
-  // convert to boolean + invert.
   const [collapsed, setCollapsed] = useState(!activePin);
-  const [editMode, setEditMode] = useState(false);
   const [sampleImages, setSampleImages] = useState(importSampleImages());
   const [day, setDay] = useState(null);
   const [photos, setPhotos] = useState(null);
+  const [updated, setUpdated] = useState(false);
 
   const trip = useContext(TripContext);
-  /*
-  ! ! !
-  (Editing)
-  0. Each time I update the updateTime of the trip needs to be updated.
-  1. A pencil button will make the trip details editable.
-  2. I should be able to set the day using a dropdown menu.
-  3. I should be able to rearrange the order of POIs.
-  (Deletion)
-  1. A trash can should allow me to delete it, by the pencil icon.
-  */
-  console.log(JSON.stringify(sampleImages));
+  const dispatch = useContext(TripDispatch);
+
+  let dayEditRef = useRef();
+
+  function getPOIData() {
+    setDay(trip.days.find(day => day.id === activePin.dayId));
+    setPhotos(trip.photos.filter(photo => photo.PoiId === activePin.id));
+  }
 
   useEffect(() => {
     setCollapsed(!activePin);
     if (!!activePin) {
-      setDay(trip.days.find(day => day.id === activePin.dayId));
-      setPhotos(trip.photos.filter(photo => photo.PoiId === activePin.id))
+      getPOIData();
     }
   }, [activePin]);
 
+  // any time an edit is made, use the updated boolean to trigger an update
+  // of the day and photos state.
+  useEffect(() => {
+    if (!!activePin) {
+      getPOIData();
+    }
+  }, [updated]);
 
-  function renderEditMode() {
-    return (
-      <POIDetailsEditForm activePin={activePin} sampleImages={sampleImages} />
-    )
-  }
 
   function showFullImage(e) {
     alert("TODO -- the full image is shown here.")
   }
 
-  function renderViewMode() {
-
+  function renderView() {
     let dayDisplay = (
-      <input className="details-day" value={"test"} disabled />
+      <h1 className="details-day">{day.title}</h1>
     );
-
+    console.log("re-render of view-mode");
+  
     let dayEdit = (
-      <input className="details-day" value={"test"} />
+      <input
+        className="details-day"
+        defaultValue={day.title}
+        ref={dayEditRef}
+        />
     )
+  
+    let onDayTitleSave = () => {
+      dispatch({
+        type: "edit",
+        payload: {
+          type: "days",
+          id : day.id,
+          key: "title",
+          value: dayEditRef.current.value,
+        }
+      });
+      
+      setUpdated(!updated);
+    };
 
     return (
       <>
-        <h1>Day {day.order + 1}</h1>
-        <HoverToEditInput displayVer={dayDisplay} editVer={dayEdit} />
-        {/* <h2>
-          {activePin.title}
-        </h2> */}
-        <p>{activePin.description}</p>
-        {
-          photos.map((photo) => {
-            return (
-              <figure>
-                <s.Thumbnail
-                  key={photo.id}
-                  src={sampleImages[photo.path]}
-                  onClick={showFullImage}
-                  alt={photo.description} />
-                {/* <figcaption>
-                  {photo.description}
-                </figcaption>  (Move this to the full image view.)*/}
-              </figure>
-            );
-          })
-        }
-      </>
+      <h1>Day {day.order + 1}</h1>
+      <HoverToEditInput
+        displayVer={dayDisplay}
+        editVer={dayEdit}
+        onClickSave={onDayTitleSave}
+        />
+      {/* <h2>
+        {activePin.title}
+      </h2> */}
+      <p>{activePin.description}</p>
+      {
+        photos.map((photo) => {
+          console.log(photo.id);
+          return (
+            <figure
+              key={"" + day.id + photo.id}
+            >
+              <s.Thumbnail
+                src={sampleImages[photo.path]}
+                onClick={showFullImage}
+                alt={photo.description} />
+              {/* <figcaption>
+                {photo.description}
+              </figcaption>  (Move this to the full image view.)*/}
+            </figure>
+          );
+        })
+      }
+    </>
     )
   }
 
@@ -101,12 +122,11 @@ function PoiDetails({ activePin }) {
       Show Pin Details here.
       {!collapsed && (
         <section className="poi-contents">
-          {renderViewMode()}
+          {renderView()}
         </section>
       )}
     </div>
   )
 }
-
 
 export default PoiDetails
