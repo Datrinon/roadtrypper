@@ -19,15 +19,17 @@ function DayCard({ day, pois }) {
     <Card data-id={day.id} className="day-card">
       <h2>Day {day.order + 1}: {day.title}</h2>
       <ul>
-        {pois.map((poi) => {
-          return (
-            <li
-              key={poi.id}
-              className="day-point"
-            >
-              {poi.title}
-            </li>
-          )
+        {pois
+          .sort((a, b) => a.order - b.order)
+          .map((poi) => {
+            return (
+              <li
+                key={poi.id}
+                className="day-point"
+              >
+                {poi.title}
+              </li>
+            )
         })}
       </ul>
     </Card>

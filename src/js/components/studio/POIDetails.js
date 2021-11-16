@@ -21,7 +21,6 @@ function importSampleImages(r = require.context("../../../data/images", false, /
 function PoiDetails({ activePin }) {
   const [activePoi, setActivePoi] = useState(activePin);
   const [collapsed, setCollapsed] = useState(!activePin);
-  const [sampleImages, setSampleImages] = useState(importSampleImages());
   const [sampleImages, setSampleImages] = useState(importSampleImages()); // debug, remove later.
   const [day, setDay] = useState(null);
   const [photos, setPhotos] = useState(null);
@@ -29,12 +28,10 @@ function PoiDetails({ activePin }) {
   const trip = useContext(TripContext);
   const dispatch = useContext(TripDispatch);
 
-  let dayEditRef = useRef();
   let poiDayEditRef = useRef();
   let dayTitleEditRef = useRef();
   let poiTitleEditRef = useRef();
 
-  function getPOIData() {
   function updateData() {
     setActivePoi(trip.pois.find(poi => poi.id === activePin.id));
     setDay(trip.days.find(day => day.id === activePin.dayId));
@@ -44,7 +41,6 @@ function PoiDetails({ activePin }) {
   useEffect(() => {
     setCollapsed(!activePin);
     if (!!activePin) {
-      getPOIData();
       updateData();
     }
   }, [activePin, trip]);
@@ -55,22 +51,54 @@ function PoiDetails({ activePin }) {
   }
 
   function renderView() {
-    let dayDisplay = (
-      <h1 className="details-day">{day.title}</h1>
+    
+    //#region Belongs to Day Title
+    let belongsToDayDisplay = (<h1>Day {day.order + 1}</h1>);
+    let belongsToDayEdit = (
+      <select
+        name="poi-day"
+        id="poi-day-select"
+        defaultValue={day.order}
+        ref={poiDayEditRef}>
+        {
+          // I just need the map to get the index function.
+          trip.days.map((day, index) => {
+            return <option
+              key={index}
+              value={index}>
+              Day {index + 1}
+            </option>
+          })
+        }
+      </select>)
+
+    let onBelongsToDayUpdate = () => {
+
+      // if the selected day is the same, then don't update.
+      if (poiDayEditRef.current.value === day.order) {
+        return;
+      }
+
+      dispatch({
+        type: "move_poi",
+        payload: {
+          id: activePoi.id,
+          newDay: parseInt(poiDayEditRef.current.value)
+        }
+      })
+    }
+
+    let belongsToDayElement = (
+      <HoverToEditInput
+        displayVer={belongsToDayDisplay}
+        editVer={belongsToDayEdit}
+        onClickSave={onBelongsToDayUpdate}/>
     );
-    console.log("re-render of view-mode");
-  
-    let dayEdit = (
-      <input
-        className="details-day"
-        defaultValue={day.title}
-        ref={dayEditRef}
-        />
-    )
-  
-    let dayTitleDisplay = (<h2 className="details day">{day.title}</h2>);
+    //#endregion
 
     //#region Day Title
+    let dayTitleDisplay = (<h2 className="details day">{day.title}</h2>);
+
     let dayTitleEdit = (<input
       className="details day-edit"
       defaultValue={day.title}
@@ -81,14 +109,11 @@ function PoiDetails({ activePin }) {
         type: "edit",
         payload: {
           type: "days",
-          id : day.id,
           id: day.id,
           key: "title",
-          value: dayEditRef.current.value,
           value: dayTitleEditRef.current.value,
         }
       });
-      
     };
 
     let dayTitleElement = (<HoverToEditInput
@@ -129,37 +154,29 @@ function PoiDetails({ activePin }) {
 
     return (
       <>
-        
-        
+        {belongsToDayElement}
         {dayTitleElement}
         {poiTitleElement}
-        
-        
-        {/* <h2>
-        {activePin.title}
-      </h2> */}
-      <p>{activePin.description}</p>
-      {
-        photos.map((photo) => {
-          console.log(photo.id);
-          return (
-            <figure
-              key={"" + day.id + photo.id}
-            >
-              <s.Thumbnail
-                src={sampleImages[photo.path]}
-                onClick={showFullImage}
-                alt={photo.description} />
-              {/* <figcaption>
         <p>{activePoi.description}</p>
         {
+          photos.map((photo) => {
+            console.log(photo.id);
+            return (
+              <figure
+                key={"" + day.id + photo.id}
+              >
+                <s.Thumbnail
+                  src={sampleImages[photo.path]}
+                  onClick={showFullImage}
+                  alt={photo.description} />
+                {/* <figcaption>
                 {photo.description}
               </figcaption>  (Move this to the full image view.)*/}
-            </figure>
-          );
-        })
-      }
-    </>
+              </figure>
+            );
+          })
+        }
+      </>
     )
   }
 

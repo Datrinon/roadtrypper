@@ -13,10 +13,38 @@ export function tripReducer(state, action) {
     case 'edit': {
       const stateCopy = _.cloneDeep(state);
       const {type, id, key, value} = action.payload;
+
       console.log(stateCopy);
       console.log ({type, id, key, value});
       
-      stateCopy[type][id][key] = value;
+      // find does not make a duplicate, it gets reference to object.
+      const item = stateCopy[type].find(record => record.id === id);
+      
+      item[key] = value;
+      
+      return stateCopy;
+    }
+    case 'move_poi': {
+      // for moving POIs to another day.
+      const stateCopy = _.cloneDeep(state);
+      const { "id" : poiId, "newDay" : newDayOrder } = action.payload;
+      debugger;
+
+      const poi = stateCopy.pois.find(poi => poi.id === poiId);
+      const day = stateCopy.days.find(day => day.order === newDayOrder);
+      
+      // find the last placed item of that day.
+      const newPOIOrder = stateCopy.pois.reduce((max, poi) => {
+        if (poi.dayId === day.id && poi.order > max) {
+          max = poi.order;
+        }
+        return max;
+      }, 0);
+
+      // change the dayId of this poi
+      poi.dayId = day.id;
+      // place the poi at the end of the pois belonging to that day.
+      poi.order = newPOIOrder + 1;
       
       return stateCopy;
     }
