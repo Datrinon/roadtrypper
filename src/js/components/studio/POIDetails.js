@@ -22,7 +22,6 @@ function PoiDetails({ activePin }) {
   const [sampleImages, setSampleImages] = useState(importSampleImages());
   const [day, setDay] = useState(null);
   const [photos, setPhotos] = useState(null);
-  const [updated, setUpdated] = useState(false);
 
   const trip = useContext(TripContext);
   const dispatch = useContext(TripDispatch);
@@ -39,15 +38,7 @@ function PoiDetails({ activePin }) {
     if (!!activePin) {
       getPOIData();
     }
-  }, [activePin]);
-
-  // any time an edit is made, use the updated boolean to trigger an update
-  // of the day and photos state.
-  useEffect(() => {
-    if (!!activePin) {
-      getPOIData();
-    }
-  }, [updated]);
+  }, [activePin, trip]);
 
 
   function showFullImage(e) {
@@ -79,7 +70,6 @@ function PoiDetails({ activePin }) {
         }
       });
       
-      setUpdated(!updated);
     };
 
     return (
