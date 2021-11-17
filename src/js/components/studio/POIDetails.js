@@ -1,15 +1,19 @@
+// npm plugins
 import React, { useState, useEffect, useContext, useRef } from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit, faTrashAlt } from "@fortawesome/free-regular-svg-icons"
 import styled from 'styled-components';
-
+import { point } from 'leaflet';
+// styled + css
 import * as s from "./POIDetails.style";
 import "../../../css/POIDetails.css";
-
-import POIDetailsEditForm from './POIDetailsEditForm';
-import { TripContext, TripDispatch } from './Studio';
+// components
 import HoverToEditInput from './HoverToEditInput';
-import { point } from 'leaflet';
+import GalleryView from './GalleryView';
+
+// trip information and reducer
+import { TripContext, TripDispatch } from './Studio';
+import POIDetailsEditForm from './POIDetailsEditForm';
 
 // ! TODO Remove this later when finished debugging.
 function importSampleImages(r = require.context("../../../data/images", false, /\.(png|jpe?g|svg)$/)) {
@@ -24,6 +28,7 @@ function PoiDetails({ activePin }) {
   const [sampleImages, setSampleImages] = useState(importSampleImages()); // debug, remove later.
   const [day, setDay] = useState(null);
   const [photos, setPhotos] = useState(null);
+  const [galleryVisible, setGalleryVisible] = useState(false);
 
   const trip = useContext(TripContext);
   const dispatch = useContext(TripDispatch);
@@ -47,12 +52,12 @@ function PoiDetails({ activePin }) {
   }, [activePin, trip]);
 
 
-  function showFullImage(e) {
-    alert("TODO -- the full image is shown here.")
+  function launchGalleryView(e) {
+    setGalleryVisible(true);
   }
 
   function renderView() {
-    
+
     //#region Belongs to Day
     let belongsToDayDisplay = (<h1>Day {day.order + 1}</h1>);
     let belongsToDayEdit = (
@@ -93,7 +98,7 @@ function PoiDetails({ activePin }) {
       <HoverToEditInput
         displayVer={belongsToDayDisplay}
         editVer={belongsToDayEdit}
-        onClickSave={onBelongsToDayUpdate}/>
+        onClickSave={onBelongsToDayUpdate} />
     );
     //#endregion
 
@@ -124,12 +129,12 @@ function PoiDetails({ activePin }) {
     //#endregion
 
     //#region POI Title
-    let poiTitleDisplay = (<h3 className="details poi title">{activePoi.title}</h3>) 
-    
-    let poiTitleEdit = (<input 
+    let poiTitleDisplay = (<h3 className="details poi title">{activePoi.title}</h3>)
+
+    let poiTitleEdit = (<input
       className="details"
       defaultValue={activePoi.title}
-      ref={poiTitleEditRef}/>)
+      ref={poiTitleEditRef} />)
 
     let onPoiTitleSave = () => {
       dispatch({
@@ -154,7 +159,7 @@ function PoiDetails({ activePin }) {
     console.log(activePoi.description);
     const descDisplay = (<p className="details desc">{activePoi.description}</p>)
 
-    const descEdit = (<textarea defaultValue={activePoi.description} ref={poiDescEditRef}/>)
+    const descEdit = (<textarea defaultValue={activePoi.description} ref={poiDescEditRef} />)
 
     const onDescSave = () => {
       dispatch({
@@ -169,7 +174,7 @@ function PoiDetails({ activePin }) {
     }
 
     let descElement = (
-      <HoverToEditInput 
+      <HoverToEditInput
         displayVer={descDisplay}
         editVer={descEdit}
         onClickSave={onDescSave}
@@ -188,11 +193,10 @@ function PoiDetails({ activePin }) {
             console.log(photo.id);
             return (
               <figure
-                key={"" + day.id + photo.id}
-              >
+                key={"" + day.id + photo.id}>
                 <s.Thumbnail
                   src={sampleImages[photo.path]}
-                  onClick={showFullImage}
+                  onClick={launchGalleryView}
                   alt={photo.description} />
                 {/* <figcaption>
                 {photo.description}
@@ -210,12 +214,18 @@ function PoiDetails({ activePin }) {
       {collapsed ? "(currently collapsed)" : "(not collapsed)"}
       Show Pin Details here.
       {!collapsed && (
-        <section className="poi-contents">
-          {renderView()}
+          <section className="poi-contents">
+            {renderView()}
+          </section>
+      )}
+      {!collapsed && galleryVisible && (
+        <section className="gallery">
+          <GalleryView poiPhotos={photos} setGalleryVisible={setGalleryVisible} />
         </section>
       )}
     </div>
   )
 }
+
 
 export default PoiDetails
