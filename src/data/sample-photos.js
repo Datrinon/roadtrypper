@@ -28,6 +28,24 @@ const SAMPLE_PHOTOS = [
     id: 4,
     path: "url03.jpg",
     description: "A picture of the beach (03)."
+  },
+  {
+    PoiId: 4,
+    id: 5,
+    path: "url01.jpg",
+    description: "This is Echo Beach."
+  },
+  {
+    PoiId: 4,
+    id: 6,
+    path: "url02.jpg",
+    description: "This is Echo Beach (2)."
+  },
+  {
+    PoiId: 4,
+    id: 7,
+    path: "url03.jpg",
+    description: "This is Echo Beach (3)."
   }
 
 ]
