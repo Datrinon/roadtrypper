@@ -3,8 +3,12 @@ import { TripContext, TripDispatch } from './Studio';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileImage, faTrashAlt, faImage, faEdit } from '@fortawesome/free-regular-svg-icons';
-import { faPencilAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faPencilAlt, faTimes, faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { render } from 'react-dom';
+import SAMPLE_POIS from '../../../data/sample-pois';
+
+import * as s from "./POIDetails.style";
+
 
 function GalleryLoading() {
   return (
@@ -14,10 +18,11 @@ function GalleryLoading() {
 
 
 function GalleryView({ SAMPLE_IMAGES, startingPhotoId, poiPhotos, closeGalleryView }) {
-  //// might not be necessary
   const [loading, setLoading] = useState(true);
   const [photos, setPhotos] = useState(poiPhotos);
   const [activePhoto, setActivePhoto] = useState(null);
+  const [activeId, setActiveId] = useState(startingPhotoId);
+  const [activeIndex, setActiveIndex] = useState(getPhotoIndexFromId(startingPhotoId));
 
   const trip = useContext(TripContext);
   const dispatch = useContext(TripDispatch);
@@ -34,7 +39,12 @@ function GalleryView({ SAMPLE_IMAGES, startingPhotoId, poiPhotos, closeGalleryVi
     return photos.find(photo => photo.id === id);
   }
 
-  async function loadPhotoForDisplay(photo) {
+  function getPhotoIndexFromId(id) {
+    return photos.findIndex(photo => photo.id === id);
+  }
+
+  async function prepPhotoForDisplay(photo) {
+    setLoading(true);
 
     let loadImg = () => {
       return new Promise((resolve, reject) => {
@@ -77,15 +87,70 @@ function GalleryView({ SAMPLE_IMAGES, startingPhotoId, poiPhotos, closeGalleryVi
 
   // after first mount and only the first mount,do we set the activePhoto as starting.
   useEffect(() => {
-    debugger;
-    const startingPhoto = getPhotoFromId(startingPhotoId);
-    loadPhotoForDisplay(startingPhoto).then(photo => {
-      setActivePhoto(photo);
+    setLoading(true);
+
+    const photo = getPhotoFromId(activeId);
+
+    prepPhotoForDisplay(photo).then(result => {
+      setActivePhoto(result);
       setLoading(false);
     })
-  }, []);
+  }, [activeId]);
 
+  // need to keep activeIndex to keep forward/backward cycling.
+  // need to keep activeId to display the correct image from the thumbnail.
+  // changing the activeIndex will change the activeId.
+  useEffect(() => {
+    setActiveId(photos[activeIndex].id);
+  }, [activeIndex]);
 
+  function prevPic() {
+    setActiveIndex((lastIndex) => {
+      if (lastIndex <= 0) {
+        return photos.length - 1;
+      } else {
+        return lastIndex - 1;
+      }
+    })
+  }
+
+  function nextPic() {
+    setActiveIndex((lastIndex) => {
+      if (lastIndex >= photos.length - 1) {
+        return 0;
+      } else {
+        return lastIndex + 1;
+      }
+    })
+  }
+
+  const controls = (
+    <>
+      <div className="controls">
+        <button className="previous-arrow" onClick={prevPic}>
+          <FontAwesomeIcon icon={faChevronLeft} size="2x" />
+        </button>
+        <button className="forward-arrow" onClick={nextPic}>
+          <FontAwesomeIcon icon={faChevronRight} size="2x" />
+        </button>
+      </div>
+
+      <div className="thumbnails">
+        {
+          photos.map((photo, index) => {
+            return (
+              <s.Thumbnail
+                key={photo.id}
+                src={SAMPLE_IMAGES[photo.path]}
+                alt={"Thumbnail for image about: " + photo.description}
+                onClick={setActiveIndex.bind(null, index)}
+              />
+            )
+          })
+        }
+      </div>
+    </>
+  );
 
   return (
     <GalleryView>
@@ -126,7 +191,12 @@ function GalleryView({ SAMPLE_IMAGES, startingPhotoId, poiPhotos, closeGalleryVi
         {
           loading ?
             (<GalleryLoading />) :
-            activePhoto
+            (
+              <>
+                {activePhoto}
+                {photos.length > 1 && controls}
+              </>
+            )
         }
       </div>
     </GalleryView>

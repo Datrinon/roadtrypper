@@ -156,7 +156,6 @@ function PoiDetails({ activePin }) {
     //#endregion
 
     //#region Description
-    console.log(activePoi.description);
     const descDisplay = (<p className="details desc">{activePoi.description}</p>)
 
     const descEdit = (<textarea defaultValue={activePoi.description} ref={poiDescEditRef} />)
