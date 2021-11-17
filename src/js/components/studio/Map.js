@@ -92,9 +92,9 @@ function Map({ data, setActivePin }) {
       <button onClick={showOverview}>See Overview</button>
       <MapStyled id="map" data-testid="map">
         <MapContainer
-          whenCreated= { mapInstance => { mapRef.current = mapInstance; showOverview(); }}
+          whenCreated= { mapInstance => { mapRef.current = mapInstance; }}
           center={!!data.pois ? calcCoordinateAverage() : [40.730610, -73.935242]}
-          zoom={13}
+          zoom={7}
           scrollWheelZoom={true}
           >
           <TileLayer
