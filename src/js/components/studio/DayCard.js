@@ -25,8 +25,7 @@ function DayCard({ day, pois }) {
             return (
               <li
                 key={poi.id}
-                className="day-point"
-              >
+                className="day-point">
                 {poi.title}
               </li>
             )

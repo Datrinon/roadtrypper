@@ -28,9 +28,10 @@ function PoiDetails({ activePin }) {
   const trip = useContext(TripContext);
   const dispatch = useContext(TripDispatch);
 
-  let poiDayEditRef = useRef();
-  let dayTitleEditRef = useRef();
-  let poiTitleEditRef = useRef();
+  const poiDayEditRef = useRef();
+  const dayTitleEditRef = useRef();
+  const poiTitleEditRef = useRef();
+  const poiDescEditRef = useRef();
 
   function updateData() {
     setActivePoi(trip.pois.find(poi => poi.id === activePin.id));
@@ -52,7 +53,7 @@ function PoiDetails({ activePin }) {
 
   function renderView() {
     
-    //#region Belongs to Day Title
+    //#region Belongs to Day
     let belongsToDayDisplay = (<h1>Day {day.order + 1}</h1>);
     let belongsToDayEdit = (
       <select
@@ -149,15 +150,39 @@ function PoiDetails({ activePin }) {
         onClickSave={onPoiTitleSave} />);
     //#endregion
 
-    let descriptionDisplay = (<p className="details desc">{activePoi.description}</p>)
+    //#region Description
+    console.log(activePoi.description);
+    const descDisplay = (<p className="details desc">{activePoi.description}</p>)
 
+    const descEdit = (<textarea defaultValue={activePoi.description} ref={poiDescEditRef}/>)
+
+    const onDescSave = () => {
+      dispatch({
+        type: "edit",
+        payload: {
+          type: "pois",
+          id: activePoi.id,
+          key: "description",
+          value: poiDescEditRef.current.value,
+        }
+      });
+    }
+
+    let descElement = (
+      <HoverToEditInput 
+        displayVer={descDisplay}
+        editVer={descEdit}
+        onClickSave={onDescSave}
+      />
+    )
+    //#endregion
 
     return (
       <>
         {belongsToDayElement}
         {dayTitleElement}
         {poiTitleElement}
-        <p>{activePoi.description}</p>
+        {descElement}
         {
           photos.map((photo) => {
             console.log(photo.id);
