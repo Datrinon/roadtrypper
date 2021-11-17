@@ -9,6 +9,7 @@ function HoverToEditInput({ displayVer, editVer, onClickSave }) {
 
   const [visible, setVisible] = useState(false);
   const [editMode, setEditMode] = useState(false);
+  const thisElement = useRef();
   
   const HoverEditButton = styled.button`
     display: ${props => props.visible ? 'initial' : 'none'};
@@ -24,9 +25,15 @@ function HoverToEditInput({ displayVer, editVer, onClickSave }) {
   `
 
   const exitEditMode = (e) => {
-    if (!e.composedPath().includes(document.querySelector(".editing"))) {
+    // debugger;
+    // console.log(thisElement.current);
+    if (!e.composedPath().includes(thisElement.current)) {
       setEditMode(false);
     }
+
+    // if (!e.composedPath().includes(document.querySelector(".editing"))) {
+    //   setEditMode(false);
+    // }
   };
 
   useEffect(() => {
@@ -41,7 +48,9 @@ function HoverToEditInput({ displayVer, editVer, onClickSave }) {
   }, [editMode]);
 
   return (
-    <div className={`editable ${editMode ? "editing" : ""}`}
+    <div
+      ref={thisElement}
+      className={`editable ${editMode ? "editing" : ""}`}
       onMouseEnter={() => !editMode && setVisible(true)}
       onMouseLeave={() => !editMode && setVisible(false)}>
       {editMode ? editVer : displayVer}
