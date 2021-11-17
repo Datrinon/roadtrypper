@@ -21,7 +21,6 @@ function GalleryView({ SAMPLE_IMAGES, startingPhotoId, poiPhotos, closeGalleryVi
   const [loading, setLoading] = useState(true);
   const [photos, setPhotos] = useState(poiPhotos);
   const [activePhoto, setActivePhoto] = useState(null);
-  const [activeId, setActiveId] = useState(startingPhotoId);
   const [activeIndex, setActiveIndex] = useState(getPhotoIndexFromId(startingPhotoId));
 
   const trip = useContext(TripContext);
@@ -89,20 +88,16 @@ function GalleryView({ SAMPLE_IMAGES, startingPhotoId, poiPhotos, closeGalleryVi
   useEffect(() => {
     setLoading(true);
 
-    const photo = getPhotoFromId(activeId);
+    const photo = photos[activeIndex];
 
     prepPhotoForDisplay(photo).then(result => {
       setActivePhoto(result);
       setLoading(false);
     })
-  }, [activeId]);
+  }, [activeIndex]);
 
   // need to keep activeIndex to keep forward/backward cycling.
-  // need to keep activeId to display the correct image from the thumbnail.
   // changing the activeIndex will change the activeId.
-  useEffect(() => {
-    setActiveId(photos[activeIndex].id);
-  }, [activeIndex]);
 
   function prevPic() {
     setActiveIndex((lastIndex) => {
