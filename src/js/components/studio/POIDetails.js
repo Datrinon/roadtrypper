@@ -28,7 +28,7 @@ function PoiDetails({ activePin }) {
   const [sampleImages, setSampleImages] = useState(importSampleImages()); // debug, remove later.
   const [day, setDay] = useState(null);
   const [photos, setPhotos] = useState(null);
-  const [galleryVisible, setGalleryVisible] = useState(false);
+  const [galleryStartingPhotoId, setGalleryStartingPhotoId] = useState(null);
 
   const trip = useContext(TripContext);
   const dispatch = useContext(TripDispatch);
@@ -53,7 +53,7 @@ function PoiDetails({ activePin }) {
 
 
   function launchGalleryView(e) {
-    setGalleryVisible(true);
+    setGalleryStartingPhotoId(parseInt(e.target.dataset.id));
   }
 
   function renderView() {
@@ -195,6 +195,7 @@ function PoiDetails({ activePin }) {
               <figure
                 key={"" + day.id + photo.id}>
                 <s.Thumbnail
+                  data-id={photo.id}
                   src={sampleImages[photo.path]}
                   onClick={launchGalleryView}
                   alt={photo.description} />
@@ -218,9 +219,16 @@ function PoiDetails({ activePin }) {
             {renderView()}
           </section>
       )}
-      {!collapsed && galleryVisible && (
+      {!collapsed && galleryStartingPhotoId !== null && (
         <section className="gallery">
-          <GalleryView poiPhotos={photos} setGalleryVisible={setGalleryVisible} />
+          <GalleryView
+            SAMPLE_IMAGES={sampleImages}
+            startingPhotoId={galleryStartingPhotoId}
+            poiPhotos={photos}
+            closeGalleryView={() => {
+              setGalleryStartingPhotoId(null);
+            }}
+            />
         </section>
       )}
     </div>
