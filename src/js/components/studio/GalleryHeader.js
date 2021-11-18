@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileImage, faTrashAlt, faImage, faEdit } from '@fortawesome/free-regular-svg-icons';
 import { faPencilAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
@@ -19,6 +19,34 @@ function GalleryHeader({ setPhotos }) {
   const [modalConfirm, setModalConfirm] = useState(null);
   const [modalDismiss, setModalDismiss] = useState("");
   const [modalContents, setModalContents] = useState(null);
+  const modalRef = useRef();
+  const modalObserver = useRef();
+  // why useRef?
+  /**
+   * Assignments to the 'modalMutator' variable from inside React Hook useEffect
+   * will be lost after each render. To preserve the value over time, store it
+   * in a useRef Hook and keep the mutable value in the '.current' property.
+   */
+
+  // The purpose of this effect is to keep track of if the modal closes.
+  // this allows us to sync the state variable in charge of modal visibility.
+  useEffect(() => {
+    const config = { attributes: true, childList: false, subtree: true };
+    const callback = () => {
+      const modalStyle = getComputedStyle(modalRef.current);
+      if (modalStyle.display === 'none') {
+        setModalVisible(false);
+      }
+    }
+
+    modalObserver.current = new MutationObserver(callback);
+    modalObserver.current.observe(modalRef.current, config);
+
+    return () => {
+
+      modalObserver.current.disconnect();
+    }
+  }, []);
 
   function addPhoto(e) {
     e.preventDefault();
@@ -35,14 +63,12 @@ function GalleryHeader({ setPhotos }) {
     setModalDismiss("Cancel");
     setModalContents(
       <>
-        <form onSubmit={addPhoto}>
-          <input type="file" />
-          <label htmlFor="photo-description">
-            Description
-            <textarea id="photo-description" type="text" />
-          </label>
-          <button type="submit">Add</button>
-        </form>
+        <input type="file" />
+        <label htmlFor="photo-description">
+          Description
+          <textarea id="photo-description" type="text" />
+        </label>
+        <button type="submit">Add</button>
       </>
     );
   }
@@ -82,13 +108,13 @@ function GalleryHeader({ setPhotos }) {
           Exit Gallery View
         </button>
       </header>
-      <Modal
-        visible={modalVisible}
-        title={modalTitle}
-        confirm={modalConfirm}
-        dismissMsg={modalDismiss}
-        content={modalContents}
-      />
+        <Modal ref={modalRef}
+          visible={modalVisible}
+          title={modalTitle}
+          confirm={modalConfirm}
+          dismissMsg={modalDismiss}
+          content={modalContents}
+        />
     </>
   )
 }

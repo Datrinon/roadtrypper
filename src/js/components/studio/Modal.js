@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 
 
@@ -27,59 +27,64 @@ const ModalBody = styled.div`
  * @param dismissMsg : dismiss text to cancel modal.
  * @param content: Component to place inside of the modal.
  */
-function Modal({visible, title, confirm, dismissMsg, content}) {
 
-  const [display, setDisplay] = useState(visible);
+const Modal = React.forwardRef(
+({visible, title, confirm, dismissMsg, content }, ref) => {
+    const [display, setDisplay] = useState(visible);
 
-  useEffect(() => {
-    setDisplay(visible);
-  }, [visible])
+    useEffect(() => {
+      setDisplay(visible);
+    }, [visible])
 
-  function closeModal() {
-    setDisplay(false);
-  }
-  
-  let Wrapper;
-
-  const dismissButton = (
-    <button onClick={closeModal}>{dismissMsg}</button>
-  )
-
-  if (confirm === null) {
-    Wrapper = ({content}) => {
-      return (
-        <div>
-          {content}
-          <div className="controls">
-            {dismissButton}
-          </div>
-        </div>
-      )
+    function closeModal() {
+      setDisplay(false);
     }
-  } else {
-    Wrapper = ({content}) => {
-      return (
-        <form onSubmit={confirm.callback}>
-          {content}
-          <div className="controls">
-            <button type="">{confirm.msg}</button>
-            {dismissButton}
+
+    let Wrapper;
+
+    const dismissButton = (
+      <button onClick={closeModal}>{dismissMsg}</button>
+    )
+
+    if (confirm === null) {
+      Wrapper = ({ content }) => {
+        return (
+          <div>
+            {content}
+            <div className="controls">
+              {dismissButton}
+            </div>
           </div>
-        </form>
-      )
+        )
+      }
+    } else {
+      Wrapper = ({ content }) => {
+        return (
+          <form onSubmit={confirm.callback}>
+            {content}
+            <div className="controls">
+              <button type="">{confirm.msg}</button>
+              {dismissButton}
+            </div>
+          </form>
+        )
+      }
     }
+
+    return (
+      <ModalContainer
+        visible={display}
+        ref={ref}>
+        <button onClick={() => setDisplay(false)}>X</button>
+        <ModalHeader>{title}</ModalHeader>
+        <ModalBody>
+          <Wrapper content={content}>
+          </Wrapper>
+        </ModalBody>
+      </ModalContainer>
+    )
+
   }
-  
-  return (
-    <ModalContainer visible={display}>
-      <button onClick={() => setDisplay(false)}>X</button>
-      <ModalHeader>{title}</ModalHeader>
-      <ModalBody>
-        <Wrapper content={content}>
-        </Wrapper>
-      </ModalBody>
-    </ModalContainer>
-  )
-}
+);
 
 export default Modal
