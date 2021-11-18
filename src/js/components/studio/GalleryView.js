@@ -71,6 +71,7 @@ function GalleryView({ SAMPLE_IMAGES, startingPhotoId, poiPhotos, closeGalleryVi
       let result = await loadImg();
 
       console.log(result);
+      setLoading(false);
 
       return (
         <figure>
