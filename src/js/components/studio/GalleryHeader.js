@@ -7,17 +7,21 @@ import { TripContext, TripDispatch } from './Studio';
 
 import DUMMY_NEW_PHOTO from "../../../data/images/url-toAdd.jpg"
 
-import * as s from "./POIDetails.style";
+import Modal from './Modal';
 
 function GalleryHeader({ setPhotos }) {
 
   const trip = useContext(TripContext);
   const dispatch = useContext(TripDispatch);
-  const [modalVisible, setModalVisible] = useState(null);
-  const [modalContent, setModalContent] = useState(null);
 
-  function addPhoto() {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalConfirm, setModalConfirm] = useState(null);
+  const [modalDismiss, setModalDismiss] = useState("");
+  const [modalContents, setModalContents] = useState(null);
 
+  function addPhoto(e) {
+    e.preventDefault();
   }
 
   function showAddPhotoModal() {
@@ -26,19 +30,22 @@ function GalleryHeader({ setPhotos }) {
     // integration yet. However, we can work on getting the dispatch function
     // right.
     setModalVisible(true);
-
-    setModalContent(
+    setModalTitle("Add a Photo");
+    setModalConfirm({ msg: "Add", callback: addPhoto });
+    setModalDismiss("Cancel");
+    setModalContents(
       <>
-        <div>Add a Photo.</div>
         <form onSubmit={addPhoto}>
           <input type="file" />
-          <input type="text" />
+          <label htmlFor="photo-description">
+            Description
+            <textarea id="photo-description" type="text" />
+          </label>
+          <button type="submit">Add</button>
         </form>
       </>
     );
   }
-
-
 
   return (
     <>
@@ -75,9 +82,13 @@ function GalleryHeader({ setPhotos }) {
           Exit Gallery View
         </button>
       </header>
-      <s.Modal>
-        {modalContent}
-      </s.Modal>
+      <Modal
+        visible={modalVisible}
+        title={modalTitle}
+        confirm={modalConfirm}
+        dismissMsg={modalDismiss}
+        content={modalContents}
+      />
     </>
   )
 }
