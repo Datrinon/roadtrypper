@@ -9,6 +9,7 @@ import DUMMY_NEW_PHOTO from "../../../data/images/url-toAdd.jpg"
 
 import Modal from './Modal';
 import useModal from '../../hooks/useModal';
+import CountingTextArea from './CountingTextArea';
 
 function GalleryHeader({ setPhotos }) {
 
@@ -35,10 +36,12 @@ function GalleryHeader({ setPhotos }) {
     modalSetter.setContent(
       <>
         <input type="file" />
-        <label htmlFor="photo-description">
-          Description
-          <textarea id="photo-description" type="text" />
-        </label>
+        <CountingTextArea
+          textAreaId={"photo-description"}
+          labelText={"Description"}
+          limit={500}
+          classNames={"photo-description"}
+        />
         <button type="submit">Add</button>
       </>
     );

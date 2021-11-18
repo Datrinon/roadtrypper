@@ -49,6 +49,9 @@ function useModal(init = null) {
     }
   }, []);
 
+  // Use this effect to disable click events...? Do we need to? Wait on that
+  // until we apply CSS.
+
     const values = {
       visible: modalVisible,
       title: modalTitle,
