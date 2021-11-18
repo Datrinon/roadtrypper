@@ -11,7 +11,7 @@ import Modal from './Modal';
 import useModal from '../../hooks/useModal';
 import CountingTextArea from './CountingTextArea';
 
-function GalleryHeader({ activePoiId, setPhotos }) {
+function GalleryHeader({ activePoiId }) {
 
   const trip = useContext(TripContext);
   const dispatch = useContext(TripDispatch);

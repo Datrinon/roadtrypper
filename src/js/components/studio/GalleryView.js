@@ -158,7 +158,7 @@ function GalleryView({ SAMPLE_IMAGES, startingPhotoId, poiPhotos, closeGalleryVi
   return (
     <GalleryView>
       <div className="exhibition">
-        <GalleryHeader activePoiId={activePoiId} setPhotos={setPhotos}/>
+        <GalleryHeader activePoiId={activePoiId} />
         {
           loading ?
             (<GalleryLoading setPhotos={setPhotos}/>) :
