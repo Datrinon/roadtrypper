@@ -31,15 +31,37 @@ function GalleryView({ SAMPLE_IMAGES, startingPhotoId, poiPhotos, closeGalleryVi
     border: 1px solid orange;
   `
 
+  // This updates the photos for the gallery if poiPhotos changes
   useEffect(() => {
     setPhotos(prevPhotos => {
+      // Move to uploaded image if user chooses to add an image.
       if (prevPhotos.length < poiPhotos.length) {
-        setActiveIndex(poiPhotos.length-1);
+        setActiveIndex(poiPhotos.length - 1);
       }
 
       return poiPhotos;
     });
   }, [poiPhotos])
+
+  // This updates the activePhoto if the user edits it in the header.
+  useEffect(() => {
+
+    prepPhotoForDisplay(poiPhotos[activeIndex]).then(result => {
+      setActivePhoto(result);
+    })
+    
+  }, [poiPhotos[activeIndex]])
+
+  useEffect(() => {
+    setLoading(true);
+
+    const photo = photos[activeIndex];
+
+    prepPhotoForDisplay(photo).then(result => {
+      setActivePhoto(result);
+      setactivePoiId(photo.poiId);
+    })
+  }, [activeIndex]);
 
   function getPhotoFromId(id) {
     return photos.find(photo => photo.id === id);
@@ -92,18 +114,7 @@ function GalleryView({ SAMPLE_IMAGES, startingPhotoId, poiPhotos, closeGalleryVi
     }
   }
 
-  // after first mount and only the first mount,do we set the activePhoto as starting.
-  useEffect(() => {
-    setLoading(true);
 
-    const photo = photos[activeIndex];
-
-    prepPhotoForDisplay(photo).then(result => {
-      setActivePhoto(result);
-      setLoading(false);
-      setactivePoiId(photo.poiId);
-    })
-  }, [activeIndex]);
 
   // need to keep activeIndex to keep forward/backward cycling.
   // changing the activeIndex will change the activeId.
@@ -159,10 +170,8 @@ function GalleryView({ SAMPLE_IMAGES, startingPhotoId, poiPhotos, closeGalleryVi
   return (
     <GalleryView>
       <div className="exhibition">
-        <GalleryHeader activePoiId={activePoiId} />
         {
           loading ?
-            (<GalleryLoading setPhotos={setPhotos}/>) :
             (<GalleryLoading />) :
             (
               <>

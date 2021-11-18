@@ -10,13 +10,15 @@ import DUMMY_NEW_PHOTO from "../../../data/images/url04.jpg"
 import Modal from './Modal';
 import useModal from '../../hooks/useModal';
 import CountingTextArea from './CountingTextArea';
+import SAMPLE_PHOTOS from '../../../data/sample-photos';
 
-function GalleryHeader({ activePoiId }) {
-
+function GalleryHeader({ activePhoto }) {
+  
   const trip = useContext(TripContext);
   const dispatch = useContext(TripDispatch);
 
   const [modalValues, modalSetter, modalRef] = useModal();
+
 
   function addPhoto(e) {
     e.preventDefault();
@@ -37,7 +39,7 @@ function GalleryHeader({ activePoiId }) {
       payload: {
         type: "photos",
         fkname: "poiId",
-        fkid: activePoiId,
+        fkid: activePhoto.poiId,
         path: filepath,
         description
       }
@@ -70,6 +72,36 @@ function GalleryHeader({ activePoiId }) {
     );
   }
 
+  function updatePhotoDesc(e) {
+    dispatch({
+      type: "edit",
+      payload: {
+        type: "photos",
+        id: activePhoto.id,
+        key: "description",
+        value: e.target.querySelector("#photo-edit-description").value
+      }
+    })
+  }
+
+  function showEditDescModal() {
+    modalSetter.setVisible(true);
+    modalSetter.setTitle("Edit Description");
+    modalSetter.setConfirm({ msg: "Update", callback: updatePhotoDesc })
+    modalSetter.setDismiss("Cancel");
+    modalSetter.setContent(
+      <>
+        <CountingTextArea
+          textAreaId={"photo-edit-description"}
+          labelText={"Description (Optional)"}
+          limit={500}
+          startText={activePhoto.description}
+          classNames={["photo-description"]}
+        />
+      </>
+    );
+  }
+
   return (
     <>
       <header className="options-panel">
@@ -79,7 +111,7 @@ function GalleryHeader({ activePoiId }) {
           </span>
           Add Photo
         </button>
-        <button>
+        <button onClick={showEditDescModal}>
           <span>
             <FontAwesomeIcon icon={faEdit} />
           </span>

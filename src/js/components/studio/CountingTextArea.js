@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types';
 
 
-function CountingTextArea({textAreaId, labelText, limit, classNames}) {
+function CountingTextArea({textAreaId, labelText, limit, startText="", classNames}) {
 
-  const [text, setText] = useState("");
+  const [text, setText] = useState(startText);
   const [charRemaining, setCharRemaining] = useState(limit);
 
   function onTextAreaChange(e) {
