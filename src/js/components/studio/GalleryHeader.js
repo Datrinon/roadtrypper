@@ -13,7 +13,7 @@ import CountingTextArea from './CountingTextArea';
 import SAMPLE_PHOTOS from '../../../data/sample-photos';
 
 function GalleryHeader({ activePhoto }) {
-  
+
   const trip = useContext(TripContext);
   const dispatch = useContext(TripDispatch);
 
@@ -25,13 +25,13 @@ function GalleryHeader({ activePhoto }) {
 
     // TODO
     // Get firebase to upload the image somehow.
-    
+
     let filepath = e.target.querySelector("#photo-file")
       .value;
     // get the filename of the image.
     filepath = filepath.match(/(\\|\/)(?!.+(\\|\/).+)(?<path>.+)/).groups.path;
     let description = e.target.querySelector("#photo-description").value;
-    
+
     // get the id...
 
     dispatch({
@@ -61,7 +61,7 @@ function GalleryHeader({ activePhoto }) {
     modalSetter.setDismiss("Cancel");
     modalSetter.setContent(
       <>
-        <input id={"photo-file"} accept="image/*" type="file" required={true}/>
+        <input id={"photo-file"} accept="image/*" type="file" required={true} />
         <CountingTextArea
           textAreaId={"photo-description"}
           labelText={"Description (Optional)"}
@@ -87,7 +87,7 @@ function GalleryHeader({ activePhoto }) {
   function showEditDescModal() {
     modalSetter.setVisible(true);
     modalSetter.setTitle("Edit Description");
-    modalSetter.setConfirm({ msg: "Update", callback: updatePhotoDesc })
+    modalSetter.setConfirm({ msg: "Update", callback: updatePhotoDesc });
     modalSetter.setDismiss("Cancel");
     modalSetter.setContent(
       <>
@@ -100,6 +100,37 @@ function GalleryHeader({ activePhoto }) {
         />
       </>
     );
+  }
+
+  function updatePhotoPath(e) {
+    e.preventDefault();
+    //! SAMPLE FLAG
+    // Need to implement Firebase to complete
+    let filepath = e.target.querySelector("#photo-file-update").value;
+    // get the filename of the image.
+    filepath = filepath.match(/(\\|\/)(?!.+(\\|\/).+)(?<path>.+)/).groups.path;
+
+    dispatch({
+      type: "edit",
+      payload: {
+        type: "photos",
+        id: activePhoto.id,
+        key: "path",
+        value: filepath
+      }
+    })
+  }
+
+  function showEditPhotoModal() {
+    modalSetter.setVisible(true);
+    modalSetter.setTitle("Change Photo");
+    modalSetter.setConfirm({ msg: "Change", callback: updatePhotoPath });
+    modalSetter.setDismiss("Cancel");
+    modalSetter.setContent(
+      <>
+        <input id="photo-file-update" accept="image/*" type="file" required={true} />
+      </>
+    )
   }
 
   return (
@@ -117,7 +148,7 @@ function GalleryHeader({ activePhoto }) {
           </span>
           Edit Description
         </button>
-        <button>
+        <button onClick={showEditPhotoModal}>
           <span>
             <FontAwesomeIcon icon={faImage} />
             <FontAwesomeIcon icon={faPencilAlt} />
