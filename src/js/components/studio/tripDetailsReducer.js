@@ -5,10 +5,27 @@ export const TRIP_ACTIONS = {
   EDIT: "edit"
 };
 
+//TODO
+//Add / Edit / Remove should trigger an update for tripReducer.
+
 export function tripReducer(state, action) {
   switch (action.type) {
     case 'load': {
       return action.payload;
+    }
+    case 'add': {
+      const stateCopy = _.cloneDeep(state);
+      const {type, fkname, fkid, ...values} = action.payload;
+
+      const record = {
+        [fkname]: fkid,
+        id: stateCopy[type].length,
+        ...values
+      }
+
+      stateCopy[type].push(record);
+
+      return stateCopy;
     }
     case 'edit': {
       const stateCopy = _.cloneDeep(state);

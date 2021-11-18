@@ -20,6 +20,7 @@ function GalleryView({ SAMPLE_IMAGES, startingPhotoId, poiPhotos, closeGalleryVi
   const [loading, setLoading] = useState(true);
   const [photos, setPhotos] = useState(poiPhotos);
   const [activePhoto, setActivePhoto] = useState(null);
+  const [activePoiId, setactivePoiId] = useState(getPhotoFromId(startingPhotoId).poiId);
   const [activeIndex, setActiveIndex] = useState(getPhotoIndexFromId(startingPhotoId));
 
   const GalleryView = styled.div`
@@ -29,6 +30,16 @@ function GalleryView({ SAMPLE_IMAGES, startingPhotoId, poiPhotos, closeGalleryVi
   const Photo = styled.img`
     border: 1px solid orange;
   `
+
+  useEffect(() => {
+    setPhotos(prevPhotos => {
+      if (prevPhotos.length < poiPhotos.length) {
+        setActiveIndex(poiPhotos.length-1);
+      }
+
+      return poiPhotos;
+    });
+  }, [poiPhotos])
 
   function getPhotoFromId(id) {
     return photos.find(photo => photo.id === id);
@@ -89,6 +100,7 @@ function GalleryView({ SAMPLE_IMAGES, startingPhotoId, poiPhotos, closeGalleryVi
     prepPhotoForDisplay(photo).then(result => {
       setActivePhoto(result);
       setLoading(false);
+      setactivePoiId(photo.poiId);
     })
   }, [activeIndex]);
 
@@ -146,7 +158,7 @@ function GalleryView({ SAMPLE_IMAGES, startingPhotoId, poiPhotos, closeGalleryVi
   return (
     <GalleryView>
       <div className="exhibition">
-        <GalleryHeader />
+        <GalleryHeader activePoiId={activePoiId} setPhotos={setPhotos}/>
         {
           loading ?
             (<GalleryLoading setPhotos={setPhotos}/>) :

@@ -21,7 +21,7 @@ function CountingTextArea({textAreaId, labelText, limit, classNames}) {
         <textarea
           id={textAreaId}
           type="text"
-          maxlength={limit}
+          maxLength={limit}
           value={text}
           onChange={onTextAreaChange}
            />

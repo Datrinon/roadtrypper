@@ -5,13 +5,13 @@ import { faPencilAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 import { TripContext, TripDispatch } from './Studio';
 
-import DUMMY_NEW_PHOTO from "../../../data/images/url-toAdd.jpg"
+import DUMMY_NEW_PHOTO from "../../../data/images/url04.jpg"
 
 import Modal from './Modal';
 import useModal from '../../hooks/useModal';
 import CountingTextArea from './CountingTextArea';
 
-function GalleryHeader({ setPhotos }) {
+function GalleryHeader({ activePoiId, setPhotos }) {
 
   const trip = useContext(TripContext);
   const dispatch = useContext(TripDispatch);
@@ -21,7 +21,31 @@ function GalleryHeader({ setPhotos }) {
   function addPhoto(e) {
     e.preventDefault();
 
-    console.log("You're supposed to add a photo.");
+    // TODO
+    // Get firebase to upload the image somehow.
+    
+    let filepath = e.target.querySelector("#photo-file")
+      .value;
+    // get the filename of the image.
+    filepath = filepath.match(/(\\|\/)(?!.+(\\|\/).+)(?<path>.+)/).groups.path;
+    let description = e.target.querySelector("#photo-description").value;
+    
+    // get the id...
+
+    dispatch({
+      type: "add",
+      payload: {
+        type: "photos",
+        fkname: "poiId",
+        fkid: activePoiId,
+        path: filepath,
+        description
+      }
+    })
+
+    // gotta set the photos after this to update it locally...?
+    // the POI details is still alive, so it should refresh the photos on trip change.
+    // (It didn't)
   }
 
   function showAddPhotoModal() {
@@ -35,14 +59,13 @@ function GalleryHeader({ setPhotos }) {
     modalSetter.setDismiss("Cancel");
     modalSetter.setContent(
       <>
-        <input type="file" />
+        <input id={"photo-file"} accept="image/*" type="file" required={true}/>
         <CountingTextArea
           textAreaId={"photo-description"}
-          labelText={"Description"}
+          labelText={"Description (Optional)"}
           limit={500}
-          classNames={"photo-description"}
+          classNames={["photo-description"]}
         />
-        <button type="submit">Add</button>
       </>
     );
   }

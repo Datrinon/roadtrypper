@@ -41,7 +41,7 @@ function PoiDetails({ activePin }) {
   function updateData() {
     setActivePoi(trip.pois.find(poi => poi.id === activePin.id));
     setDay(trip.days.find(day => day.id === activePin.dayId));
-    setPhotos(trip.photos.filter(photo => photo.PoiId === activePin.id));
+    setPhotos(trip.photos.filter(photo => photo.poiId === activePin.id));
   }
 
   useEffect(() => {
@@ -214,9 +214,9 @@ function PoiDetails({ activePin }) {
       {collapsed ? "(currently collapsed)" : "(not collapsed)"}
       Show Pin Details here.
       {!collapsed && (
-          <section className="poi-contents">
-            {renderView()}
-          </section>
+        <section className="poi-contents">
+          {renderView()}
+        </section>
       )}
       {!collapsed && galleryStartingPhotoId !== null && (
         <section className="gallery">
@@ -227,7 +227,7 @@ function PoiDetails({ activePin }) {
             closeGalleryView={() => {
               setGalleryStartingPhotoId(null);
             }}
-            />
+          />
         </section>
       )}
     </div>
