@@ -162,8 +162,10 @@ function GalleryView({ SAMPLE_IMAGES, startingPhotoId, poiPhotos, closeGalleryVi
         {
           loading ?
             (<GalleryLoading setPhotos={setPhotos}/>) :
+            (<GalleryLoading />) :
             (
               <>
+                {<GalleryHeader activePhoto={photos[activeIndex]} />}
                 {activePhoto}
                 {photos.length > 1 && controls}
               </>
