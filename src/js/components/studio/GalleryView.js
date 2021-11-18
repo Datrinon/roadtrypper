@@ -149,7 +149,7 @@ function GalleryView({ SAMPLE_IMAGES, startingPhotoId, poiPhotos, closeGalleryVi
         <GalleryHeader />
         {
           loading ?
-            (<GalleryLoading />) :
+            (<GalleryLoading setPhotos={setPhotos}/>) :
             (
               <>
                 {activePhoto}

@@ -11,3 +11,7 @@ export const EditModeInput = styled.input`
 export const EditModeTextBox = styled.textarea`
   display: block;
 `
+
+export const Modal = styled.div`
+  border: 1px solid lime;
+`

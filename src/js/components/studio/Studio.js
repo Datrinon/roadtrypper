@@ -19,7 +19,6 @@ import STATE from "../ComponentState";
 export const TripDispatch = React.createContext(null);
 export const TripContext = React.createContext(null);
 
-
 function Studio({ tripId }) {
   const abortController = new AbortController(); // ! Use this later when you fetch data from fbase.
   const [trip, tripDispatch] = useReducer(tripReducer, null);
