@@ -15,3 +15,7 @@ export const EditModeTextBox = styled.textarea`
 export const Modal = styled.div`
   border: 1px solid lime;
 `
+
+export const ToggleVisibilityDiv = styled.div`
+  display: ${props => props.visible ? "display" : "none"};
+`

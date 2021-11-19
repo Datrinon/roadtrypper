@@ -133,6 +133,32 @@ function GalleryHeader({ activePhoto }) {
     )
   }
 
+  function deletePhoto(e) {
+    e.preventDefault();
+
+    dispatch({
+      type: "delete",
+      payload: {
+        type: "photos",
+        id: activePhoto.id
+      }
+    })
+  }
+
+  function showDeleteModal() {
+    modalSetter.setVisible(true);
+    modalSetter.setTitle("Delete Photo");
+    modalSetter.setConfirm({ msg: "Delete", callback: deletePhoto });
+    modalSetter.setDismiss("Cancel");
+    modalSetter.setContent(
+      <>
+        <p>Are you sure you want to delete this photo? This action cannot be
+          undone.
+        </p>
+      </>
+    )
+  }
+
   return (
     <>
       <header className="options-panel">
@@ -155,7 +181,7 @@ function GalleryHeader({ activePhoto }) {
           </span>
           Change Photo
         </button>
-        <button>
+        <button onClick={showDeleteModal}>
           <span>
             <FontAwesomeIcon icon={faTrashAlt} />
           </span>

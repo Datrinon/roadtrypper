@@ -15,7 +15,7 @@ export function tripReducer(state, action) {
     }
     case 'add': {
       const stateCopy = _.cloneDeep(state);
-      const {type, fkname, fkid, ...values} = action.payload;
+      const { type, fkname, fkid, ...values } = action.payload;
 
       const record = {
         [fkname]: fkid,
@@ -29,27 +29,28 @@ export function tripReducer(state, action) {
     }
     case 'edit': {
       const stateCopy = _.cloneDeep(state);
-      const {type, id, key, value} = action.payload;
+      const { type, id, key, value } = action.payload;
 
       console.log(stateCopy);
-      console.log ({type, id, key, value});
-      
+      console.log({ type, id, key, value });
+
       // find does not make a duplicate, it gets reference to object.
       const item = stateCopy[type].find(record => record.id === id);
-      
+
       item[key] = value;
-      
+
       return stateCopy;
     }
+    // ! TODO
+    // Could be useful for other move operations outside of the POI.
     case 'move_poi': {
       // for moving POIs to another day.
       const stateCopy = _.cloneDeep(state);
-      const { "id" : poiId, "newDay" : newDayOrder } = action.payload;
-      debugger;
+      const { "id": poiId, "newDay": newDayOrder } = action.payload;
 
       const poi = stateCopy.pois.find(poi => poi.id === poiId);
       const day = stateCopy.days.find(day => day.order === newDayOrder);
-      
+
       // find the last placed item of that day.
       const newPOIOrder = stateCopy.pois.reduce((max, poi) => {
         if (poi.dayId === day.id && poi.order > max) {
@@ -62,7 +63,17 @@ export function tripReducer(state, action) {
       poi.dayId = day.id;
       // place the poi at the end of the pois belonging to that day.
       poi.order = newPOIOrder + 1;
-      
+
+      return stateCopy;
+    }
+    case 'delete': {
+      const stateCopy = _.cloneDeep(state);
+      const { type, id } = action.payload;
+
+      const deleteIndex = stateCopy[type].findIndex(record => record.id === id);
+
+      stateCopy[type].splice(deleteIndex, 1);
+
       return stateCopy;
     }
     default:

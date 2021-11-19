@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types';
 
 
-function CountingTextArea({textAreaId, labelText, limit, startText="", classNames}) {
+function CountingTextArea({textAreaId, labelText, limit, startText="", classNames}, ref) {
 
   const [text, setText] = useState(startText);
   const [charRemaining, setCharRemaining] = useState(limit);
@@ -15,7 +15,7 @@ function CountingTextArea({textAreaId, labelText, limit, startText="", className
   
 
   return (
-    <div className={[...classNames]}>
+    <div className={[...classNames]} ref={ref}>
       <label htmlFor={textAreaId}>
         {labelText}
         <textarea

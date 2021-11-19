@@ -1,13 +1,16 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { faMehBlank } from '@fortawesome/free-regular-svg-icons';
 
 import SAMPLE_POIS from '../../../data/sample-pois';
 
 import * as s from "./POIDetails.style";
 
 import GalleryHeader from './GalleryHeader';
+import CountingTextArea from './CountingTextArea';
+import { TripDispatch } from './Studio';
 
 function GalleryLoading() {
   return (
@@ -15,8 +18,56 @@ function GalleryLoading() {
   )
 }
 
+function NoPhotosFound({poiId}) {
+  const [formVisible, setFormVisible] = useState(false);
+
+  const fileRef = useRef();
+  const descRef = useRef();
+
+  const dispatch = useContext(TripDispatch);
+
+  function addPhoto(e) {
+    e.preventDefault();
+    // get filename
+    let path = fileRef.current.value.match(/(\\|\/)(?!.+(\\|\/).+)(?<path>.+)/).groups.path;
+    let description = descRef.current.value;
+
+    dispatch({
+      type: "add",
+      payload: {
+        type: "photos",
+        fkname: "poiId",
+        fkid: poiId,
+        path,
+        description
+      }
+    });
+  }
+
+  return (
+    <div className="no-photos-found">
+      <FontAwesomeIcon icon={faMehBlank} />
+      <h1>No Photos Found</h1>
+      <button onClick={() => setFormVisible(true)}>Click here to add photos.</button>
+      <s.ToggleVisibilityDiv visible={formVisible}>
+        <form onSubmit={addPhoto}>
+          <input ref={fileRef} id={"photo-file"} accept="image/*" type="file" required={true} />
+          <CountingTextArea
+            ref={descRef}
+            textAreaId={"photo-description"}
+            labelText={"Description (Optional)"}
+            limit={500}
+            classNames={["photo-description"]}
+          />
+          <button type="submit">Add Photo</button>
+        </form>
+      </s.ToggleVisibilityDiv>
+    </div>
+  )
+}
 
 function GalleryView({ SAMPLE_IMAGES, startingPhotoId, poiPhotos, closeGalleryView }) {
+  console.log({startingPhotoId, poiPhotos});
   const [loading, setLoading] = useState(true);
   const [photos, setPhotos] = useState(poiPhotos);
   const [activePhoto, setActivePhoto] = useState(null);
@@ -49,10 +100,20 @@ function GalleryView({ SAMPLE_IMAGES, startingPhotoId, poiPhotos, closeGalleryVi
     prepPhotoForDisplay(poiPhotos[activeIndex]).then(result => {
       setActivePhoto(result);
     })
-    
+
   }, [poiPhotos[activeIndex]])
 
   useEffect(() => {
+    // guard condition here means that all photos have been eliminated...
+    // which means we need to display something else.
+    if (activeIndex === -1) {
+      setActivePhoto(<NoPhotosFound poiId={activePoiId}/>);
+      return;
+    }
+    // !
+    // TODO TESTING DELETE METHOD!!!!
+
+
     setLoading(true);
 
     const photo = photos[activeIndex];
@@ -175,7 +236,7 @@ function GalleryView({ SAMPLE_IMAGES, startingPhotoId, poiPhotos, closeGalleryVi
             (<GalleryLoading />) :
             (
               <>
-                {<GalleryHeader activePhoto={photos[activeIndex]} />}
+                {activeIndex !== -1 && <GalleryHeader activePhoto={photos[activeIndex]} />}
                 {activePhoto}
                 {photos.length > 1 && controls}
               </>

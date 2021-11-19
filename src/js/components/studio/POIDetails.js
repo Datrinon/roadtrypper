@@ -28,6 +28,7 @@ function PoiDetails({ activePin }) {
   const [sampleImages, setSampleImages] = useState(importSampleImages()); // debug, remove later.
   const [day, setDay] = useState(null);
   const [photos, setPhotos] = useState(null);
+  const [galleryStartingPhotoIndex, setGalleryStartingPhotoIndex] = useState(null);
   const [galleryStartingPhotoId, setGalleryStartingPhotoId] = useState(null);
 
   const trip = useContext(TripContext);
@@ -42,7 +43,26 @@ function PoiDetails({ activePin }) {
     setActivePoi(trip.pois.find(poi => poi.id === activePin.id));
     setDay(trip.days.find(day => day.id === activePin.dayId));
     setPhotos(trip.photos.filter(photo => photo.poiId === activePin.id));
+    // change the gallery starting photo id if the photo assoc. with it is deleted.
+    const photoDeleted = trip.photos.findIndex(photo => photo.id === galleryStartingPhotoId);
+    // move it to the next photo in the gallery
+    // and change the photo id while you're at it.
+    if (photoDeleted === -1) {
+      setGalleryStartingPhotoIndex(prevIndex => {
+        if (prevIndex + 1 >= photos.length) {
+          setGalleryStartingPhotoId(photos[0].id);
+          return 0;
+        } 
+
+        setGalleryStartingPhotoId(photos[prevIndex + 1])
+        return prevIndex + 1;
+      })
+    }
   }
+
+  useEffect(() => {
+    setGalleryStartingPhotoIndex(photos.findIndex(photo => photo.id === galleryStartingPhotoId));
+  }, [photos])
 
   useEffect(() => {
     setCollapsed(!activePin);
@@ -53,7 +73,8 @@ function PoiDetails({ activePin }) {
 
 
   function launchGalleryView(e) {
-    setGalleryStartingPhotoId(parseInt(e.target.dataset.id));
+    const photoId = parseInt(e.target.dataset.id);
+    setGalleryStartingPhotoId(photoId);
   }
 
   function renderView() {
