@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, useRef } from 'react'
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { faChevronRight, faChevronLeft, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { faMehBlank } from '@fortawesome/free-regular-svg-icons';
 
 import SAMPLE_POIS from '../../../data/sample-pois';
@@ -18,7 +18,7 @@ function GalleryLoading() {
   )
 }
 
-function NoPhotosFound({poiId}) {
+function NoPhotosFound({ poiId }) {
   const [formVisible, setFormVisible] = useState(false);
 
   const fileRef = useRef();
@@ -80,56 +80,54 @@ function GalleryView({ SAMPLE_IMAGES, startingPhoto, startingIndex, poiPhotos, p
     border: 1px solid orange;
   `
 
-  // This updates the photos for the gallery if poiPhotos changes
+  //⛳ This updates the photos for the gallery if poiPhotos changes
   useEffect(() => {
+    console.log("THE HOOK WITH POIPHOTOS PROP")
     setPhotos(prevPhotos => {
       // Move to uploaded image if user chooses to add an image.
       if (prevPhotos.length < poiPhotos.length) {
         setActiveIndex(poiPhotos.length - 1);
       }
+      // In deletion cases --
+      // when the current activeindex is equal to the end of the array
+      else if (prevPhotos.length > poiPhotos.length) {
+        // (When the user just deleted the last photo)
+        // we need to move the activeindex back one
+        if (activeIndex === prevPhotos.length - 1) {
+          setActiveIndex(prevActiveIndex => prevActiveIndex - 1);
+        }
+      }
+    
 
       return poiPhotos;
     });
   }, [poiPhotos])
 
-  // This updates the activePhoto if the user edits it in the header.
+  //⛳ This updates the activePhoto if the user edits it in the header.
   useEffect(() => {
-
-    prepPhotoForDisplay(poiPhotos[activeIndex]).then(result => {
-      setActivePhoto(result);
-    })
-
-  }, [poiPhotos[activeIndex]])
-
-  useEffect(() => {
-    // guard condition here means that all photos have been eliminated...
-    // which means we need to display something else.
-    if (activeIndex === -1) {
-      setActivePhoto(<NoPhotosFound poiId={activePoiId}/>);
+    if (!photos[activeIndex]) {
       return;
     }
-    // !
-    // TODO TESTING DELETE METHOD!!!!
 
+    console.log({ activeIndex, photos });
 
-    setLoading(true);
-
-    const photo = photos[activeIndex];
-
-    prepPhotoForDisplay(photo).then(result => {
+    prepPhotoForDisplay(photos[activeIndex]).then(result => {
       setActivePhoto(result);
-      setactivePoiId(photo.poiId);
     })
-  }, [activeIndex]);
 
-  function getPhotoFromId(id) {
-    return photos.find(photo => photo.id === id);
-  }
+  }, [JSON.stringify(photos[activeIndex]), activeIndex])
 
-  function getPhotoIndexFromId(id) {
-    return photos.findIndex(photo => photo.id === id);
-  }
+  // // This updates the images based on the user's selection
+  // useEffect(() => {
+  //   const photo = photos[activeIndex];
 
+  //   // TODO TESTING DELETE METHOD!!!!
+
+  //   prepPhotoForDisplay(photo).then(result => {
+  //     setActivePhoto(result);
+  //   })
+  // }, [activeIndex]);
+    
   async function prepPhotoForDisplay(photo) {
     setLoading(true);
 
@@ -156,7 +154,6 @@ function GalleryView({ SAMPLE_IMAGES, startingPhoto, startingIndex, poiPhotos, p
       let result = await loadImg();
 
       console.log(result);
-      setLoading(false);
 
       return (
         <figure>
@@ -168,6 +165,7 @@ function GalleryView({ SAMPLE_IMAGES, startingPhoto, startingIndex, poiPhotos, p
         </figure>
       )
     } catch (error) {
+
       return (
         <div>
           <p>Error!</p>
@@ -230,6 +228,23 @@ function GalleryView({ SAMPLE_IMAGES, startingPhoto, startingIndex, poiPhotos, p
     </>
   );
 
+  function determineRender() {
+    if (photos.length <= 0) {
+      return <NoPhotosFound poiId={poiId} />
+    }
+
+
+    return loading ?
+      (<GalleryLoading />) :
+      (
+        <>
+          {<GalleryHeader activePhoto={photos[activeIndex]} />}
+          {activePhoto}
+          {photos.length > 1 && controls}
+        </>
+      )
+  }
+
   return (
     <GalleryView>
       <button>
@@ -239,17 +254,7 @@ function GalleryView({ SAMPLE_IMAGES, startingPhoto, startingIndex, poiPhotos, p
         Exit Gallery View
       </button>
       <div className="exhibition">
-        {
-          loading ?
-            (<GalleryLoading />) :
-            (
-              <>
-                {activeIndex !== -1 && <GalleryHeader activePhoto={photos[activeIndex]} />}
-                {activePhoto}
-                {photos.length > 1 && controls}
-              </>
-            )
-        }
+        {determineRender()}
       </div>
     </GalleryView>
   )

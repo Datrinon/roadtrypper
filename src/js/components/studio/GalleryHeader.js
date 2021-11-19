@@ -136,6 +136,8 @@ function GalleryHeader({ activePhoto }) {
   function deletePhoto(e) {
     e.preventDefault();
 
+    console.log({activePhoto});
+
     dispatch({
       type: "delete",
       payload: {
