@@ -82,7 +82,6 @@ function GalleryView({ SAMPLE_IMAGES, startingPhoto, startingIndex, poiPhotos, p
 
   //⛳ This updates the photos for the gallery if poiPhotos changes
   useEffect(() => {
-    console.log("THE HOOK WITH POIPHOTOS PROP")
     setPhotos(prevPhotos => {
       // Move to uploaded image if user chooses to add an image.
       if (prevPhotos.length < poiPhotos.length) {
@@ -97,13 +96,25 @@ function GalleryView({ SAMPLE_IMAGES, startingPhoto, startingIndex, poiPhotos, p
           setActiveIndex(prevActiveIndex => prevActiveIndex - 1);
         }
       }
-    
+      /* ⛳ Full Explanation of Delete Bug
+      • In GalleryHeader, the user presses DELETE which dispatches delete
+        to the reducer.
+      • POIDetails updates `poiPhotos`
+      • Since GalleryView is listening to changes for `poiPhotos`, it refreshes
+        its own photos to sync it with that of the POI. 
+      • Additionally, if the user is parked on the last photo of the last photo,
+        it means we have to also alter the `activeIndex`.
+      • We alter the `activeIndex` to be that poiPhotos' last element.
+      • If we don't do this, then the useEffect will call on an activeIndex
+        for an undefined element, resulting in `undefined`, and hence React
+        complaining about that TypeError.
+      */
 
       return poiPhotos;
     });
   }, [poiPhotos])
 
-  //⛳ This updates the activePhoto if the user edits it in the header.
+  // This updates the activePhoto if the user edits it in the header.
   useEffect(() => {
     if (!photos[activeIndex]) {
       return;
@@ -117,17 +128,7 @@ function GalleryView({ SAMPLE_IMAGES, startingPhoto, startingIndex, poiPhotos, p
 
   }, [JSON.stringify(photos[activeIndex]), activeIndex])
 
-  // // This updates the images based on the user's selection
-  // useEffect(() => {
-  //   const photo = photos[activeIndex];
 
-  //   // TODO TESTING DELETE METHOD!!!!
-
-  //   prepPhotoForDisplay(photo).then(result => {
-  //     setActivePhoto(result);
-  //   })
-  // }, [activeIndex]);
-    
   async function prepPhotoForDisplay(photo) {
     setLoading(true);
 
@@ -176,10 +177,8 @@ function GalleryView({ SAMPLE_IMAGES, startingPhoto, startingIndex, poiPhotos, p
   }
 
 
-
   // need to keep activeIndex to keep forward/backward cycling.
   // changing the activeIndex will change the activeId.
-
   function prevPic() {
     setActiveIndex((lastIndex) => {
       if (lastIndex <= 0) {
@@ -247,7 +246,7 @@ function GalleryView({ SAMPLE_IMAGES, startingPhoto, startingIndex, poiPhotos, p
 
   return (
     <GalleryView>
-      <button>
+      <button onClick={() => closeGalleryView()}>
         <span>
           <FontAwesomeIcon icon={faTimes} />
         </span>
