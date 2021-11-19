@@ -66,13 +66,11 @@ function NoPhotosFound({poiId}) {
   )
 }
 
-function GalleryView({ SAMPLE_IMAGES, startingPhotoId, poiPhotos, closeGalleryView }) {
-  console.log({startingPhotoId, poiPhotos});
+function GalleryView({ SAMPLE_IMAGES, startingPhoto, startingIndex, poiPhotos, poiId, closeGalleryView }) {
   const [loading, setLoading] = useState(true);
   const [photos, setPhotos] = useState(poiPhotos);
   const [activePhoto, setActivePhoto] = useState(null);
-  const [activePoiId, setactivePoiId] = useState(getPhotoFromId(startingPhotoId).poiId);
-  const [activeIndex, setActiveIndex] = useState(getPhotoIndexFromId(startingPhotoId));
+  const [activeIndex, setActiveIndex] = useState(startingIndex);
 
   const GalleryView = styled.div`
     border: 1px solid fuchsia;
@@ -140,11 +138,15 @@ function GalleryView({ SAMPLE_IMAGES, startingPhotoId, poiPhotos, closeGalleryVi
         let img = new Image();
         img.src = SAMPLE_IMAGES[photo.path]; //! SAMPLE_FLAG
 
+        console.log(img);
+
         img.onload = () => {
+          setLoading(false);
           resolve(img);
         }
 
         img.onerror = () => {
+          setLoading(false);
           reject(new Error("Could not load the image from the server."));
         }
       });
