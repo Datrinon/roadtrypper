@@ -187,12 +187,6 @@ function GalleryHeader({ activePhoto }) {
           </span>
           Delete
         </button>
-        <button>
-          <span>
-            <FontAwesomeIcon icon={faTimes} />
-          </span>
-          Exit Gallery View
-        </button>
       </header>
       <Modal ref={modalRef}
         visible={modalValues.visible}

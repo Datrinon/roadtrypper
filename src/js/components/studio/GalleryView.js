@@ -230,6 +230,12 @@ function GalleryView({ SAMPLE_IMAGES, startingPhotoId, poiPhotos, closeGalleryVi
 
   return (
     <GalleryView>
+      <button>
+        <span>
+          <FontAwesomeIcon icon={faTimes} />
+        </span>
+        Exit Gallery View
+      </button>
       <div className="exhibition">
         {
           loading ?
