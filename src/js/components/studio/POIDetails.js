@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useContext, useRef } from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit, faTrashAlt } from "@fortawesome/free-regular-svg-icons"
+import { faCamera } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 import { point } from 'leaflet';
 // styled + css
@@ -182,6 +183,23 @@ function PoiDetails({ activePin }) {
     )
     //#endregion
 
+    function mapThumbnails(photo, index) {
+      return (
+        <figure
+          key={"" + day.id + photo.id}>
+          <s.Thumbnail
+            src={sampleImages[photo.path]}
+            onClick={launchGalleryView.bind(null, index)}
+            alt={photo.description} />
+          {/* <figcaption>
+          {photo.description}
+        </figcaption>  (Move this to the full image view.)*/}
+        </figure>
+      );
+    }
+
+    console.log(photos);
+
     return (
       <>
         {belongsToDayElement}
@@ -189,20 +207,9 @@ function PoiDetails({ activePin }) {
         {poiTitleElement}
         {descElement}
         {
-          photos.map((photo, index) => {
-            return (
-              <figure
-                key={"" + day.id + photo.id}>
-                <s.Thumbnail
-                  src={sampleImages[photo.path]}
-                  onClick={launchGalleryView.bind(null, index)}
-                  alt={photo.description} />
-                {/* <figcaption>
-                {photo.description}
-              </figcaption>  (Move this to the full image view.)*/}
-              </figure>
-            );
-          })
+          photos.length > 0 ?
+          photos.map(mapThumbnails) :
+          (<button onClick={launchGalleryView.bind(null, -1)}>Add Photos</button>)
         }
       </>
     )

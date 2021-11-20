@@ -18,8 +18,9 @@ function GalleryLoading() {
   )
 }
 
-function NoPhotosFound({ poiId }) {
-  const [formVisible, setFormVisible] = useState(false);
+function NoPhotosFound({ poiId, startingIndex }) {
+  // if starting index = -1, then we send the user here immediately upon opening gallery view.
+  const [formVisible, setFormVisible] = useState(startingIndex === -1 ? true : false);
 
   const fileRef = useRef();
   const descRef = useRef();
@@ -44,10 +45,16 @@ function NoPhotosFound({ poiId }) {
     });
   }
 
+  let Warning = styled.h1`
+    display: ${props => props.visible ? "initial" : "none"};
+  `
+
   return (
     <div className="no-photos-found">
-      <FontAwesomeIcon icon={faMehBlank} />
-      <h1>No Photos Found</h1>
+      <Warning visible={startingIndex !== -1}>
+        <FontAwesomeIcon icon={faMehBlank} />
+        No Photos Found
+      </Warning>
       <button onClick={() => setFormVisible(true)}>Click here to add photos.</button>
       <s.ToggleVisibilityDiv visible={formVisible}>
         <form onSubmit={addPhoto}>
@@ -215,7 +222,7 @@ function GalleryView({ SAMPLE_IMAGES, startingPhoto, startingIndex, poiPhotos, p
           photos.map((photo, index) => {
             return (
               <s.Thumbnail
-                key={photo.id}
+                key={"" + photo.id + index}
                 src={SAMPLE_IMAGES[photo.path]}
                 alt={"Thumbnail for image about: " + photo.description}
                 onClick={setActiveIndex.bind(null, index)}
@@ -229,7 +236,7 @@ function GalleryView({ SAMPLE_IMAGES, startingPhoto, startingIndex, poiPhotos, p
 
   function determineRender() {
     if (photos.length <= 0) {
-      return <NoPhotosFound poiId={poiId} />
+      return <NoPhotosFound poiId={poiId} startingIndex={startingIndex} />
     }
 
 
