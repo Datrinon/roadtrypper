@@ -104,6 +104,25 @@ function PoiDetails({ activePin }) {
     );
     //#endregion
 
+    //#region poi order
+    //! TODO
+    //#endregion
+    
+    function handleEditLocation() {
+
+    }
+
+    //#region location edit
+    // Consider switching from ControlGeocoder
+    // to this API
+    // https://github.com/smeijer/leaflet-geosearch
+    const editLocation = (
+      // Consider using the proper name of this location rather than just 
+      // a generic button.
+      <button onClick={handleEditLocation}>Edit Location</button>
+    )
+    //#endregion
+
     //#region Day Title
     let dayTitleDisplay = (<h2 className="details day">{day.title}</h2>);
 
@@ -191,9 +210,6 @@ function PoiDetails({ activePin }) {
             src={sampleImages[photo.path]}
             onClick={launchGalleryView.bind(null, index)}
             alt={photo.description} />
-          {/* <figcaption>
-          {photo.description}
-        </figcaption>  (Move this to the full image view.)*/}
         </figure>
       );
     }

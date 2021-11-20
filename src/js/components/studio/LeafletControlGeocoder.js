@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 import React, { useEffect } from 'react';
 import L from "leaflet";
 import { useMap } from "react-leaflet";
@@ -38,6 +39,7 @@ function LeafletControlGeocoder() {
       geocoder
     }).on("markgeocode", function (e) {
       let latlng = e.geocode.center;
+      // This is default behavior which adds a marker to a search result.
       // For this, look at Leaflet docs to see how to use marker.
       L.marker(latlng, {icon: greenIcon })
         .addTo(map)
