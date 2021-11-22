@@ -16,6 +16,10 @@ import GalleryView from './GalleryView';
 import { TripContext, TripDispatch } from './Studio';
 import POIDetailsEditForm from './POIDetailsEditForm';
 
+// le geosearch
+import { OpenStreetMapProvider } from 'leaflet-geosearch';
+import { debounce } from 'lodash';
+
 // ! TODO Remove this later when finished debugging.
 function importSampleImages(r = require.context("../../../data/images", false, /\.(png|jpe?g|svg)$/)) {
   let images = {};
@@ -35,6 +39,7 @@ function PoiDetails({ activePin }) {
   const dispatch = useContext(TripDispatch);
 
   const poiDayEditRef = useRef();
+  const poiLocationEditRef = useRef();
   const dayTitleEditRef = useRef();
   const poiTitleEditRef = useRef();
   const poiDescEditRef = useRef();
@@ -107,20 +112,75 @@ function PoiDetails({ activePin }) {
     //#region poi order
     //! TODO
     //#endregion
-    
-    function handleEditLocation() {
 
-    }
-
-    //#region location edit
-    // Consider switching from ControlGeocoder
-    // to this API
-    // https://github.com/smeijer/leaflet-geosearch
-    const editLocation = (
+    const editLocationDisplay = (
       // Consider using the proper name of this location rather than just 
       // a generic button.
-      <button onClick={handleEditLocation}>Edit Location</button>
-    )
+      <p>Some Location Here (To Add Later)</p>
+    );
+
+    const EditLocationInput = (() => {
+      const provider = new OpenStreetMapProvider({
+        params: {
+          limit: 5
+        }
+      });
+
+      const [suggestions, setSuggestions] = useState(null);
+
+      function renderSearchResults(results) {
+        const listedResults = results.map((result, index) => {
+          return (
+            <p key={index}>{result.label}</p>
+          )
+        });
+
+        setSuggestions(listedResults);
+      }
+
+      // need more finesse on the behavior of this onchange function.
+      // hm, or why even use this one eh?!
+      // delay wit hte callback.
+      async function handleEditLocation() {
+        if (poiLocationEditRef.current.value.length === 0) {
+          setSuggestions();
+          return;
+        }
+        try {
+          const t0 = performance.now();
+          const results = await provider.search({
+            query: poiLocationEditRef.current.value,
+          });
+          const t1 = performance.now();
+          console.log({ time: t1 - t0, results });
+          renderSearchResults(results);
+        } catch (error) {
+          console.log(error);
+        }
+
+      }
+
+      return (
+        <>
+          <input
+            className="details poi-location-edit"
+            ref={poiLocationEditRef}
+            // Set to 1000 because of nominatim's usage policy requirements.
+            onKeyDown={debounce(handleEditLocation, 1000)}
+          />
+          <div className="search-results">
+            {suggestions}
+          </div>
+        </>
+      )
+    })
+
+    const locationElement = (<HoverToEditInput
+      displayVer={editLocationDisplay}
+      editVer={<EditLocationInput />}
+      onClickSave={(e) => console.log("Not implemented yet.")} />
+    );
+
     //#endregion
 
     //#region Day Title
@@ -221,11 +281,12 @@ function PoiDetails({ activePin }) {
         {belongsToDayElement}
         {dayTitleElement}
         {poiTitleElement}
+        {locationElement}
         {descElement}
         {
           photos.length > 0 ?
-          photos.map(mapThumbnails) :
-          (<button onClick={launchGalleryView.bind(null, -1)}>Add Photos</button>)
+            photos.map(mapThumbnails) :
+            (<button onClick={launchGalleryView.bind(null, -1)}>Add Photos</button>)
         }
       </>
     )

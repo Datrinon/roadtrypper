@@ -1,11 +1,16 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import "../../../css/Map.css";
 import { MapContainer, TileLayer, Marker, Popup, Tooltip, FeatureGroup } from 'react-leaflet';
 
 import L from "leaflet";
-import LeafletControlGeocoder from './LeafletControlGeocoder';
 import DayPins from './DayPins';
+
+// Try using this plugin instead because LCG cannot be separated from the map.
+// import LeafletControlGeocoder from './LeafletControlGeocoder';
+import 'leaflet-geosearch/dist/geosearch.css';
+import "leaflet-geosearch/dist/geosearch.umd";
+import * as GeoSearch from 'leaflet-geosearch';
 
 const LeafIcon = L.Icon.extend({
   options: {}
@@ -22,11 +27,14 @@ const MapStyled = styled.div`
   width: 300px;
   border: 5px solid red;
 `
-
 function Map({ data, setActivePin }) {
 
   const mapRef = useRef();
   const masterFeatureGroup = useRef();
+  const [search, setSearch] = useState(new GeoSearch.GeoSearchControl({
+    provider: new GeoSearch.OpenStreetMapProvider(),
+  }));
+
 
   function placeDayPOIPins() {
 
@@ -46,7 +54,7 @@ function Map({ data, setActivePin }) {
           icon={icon}
           dayId={day.id}
           mapRef={mapRef}
-          setActivePin={setActivePin}/>
+          setActivePin={setActivePin} />
       )
     });
   }
@@ -55,7 +63,7 @@ function Map({ data, setActivePin }) {
     // debugger;
     const map = mapRef.current;
     const group = masterFeatureGroup.current;
-    map.flyToBounds(group.getBounds(), {padding: L.point(15, 15)});
+    map.flyToBounds(group.getBounds(), { padding: L.point(15, 15) });
 
   }
 
@@ -72,13 +80,13 @@ function Map({ data, setActivePin }) {
         numCoordinates += 1;
 
         return sum;
-      }, {lat: 0, long: 0});
+      }, { lat: 0, long: 0 });
 
       sum.lat += poi.lat;
       sum.long += poi.long;
 
       return sum;
-    }, {lat: 0, long: 0})
+    }, { lat: 0, long: 0 })
 
     total.lat = total.lat / numCoordinates;
     total.long = total.long / numCoordinates;
@@ -87,16 +95,23 @@ function Map({ data, setActivePin }) {
     return [total.lat, total.long];
   }
 
+  function whenMapCreated(instance) {
+    mapRef.current = instance;
+
+    mapRef.current.addControl(search);
+  }
+
   return (
     <>
       <button onClick={showOverview}>See Overview</button>
       <MapStyled id="map" data-testid="map">
         <MapContainer
-          whenCreated= { mapInstance => { mapRef.current = mapInstance; }}
+          whenCreated={whenMapCreated}
+          // defaults to NYC if there aren't any coordinates placed.
           center={!!data.pois ? calcCoordinateAverage() : [40.730610, -73.935242]}
           zoom={7}
           scrollWheelZoom={true}
-          >
+        >
           <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -105,7 +120,6 @@ function Map({ data, setActivePin }) {
             ref={masterFeatureGroup}>
             {placeDayPOIPins()}
           </FeatureGroup>
-          <LeafletControlGeocoder />
         </MapContainer>
       </MapStyled>
     </>
