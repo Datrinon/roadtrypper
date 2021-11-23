@@ -15,11 +15,8 @@ import GalleryView from './GalleryView';
 // trip information and reducer
 import { MapInstance, TripContext, TripDispatch } from './Studio';
 import POIDetailsEditForm from './POIDetailsEditForm';
+import EditLocationInput from './EditLocationInput';
 
-// le geosearch
-import { OpenStreetMapProvider } from 'leaflet-geosearch';
-import { debounce } from 'lodash';
-import { faMapMarked } from '@fortawesome/free-solid-svg-icons'
 
 // ! TODO Remove this later when finished debugging.
 function importSampleImages(r = require.context("../../../data/images", false, /\.(png|jpe?g|svg)$/)) {
@@ -40,7 +37,6 @@ function PoiDetails({ activePin }) {
   const dispatch = useContext(TripDispatch);
 
   const poiDayEditRef = useRef();
-  const poiLocationEditRef = useRef();
   const dayTitleEditRef = useRef();
   const poiTitleEditRef = useRef();
   const poiDescEditRef = useRef();
@@ -120,105 +116,7 @@ function PoiDetails({ activePin }) {
       <p>Some Location Here (To Add Later)</p>
     );
 
-    const EditLocationInput = (() => {
-      const mapRef = React.useContext(MapInstance);
-      const [firstSearch, setFirstSearch] = useState(true);
 
-      const provider = new OpenStreetMapProvider({
-        params: {
-          limit: 5,
-          addressdetails: 1
-        }
-      });
-
-      const [suggestions, setSuggestions] = useState(null);
-
-      function renderSearchResults(results) {
-        const ListingBox = styled.div`
-          display: flex;
-          flex-direction: row;
-        `
-
-        const ListingLabel = styled.p`
-          max-width: 45ch;
-          text-overflow: ellipsis;
-          overflow: hidden;
-          white-space: nowrap;
-          margin: 0.3em 0;
-        `
-
-        const ListingName = styled.span`
-          font-weight: bold;
-          font-size: 1.25em;
-        `
-
-        const MapIcon = styled(FontAwesomeIcon)`
-          font-size: 1.25em;
-          margin: 0 5px;
-          align-self: center;
-        `
-
-        function registerPlaceOnMap(result) {
-          console.log(mapRef);
-        }
-
-        const listedResults = results.map((result, index) => {
-
-          const label = result.label.split(", ");
-
-          return (
-            <ListingBox key={index} onClick={registerPlaceOnMap.bind(null, result)}>
-              <MapIcon icon={faMapMarked} />
-              <ListingLabel>
-                <ListingName className="listing-name">
-                  {label.shift()}
-                </ListingName>
-                , {label.join(", ")}
-              </ListingLabel>
-            </ListingBox>
-
-          )
-        });
-
-        setSuggestions(listedResults);
-      }
-
-      async function handleEditLocation() {
-        if (firstSearch) {
-          setFirstSearch(false);
-        }
-        if (poiLocationEditRef.current.value.length === 0) {
-          setSuggestions();
-          return;
-        }
-        try {
-          const t0 = performance.now();
-          const results = await provider.search({
-            query: poiLocationEditRef.current.value,
-          });
-          const t1 = performance.now();
-          console.log({ time: t1 - t0, results });
-          renderSearchResults(results);
-        } catch (error) {
-          console.log(error);
-        }
-
-      }
-
-      return (
-        <>
-          <input
-            className="details poi-location-edit"
-            ref={poiLocationEditRef}
-            // Set to 1000 because of nominatim's usage policy requirements.
-            onKeyDown={debounce(handleEditLocation, (firstSearch ? 250 : 1000))}
-          />
-          <div className="search-results">
-            {suggestions}
-          </div>
-        </>
-      )
-    })
 
     const locationElement = (<HoverToEditInput
       displayVer={editLocationDisplay}

@@ -4,6 +4,19 @@ import styled from 'styled-components'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit, faTrashAlt } from "@fortawesome/free-regular-svg-icons"
 
+const HoverEditButton = styled.button`
+  display: ${props => props.visible ? 'initial' : 'none'};
+`
+
+const EditModeOptions = styled.div`
+  border: 1px solid cyan;
+  display: ${props => props.visible ? 'inline' : 'none'};
+
+  & button {
+    border: 1px solid red;
+  }
+`
+
 
 function HoverToEditInput({ displayVer, editVer, onClickSave }) {
 
@@ -11,19 +24,6 @@ function HoverToEditInput({ displayVer, editVer, onClickSave }) {
   const [editMode, setEditMode] = useState(false);
   const thisElement = useRef();
   
-  const HoverEditButton = styled.button`
-    display: ${props => props.visible ? 'initial' : 'none'};
-  `
-
-  const EditModeOptions = styled.div`
-    border: 1px solid cyan;
-    display: ${props => props.visible ? 'inline' : 'none'};
-
-    & button {
-      border: 1px solid red;
-    }
-  `
-
   const exitEditMode = (e) => {
     // debugger;
     // console.log(thisElement.current);
