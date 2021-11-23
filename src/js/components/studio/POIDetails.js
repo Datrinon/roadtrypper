@@ -13,7 +13,7 @@ import HoverToEditInput from './HoverToEditInput';
 import GalleryView from './GalleryView';
 
 // trip information and reducer
-import { TripContext, TripDispatch } from './Studio';
+import { MapInstance, TripContext, TripDispatch } from './Studio';
 import POIDetailsEditForm from './POIDetailsEditForm';
 
 // le geosearch
@@ -121,6 +121,7 @@ function PoiDetails({ activePin }) {
     );
 
     const EditLocationInput = (() => {
+      const mapRef = React.useContext(MapInstance);
       const [firstSearch, setFirstSearch] = useState(true);
 
       const provider = new OpenStreetMapProvider({
@@ -157,12 +158,16 @@ function PoiDetails({ activePin }) {
           align-self: center;
         `
 
+        function registerPlaceOnMap(result) {
+          console.log(mapRef);
+        }
+
         const listedResults = results.map((result, index) => {
 
           const label = result.label.split(", ");
 
           return (
-            <ListingBox key={index}>
+            <ListingBox key={index} onClick={registerPlaceOnMap.bind(null, result)}>
               <MapIcon icon={faMapMarked} />
               <ListingLabel>
                 <ListingName className="listing-name">
@@ -178,11 +183,10 @@ function PoiDetails({ activePin }) {
         setSuggestions(listedResults);
       }
 
-      // need more finesse on the behavior of this onchange function.
-      // hm, or why even use this one eh?!
-      // delay wit hte callback.
       async function handleEditLocation() {
-        setFirstSearch(false);
+        if (firstSearch) {
+          setFirstSearch(false);
+        }
         if (poiLocationEditRef.current.value.length === 0) {
           setSuggestions();
           return;

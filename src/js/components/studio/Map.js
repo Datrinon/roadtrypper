@@ -11,6 +11,7 @@ import DayPins from './DayPins';
 import 'leaflet-geosearch/dist/geosearch.css';
 import "leaflet-geosearch/dist/geosearch.umd";
 import * as GeoSearch from 'leaflet-geosearch';
+import { MapInstance } from './Studio';
 
 const LeafIcon = L.Icon.extend({
   options: {}
@@ -29,7 +30,7 @@ const MapStyled = styled.div`
 `
 function Map({ data, setActivePin }) {
 
-  const mapRef = useRef();
+  const mapRef = React.useContext(MapInstance);
   const masterFeatureGroup = useRef();
   const [search, setSearch] = useState(new GeoSearch.GeoSearchControl({
     provider: new GeoSearch.OpenStreetMapProvider(),
@@ -97,6 +98,8 @@ function Map({ data, setActivePin }) {
 
   function whenMapCreated(instance) {
     mapRef.current = instance;
+
+    console.log(instance);
 
     mapRef.current.addControl(search);
   }

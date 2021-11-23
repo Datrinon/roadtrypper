@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useReducer } from 'react'
+import React, { useEffect, useState, useReducer, useRef } from 'react'
 import PropTypes from 'prop-types';
 import { TRIP_ACTIONS, tripReducer } from './tripDetailsReducer';
 
@@ -18,12 +18,14 @@ import STATE from "../ComponentState";
 // trip info can be passed around as normal state.
 export const TripDispatch = React.createContext(null);
 export const TripContext = React.createContext(null);
+export const MapInstance = React.createContext(null);
 
 function Studio({ tripId }) {
   const abortController = new AbortController(); // ! Use this later when you fetch data from fbase.
   const [trip, tripDispatch] = useReducer(tripReducer, null);
   const [pageState, setPageState] = useState(STATE.LOADING);
   const [activePin, setActivePin] = useState(null);
+  const mapRef = useRef();
 
   function mapDayDataToCards() {
     const cards = trip.days.map((day) => {
@@ -51,7 +53,7 @@ function Studio({ tripId }) {
         setPageState(STATE.READY)
       })
       .catch((e) => console.log(e));
-    
+
     return () => {
       // Aborts any fetch request.
       abortController.abort();
@@ -73,25 +75,27 @@ function Studio({ tripId }) {
   console.log(trip);
   return (
     <TripContext.Provider value={trip}>
-      <TripDispatch.Provider value={tripDispatch}>
-        <div>
-          <p>DEV MODE: STUDIO PAGE.</p>
-          <input
-            className="trip-title"
-            placeholder="Untitled Trip"
-            value={trip.title}
-            onChange={onChangeTitle} />
-          <div className="add-options">
-            <button className="add-day" type="button">Add Day</button>
-            <button className="add-POI" type="button">Add POI</button>
+      <MapInstance.Provider value={mapRef}>
+        <TripDispatch.Provider value={tripDispatch}>
+          <div>
+            <p>DEV MODE: STUDIO PAGE.</p>
+            <input
+              className="trip-title"
+              placeholder="Untitled Trip"
+              value={trip.title}
+              onChange={onChangeTitle} />
+            <div className="add-options">
+              <button className="add-day" type="button">Add Day</button>
+              <button className="add-POI" type="button">Add POI</button>
+            </div>
+            <div className="days">
+              {mapDayDataToCards()}
+            </div>
+            <Map data={trip} setActivePin={setActivePin} />
+            <PoiDetails activePin={activePin} />
           </div>
-          <div className="days">
-            {mapDayDataToCards()}
-          </div>
-          <Map data={trip} setActivePin={setActivePin} />
-          <PoiDetails activePin={activePin} />
-        </div>
-      </TripDispatch.Provider>
+        </TripDispatch.Provider>
+      </MapInstance.Provider>
     </TripContext.Provider>
   )
 }
