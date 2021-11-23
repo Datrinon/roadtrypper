@@ -1,3 +1,26 @@
+/* Targets the POI search result itself. */
+.poi-search-result {
+  background: none;
+  border: none;
+  box-shadow: none;
+  text-shadow: 1px 1px 5px rgb(0, 0, 0);
+  font-size: 1.25em;
+  width: 48px;
+  color: rgb(245, 53, 53);
+  white-space: normal;
+  line-height: 1em;
+}
+
+/* Targets right pointing arrow of the POI tooltip */
+.leaflet-tooltip-left.poi-search-result::before {
+  border-left-color: black;
+ }
+ 
+/* Targets left pointing of the POI tooltip */
+.leaflet-tooltip-right.poi-search-result::before {
+   border-right-color: black;
+}
+ 
 
 .leaflet-container {
   height: 300px;

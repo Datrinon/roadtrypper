@@ -55,6 +55,7 @@ function EditLocationInput() {
 
   function registerPlaceOnMap(result) {
     const newPlaceIcon = getLIcon("FFFFFF");
+    const placeNameText = result.label.split(", ")[0];
 
     if (searchMarker.current) {
       searchMarker.current.remove();
@@ -64,10 +65,21 @@ function EditLocationInput() {
       {
         icon: newPlaceIcon,
         zIndexOffset: 1000,
-        title: result.label[0]
+        title: placeNameText
       })
 
-    searchMarker.current.addTo(mapRef.current).bindPopup("Do you accept this location?").openPopup();
+    searchMarker.current.addTo(mapRef.current);
+
+    // tooltip displaying the name of the place.
+    const placeName = L.tooltip({
+      offset: [0, -15],
+      permanent: true,
+      className: "poi-search-result"});
+    placeName.setContent(placeNameText);
+
+    searchMarker.current.bindTooltip(placeName).openTooltip();
+
+    searchMarker.current.bindPopup("Do you accept this location?").openPopup();
 
     // now fit the bounds of the map.
     mapRef.current.flyToBounds(result.bounds, { padding: L.point(15, 15) });
