@@ -1,7 +1,9 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import styled from 'styled-components';
 
 // le geosearch
+import L from "leaflet";
+import { getLIcon } from './LeafletIcon';
 import { MapInstance, TripContext, TripDispatch } from './Studio';
 import { OpenStreetMapProvider } from 'leaflet-geosearch';
 import { debounce } from 'lodash';
@@ -37,6 +39,10 @@ function EditLocationInput() {
   const mapRef = React.useContext(MapInstance);
   const poiLocationEditRef = useRef();
   const [onFirstSearch, setOnFirstSearch] = useState(true);
+  // must be a stale closure issue.
+  // doesn't get the updated state of the searchMarker since the function
+  // is bound at the creation.
+  const searchMarker = useRef();
 
   const provider = new OpenStreetMapProvider({
     params: {
@@ -47,15 +53,28 @@ function EditLocationInput() {
 
   const [suggestions, setSuggestions] = useState(null);
 
-  function renderSearchResults(results) {
+  function registerPlaceOnMap(result) {
+    const newPlaceIcon = getLIcon("FFFFFF");
 
-
-    function registerPlaceOnMap(result) {
-      console.log(mapRef);
+    if (searchMarker.current) {
+      searchMarker.current.remove();
     }
 
-    const listedResults = results.map((result, index) => {
+    searchMarker.current = L.marker([result.y, result.x],
+      {
+        icon: newPlaceIcon,
+        zIndexOffset: 1000,
+        title: result.label[0]
+      })
 
+    searchMarker.current.addTo(mapRef.current).bindPopup("Do you accept this location?").openPopup();
+
+    // now fit the bounds of the map.
+    mapRef.current.flyToBounds(result.bounds, { padding: L.point(15, 15) });
+  }
+
+  function renderSearchResults(results) {
+    const listedResults = results.map((result, index) => {
       const label = result.label.split(", ");
 
       return (
