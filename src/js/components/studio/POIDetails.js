@@ -19,6 +19,7 @@ import POIDetailsEditForm from './POIDetailsEditForm';
 // le geosearch
 import { OpenStreetMapProvider } from 'leaflet-geosearch';
 import { debounce } from 'lodash';
+import { faMapMarked } from '@fortawesome/free-solid-svg-icons'
 
 // ! TODO Remove this later when finished debugging.
 function importSampleImages(r = require.context("../../../data/images", false, /\.(png|jpe?g|svg)$/)) {
@@ -120,18 +121,57 @@ function PoiDetails({ activePin }) {
     );
 
     const EditLocationInput = (() => {
+      const [firstSearch, setFirstSearch] = useState(true);
+
       const provider = new OpenStreetMapProvider({
         params: {
-          limit: 5
+          limit: 5,
+          addressdetails: 1
         }
       });
 
       const [suggestions, setSuggestions] = useState(null);
 
       function renderSearchResults(results) {
+        const ListingBox = styled.div`
+          display: flex;
+          flex-direction: row;
+        `
+
+        const ListingLabel = styled.p`
+          max-width: 45ch;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+          margin: 0.3em 0;
+        `
+
+        const ListingName = styled.span`
+          font-weight: bold;
+          font-size: 1.25em;
+        `
+
+        const MapIcon = styled(FontAwesomeIcon)`
+          font-size: 1.25em;
+          margin: 0 5px;
+          align-self: center;
+        `
+
         const listedResults = results.map((result, index) => {
+
+          const label = result.label.split(", ");
+
           return (
-            <p key={index}>{result.label}</p>
+            <ListingBox key={index}>
+              <MapIcon icon={faMapMarked} />
+              <ListingLabel>
+                <ListingName className="listing-name">
+                  {label.shift()}
+                </ListingName>
+                , {label.join(", ")}
+              </ListingLabel>
+            </ListingBox>
+
           )
         });
 
@@ -142,6 +182,7 @@ function PoiDetails({ activePin }) {
       // hm, or why even use this one eh?!
       // delay wit hte callback.
       async function handleEditLocation() {
+        setFirstSearch(false);
         if (poiLocationEditRef.current.value.length === 0) {
           setSuggestions();
           return;
@@ -166,7 +207,7 @@ function PoiDetails({ activePin }) {
             className="details poi-location-edit"
             ref={poiLocationEditRef}
             // Set to 1000 because of nominatim's usage policy requirements.
-            onKeyDown={debounce(handleEditLocation, 1000)}
+            onKeyDown={debounce(handleEditLocation, (firstSearch ? 250 : 1000))}
           />
           <div className="search-results">
             {suggestions}
