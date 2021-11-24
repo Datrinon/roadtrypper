@@ -7,9 +7,11 @@ import { getLIcon } from './LeafletIcon';
 import { MapInstance, TripContext, TripDispatch } from './Studio';
 import { OpenStreetMapProvider } from 'leaflet-geosearch';
 import { debounce } from 'lodash';
-import { faMapMarked } from '@fortawesome/free-solid-svg-icons'
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faMapMarked, faSpinner } from '@fortawesome/free-solid-svg-icons'
+
+
 
 const ListingBox = styled.div`
   display: flex;
@@ -39,9 +41,9 @@ function EditLocationInput() {
   const mapRef = React.useContext(MapInstance);
   const poiLocationEditRef = useRef();
   const [onFirstSearch, setOnFirstSearch] = useState(true);
-  // must be a stale closure issue.
-  // doesn't get the updated state of the searchMarker since the function
-  // is bound at the creation.
+  // if submit is pressed before suggestions come up, we don't show suggestions.
+  const [submitPressed, setSubmitPressed] = useState(false);
+  const [invalidSearchTerm, setInvalidSearchTerm] = useState(null);
   const searchMarker = useRef();
 
   const provider = new OpenStreetMapProvider({
@@ -54,7 +56,7 @@ function EditLocationInput() {
   const [suggestions, setSuggestions] = useState(null);
 
   function registerPlaceOnMap(result) {
-    const newPlaceIcon = getLIcon("FFFFFF");
+    const newPlaceIcon = getLIcon("ea4335");
     const placeNameText = result.label.split(", ")[0];
 
     if (searchMarker.current) {
@@ -72,14 +74,13 @@ function EditLocationInput() {
 
     // tooltip displaying the name of the place.
     const placeName = L.tooltip({
-      offset: [0, -15],
+      offset: [0, 7.5],
       permanent: true,
-      className: "poi-search-result"});
+      className: "poi-search-result"
+    });
     placeName.setContent(placeNameText);
 
     searchMarker.current.bindTooltip(placeName).openTooltip();
-
-    searchMarker.current.bindPopup("Do you accept this location?").openPopup();
 
     // now fit the bounds of the map.
     mapRef.current.flyToBounds(result.bounds, { padding: L.point(15, 15) });
@@ -110,17 +111,15 @@ function EditLocationInput() {
     if (onFirstSearch) {
       setOnFirstSearch(false);
     }
-    if (poiLocationEditRef.current.value.length === 0) {
+    if (poiLocationEditRef.current.value.length === 0 || submitPressed) {
       setSuggestions();
       return;
     }
     try {
-      const t0 = performance.now();
       const results = await provider.search({
         query: poiLocationEditRef.current.value,
       });
-      const t1 = performance.now();
-      console.log({ time: t1 - t0, results });
+
       renderSearchResults(results);
     } catch (error) {
       console.log(error);
@@ -128,18 +127,60 @@ function EditLocationInput() {
 
   }
 
+  /**
+   * When the user presses the search button, show the first result from the
+   * query. 
+   * @param {*} e - Submit Event.
+   */
+  async function handleSearch(e) {
+    e.preventDefault();
+
+    // disable search button to prevent api from being overloaded.
+    setSubmitPressed(true);
+
+    const results = await provider.search({
+      query: poiLocationEditRef.current.value,
+    });
+
+    setSubmitPressed(false);
+
+    if (results[0]) {
+      registerPlaceOnMap(results[0]);
+    } else {
+      // else invalid search, and just show the user no place found.  
+      setInvalidSearchTerm(poiLocationEditRef.current.value);
+    }
+  }
+
   return (
-    <>
-      <input
-        className="details poi-location-edit"
-        ref={poiLocationEditRef}
-        // Set to 1000 because of nominatim's usage policy requirements.
-        onKeyDown={debounce(handleEditLocation, (onFirstSearch ? 250 : 1000))}
-      />
+    <form onSubmit={handleSearch}>
+      <div className="search-field">
+        <input
+          className="details poi-location-edit"
+          ref={poiLocationEditRef}
+          // Set to 1000 because of nominatim's usage policy requirements.
+          onKeyDown={debounce(handleEditLocation, (onFirstSearch ? 250 : 1000))}
+          onChange={() => setInvalidSearchTerm(null)}
+          type="search"
+        />
+        <button type="submit" disabled={submitPressed}>Search</button>
+        {
+          submitPressed &&
+          <span className="loading">
+            <FontAwesomeIcon icon={faSpinner} />
+          </span>
+        }
+      </div>
       <div className="search-results">
         {suggestions}
+        {
+          invalidSearchTerm &&
+          <div className="search-result-failure">
+            No locations found for '{invalidSearchTerm}'.
+          </div>
+        }
       </div>
-    </>
+    </form>
   )
 }
 export default EditLocationInput

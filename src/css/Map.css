@@ -1,31 +1,34 @@
 /* Targets the POI search result itself. */
 .poi-search-result {
-  background: none;
-  border: none;
-  box-shadow: none;
-  text-shadow: 1px 1px 5px rgb(0, 0, 0);
-  font-size: 1.25em;
-  width: 48px;
-  color: rgb(245, 53, 53);
+  background : none;
+  border     : none;
+  box-shadow : none;
+  text-shadow: -1px 2px 3px #000;
+  font-size  : 1.25em;
+  width      : 48px;
+  font-weight: bold;
+  color      : rgb(255, 255, 255);
   white-space: normal;
   line-height: 1em;
+  text-align : center;
 }
 
 /* Targets right pointing arrow of the POI tooltip */
 .leaflet-tooltip-left.poi-search-result::before {
-  border-left-color: black;
- }
- 
+  border-left-color: transparent;
+}
+
 /* Targets left pointing of the POI tooltip */
 .leaflet-tooltip-right.poi-search-result::before {
-   border-right-color: black;
+  border-right-color: transparent;
 }
- 
+
 
 .leaflet-container {
   height: 300px;
-  width: 100%;
+  width : 100%;
 }
+
 .leaflet-popup-tip-container {
   width: 64px;
 }

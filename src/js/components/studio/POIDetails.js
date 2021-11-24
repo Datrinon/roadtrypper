@@ -16,6 +16,7 @@ import GalleryView from './GalleryView';
 import { MapInstance, TripContext, TripDispatch } from './Studio';
 import POIDetailsEditForm from './POIDetailsEditForm';
 import EditLocationInput from './EditLocationInput';
+import EditLocation from './EditLocation';
 
 
 // ! TODO Remove this later when finished debugging.
@@ -108,22 +109,6 @@ function PoiDetails({ activePin }) {
 
     //#region poi order
     //! TODO
-    //#endregion
-
-    const editLocationDisplay = (
-      // Consider using the proper name of this location rather than just 
-      // a generic button.
-      <p>Some Location Here (To Add Later)</p>
-    );
-
-
-
-    const locationElement = (<HoverToEditInput
-      displayVer={editLocationDisplay}
-      editVer={<EditLocationInput />}
-      onClickSave={(e) => console.log("Not implemented yet.")} />
-    );
-
     //#endregion
 
     //#region Day Title
@@ -224,7 +209,7 @@ function PoiDetails({ activePin }) {
         {belongsToDayElement}
         {dayTitleElement}
         {poiTitleElement}
-        {locationElement}
+        <EditLocation />
         {descElement}
         {
           photos.length > 0 ?
