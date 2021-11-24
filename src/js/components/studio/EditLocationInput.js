@@ -44,6 +44,7 @@ function EditLocationInput() {
   // if submit is pressed before suggestions come up, we don't show suggestions.
   const [submitPressed, setSubmitPressed] = useState(false);
   const [invalidSearchTerm, setInvalidSearchTerm] = useState(null);
+  const [currentFocused, setCurrentFocused] = useState(0);
   const searchMarker = useRef();
 
   const showSuggestions = debounce(handleEditLocation, (onFirstSearch ? 250 : 1000));
@@ -169,18 +170,57 @@ function EditLocationInput() {
 
   // this handles behavior for arrow key navigation.
   const handleArrowKeyPress = (e) => {
+    // first, filter out any non-arrow key presses.
+    if (e.code !== "ArrowDown" && e.code !== "ArrowUp") {
+      return;
+    }
+
+    // now we can query select all the elements. (input field + all search results)
+    const focusables = Array.from(document.body.querySelectorAll(
+      ".search-field, .search-results > *:not(search-result-failure)"
+    ));
+
+    console.log(focusables);
+
     switch (e.code) {
       case "ArrowDown":
-        console.log("Arrow down");
+
         break;
       case "ArrowUp":
         console.log("Arrow up");
         break;
       default:
-        break;
+        return;
     }
   }
 
+  function nextFocused(focusables) {
+    setCurrentFocused(prevFocused => {
+      focusables[prevFocused].classList.remove("focused");
+
+      if (prevFocused + 1 >= focusables.length) {
+        focusables[0].classList.add("focused");
+        return 0;
+      } else {
+        focusables[prevFocused + 1].classList.add("focused");
+        return prevFocused + 1;
+      }
+    })
+  }
+
+  function previousFocused(focusables) {
+    setCurrentFocused(prevFocused => {
+      focusables[prevFocused].classList.remove("focused");
+
+      if (prevFocused - 1 < 0) {
+        focusables[focusables.length - 1].classList.add("focused");
+        return focusables.length - 1;
+      } else {
+        focusables[prevFocused - 1].classList.add("focused");
+        return prevFocused - 1;
+      }
+    })
+  }
 
   function toggleArrowKeyUsage(e) {
     // this allows interactivity with arrow keys in the first place.

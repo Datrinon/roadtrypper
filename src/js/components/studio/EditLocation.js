@@ -17,13 +17,13 @@ function EditLocation() {
     <div>
       <EditButton visible={editModeOn}
         onClick={() => setEditModeOn(true)}>
-          Edit Location
+        Edit Location
       </EditButton>
       {
         editModeOn &&
         <>
-        <EditLocationInput />
-        <button onClick={() => setEditModeOn(false)}>Close</button>
+          <EditLocationInput />
+          <button onClick={() => setEditModeOn(false)}>Close</button>
         </>
       }
     </div>
