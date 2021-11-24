@@ -58,6 +58,9 @@ function EditLocationInput() {
   const [suggestions, setSuggestions] = useState(null);
 
   function registerPlaceOnMap(result) {
+    // clear out suggestions box
+    setSuggestions();
+
     const newPlaceIcon = getLIcon("ea4335");
     const placeNameText = result.label.split(", ")[0];
 
