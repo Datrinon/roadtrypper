@@ -21,7 +21,10 @@ function EditLocation() {
       </EditButton>
       {
         editModeOn &&
+        <>
         <EditLocationInput />
+        <button onClick={() => setEditModeOn(false)}>Close</button>
+        </>
       }
     </div>
   )
