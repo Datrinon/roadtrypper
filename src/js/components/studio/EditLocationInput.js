@@ -44,7 +44,7 @@ function EditLocationInput() {
   // if submit is pressed before suggestions come up, we don't show suggestions.
   const [submitPressed, setSubmitPressed] = useState(false);
   const [invalidSearchTerm, setInvalidSearchTerm] = useState(null);
-  const [currentFocused, setCurrentFocused] = useState(0);
+  const currentFocused = useRef(0);
   const searchMarker = useRef();
 
   const showSuggestions = debounce(handleEditLocation, (onFirstSearch ? 250 : 1000));
@@ -174,20 +174,25 @@ function EditLocationInput() {
     if (e.code !== "ArrowDown" && e.code !== "ArrowUp") {
       return;
     }
+    // at this point, disable arrow key behavior.
+    e.preventDefault();
 
     // now we can query select all the elements. (input field + all search results)
     const focusables = Array.from(document.body.querySelectorAll(
       ".search-field, .search-results > *:not(search-result-failure)"
     ));
 
-    console.log(focusables);
+    // focus on the element with index equal to currentFocused 
 
+    // then, focus on the next or previous element.
     switch (e.code) {
       case "ArrowDown":
-
+        console.log("Down");
+        nextFocused(focusables);
         break;
       case "ArrowUp":
-        console.log("Arrow up");
+        console.log("Up");
+        previousFocused(focusables);
         break;
       default:
         return;
@@ -195,31 +200,24 @@ function EditLocationInput() {
   }
 
   function nextFocused(focusables) {
-    setCurrentFocused(prevFocused => {
-      focusables[prevFocused].classList.remove("focused");
 
-      if (prevFocused + 1 >= focusables.length) {
-        focusables[0].classList.add("focused");
-        return 0;
-      } else {
-        focusables[prevFocused + 1].classList.add("focused");
-        return prevFocused + 1;
-      }
-    })
+    if (currentFocused.current >= (focusables.length - 1)) {
+      currentFocused.current = 0;
+    } else {
+      currentFocused.current = currentFocused.current + 1;
+    }
+
+    focusables[currentFocused.current].focus();
   }
 
   function previousFocused(focusables) {
-    setCurrentFocused(prevFocused => {
-      focusables[prevFocused].classList.remove("focused");
+    if (currentFocused.current - 1 < 0) {
+      currentFocused.current = (focusables.length - 1);
+    } else {
+      currentFocused.current = currentFocused.current - 1;
+    }
 
-      if (prevFocused - 1 < 0) {
-        focusables[focusables.length - 1].classList.add("focused");
-        return focusables.length - 1;
-      } else {
-        focusables[prevFocused - 1].classList.add("focused");
-        return prevFocused - 1;
-      }
-    })
+    focusables[currentFocused.current].focus();
   }
 
   function toggleArrowKeyUsage(e) {
@@ -227,25 +225,27 @@ function EditLocationInput() {
     switch (e.type) {
       case 'focus': // focus in
         console.log("focus in");
-        window.addEventListener('keydown', handleArrowKeyPress);
+        window.onkeydown = handleArrowKeyPress;
         break;
       default:
-        window.removeEventListener('keydown', handleArrowKeyPress);
+        console.log("focus out");
+        window.onkeydown = null;
         break;
     }
   }
 
   return (
-    <form onSubmit={handleSearch}>
-      <div className="search-field">
+    <form
+      onFocus={toggleArrowKeyUsage}
+      onBlur={toggleArrowKeyUsage}
+      onSubmit={handleSearch}>
+      <div>
         <input
-          className="details poi-location-edit"
+          className="details poi-location-edit search-field"
           ref={poiLocationEditRef}
           // Set to 1000 because of nominatim's usage policy requirements.
           onKeyDown={showSuggestions}
           onChange={() => setInvalidSearchTerm(null)}
-          onFocus={toggleArrowKeyUsage}
-          onBlur={toggleArrowKeyUsage}
           type="search"
           disabled={submitPressed}
         />
