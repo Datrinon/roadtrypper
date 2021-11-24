@@ -13,7 +13,7 @@ import { faMapMarked, faSpinner } from '@fortawesome/free-solid-svg-icons'
 
 
 
-const ListingBox = styled.div`
+const ListingBox = styled.button`
   display: flex;
   flex-direction: row;
 `
@@ -60,6 +60,8 @@ function EditLocationInput() {
   function registerPlaceOnMap(result) {
     // clear out suggestions box
     setSuggestions();
+    // set the suggestion on the search box.
+    poiLocationEditRef.current.value = result.label;
 
     const newPlaceIcon = getLIcon("ea4335");
     const placeNameText = result.label.split(", ")[0];
@@ -96,7 +98,10 @@ function EditLocationInput() {
       const label = result.label.split(", ");
 
       return (
-        <ListingBox key={index} onClick={registerPlaceOnMap.bind(null, result)}>
+        <ListingBox
+          key={index}
+          onClick={registerPlaceOnMap.bind(null, result)}
+          tabIndex={-1}>
           <MapIcon icon={faMapMarked} />
           <ListingLabel>
             <ListingName className="listing-name">
@@ -162,6 +167,34 @@ function EditLocationInput() {
     }
   }
 
+  // this handles behavior for arrow key navigation.
+  const handleArrowKeyPress = (e) => {
+    switch (e.code) {
+      case "ArrowDown":
+        console.log("Arrow down");
+        break;
+      case "ArrowUp":
+        console.log("Arrow up");
+        break;
+      default:
+        break;
+    }
+  }
+
+
+  function toggleArrowKeyUsage(e) {
+    // this allows interactivity with arrow keys in the first place.
+    switch (e.type) {
+      case 'focus': // focus in
+        console.log("focus in");
+        window.addEventListener('keydown', handleArrowKeyPress);
+        break;
+      default:
+        window.removeEventListener('keydown', handleArrowKeyPress);
+        break;
+    }
+  }
+
   return (
     <form onSubmit={handleSearch}>
       <div className="search-field">
@@ -171,6 +204,8 @@ function EditLocationInput() {
           // Set to 1000 because of nominatim's usage policy requirements.
           onKeyDown={showSuggestions}
           onChange={() => setInvalidSearchTerm(null)}
+          onFocus={toggleArrowKeyUsage}
+          onBlur={toggleArrowKeyUsage}
           type="search"
           disabled={submitPressed}
         />
