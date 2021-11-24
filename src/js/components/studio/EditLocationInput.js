@@ -46,6 +46,8 @@ function EditLocationInput() {
   const [invalidSearchTerm, setInvalidSearchTerm] = useState(null);
   const searchMarker = useRef();
 
+  const showSuggestions = debounce(handleEditLocation, (onFirstSearch ? 250 : 1000));
+
   const provider = new OpenStreetMapProvider({
     params: {
       limit: 5,
@@ -111,7 +113,7 @@ function EditLocationInput() {
     if (onFirstSearch) {
       setOnFirstSearch(false);
     }
-    if (poiLocationEditRef.current.value.length === 0 || submitPressed) {
+    if (poiLocationEditRef.current.value.length === 0) {
       setSuggestions();
       return;
     }
@@ -134,6 +136,11 @@ function EditLocationInput() {
    */
   async function handleSearch(e) {
     e.preventDefault();
+
+    // clear out invocations queue.
+    showSuggestions.cancel();
+    // clear suggestions field.
+    setSuggestions();
 
     // disable search button to prevent api from being overloaded.
     setSubmitPressed(true);
@@ -159,9 +166,10 @@ function EditLocationInput() {
           className="details poi-location-edit"
           ref={poiLocationEditRef}
           // Set to 1000 because of nominatim's usage policy requirements.
-          onKeyDown={debounce(handleEditLocation, (onFirstSearch ? 250 : 1000))}
+          onKeyDown={showSuggestions}
           onChange={() => setInvalidSearchTerm(null)}
           type="search"
+          disabled={submitPressed}
         />
         <button type="submit" disabled={submitPressed}>Search</button>
         {
