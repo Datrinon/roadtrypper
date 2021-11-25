@@ -92,6 +92,21 @@ function EditLocationInput() {
 
     searchMarker.current.bindTooltip(placeName).openTooltip();
 
+    let container = document.createElement("div");
+    let prompt = document.createElement('p');
+    prompt.textContent = "Is this location OK?";
+    let saveButton = document.createElement('button');
+    saveButton.textContent = "Update";
+
+    saveButton.addEventListener("click", (e) => {
+      console.log(e);
+    });
+
+    container.append(prompt, saveButton);
+
+
+    searchMarker.current.bindPopup(container).openPopup();
+
     // now fit the bounds of the map.
     mapRef.current.flyToBounds(result.bounds, { padding: L.point(15, 15) });
   }
@@ -149,7 +164,7 @@ function EditLocationInput() {
   async function handleSearch(e) {
     e.preventDefault();
 
-    // clear out invocations queue.
+    // clear out invocations queue, since the user has already confirmed their search.
     fetchSuggestions.cancel();
     // clear suggestions field.
     setSuggestions();
