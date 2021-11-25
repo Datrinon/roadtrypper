@@ -99,8 +99,6 @@ function Map({ data, setActivePin }) {
   function whenMapCreated(instance) {
     mapRef.current = instance;
 
-    console.log(instance);
-
     mapRef.current.addControl(search);
   }
 

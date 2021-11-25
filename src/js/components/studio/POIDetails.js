@@ -209,7 +209,7 @@ function PoiDetails({ activePin }) {
         {belongsToDayElement}
         {dayTitleElement}
         {poiTitleElement}
-        <EditLocation />
+        <EditLocation activePoi={activePoi} />
         {descElement}
         {
           photos.length > 0 ?

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 // le geosearch
 import L from "leaflet";
 import { getLIcon } from './LeafletIcon';
-import { MapInstance, TripContext, TripDispatch } from './Studio';
+import { MapInstance, TripContext } from './Studio';
 import { OpenStreetMapProvider } from 'leaflet-geosearch';
 import { debounce } from 'lodash';
 
@@ -37,8 +37,9 @@ const MapIcon = styled(FontAwesomeIcon)`
   align-self: center;
 `
 
-function EditLocationInput() {
+function EditLocationInput({updatePOILocation}) {
   const mapRef = React.useContext(MapInstance);
+
   const poiLocationEditRef = useRef();
   const [onFirstSearch, setOnFirstSearch] = useState(true);
   // if submit is pressed before suggestions come up, we don't show suggestions.
@@ -62,7 +63,7 @@ function EditLocationInput() {
 
   function registerPlaceOnMap(result) {
     // clear out suggestions box
-    setSuggestions();
+    setDisplaySuggestions(false);
     // set the suggestion on the search box.
     poiLocationEditRef.current.value = result.label;
 
@@ -99,7 +100,8 @@ function EditLocationInput() {
     saveButton.textContent = "Update";
 
     saveButton.addEventListener("click", (e) => {
-      console.log(e);
+      updatePOILocation([result.y, result.x]);
+      searchMarker.current.remove();
     });
 
     container.append(prompt, saveButton);
