@@ -44,10 +44,13 @@ function EditLocationInput() {
   // if submit is pressed before suggestions come up, we don't show suggestions.
   const [submitPressed, setSubmitPressed] = useState(false);
   const [invalidSearchTerm, setInvalidSearchTerm] = useState(null);
+  const [suggestions, setSuggestions] = useState(null);
+  const [displaySuggestions, setDisplaySuggestions] = useState(false);
   const currentFocused = useRef(0);
   const searchMarker = useRef();
+  const formInput = useRef();
 
-  const showSuggestions = debounce(handleEditLocation, (onFirstSearch ? 250 : 1000));
+  const fetchSuggestions = debounce(handleEditLocation, (onFirstSearch ? 250 : 1000));
 
   const provider = new OpenStreetMapProvider({
     params: {
@@ -56,7 +59,6 @@ function EditLocationInput() {
     }
   });
 
-  const [suggestions, setSuggestions] = useState(null);
 
   function registerPlaceOnMap(result) {
     // clear out suggestions box
@@ -108,7 +110,8 @@ function EditLocationInput() {
             <ListingName className="listing-name">
               {label.shift()}
             </ListingName>
-            , {label.join(", ")}
+            {label.length >= 1 && ", "}
+            {label.join(", ")}
           </ListingLabel>
         </ListingBox>
 
@@ -147,7 +150,7 @@ function EditLocationInput() {
     e.preventDefault();
 
     // clear out invocations queue.
-    showSuggestions.cancel();
+    fetchSuggestions.cancel();
     // clear suggestions field.
     setSuggestions();
 
@@ -170,7 +173,13 @@ function EditLocationInput() {
 
   // this handles behavior for arrow key navigation.
   const handleArrowKeyPress = (e) => {
-    // first, filter out any non-arrow key presses.
+    // check if user pressed escape, if so, then remove the binding.
+    if (e.code === "Escape") {
+      removeArrowKeyPress(e);
+      return;
+    }
+
+    // then, filter out any non-arrow key presses.
     if (e.code !== "ArrowDown" && e.code !== "ArrowUp") {
       return;
     }
@@ -179,7 +188,7 @@ function EditLocationInput() {
 
     // now we can query select all the elements. (input field + all search results)
     const focusables = Array.from(document.body.querySelectorAll(
-      ".search-field, .search-results > *:not(search-result-failure)"
+      ".search-field, .search-results > *:not(.search-result-failure)"
     ));
 
     // focus on the element with index equal to currentFocused 
@@ -187,15 +196,13 @@ function EditLocationInput() {
     // then, focus on the next or previous element.
     switch (e.code) {
       case "ArrowDown":
-        console.log("Down");
         nextFocused(focusables);
         break;
       case "ArrowUp":
-        console.log("Up");
         previousFocused(focusables);
         break;
       default:
-        return;
+        break;
     }
   }
 
@@ -220,31 +227,37 @@ function EditLocationInput() {
     focusables[currentFocused.current].focus();
   }
 
-  function toggleArrowKeyUsage(e) {
-    // this allows interactivity with arrow keys in the first place.
-    switch (e.type) {
-      case 'focus': // focus in
-        console.log("focus in");
-        window.onkeydown = handleArrowKeyPress;
-        break;
-      default:
-        console.log("focus out");
-        window.onkeydown = null;
-        break;
+  function removeArrowKeyPress(e) {
+    if (e instanceof KeyboardEvent || !e.composedPath().includes(formInput.current)) {
+      window.onkeydown = null;
+      window.onclick = null;
+      currentFocused.current = 0;
+      setDisplaySuggestions(false);
     }
+  }
+
+  function onFormFocus(e) {
+    // this allows interactivity with arrow keys.
+    window.onkeydown = handleArrowKeyPress;
+    // however, clicking on the window, we evaluate whether or not to remove that functionality.
+    window.onclick = removeArrowKeyPress;
+
+    // additionally, we set displaySuggestions to true in case
+    // it was set to false previously to hide it (when out of focus).
+    setDisplaySuggestions(true);
   }
 
   return (
     <form
-      onFocus={toggleArrowKeyUsage}
-      onBlur={toggleArrowKeyUsage}
+      ref={formInput}
+      onFocus={onFormFocus}
       onSubmit={handleSearch}>
       <div>
         <input
           className="details poi-location-edit search-field"
           ref={poiLocationEditRef}
           // Set to 1000 because of nominatim's usage policy requirements.
-          onKeyDown={showSuggestions}
+          onKeyDown={fetchSuggestions}
           onChange={() => setInvalidSearchTerm(null)}
           type="search"
           disabled={submitPressed}
@@ -258,14 +271,14 @@ function EditLocationInput() {
         }
       </div>
       <div className="search-results">
-        {suggestions}
-        {
-          invalidSearchTerm &&
-          <div className="search-result-failure">
-            No locations found for '{invalidSearchTerm}'.
-          </div>
-        }
+        {displaySuggestions && suggestions}
       </div>
+      {
+        invalidSearchTerm &&
+        <div className="search-result-failure">
+          No locations found for '{invalidSearchTerm}'.
+        </div>
+      }
     </form>
   )
 }
