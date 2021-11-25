@@ -260,7 +260,7 @@ function EditLocationInput({updatePOILocation}) {
     window.onclick = removeArrowKeyPress;
 
     // additionally, we set displaySuggestions to true in case
-    // it was set to false previously to hide it (when out of focus).
+    // it was set to false previously to hide it (since it was out of focus).
     setDisplaySuggestions(true);
   }
 
