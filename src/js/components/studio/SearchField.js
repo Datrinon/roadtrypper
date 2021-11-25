@@ -7,28 +7,32 @@ import { debounce } from 'lodash';
 
 /**
  * Generic Searchbar which provides an arrow-key navigatable list of suggestions. 
- * Please provide all of the following parameters to use this component.
+ * Please provide all of the following parameters to use this component. You may
+ * also provide a ref if you wish to get a reference to the value of the searchbar,
+ * which is useful for updating its value based on the result.
  * @param {function: returns []} fetchForSuggestions - A callback to invoke and obtain suggestions. It should return an array of results.
  * @param {function} suggestionMap - A callback which maps suggestions into elements.
  * @param {function} onSearchCallback - A callback to invoke when the user presses SEARCH.
  * Ideally, this should be the same click callback that you use inside of your suggestionMap.
  * @param {number} debounceTimer - A timer to wait to expire before invoking the 
  * fetch suggestions.
- * @param {boolean} fasterFirstSearch - Should the first search be faster? This
+ * @param {number} fasterFirstSearch - Optional timer for the first search. This
  * is used because some APIs restrict the # of times they can be called for 
  * a given duration of time. In such cases, it would be useful to have the first
- * API call invoke faster than the subsequent ones. 
+ * API call invoke faster than the subsequent ones. Provide `null` if you do not 
+ * need it.
  * @param {string[]} classNames - Class names that should be given to the search field container.
  * 
  * @returns `JSXElement` -- Searchbar component.
  */
-function SearchField({
+const SearchField = React.forwardRef(({
   fetchForSuggestions,
   suggestionMap,
   onSearchCallback,
   debounceTimer,
   fasterFirstSearch,
-  classNames}) {
+  classNames }, ref) => {
+
   const [suggestions, setSuggestions] = useState(null);
   const [displaySuggestions, setDisplaySuggestions] = useState(false);
   const [invalidSearchTerm, setInvalidSearchTerm] = useState(null);
@@ -40,14 +44,18 @@ function SearchField({
   const formInput = useRef();
 
   let generateSuggestions;
-  if (fasterFirstSearch) {
-    generateSuggestions = debounce(onSearchFieldInput, (onFirstSearch ? 250 : debounceTimer));
+  if (!!fasterFirstSearch) {
+    generateSuggestions = debounce(onSearchFieldInput, (onFirstSearch ? fasterFirstSearch : debounceTimer));
   } else {
     generateSuggestions = debounce(onSearchFieldInput, debounceTimer);
   }
 
   function renderSearchResults(results) {
     const listedResults = results.map(suggestionMap);
+
+    listedResults.forEach((elem) => {
+      elem.addEventListener("click", () => setDisplaySuggestions(false));
+    });
 
     setSuggestions(listedResults);
   }
@@ -69,68 +77,68 @@ function SearchField({
     }
   }
 
-    /**
-   * When the user presses the search button, just get the first result from
-   * what the suggestions box would have shown.
-   * @param {*} e - Submit Event.
-   */
-     async function handleSearch(e) {
-      e.preventDefault();
-  
-      // clear out invocations queue, since the user has already confirmed their search.
-      generateSuggestions.cancel();
-      // clear suggestions field.
-      setSuggestions();
-  
-      // disable search button to prevent api from being overloaded.
-      setSubmitPressed(true);
-  
-      const results = await fetchForSuggestions();
-  
-      setSubmitPressed(false);
-  
-      if (results[0]) {
-        onSearchCallback(results[0]);
-      } else {
-        // else invalid search, and just show the user no place found.  
-        setInvalidSearchTerm(searchRef.current.value);
-      }
+  /**
+ * When the user presses the search button, just get the first result from
+ * what the suggestions box would have shown.
+ * @param {*} e - Submit Event.
+ */
+  async function handleSearch(e) {
+    e.preventDefault();
+
+    // clear out invocations queue, since the user has already confirmed their search.
+    generateSuggestions.cancel();
+    // clear suggestions field.
+    setSuggestions();
+
+    // disable search button to prevent api from being overloaded.
+    setSubmitPressed(true);
+
+    const results = await fetchForSuggestions();
+
+    setSubmitPressed(false);
+
+    if (results[0]) {
+      onSearchCallback(results[0]);
+    } else {
+      // else invalid search, and just show the user no place found.  
+      setInvalidSearchTerm(searchRef.current.value);
     }
-  
-    // this handles behavior for arrow key navigation.
-    const handleArrowKeyPress = (e) => {
-      // check if user pressed escape, if so, then remove the binding.
-      if (e.code === "Escape") {
-        removeArrowKeyPress(e);
-        return;
-      }
-  
-      // then, filter out any non-arrow key presses.
-      if (e.code !== "ArrowDown" && e.code !== "ArrowUp") {
-        return;
-      }
-      // at this point, disable arrow key behavior.
-      e.preventDefault();
-  
-      // now we can query select all the elements. (input field + all search results)
-      const focusables = Array.from(document.body.querySelectorAll(
-        ".search-field, .search-results > *:not(.search-result-failure)"
-      ));
-  
-      // focus on the element with index equal to currentFocused 
-  
-      // then, focus on the next or previous element.
-      switch (e.code) {
-        case "ArrowDown":
-          nextFocused(focusables);
-          break;
-        case "ArrowUp":
-          previousFocused(focusables);
-          break;
-        default:
-          break;
-      }
+  }
+
+  // this handles behavior for arrow key navigation.
+  const handleArrowKeyPress = (e) => {
+    // check if user pressed escape, if so, then remove the binding.
+    if (e.code === "Escape") {
+      removeArrowKeyPress(e);
+      return;
     }
+
+    // then, filter out any non-arrow key presses.
+    if (e.code !== "ArrowDown" && e.code !== "ArrowUp") {
+      return;
+    }
+    // at this point, disable arrow key behavior.
+    e.preventDefault();
+
+    // now we can query select all the elements. (input field + all search results)
+    const focusables = Array.from(document.body.querySelectorAll(
+      ".search-field, .search-results > *:not(.search-result-failure)"
+    ));
+
+    // focus on the element with index equal to currentFocused 
+
+    // then, focus on the next or previous element.
+    switch (e.code) {
+      case "ArrowDown":
+        nextFocused(focusables);
+        break;
+      case "ArrowUp":
+        previousFocused(focusables);
+        break;
+      default:
+        break;
+    }
+  }
 
   /**
    * Moves focus to the next focused result.
@@ -220,6 +228,7 @@ function SearchField({
       }
     </form>
   )
-}
+});
+
 
 export default SearchField

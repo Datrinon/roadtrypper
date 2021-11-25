@@ -11,7 +11,7 @@ import { debounce } from 'lodash';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMapMarked, faSpinner } from '@fortawesome/free-solid-svg-icons'
 
-
+import SearchField from './SearchField';
 
 const ListingBox = styled.button`
   display: flex;
@@ -37,7 +37,112 @@ const MapIcon = styled(FontAwesomeIcon)`
   align-self: center;
 `
 
-function EditLocationInput({updatePOILocation}) {
+function EditLocationInput({ updatePOILocation }) {
+  const mapRef = React.useContext(MapInstance);
+  const searchRef = useRef();
+
+  const searchMarker = useRef();
+
+  const provider = useRef(new OpenStreetMapProvider({
+    params: {
+      limit: 5,
+      addressdetails: 1
+    }
+  }));
+
+  function registerPlaceOnMap(result) {
+    // set the suggestion on the search box.
+    searchRef.current.value = result.label;
+    // stuck because the forminput doesn't know what the label will be.
+    // and the HOC shouldnt know what the formInput ref is.
+    // solution: get the ref in the input here, and then pass the ref to the created searchbar.
+
+    const newPlaceIcon = getLIcon("ea4335");
+    const placeNameText = result.label.split(", ")[0];
+
+    if (searchMarker.current) {
+      searchMarker.current.remove();
+    }
+
+    searchMarker.current = L.marker([result.y, result.x],
+      {
+        icon: newPlaceIcon,
+        zIndexOffset: 1000,
+        title: placeNameText
+      })
+
+    searchMarker.current.addTo(mapRef.current);
+
+    // tooltip displaying the name of the place.
+    const placeName = L.tooltip({
+      offset: [0, 7.5],
+      permanent: true,
+      className: "poi-search-result"
+    });
+    placeName.setContent(placeNameText);
+
+    searchMarker.current.bindTooltip(placeName).openTooltip();
+
+    let container = document.createElement("div");
+    let prompt = document.createElement('p');
+    prompt.textContent = "Is this location OK?";
+    let saveButton = document.createElement('button');
+    saveButton.textContent = "Update";
+
+    saveButton.addEventListener("click", (e) => {
+      updatePOILocation([result.y, result.x]);
+      searchMarker.current.remove();
+    });
+
+    container.append(prompt, saveButton);
+
+
+    searchMarker.current.bindPopup(container).openPopup();
+
+    // now fit the bounds of the map.
+    mapRef.current.flyToBounds(result.bounds, { padding: L.point(15, 15) });
+  }
+
+  function mapLocationResultsToElem(result, index) {
+    const label = result.label.split(", ");
+
+    return (
+      <ListingBox
+        key={index}
+        onClick={registerPlaceOnMap.bind(null, result)}
+        tabIndex={-1}>
+        <MapIcon icon={faMapMarked} />
+        <ListingLabel>
+          <ListingName className="listing-name">
+            {label.shift()}
+          </ListingName>
+          {label.length >= 1 && ", "}
+          {label.join(", ")}
+        </ListingLabel>
+      </ListingBox>
+
+    );
+  }
+
+  function fetchLocations() {
+    return provider.search({
+      query: searchRef.current.value,
+    });
+  }
+
+  return (
+    <SearchField
+      fetchForSuggestions={fetchLocations}
+      suggestionMap={mapLocationResultsToElem}
+      onSearchCallback={registerPlaceOnMap}
+      debounceTimer={1000}
+      fasterFirstSearch={250}
+      classNames={["edit-location-poi"]} />
+  )
+}
+
+//#region old code
+function EditLocationInputOld({ updatePOILocation }) {
   const mapRef = React.useContext(MapInstance);
 
   const poiLocationEditRef = useRef();
@@ -66,6 +171,8 @@ function EditLocationInput({updatePOILocation}) {
     setDisplaySuggestions(false);
     // set the suggestion on the search box.
     poiLocationEditRef.current.value = result.label;
+    // stuck because the forminput doesn't know what the label will be.
+    // and the HOC shouldnt know what the formInput ref is.
 
     const newPlaceIcon = getLIcon("ea4335");
     const placeNameText = result.label.split(", ")[0];
@@ -299,4 +406,6 @@ function EditLocationInput({updatePOILocation}) {
     </form>
   )
 }
+*/
+//#endregion
 export default EditLocationInput
