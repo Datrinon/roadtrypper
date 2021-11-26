@@ -13,7 +13,7 @@ import { faMapMarked, faSpinner } from '@fortawesome/free-solid-svg-icons'
 
 import SearchField from './SearchField';
 
-const ListingBox = styled.button`
+const ListingBox = styled.div`
   display: flex;
   flex-direction: row;
 `
@@ -96,7 +96,6 @@ function EditLocationInput({ updatePOILocation }) {
 
     container.append(prompt, saveButton);
 
-
     searchMarker.current.bindPopup(container).openPopup();
 
     // now fit the bounds of the map.
@@ -125,13 +124,14 @@ function EditLocationInput({ updatePOILocation }) {
   }
 
   function fetchLocations() {
-    return provider.search({
+    return provider.current.search({
       query: searchRef.current.value,
     });
   }
 
   return (
     <SearchField
+      ref={searchRef}
       fetchForSuggestions={fetchLocations}
       suggestionMap={mapLocationResultsToElem}
       onSearchCallback={registerPlaceOnMap}
@@ -406,6 +406,5 @@ function EditLocationInputOld({ updatePOILocation }) {
     </form>
   )
 }
-*/
 //#endregion
 export default EditLocationInput

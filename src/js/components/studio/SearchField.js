@@ -1,9 +1,19 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
+import styled from 'styled-components';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 
 import { debounce } from 'lodash';
 
+
+const BlockButton = styled.button`
+  display: block;
+
+  &:focus {
+    border: 1px solid red;
+    background-color: red;
+  }
+`
 
 /**
  * Generic Searchbar which provides an arrow-key navigatable list of suggestions. 
@@ -39,7 +49,6 @@ const SearchField = React.forwardRef(({
   const [submitPressed, setSubmitPressed] = useState(false);
   const [onFirstSearch, setOnFirstSearch] = useState(false);
 
-  const searchRef = useRef();
   const currentFocused = useRef(0);
   const formInput = useRef();
 
@@ -51,10 +60,32 @@ const SearchField = React.forwardRef(({
   }
 
   function renderSearchResults(results) {
-    const listedResults = results.map(suggestionMap);
+    let listedResults = results.map(suggestionMap);
 
-    listedResults.forEach((elem) => {
-      elem.addEventListener("click", () => setDisplaySuggestions(false));
+    // prevents bubbling up throug hthe dom tree, which would cause 
+    // the block button to be "clicked" again repeatedly and continuously
+    // trigger the event, crashing the program.
+    const clickEvent = new MouseEvent('click', {
+      view: window,
+      bubbles: true,
+      cancelable: true
+    });
+
+    listedResults = listedResults.map(elem => {
+      return (
+        <BlockButton
+          onClick={(e) => {
+            setDisplaySuggestions(false);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.currentTarget.querySelector("*").dispatchEvent(clickEvent);
+            }
+          }}
+          className="search-result">
+          {elem}
+        </BlockButton>
+      )
     });
 
     setSuggestions(listedResults);
@@ -64,10 +95,11 @@ const SearchField = React.forwardRef(({
     if (onFirstSearch) {
       setOnFirstSearch(false);
     }
-    if (searchRef.current.value.length === 0) {
+    if (ref.current.value.length === 0) {
       setSuggestions();
       return;
     }
+
     try {
       const results = await fetchForSuggestions();
 
@@ -99,9 +131,10 @@ const SearchField = React.forwardRef(({
 
     if (results[0]) {
       onSearchCallback(results[0]);
+      currentFocused.current = 0;
     } else {
       // else invalid search, and just show the user no place found.  
-      setInvalidSearchTerm(searchRef.current.value);
+      setInvalidSearchTerm(ref.current.value);
     }
   }
 
@@ -202,7 +235,7 @@ const SearchField = React.forwardRef(({
       <div>
         <input
           className="search-field"
-          ref={searchRef}
+          ref={ref}
           // Set to 1000 because of nominatim's usage policy requirements.
           onKeyDown={generateSuggestions}
           onChange={() => setInvalidSearchTerm(null)}
