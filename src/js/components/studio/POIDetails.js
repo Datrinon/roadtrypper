@@ -109,17 +109,18 @@ function PoiDetails({ activePin }) {
     //#endregion
 
     //#region poi order
-    let poiOrderDisplay = (<h2>Location {activePoi.order + 1}</h2>);
+    let dayPOIs = trip
+      .pois
+      .filter(poi => poi.dayId === activePoi.dayId)
+      .sort((poiA, poiB) => poiA.order - poiB.order);
+    let poiOrderDisplay = (<h2>Location {activePoi.order + 1} / {dayPOIs.length} </h2>);
     let poiOrderEdit = (<select
       name="poi-order"
       id="poi-order-select"
       defaultValue={activePoi.order}
       ref={poiOrderEditRef}>
         {
-          trip.pois
-            .filter(poi => poi.dayId === activePoi.dayId)
-            .sort((poiA, poiB) => poiA.order - poiB.order)
-            .map((poi) => {
+          dayPOIs.map((poi) => {
               return <option
                 key={poi.order}
                 value={poi.order}>
