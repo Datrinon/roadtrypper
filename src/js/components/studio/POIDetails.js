@@ -38,6 +38,7 @@ function PoiDetails({ activePin }) {
   const dispatch = useContext(TripDispatch);
 
   const poiDayEditRef = useRef();
+  const poiOrderEditRef = useRef();
   const dayTitleEditRef = useRef();
   const poiTitleEditRef = useRef();
   const poiDescEditRef = useRef();
@@ -72,7 +73,7 @@ function PoiDetails({ activePin }) {
         defaultValue={day.order}
         ref={poiDayEditRef}>
         {
-          // I just need the map to get the index function.
+          // I just need map to return with the index.
           trip.days.map((day, index) => {
             return <option
               key={index}
@@ -108,7 +109,45 @@ function PoiDetails({ activePin }) {
     //#endregion
 
     //#region poi order
-    //! TODO
+    let poiOrderDisplay = (<h2>Location {activePoi.order + 1}</h2>);
+    let poiOrderEdit = (<select
+      name="poi-order"
+      id="poi-order-select"
+      defaultValue={activePoi.order}
+      ref={poiOrderEditRef}>
+        {
+          trip.pois
+            .filter(poi => poi.dayId === activePoi.dayId)
+            .sort((poiA, poiB) => poiA.order - poiB.order)
+            .map((poi) => {
+              return <option
+                key={poi.order}
+                value={poi.order}>
+                  {poi.order + 1}
+                </option>
+
+            })
+        }
+      </select>);
+    let poiOrderUpdate = () => {
+      // if the selected order is the same, then don't update
+      if (poiOrderEditRef.current.value === activePoi.order) {
+        return;
+      }
+
+      dispatch({
+        type: "rearrange_poi",
+        payload: {
+          id: activePoi.id,
+          newOrder: parseInt(poiOrderEditRef.current.value)
+        }
+      })
+    }
+
+    const poiOrderElement = (<HoverToEditInput
+      displayVer={poiOrderDisplay}
+      editVer={poiOrderEdit}
+      onClickSave={poiOrderUpdate} />);
     //#endregion
 
     //#region Day Title
@@ -207,6 +246,7 @@ function PoiDetails({ activePin }) {
     return (
       <>
         {belongsToDayElement}
+        {poiOrderElement}
         {dayTitleElement}
         {poiTitleElement}
         <EditLocation activePoi={activePoi} />

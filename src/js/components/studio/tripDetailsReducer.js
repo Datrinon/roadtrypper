@@ -66,6 +66,20 @@ export function tripReducer(state, action) {
 
       return stateCopy;
     }
+    case 'rearrange_poi': {
+      const stateCopy = _.cloneDeep(state);
+      const { "id": poiId, "newOrder": newPoiOrder } = action.payload;
+
+      const poi = stateCopy.pois.find(poi => poi.id === poiId);
+      const poiWithNewOrder = stateCopy.pois.find(newPoi => (
+        newPoi.dayId === poi.dayId && newPoi.order === newPoiOrder
+        ));
+
+      poiWithNewOrder.order = poi.order; // assign this the old order
+      poi.order = newPoiOrder; // give ours the new order
+
+      return stateCopy;
+    }
     case 'delete': {
       const stateCopy = _.cloneDeep(state);
       const { type, id } = action.payload;
