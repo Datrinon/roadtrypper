@@ -17,10 +17,28 @@ export function tripReducer(state, action) {
       const stateCopy = _.cloneDeep(state);
       const { type, fkname, fkid, ...values } = action.payload;
 
-      const record = {
-        [fkname]: fkid,
-        id: stateCopy[type].length,
-        ...values
+      let id = stateCopy[type].reduce((greatestId, item) => {
+        if (item.id > greatestId) {
+          return item.id;
+        } else {
+          return greatestId;
+        }
+      }, -1);
+
+      id += 1;
+
+      let record;
+      if (!fkid) {
+        record = {
+          id,
+          ...values
+        };
+      } else {
+        record = {
+          [fkname]: fkid,
+          id,
+          ...values
+        };
       }
 
       stateCopy[type].push(record);

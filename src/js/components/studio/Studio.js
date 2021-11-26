@@ -68,6 +68,27 @@ function Studio({ tripId }) {
     // });
   }
 
+  function addDay() {
+    let randomColor = "";
+    for (let i = 0; i < 3; i++) {
+      let result = Math.round(Math.random() * 256).toString(16).padStart(2, '0');
+      randomColor += result;
+    }
+
+    tripDispatch({
+      type: "add",
+      payload: {
+        type:"days",
+        fkname: null,
+        fkid: null,
+        tripId: trip.days[0].tripId,
+        order: trip.days.length,
+        title: "",
+        color: randomColor, 
+      }
+    })
+  }
+
   if (pageState === STATE.LOADING) {
     return <div>Loading</div>;
   }
@@ -85,7 +106,7 @@ function Studio({ tripId }) {
               value={trip.title}
               onChange={onChangeTitle} />
             <div className="add-options">
-              <button className="add-day" type="button">Add Day</button>
+              <button className="add-day" type="button" onClick={addDay}>Add Day</button>
               <button className="add-POI" type="button">Add POI</button>
             </div>
             <div className="days">

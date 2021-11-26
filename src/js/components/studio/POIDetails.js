@@ -19,7 +19,7 @@ import EditLocationInput from './EditLocationInput';
 import EditLocation from './EditLocation';
 
 
-// ! TODO Remove this later when finished debugging.
+// ! SAMPLE_FLAG ! Remove this later when finished debugging.
 function importSampleImages(r = require.context("../../../data/images", false, /\.(png|jpe?g|svg)$/)) {
   let images = {};
   r.keys().forEach((item) => { images[item.replace('./', '')] = r(item)["default"]; });
@@ -29,7 +29,7 @@ function importSampleImages(r = require.context("../../../data/images", false, /
 function PoiDetails({ activePin }) {
   const [activePoi, setActivePoi] = useState(activePin);
   const [collapsed, setCollapsed] = useState(!activePin);
-  const [sampleImages, setSampleImages] = useState(importSampleImages()); // debug, remove later.
+  const [sampleImages, setSampleImages] = useState(importSampleImages()); // ! SAMPLE_FLAG ! debug, remove later.
   const [day, setDay] = useState(null);
   const [photos, setPhotos] = useState(null);
   const [galleryStartingIndex, setGalleryStartingIndex] = useState(null);

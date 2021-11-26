@@ -2,7 +2,7 @@ const MOCK_TRIP_ID = "dans-0";
 
 const SAMPLE_DAYS = [
   {
-    tripid: "dans-0",
+    tripId: "dans-0",
     id: 0,
     order: 0,
     title: "Adventure Beginnings",
@@ -53,7 +53,7 @@ const SAMPLE_DAYS = [
     ],
   },
   {
-    tripid: "dans-0",
+    tripId: "dans-0",
     id: 1,
     title: "Adventure Mid",
     order: 1,
@@ -125,7 +125,7 @@ const SAMPLE_DAYS = [
     ],
   },
   {
-    tripid: "dans-0",
+    tripId: "dans-0",
     id: 2,
     order: 2,
     title: "The Great Capital",
@@ -207,14 +207,14 @@ const SAMPLE_DAYS_v2 = [
     color: "0066ff",
   },
   {
-    tripid: "dans-0",
+    tripId: "dans-0",
     id: 1,
     title: "Adventure Mid",
     order: 1,
     color: "ff3300",
   },
   {
-    tripid: "dans-0",
+    tripId: "dans-0",
     id: 2,
     order: 2,
     title: "The Great Capital",
