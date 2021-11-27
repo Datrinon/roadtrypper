@@ -29,7 +29,6 @@ function importSampleImages(r = require.context("../../../data/images", false, /
 function PoiDetails({ activePin }) {
   console.log(activePin);
   const [activePoi, setActivePoi] = useState(activePin);
-  const [collapsed, setCollapsed] = useState(!activePin);
   const [sampleImages, setSampleImages] = useState(importSampleImages()); // ! SAMPLE_FLAG ! debug, remove later.
   const [day, setDay] = useState(null);
   const [photos, setPhotos] = useState(null);
@@ -54,7 +53,6 @@ function PoiDetails({ activePin }) {
 
 
   useEffect(() => {
-    setCollapsed(!activePin);
     if (!!activePin) {
       updateData();
     }
@@ -261,16 +259,18 @@ function PoiDetails({ activePin }) {
     )
   }
 
+  if (!activePin || !day) {
+    console.log("ayo");
+    return null;
+  }
+
   return (
-    <div className={`poi-details ${collapsed && "collapsed"}`}>
-      {collapsed ? "(currently collapsed)" : "(not collapsed)"}
+    <div className={`poi-details }`}>
       Show Pin Details here.
-      {!collapsed && (
-        <section className="poi-contents">
-          {renderView()}
-        </section>
-      )}
-      {!collapsed && galleryStartingIndex !== null && (
+      <section className="poi-contents">
+        {renderView()}
+      </section>
+      {galleryStartingIndex !== null && (
         <section className="gallery">
           <GalleryView
             SAMPLE_IMAGES={sampleImages}

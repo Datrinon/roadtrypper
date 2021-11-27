@@ -12,6 +12,7 @@ import PoiDetails from './POIDetails';
 
 // Page Loading Management
 import STATE from "../ComponentState";
+import Sidebar from './Sidebar';
 
 
 // Only the details need a dispatch and global context, the general
@@ -113,7 +114,9 @@ function Studio({ tripId }) {
               {mapDayDataToCards()}
             </div>
             <Map data={trip} setActivePin={setActivePin} />
-            <PoiDetails activePin={activePin} />
+            <Sidebar collapseState={!activePin}>
+              <PoiDetails activePin={activePin} />
+            </Sidebar>
           </div>
         </TripDispatch.Provider>
       </MapInstance.Provider>
