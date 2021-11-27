@@ -27,6 +27,7 @@ function importSampleImages(r = require.context("../../../data/images", false, /
 }
 
 function PoiDetails({ activePin }) {
+  console.log(activePin);
   const [activePoi, setActivePoi] = useState(activePin);
   const [collapsed, setCollapsed] = useState(!activePin);
   const [sampleImages, setSampleImages] = useState(importSampleImages()); // ! SAMPLE_FLAG ! debug, remove later.
@@ -44,9 +45,11 @@ function PoiDetails({ activePin }) {
   const poiDescEditRef = useRef();
 
   function updateData() {
-    setActivePoi(trip.pois.find(poi => poi.id === activePin.id));
-    setDay(trip.days.find(day => day.id === activePin.dayId));
-    setPhotos(trip.photos.filter(photo => photo.poiId === activePin.id));
+    const currentPOI = trip.pois.find(poi => poi.id === activePin.id);
+
+    setActivePoi(currentPOI);
+    setDay(trip.days.find(day => day.id === currentPOI.dayId));
+    setPhotos(trip.photos.filter(photo => photo.poiId === currentPOI.id));
   }
 
 
@@ -57,13 +60,12 @@ function PoiDetails({ activePin }) {
     }
   }, [activePin, trip]);
 
-
   function launchGalleryView(index) {
     setGalleryStartingIndex(index);
   }
 
   function renderView() {
-
+    console.log(day);
     //#region Belongs to Day
     let belongsToDayDisplay = (<h1>Day {day.order + 1}</h1>);
     let belongsToDayEdit = (
