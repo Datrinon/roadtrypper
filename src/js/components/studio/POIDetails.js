@@ -242,8 +242,6 @@ function PoiDetails({ activePin }) {
       );
     }
 
-    console.log(photos);
-
     return (
       <>
         {belongsToDayElement}

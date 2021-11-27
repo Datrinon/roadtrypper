@@ -80,7 +80,7 @@ export function tripReducer(state, action) {
       // change the dayId of this poi
       poi.dayId = day.id;
       // place the poi at the end of the pois belonging to that day.
-      poi.order = newPOIOrder + 1;
+      poi.order = newPOIOrder === 0 ? 0 : newPOIOrder + 1;
 
       return stateCopy;
     }
