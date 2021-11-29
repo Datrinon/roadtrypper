@@ -34,7 +34,12 @@ function DayPins({ pois, dayId, icon, mapRef, setActivePin }) {
   }, []);
 
   function onMarkerClick(poi) {
-    setActivePin(poi);
+    const lastClicked = new Date();
+    
+    setActivePin({
+      poi,
+      lastClicked
+    });
   }
 
   return (
