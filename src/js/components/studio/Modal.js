@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import styled from 'styled-components'
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 
 
 const ModalHeader = styled.h1`
@@ -17,7 +17,8 @@ const ModalBody = styled.div`
 
 /**
  * Create a modal element. For optimal use, from your parent component, control
- * its props as state variables.
+ * its props as state variables. the useModal hook conveniently packages such 
+ * state variables; recommend you use that. Anyhow, the props are as follows:
  * @param visible : true if visible; controls display of Modal.
  * @param title : The title of the window.
  * @param confirm :  Optional confirm button to implement in the modal. Provide as
