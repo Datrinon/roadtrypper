@@ -1,16 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react'
 
 /**
- * A hook for managing the state of a Modal. Call this from the top-level of your
- * component, then place the Modal component where needs to be used.
+ * A hook for managing the state of a Modal. Call this hook from the component
+ * in which you need the modal.
  * 
  * The parameters are provided in an object as follows:
- * @param {object} init - Object to initialize the modal with.
- * @param {boolean} visible - True if visible, false if not.
- * @param {string} title - The title for the modal.
- * @param {object} confirm - Optional confirm button to implement in the modal.
+ * @param {object} init - Object to initialize the modal with. It should
+ * have the following properties...:
+ * @prop {boolean} visible - True if visible, false if not.
+ * @prop {string} title - The title for the modal.
+ * @prop {object} confirm - Optional confirm button to implement in the modal.
  * Provide as an object in {msg: string, callback: fn}.
- * @param {element} modalContents - the contents of the modal. 
+ * @prop {element} modalContents - the contents of the modal. 
  */
 function useModal(init = null) {
   const [modalVisible, setModalVisible] = useState(init?.visible ?? false);
