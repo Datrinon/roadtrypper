@@ -19,8 +19,12 @@ function DayPins({ pois, dayId, icon, mapRef, setActivePin }) {
 
   function addHandlerToDayCard() {
     document.querySelector(`.day-card[data-id='${dayId}']`).onclick = () => {
-      const map = mapRef.current;
       const group = groupRef.current;
+      if (Object.keys(group.getBounds()).length === 0) {
+        return;
+      }
+
+      const map = mapRef.current;
       map.flyToBounds(group.getBounds(), {padding: L.point(25, 40), maxZoom: 14});
     }
   }
