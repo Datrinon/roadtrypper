@@ -12,6 +12,11 @@ import React, { useState, useRef, useEffect } from 'react'
  * @prop {object} confirm - Optional confirm button to implement in the modal.
  * Provide as an object in {msg: string, callback: fn}.
  * @prop {element} modalContents - the contents of the modal. 
+ * 
+ * Returns the following as an array.
+ * @returns values - the current values of the parameters set above (excl. `init`).
+ * @returns mutators - mutators for the values of the parameters.
+ * @returns modalRef - a ref variable for the modal. Please assign this to `ref=` attribute of your Modal.
  */
 function useModal(init = null) {
   const [modalVisible, setModalVisible] = useState(init?.visible ?? false);
@@ -24,9 +29,12 @@ function useModal(init = null) {
   const modalObserver = useRef();
   // why useRef?
   /**
-   * Assignments to the 'modalMutator' variable from inside React Hook useEffect
+   * Assignments to the 'modalObserver' variable from inside React Hook useEffect
    * will be lost after each render. To preserve the value over time, store it
    * in a useRef Hook and keep the mutable value in the '.current' property.
+   * 
+   * Additionally, I need a ref for the modal to keep track of its CSS properties.
+   * Especially if it gets display none.
    */
 
 
@@ -45,7 +53,6 @@ function useModal(init = null) {
     modalObserver.current.observe(modalRef.current, config);
 
     return () => {
-
       modalObserver.current.disconnect();
     }
   }, []);
@@ -67,7 +74,7 @@ function useModal(init = null) {
       setConfirm: setModalConfirm,
       setDismiss: setModalDismiss,
       setContent: setModalContents
-    }
+    };
 
     return [
       values,
