@@ -14,6 +14,7 @@ import PoiDetails from './POIDetails';
 import STATE from "../ComponentState";
 import Sidebar from './Sidebar';
 import AddDay from './AddDay';
+import useSidebar from '../../hooks/useSidebar';
 
 
 // Only the details need a dispatch and global context, the general
@@ -27,8 +28,14 @@ function Studio({ tripId }) {
   const [trip, tripDispatch] = useReducer(tripReducer, null);
   const [pageState, setPageState] = useState(STATE.LOADING);
   const [activePin, setActivePin] = useState(null);
+  
+  const [sidebarValues, sidebarSetter, sidebarRef] = useSidebar();
+
   const mapRef = useRef();
 
+  /**
+   * Takes each day in the day array and maps it into a card.
+   */
   function mapDayDataToCards() {
     const cards = trip.days.map((day) => {
 
@@ -44,6 +51,7 @@ function Studio({ tripId }) {
     return cards;
   }
 
+  // This useEffect is for loading data.
   useEffect(() => {
     DB.loadProjectData(tripId, abortController)
       .then((tripData) => {
@@ -62,6 +70,7 @@ function Studio({ tripId }) {
     }
   }, []);
 
+  //TODO Stub for title manipulation. Finish later.
   function onChangeTitle(e) {
     // setTrip({
     //   ...trip,
@@ -70,6 +79,16 @@ function Studio({ tripId }) {
     // });
   }
 
+  useEffect(() => {
+    console.log(activePin);
+    if (activePin !== null) {
+      sidebarSetter.setContent(<PoiDetails activePin={activePin.poi} />)
+      sidebarSetter.setVisible(true);
+    }
+  }, [activePin]);
+
+
+  //#region :Render Logic
   if (pageState === STATE.LOADING) {
     return <div>Loading</div>;
   }
@@ -94,14 +113,17 @@ function Studio({ tripId }) {
               {mapDayDataToCards()}
             </div>
             <Map data={trip} setActivePin={setActivePin} />
-            <Sidebar collapseState={!activePin}>
-              <PoiDetails activePin={activePin} />
-            </Sidebar>
+            <Sidebar
+              ref={sidebarRef}
+              visible={sidebarValues.visible}
+              content={sidebarValues.content}
+            />
           </div>
         </TripDispatch.Provider>
       </MapInstance.Provider>
     </TripContext.Provider>
   )
+  //#endregion
 }
 
 Studio.defaultProps = {
