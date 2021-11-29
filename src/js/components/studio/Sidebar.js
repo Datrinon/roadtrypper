@@ -6,16 +6,20 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const SidebarContainer = styled.div`
   border: 1px solid fuchsia;
-  overflow-y: hidden;
+  display: ${props => props.visible ? "block" : "none"};
+`
+
+const FlexWrapper = styled.div`
   display: flex;
   flex-direction: column;
   background-color: darkgrey;
 `
 
 const SidebarContent = styled.div`
-  display: ${props => props.visible ? "block" : "none"};
-  height: ${[props => props.collapsed ? "0" : "100%"]};
-  transition: all 100ms ease;
+  /* TODO debug this later with percentage height or just use vw. */
+  height: ${[props => props.collapsed ? "0" : "300px"]};
+  transition: all 300ms ease;
+  overflow: hidden;
 `
 
 /**
@@ -31,35 +35,38 @@ function Sidebar({ visible, content }, ref) {
     setDisplay(visible);
   }, [visible]);
 
-  // might not need sidebarCollapsed to be exposed in the custom hook, could
-  // belong to state internally.
+  // this keeps track of content changes; any time content changes or the user
+  // clicks on it again, we automatically redisplay and uncollapse the sidebar.
   useEffect(() => {
     if (content) {
       setCollapsed(false);
+      setDisplay(true);
     }
   }, [content]);
 
-  /**
-   * Prioritize adding over activePin
-   */
+  
   return (
-    <SidebarContainer>
-      <button onClick={() => { setCollapsed(!collapsed) }}>
+    <SidebarContainer
+      visible={display}>
+      <button onClick={() => { setDisplay(false) }}>
         <FontAwesomeIcon icon={faTimes} />
+      </button>
+      <button onClick={() => { setCollapsed(!collapsed) }}>
         Toggle Collapse
       </button>
-      <SidebarContent
-        ref={ref}
-        visible={display}
-        collapsed={collapsed}
-        className={`sidebar ${collapsed && "collapsed"}`}>
-        <p className="debug">
-          {collapsed ? "(DEBUG. currently collapsed)" : "(DEBUG. not collapsed)"}
-        </p>
-        <section className="sidebar-contents">
-          {display && content}
-        </section>
-      </SidebarContent>
+      <FlexWrapper>
+        <SidebarContent
+          ref={ref}
+          collapsed={collapsed}
+          className={`sidebar ${collapsed && "collapsed"}`}>
+          <p className="debug">
+            {collapsed ? "(DEBUG. currently collapsed)" : "(DEBUG. not collapsed)"}
+          </p>
+          <section className="sidebar-contents">
+            {!collapsed && content}
+          </section>
+        </SidebarContent>
+      </FlexWrapper>
     </SidebarContainer>
   )
 }
