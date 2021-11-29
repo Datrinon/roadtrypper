@@ -9,11 +9,12 @@ import * as DB from "../../database/data.js";
 import DayCard from './DayCard';
 import Map from "./Map";
 import PoiDetails from './POIDetails';
+import AddDay from './AddDay';
+import AddPOI from './AddPOI';
 
 // Page Loading Management
 import STATE from "../ComponentState";
 import Sidebar from './Sidebar';
-import AddDay from './AddDay';
 import useSidebar from '../../hooks/useSidebar';
 
 
@@ -106,8 +107,8 @@ function Studio({ tripId }) {
               value={trip.title}
               onChange={onChangeTitle} />
             <div className="add-options">
-              <AddDay />
-              <button className="add-POI" type="button">Add POI</button>
+              <AddDay sidebarSetter={sidebarSetter} />
+              <AddPOI sidebarSetter={sidebarSetter} />
             </div>
             <div className="days">
               {mapDayDataToCards()}

@@ -1,8 +1,9 @@
 import { useContext } from "react";
 import { TripDispatch, TripContext } from "./Studio";
 
+// TODO
 
-export default function AddDay() {
+export default function AddDay({sidebarSetter}) {
 
   const dispatch = useContext(TripDispatch);
   const trip = useContext(TripContext);

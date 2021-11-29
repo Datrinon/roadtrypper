@@ -265,7 +265,7 @@ function PoiDetails({ activePin }) {
   }
 
   return (
-    <div className={`poi-details }`}>
+    <div className={`poi-details`}>
       Show Pin Details here.
       <section className="poi-contents">
         {renderView()}
