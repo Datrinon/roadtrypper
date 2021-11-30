@@ -6,6 +6,7 @@ import styled from 'styled-components';
 
 import L from "leaflet";
 import { getLIcon } from './LeafletIcon';
+import CountingTextArea from './CountingTextArea';
 
 const Label = styled.label`
   display: block;
@@ -30,6 +31,11 @@ const HiddenFileInput = styled.input`
   }
 `
 
+const Dropbox = styled.div`
+  border: 1px solid blue;
+  height: 50px;
+  width: 50px;
+`
 
 function NewPoiForm({ day }) {
   const dispatch = useContext(TripDispatch);
@@ -48,7 +54,12 @@ function NewPoiForm({ day }) {
   const sameTitleCheckbox = useRef();
   // - desc
   const [poiDesc, setPoiDesc] = useState("");
+  // - photos
+  const [photos, setPhotos] = useState([]);
+  const dropbox = useRef();
+  const fileInputRef = useRef();
 
+  console.log(photos); // ! HALO 
   //#region Day Information.
   function getLastOrderedDay() {
     return trip.days.reduce((latestDay, day) => {
@@ -161,12 +172,66 @@ function NewPoiForm({ day }) {
   function onChangePoiDesc(e) {
     setPoiDesc(e.target.value);
   }
+
+  // use this UE hook to enable a dropzone.
+  useEffect(() => {
+    // upon entering the drop zone and dragging over the drop zone
+    // we just need to disable the default action and prevent it from 
+    // cascading.
+    function dragenter(e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+
+    function dragover(e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+
+    function drop(e) {
+      e.stopPropagation();
+      e.preventDefault();
+
+      const dt = e.dataTransfer;
+      const files = dt.files;
+
+      console.log(files);
+
+      handleFiles(files);
+    }
+
+    dropbox.current.addEventListener("dragenter", dragenter, false);
+    dropbox.current.addEventListener("dragover", dragover, false);
+    dropbox.current.addEventListener("drop", drop, false);
+  }, []);
+
+  function handleFiles(files) {
+    setPhotos(prevPhotoSet => {
+      for (let i = 0; i < files.length; i++) {
+        prevPhotoSet.push(files[i]);
+      }
+
+      console.log(prevPhotoSet);
+
+      return prevPhotoSet;
+    })
+  }
+
+  useEffect(() => {
+    console.log(photos);
+    //
+  }, [photos.length]);
+
   //#endregion
 
   function addNewPoi(e) {
     e.preventDefault();
+    // photos only show up after a re-render of the state.
   }
 
+  /**
+   * Lists the possible options for the order setting of a POI given the selected day.
+   */
   function enumeratePoiOrderOptions() {
     const orders = selDayPois
       .sort((poiA, poiB) => poiA.order - poiB.order)
@@ -182,6 +247,10 @@ function NewPoiForm({ day }) {
       {orders}
       <option value={selDayPois.length}>{selDayPois.length + 1}</option>
     </>)
+  }
+
+  function fileInputChange() {
+
   }
 
   return (
@@ -252,10 +321,35 @@ function NewPoiForm({ day }) {
           <textarea value={poiDesc} onChange={onChangePoiDesc} />
         </Label>
         <div>
-          <HiddenFileInput id="poi-photos" type="file" multiple accept="image/*" />
-          <Label for="poi-photos">
+          {/* <input type="file" multiple onChange={(e) => handleFiles(e.target.files)}/> */}
+          <HiddenFileInput
+            ref={fileInputRef}
+            id="poi-photos"
+            type="file"
+            multiple
+            accept="image/*"
+            onChange={(e) => handleFiles(e.target.files)} />
+          <Label htmlFor="poi-photos">
             Click Here to Add Photos
           </Label>
+          <Dropbox ref={dropbox} className="dropbox">a</Dropbox>
+          <div key={photos.length} className="output">
+            {photos.map((photo, index) => {
+              return (
+                <div key={index}>
+                  <p>{photo.name}</p>
+                  {/* <img src={URL.createObjectURL(photo)} alt={photo.name} />;
+                <CountingTextArea
+                  textAreaId={`new-photo-desc${index}`}
+                  labelText={"Description (Optional)"}
+                  limit={500}
+                  startText={""}
+                  className={["add-photo-description"]}
+                /> */}
+                </div>)
+            })
+            }
+          </div>
         </div>
       </section>
     </div>

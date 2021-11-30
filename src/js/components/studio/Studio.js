@@ -99,7 +99,7 @@ function Studio({ tripId }) {
     <TripContext.Provider value={trip}>
       <MapInstance.Provider value={mapRef}>
         <TripDispatch.Provider value={tripDispatch}>
-          <div>
+          <div style={{padding: "25px 5px"}}>
             <p>DEV MODE: STUDIO PAGE.</p>
             <input
               className="trip-title"
