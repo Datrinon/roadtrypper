@@ -12,7 +12,7 @@ const SidebarContainer = styled.div`
 const FlexWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: darkgrey;
+  background-color: rgb(233,233,233);
 `
 
 const SidebarContent = styled.div`
@@ -44,7 +44,7 @@ function Sidebar({ visible, content }, ref) {
     }
   }, [content]);
 
-  
+
   return (
     <SidebarContainer
       visible={display}>
