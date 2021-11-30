@@ -231,6 +231,12 @@ function NewPoiForm({ day }) {
             defaultChecked={false}
             />
           Title is same as location name
+        </Label>
+        <Label>
+          Description
+          <textarea value={poiDesc} onChange={onChangePoiDesc}/>
+        </Label>
+        
       </section>
     </div>
   )
@@ -243,6 +249,7 @@ function AddPoi({ sidebarSetter }) {
   }
 
   return (
+    <button className="add-Poi" type="button" onClick={showAddPoi}>Add POI</button>
   )
 }
 
