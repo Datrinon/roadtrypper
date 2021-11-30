@@ -17,7 +17,7 @@ const FlexWrapper = styled.div`
 
 const SidebarContent = styled.div`
   /* TODO debug this later with percentage height or just use vw. */
-  height: ${[props => props.collapsed ? "0" : "300px"]};
+  height: ${[props => props.collapsed ? "0" : "100%"]};
   transition: all 300ms ease;
   overflow: hidden;
 `

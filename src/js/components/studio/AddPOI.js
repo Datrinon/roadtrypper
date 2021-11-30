@@ -2,9 +2,18 @@
 import React, { useState, useContext, useEffect, useRef } from 'react'
 import LocationInput from './LocationInput';
 import { MapInstance, TripDispatch, TripContext } from './Studio';
+import styled from 'styled-components';
 
 import L from "leaflet";
 import { getLIcon } from './LeafletIcon';
+
+const Label = styled.label`
+  display: block;
+
+  & > * {
+    display: block;
+  }
+`
 
 
 function NewPoiForm({ day }) {
@@ -22,6 +31,8 @@ function NewPoiForm({ day }) {
   const poiMarker = useRef();
   const [poiTitle, setPoiTitle ] = useState("");
   const sameTitleCheckbox = useRef();
+  // - desc
+  const [poiDesc, setPoiDesc] = useState("");
 
   //#region Day Information.
   function getLastOrderedDay() {
@@ -131,6 +142,10 @@ function NewPoiForm({ day }) {
       setPoiTitle(poiLoc);
     }
   }, [poiLoc])
+
+  function onChangePoiDesc(e) {
+    setPoiDesc(e.target.value);
+  }
   //#endregion
 
   function addNewPoi(e) {
@@ -159,7 +174,7 @@ function NewPoiForm({ day }) {
       <h1>Adding Poi</h1>
       <section>
         <h2>Day Information</h2>
-        <label>
+        <Label>
           For Day
           <select
             name="poi-day"
@@ -176,8 +191,8 @@ function NewPoiForm({ day }) {
               })
             }
           </select>
-        </label>
-        <label>
+        </Label>
+        <Label>
           Order in Day
           <select
             key={selPoiOrder}
@@ -190,11 +205,11 @@ function NewPoiForm({ day }) {
                 (<option value={0}>1</option>)
             }
           </select>
-        </label>
+        </Label>
       </section>
       <section>
         <h2>Poi Information</h2>
-        <label>
+        <Label>
           Location
           <input
             disabled
@@ -202,12 +217,12 @@ function NewPoiForm({ day }) {
             value={poiLoc}
           />
           <LocationInput onClickPOIMarker={confirmLocation} />
-        </label>
-        <label>
+        </Label>
+        <Label>
           Title
           <input value={poiTitle} onChange={changePoiTitle}/>
-        </label>
-        <label>
+        </Label>
+        <Label>
           <input
             ref={sameTitleCheckbox}
             type="checkbox"
@@ -216,7 +231,6 @@ function NewPoiForm({ day }) {
             defaultChecked={false}
             />
           Title is same as location name
-        </label>
       </section>
     </div>
   )
@@ -229,7 +243,6 @@ function AddPoi({ sidebarSetter }) {
   }
 
   return (
-    <button className="add-Poi" type="button" onClick={showAddPoi}>Add Poi</button>
   )
 }
 
