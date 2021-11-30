@@ -7,14 +7,12 @@ import L from "leaflet";
 import { getLIcon } from './LeafletIcon';
 
 
-function NewPOIForm({ day }) {
+function NewPoiForm({ day }) {
   const dispatch = useContext(TripDispatch);
   const trip = useContext(TripContext);
 
   // day state vars
   const [selDay, setSelDay] = useState(day);
-  const [selDayPOIs, setSelDayPOIs] = useState([]);
-  const [selPOIOrder, setSelPOIOrder] = useState(0);
   const [selDayPois, setSelDayPois] = useState([]);
   const [selPoiOrder, setSelPoiOrder] = useState(0);
   // poi state vars
@@ -23,6 +21,7 @@ function NewPOIForm({ day }) {
   const mapRef = React.useContext(MapInstance);
   const poiMarker = useRef();
   const [poiTitle, setPoiTitle ] = useState("");
+  const sameTitleCheckbox = useRef();
 
   //#region Day Information.
   function getLastOrderedDay() {
@@ -39,21 +38,15 @@ function NewPOIForm({ day }) {
     }
   }
 
-  function updatePOIData(day) {
   function updatePoiData(day) {
     let pois;
-    let greatestPOIOrder;
     let greatestPoiOrder;
 
     pois = trip.pois.filter(poi => poi.dayId === day.id);
 
-    greatestPOIOrder = pois.reduce(getGreatestOrder, 0);
-    greatestPOIOrder = greatestPOIOrder === 0 ? 0 : greatestPOIOrder + 1;
     greatestPoiOrder = pois.reduce(getGreatestOrder, 0);
     greatestPoiOrder = greatestPoiOrder === 0 ? 0 : greatestPoiOrder + 1;
 
-    setSelDayPOIs(pois);
-    setSelPOIOrder(greatestPOIOrder);
     setSelDayPois(pois);
     setSelPoiOrder(greatestPoiOrder);
   }
@@ -69,12 +62,12 @@ function NewPOIForm({ day }) {
       lastDay = selDay;
     }
 
-    updatePOIData(lastDay);
+    updatePoiData(lastDay);
   }, []);
 
   useEffect(() => {
     if (selDay) {
-      updatePOIData(selDay);
+      updatePoiData(selDay);
     }
   }, [selDay]);
 
@@ -85,12 +78,12 @@ function NewPOIForm({ day }) {
   }
   //#endregion
 
-  //#region POI Information.
+  //#region Poi Information.
   function confirmLocation(result) {
     console.log(result);
 
     setPoiLoc(result.label);
-    // need to add the POI marker.
+    // need to add the Poi marker.
     // needs to be same color as the day.
     const newPlaceIcon = getLIcon("ffffff");
     const placeNameText = result.label.split(", ")[0];
@@ -118,16 +111,34 @@ function NewPOIForm({ day }) {
     poiMarker.current.addTo(mapRef.current);
   }
 
+  function changePoiTitle(e) {
+    setPoiTitle(e.target.value);
+  }
 
+  function autosetPoiTitle(e) {
+    if (e.target.checked) {
+      // set to location's name.
+      setPoiTitle(poiLoc);
+    } else {
+      // reset Poi Title
+      setPoiTitle("");
+    }
+  }
 
+  // use this UE hook to sync the title and the location value, if checked.
+  useEffect(() => {
+    if (sameTitleCheckbox.current.checked) {
+      setPoiTitle(poiLoc);
+    }
+  }, [poiLoc])
   //#endregion
 
-  function addNewPOI(e) {
+  function addNewPoi(e) {
     e.preventDefault();
   }
 
-  function enumeratePOIOrderOptions() {
-    const orders = selDayPOIs
+  function enumeratePoiOrderOptions() {
+    const orders = selDayPois
       .sort((poiA, poiB) => poiA.order - poiB.order)
       .map(poi => {
         return <option
@@ -139,13 +150,13 @@ function NewPOIForm({ day }) {
 
     return (<>
       {orders}
-      <option value={selDayPOIs.length}>{selDayPOIs.length + 1}</option>
+      <option value={selDayPois.length}>{selDayPois.length + 1}</option>
     </>)
   }
 
   return (
     <div>
-      <h1>Adding POI</h1>
+      <h1>Adding Poi</h1>
       <section>
         <h2>Day Information</h2>
         <label>
@@ -169,39 +180,57 @@ function NewPOIForm({ day }) {
         <label>
           Order in Day
           <select
-            key={selPOIOrder}
+            key={selPoiOrder}
             name="poi-order-in-day"
             id="poi-order-select"
-            defaultValue={selPOIOrder}>
+            defaultValue={selPoiOrder}>
             {
-              selDayPOIs.length !== 0 ?
-                (enumeratePOIOrderOptions()) :
+              selDayPois.length !== 0 ?
+                (enumeratePoiOrderOptions()) :
                 (<option value={0}>1</option>)
             }
           </select>
         </label>
       </section>
       <section>
-        <h2>POI Information</h2>
+        <h2>Poi Information</h2>
         <label>
           Location
-          <input disabled placeholder="No Location Selected." value={poiLoc}></input>
+          <input
+            disabled
+            placeholder="No Location Selected."
+            value={poiLoc}
+          />
+          <LocationInput onClickPOIMarker={confirmLocation} />
         </label>
-        <LocationInput onClickPOIMarker={confirmLocation} />
+        <label>
+          Title
+          <input value={poiTitle} onChange={changePoiTitle}/>
+        </label>
+        <label>
+          <input
+            ref={sameTitleCheckbox}
+            type="checkbox"
+            onChange={autosetPoiTitle}
+            disabled={poiLoc.length === 0}
+            defaultChecked={false}
+            />
+          Title is same as location name
+        </label>
       </section>
     </div>
   )
 }
 
-function AddPOI({ sidebarSetter }) {
-  function showAddPOI() {
-    sidebarSetter.setContent(<NewPOIForm />);
+function AddPoi({ sidebarSetter }) {
+  function showAddPoi() {
+    sidebarSetter.setContent(<NewPoiForm />);
     sidebarSetter.setVisible(true);
   }
 
   return (
-    <button className="add-POI" type="button" onClick={showAddPOI}>Add POI</button>
+    <button className="add-Poi" type="button" onClick={showAddPoi}>Add Poi</button>
   )
 }
 
-export default AddPOI
+export default AddPoi
