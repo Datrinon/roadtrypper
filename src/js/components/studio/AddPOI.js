@@ -321,35 +321,6 @@ function NewPoiForm({ day }) {
           <textarea value={poiDesc} onChange={onChangePoiDesc} />
         </Label>
         <div>
-          {/* <input type="file" multiple onChange={(e) => handleFiles(e.target.files)}/> */}
-          <HiddenFileInput
-            ref={fileInputRef}
-            id="poi-photos"
-            type="file"
-            multiple
-            accept="image/*"
-            onChange={(e) => handleFiles(e.target.files)} />
-          <Label htmlFor="poi-photos">
-            Click Here to Add Photos
-          </Label>
-          <Dropbox ref={dropbox} className="dropbox">a</Dropbox>
-          <div key={photos.length} className="output">
-            {photos.map((photo, index) => {
-              return (
-                <div key={index}>
-                  <p>{photo.name}</p>
-                  {/* <img src={URL.createObjectURL(photo)} alt={photo.name} />;
-                <CountingTextArea
-                  textAreaId={`new-photo-desc${index}`}
-                  labelText={"Description (Optional)"}
-                  limit={500}
-                  startText={""}
-                  className={["add-photo-description"]}
-                /> */}
-                </div>)
-            })
-            }
-          </div>
         </div>
       </section>
     </div>
