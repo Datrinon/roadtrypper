@@ -16,7 +16,9 @@ function EditLocation({activePoi}) {
   const dispatch = React.useContext(TripDispatch);
 
 
-  function updatePOILocation(coordinates) {
+  function updatePOILocation(result) {
+    const coordinates = [result.y, result.x];
+
     dispatch({
       type: "edit",
       payload: {

@@ -59,9 +59,6 @@ function LocationInput({ onClickPOIMarker }) {
   function registerPlaceOnMap(result) {
     // set the suggestion on the search box.
     searchRef.current.value = result.label;
-    // stuck because the forminput doesn't know what the label will be.
-    // and the HOC shouldnt know what the formInput ref is.
-    // solution: get the ref in the input here, and then pass the ref to the created searchbar.
 
     const newPlaceIcon = getLIcon("ea4335");
     const placeNameText = result.label.split(", ")[0];
@@ -75,7 +72,7 @@ function LocationInput({ onClickPOIMarker }) {
         icon: newPlaceIcon,
         zIndexOffset: 1000,
         title: placeNameText
-      })
+      });
 
     searchMarker.current.addTo(mapRef.current);
 
@@ -96,7 +93,7 @@ function LocationInput({ onClickPOIMarker }) {
     saveButton.textContent = "Confirm";
 
     saveButton.addEventListener("click", (e) => {
-      onClickPOIMarker([result.y, result.x]);
+      onClickPOIMarker(result);
       searchMarker.current.remove();
     });
 

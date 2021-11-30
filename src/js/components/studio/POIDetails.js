@@ -15,7 +15,7 @@ import GalleryView from './GalleryView';
 // trip information and reducer
 import { MapInstance, TripContext, TripDispatch } from './Studio';
 import POIDetailsEditForm from './POIDetailsEditForm';
-import EditLocationInput from './EditLocationInput';
+import LocationInput from './LocationInput';
 import EditLocation from './EditLocation';
 
 
