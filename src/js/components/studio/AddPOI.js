@@ -15,6 +15,21 @@ const Label = styled.label`
   }
 `
 
+const HiddenFileInput = styled.input`
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+
+  &:focus + label {
+    outline: thin dotted;
+  }
+  &:focus-within + label {
+    outline: thin dotted;
+  }
+`
+
 
 function NewPoiForm({ day }) {
   const dispatch = useContext(TripDispatch);
@@ -29,7 +44,7 @@ function NewPoiForm({ day }) {
   // - keeps track of the poi Marker for convenience of user after saving.
   const mapRef = React.useContext(MapInstance);
   const poiMarker = useRef();
-  const [poiTitle, setPoiTitle ] = useState("");
+  const [poiTitle, setPoiTitle] = useState("");
   const sameTitleCheckbox = useRef();
   // - desc
   const [poiDesc, setPoiDesc] = useState("");
@@ -220,7 +235,7 @@ function NewPoiForm({ day }) {
         </Label>
         <Label>
           Title
-          <input value={poiTitle} onChange={changePoiTitle}/>
+          <input value={poiTitle} onChange={changePoiTitle} />
         </Label>
         <Label>
           <input
@@ -229,14 +244,19 @@ function NewPoiForm({ day }) {
             onChange={autosetPoiTitle}
             disabled={poiLoc.length === 0}
             defaultChecked={false}
-            />
+          />
           Title is same as location name
         </Label>
         <Label>
           Description
-          <textarea value={poiDesc} onChange={onChangePoiDesc}/>
+          <textarea value={poiDesc} onChange={onChangePoiDesc} />
         </Label>
-        
+        <div>
+          <HiddenFileInput id="poi-photos" type="file" multiple accept="image/*" />
+          <Label for="poi-photos">
+            Click Here to Add Photos
+          </Label>
+        </div>
       </section>
     </div>
   )
