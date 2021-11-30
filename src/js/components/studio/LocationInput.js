@@ -37,7 +37,13 @@ const MapIcon = styled(FontAwesomeIcon)`
   align-self: center;
 `
 
-function EditLocationInput({ updatePOILocation }) {
+/**
+ * A search field component that will search locations using the nominatim API
+ * and then return them onto the map. Has a callback prop which will invoke
+ * with the coordinates of the shown location. Useful for adding or editing
+ * a location.
+ */
+function LocationInput({ onClickPOIMarker }) {
   const mapRef = React.useContext(MapInstance);
   const searchRef = useRef();
 
@@ -87,10 +93,10 @@ function EditLocationInput({ updatePOILocation }) {
     let prompt = document.createElement('p');
     prompt.textContent = "Is this location OK?";
     let saveButton = document.createElement('button');
-    saveButton.textContent = "Update";
+    saveButton.textContent = "Confirm";
 
     saveButton.addEventListener("click", (e) => {
-      updatePOILocation([result.y, result.x]);
+      onClickPOIMarker([result.y, result.x]);
       searchMarker.current.remove();
     });
 
@@ -141,4 +147,4 @@ function EditLocationInput({ updatePOILocation }) {
   )
 }
 
-export default EditLocationInput
+export default LocationInput

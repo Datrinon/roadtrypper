@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components';
-import EditLocationInput from './EditLocationInput';
+import LocationInput from './LocationInput';
 import { TripDispatch } from './Studio';
 
 
@@ -38,7 +38,7 @@ function EditLocation({activePoi}) {
       {
         editModeOn &&
         <>
-          <EditLocationInput updatePOILocation={updatePOILocation} />
+          <LocationInput onClickPOIMarker={updatePOILocation} />
           <button onClick={() => setEditModeOn(false)}>Close</button>
         </>
       }
