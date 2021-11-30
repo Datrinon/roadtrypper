@@ -29,7 +29,11 @@ function NewPOIForm({ day }) {
     let greatestPOIOrder;
 
     pois = trip.pois.filter(poi => poi.dayId === day.id);
+    
     greatestPOIOrder = pois.reduce(getGreatestOrder, 0);
+    greatestPOIOrder = greatestPOIOrder === 0 ? 0 : greatestPOIOrder + 1;
+
+    console.log({pois, greatestPOIOrder});
 
     setSelDayPOIs(pois);
     setSelPOIOrder(greatestPOIOrder);
@@ -50,16 +54,36 @@ function NewPOIForm({ day }) {
   }, []);
 
   useEffect(() => {
-    updatePOIData(selDay);
+    if (selDay) {
+      updatePOIData(selDay);
+    }
   }, [selDay]);
 
   function onChangeDayOrder(e) {
-    const day = trip.days.find(day => day.order === e.value);
+    const day = trip.days.find(day => day.order === parseInt(e.target.value));
+    console.log(day);
     setSelDay(day);
   }
 
   function addNewPOI(e) {
     e.preventDefault();
+  }
+
+  function enumeratePOIOrderOptions() {
+    const orders = selDayPOIs
+      .sort((poiA, poiB) => poiA.order - poiB.order)
+      .map(poi => {
+        return <option
+          key={poi.order}
+          value={poi.order}>
+          {poi.order + 1}
+        </option>
+      });
+
+    return (<>
+      {orders}
+      <option value={selDayPOIs.length}>{selDayPOIs.length + 1}</option>
+    </>)
   }
 
   return (
@@ -72,7 +96,7 @@ function NewPOIForm({ day }) {
           <select
             name="poi-day"
             id="poi-day-select"
-            value={selDay.order}
+            value={selDay?.order}
             onChange={onChangeDayOrder}>
             {
               trip.days.map((day, index) => {
@@ -88,19 +112,14 @@ function NewPOIForm({ day }) {
         <label>
           Order in Day
           <select
+            key={selPOIOrder}
             name="poi-order-in-day"
             id="poi-order-select"
             defaultValue={selPOIOrder}>
             {
-              selDayPOIs
-                .sort((poiA, poiB) => poiA.order - poiB.order)
-                .map(poi => {
-                  return <option
-                    key={poi.order}
-                    value={poi.order}>
-                      {poi.order + 1}
-                    </option>
-                });
+              selDayPOIs.length !== 0 ?
+              (enumeratePOIOrderOptions()) :
+                (<option value={0}>1</option>)
             }
           </select>
         </label>
