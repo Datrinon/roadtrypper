@@ -15,11 +15,14 @@ function NewPOIForm({ day }) {
   const [selDay, setSelDay] = useState(day);
   const [selDayPOIs, setSelDayPOIs] = useState([]);
   const [selPOIOrder, setSelPOIOrder] = useState(0);
+  const [selDayPois, setSelDayPois] = useState([]);
+  const [selPoiOrder, setSelPoiOrder] = useState(0);
   // poi state vars
   const [poiLoc, setPoiLoc] = useState("");
   // - keeps track of the poi Marker for convenience of user after saving.
   const mapRef = React.useContext(MapInstance);
   const poiMarker = useRef();
+  const [poiTitle, setPoiTitle ] = useState("");
 
   //#region Day Information.
   function getLastOrderedDay() {
@@ -37,16 +40,22 @@ function NewPOIForm({ day }) {
   }
 
   function updatePOIData(day) {
+  function updatePoiData(day) {
     let pois;
     let greatestPOIOrder;
+    let greatestPoiOrder;
 
     pois = trip.pois.filter(poi => poi.dayId === day.id);
 
     greatestPOIOrder = pois.reduce(getGreatestOrder, 0);
     greatestPOIOrder = greatestPOIOrder === 0 ? 0 : greatestPOIOrder + 1;
+    greatestPoiOrder = pois.reduce(getGreatestOrder, 0);
+    greatestPoiOrder = greatestPoiOrder === 0 ? 0 : greatestPoiOrder + 1;
 
     setSelDayPOIs(pois);
     setSelPOIOrder(greatestPOIOrder);
+    setSelDayPois(pois);
+    setSelPoiOrder(greatestPoiOrder);
   }
 
   useEffect(() => {
