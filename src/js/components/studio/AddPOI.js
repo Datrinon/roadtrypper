@@ -1,15 +1,27 @@
 /* eslint-disable jsx-a11y/no-onchange */
-import React, { useState, useContext, useEffect } from 'react'
-import { TripDispatch, TripContext } from './Studio';
+import React, { useState, useContext, useEffect, useRef } from 'react'
+import LocationInput from './LocationInput';
+import { MapInstance, TripDispatch, TripContext } from './Studio';
+
+import L from "leaflet";
+import { getLIcon } from './LeafletIcon';
+
 
 function NewPOIForm({ day }) {
   const dispatch = useContext(TripDispatch);
   const trip = useContext(TripContext);
 
+  // day state vars
   const [selDay, setSelDay] = useState(day);
   const [selDayPOIs, setSelDayPOIs] = useState([]);
   const [selPOIOrder, setSelPOIOrder] = useState(0);
+  // poi state vars
+  const [poiLoc, setPoiLoc] = useState("");
+  // - keeps track of the poi Marker for convenience of user after saving.
+  const mapRef = React.useContext(MapInstance);
+  const poiMarker = useRef();
 
+  //#region Day Information.
   function getLastOrderedDay() {
     return trip.days.reduce((latestDay, day) => {
       return day.order > latestDay.order ? day : latestDay;
@@ -29,11 +41,9 @@ function NewPOIForm({ day }) {
     let greatestPOIOrder;
 
     pois = trip.pois.filter(poi => poi.dayId === day.id);
-    
+
     greatestPOIOrder = pois.reduce(getGreatestOrder, 0);
     greatestPOIOrder = greatestPOIOrder === 0 ? 0 : greatestPOIOrder + 1;
-
-    console.log({pois, greatestPOIOrder});
 
     setSelDayPOIs(pois);
     setSelPOIOrder(greatestPOIOrder);
@@ -64,6 +74,44 @@ function NewPOIForm({ day }) {
     console.log(day);
     setSelDay(day);
   }
+  //#endregion
+
+  //#region POI Information.
+  function confirmLocation(result) {
+    console.log(result);
+
+    setPoiLoc(result.label);
+    // need to add the POI marker.
+    // needs to be same color as the day.
+    const newPlaceIcon = getLIcon("ffffff");
+    const placeNameText = result.label.split(", ")[0];
+
+    // if the user confirmed this location but changed their minds, remove
+    // the last placed marker.
+    poiMarker.current?.remove();
+
+    poiMarker.current = L.marker([result.y, result.x],
+      {
+        icon: newPlaceIcon,
+        zIndexOffset: 1000,
+        title: placeNameText
+      });
+
+    // tooltip displaying the name of the place.
+    const placeName = L.tooltip({
+      permanent: true,
+      className: "poi-search-result"
+    });
+    placeName.setContent(placeNameText);
+
+    poiMarker.current.bindTooltip(placeName).openTooltip();
+
+    poiMarker.current.addTo(mapRef.current);
+  }
+
+
+
+  //#endregion
 
   function addNewPOI(e) {
     e.preventDefault();
@@ -87,7 +135,7 @@ function NewPOIForm({ day }) {
   }
 
   return (
-    <form onSubmit={addNewPOI}>
+    <div>
       <h1>Adding POI</h1>
       <section>
         <h2>Day Information</h2>
@@ -118,13 +166,21 @@ function NewPOIForm({ day }) {
             defaultValue={selPOIOrder}>
             {
               selDayPOIs.length !== 0 ?
-              (enumeratePOIOrderOptions()) :
+                (enumeratePOIOrderOptions()) :
                 (<option value={0}>1</option>)
             }
           </select>
         </label>
       </section>
-    </form>
+      <section>
+        <h2>POI Information</h2>
+        <label>
+          Location
+          <input disabled placeholder="No Location Selected." value={poiLoc}></input>
+        </label>
+        <LocationInput onClickPOIMarker={confirmLocation} />
+      </section>
+    </div>
   )
 }
 
