@@ -29,12 +29,12 @@ export function tripReducer(state, action) {
     }
     case 'add_poi': {
       const stateCopy = _.cloneDeep(state);
-      const { type, fkname, fkid, photos, order, ...values } = action.payload;
+      const { dayId, photos, order,  ...values} = action.payload;
 
-      let poiId = findGreatestId(stateCopy[type]);
+      let poiId = findGreatestId(stateCopy.pois);
 
       let record = {
-          [fkname]: fkid,
+          dayId,
           id: poiId,
           order,
           ...values
@@ -44,12 +44,12 @@ export function tripReducer(state, action) {
       // any poi on the same day that has an order >= to the one we chose,
       // we want to increment by one to make space for it.
       stateCopy.pois.forEach(poi => {
-        if (poi.dayId === fkid && poi.order >= order) {
+        if (poi.dayId === dayId && poi.order >= order) {
           poi.order += 1;
         }
       });
 
-      stateCopy[type].push(record);
+      stateCopy.pois.push(record);
 
       console.log({photos});
 

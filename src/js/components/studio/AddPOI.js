@@ -191,12 +191,10 @@ function NewPoiForm({ day }) {
     console.log({
       type: "add",
       payload: {
-        type: "pois",
-        fkname: "dayId",
-        fkid: selDay.id,
-        payloadPhotos,
-        order: selPoiOrder,
+        dayId: selDay.id,
         description: poiDesc,
+        photos: payloadPhotos,
+        order: selPoiOrder,
         title: poiTitle,
         coordinates: poiCoordinates,
         tripId
@@ -207,25 +205,9 @@ function NewPoiForm({ day }) {
       dispatch({
         type: "add_poi",
         payload: {
-          type: "pois",
-          fkname: "dayId",
-          fkid: selDay.id,
+          dayId: selDay.id,
           description: poiDesc,
-          order: selPoiOrder,
-          title: poiTitle,
-          coordinates: poiCoordinates,
-          tripId
-        }
-      });
-    } else {
-      dispatch({
-        type: "add_poi",
-        payload: {
-          type: "pois",
-          fkname: "dayId",
-          fkid: selDay.id,
           photos: payloadPhotos,
-          description: poiDesc,
           order: selPoiOrder,
           title: poiTitle,
           coordinates: poiCoordinates,
@@ -233,8 +215,6 @@ function NewPoiForm({ day }) {
         }
       });
     }
-
-
 
     // remove marker...
     poiMarker.current.remove();
