@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import L from "leaflet";
 import { getLIcon } from './LeafletIcon';
 import CountingTextArea from './CountingTextArea';
+import { array } from 'prop-types';
 
 const Label = styled.label`
   display: block;
@@ -59,7 +60,6 @@ function NewPoiForm({ day }) {
   const dropbox = useRef();
   const fileInputRef = useRef();
 
-  console.log(photos); // ! HALO 
   //#region Day Information.
   function getLastOrderedDay() {
     return trip.days.reduce((latestDay, day) => {
@@ -173,55 +173,6 @@ function NewPoiForm({ day }) {
     setPoiDesc(e.target.value);
   }
 
-  // use this UE hook to enable a dropzone.
-  useEffect(() => {
-    // upon entering the drop zone and dragging over the drop zone
-    // we just need to disable the default action and prevent it from 
-    // cascading.
-    function dragenter(e) {
-      e.stopPropagation();
-      e.preventDefault();
-    }
-
-    function dragover(e) {
-      e.stopPropagation();
-      e.preventDefault();
-    }
-
-    function drop(e) {
-      e.stopPropagation();
-      e.preventDefault();
-
-      const dt = e.dataTransfer;
-      const files = dt.files;
-
-      console.log(files);
-
-      handleFiles(files);
-    }
-
-    dropbox.current.addEventListener("dragenter", dragenter, false);
-    dropbox.current.addEventListener("dragover", dragover, false);
-    dropbox.current.addEventListener("drop", drop, false);
-  }, []);
-
-  function handleFiles(files) {
-    setPhotos(prevPhotoSet => {
-      for (let i = 0; i < files.length; i++) {
-        prevPhotoSet.push(files[i]);
-      }
-
-      console.log(prevPhotoSet);
-
-      return prevPhotoSet;
-    })
-  }
-
-  useEffect(() => {
-    console.log(photos);
-    //
-  }, [photos.length]);
-
   //#endregion
 
   function addNewPoi(e) {
@@ -249,8 +200,18 @@ function NewPoiForm({ day }) {
     </>)
   }
 
-  function fileInputChange() {
+  function onAddPhoto() {
+    fileInputRef.current.click();
+  }
 
+  function fileChange() {
+    console.log(photos);
+    console.log(fileInputRef.current.files);
+    let newPhotos = [];
+    for (let i = 0; i < fileInputRef.current.files.length; i++) {
+      newPhotos.push(fileInputRef.current.files[i]);
+    }
+    setPhotos(photos.concat(newPhotos));
   }
 
   return (
@@ -321,6 +282,26 @@ function NewPoiForm({ day }) {
           <textarea value={poiDesc} onChange={onChangePoiDesc} />
         </Label>
         <div>
+          <input ref={fileInputRef} type="file" id="fileElem" multiple accept="image/*" style={{ display: "none" }} onChange={fileChange} />
+          <button onClick={onAddPhoto}>Add Le Photo</button>
+          <div>
+            {
+              photos.map((photo, index) => {
+                return (
+                  <div key={index}>
+                    <p>{photo.name}</p>
+                    <img src={URL.createObjectURL(photo)} alt={photo.name} />
+                    <CountingTextArea
+                      textAreaId={`new-photo-desc${index}`}
+                      labelText={"Description (Optional)"}
+                      limit={500}
+                      startText={""}
+                      classNames={["add-photo-description"]}
+                    />
+                  </div>)
+              })
+            }
+          </div>
         </div>
       </section>
     </div>
