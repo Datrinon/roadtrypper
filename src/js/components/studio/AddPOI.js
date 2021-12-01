@@ -1,14 +1,14 @@
 /* eslint-disable jsx-a11y/no-onchange */
 import React, { useState, useContext, useEffect, useRef } from 'react'
 import LocationInput from './LocationInput';
-import { MapInstance, TripDispatch, TripContext } from './Studio';
+import { MapInstance, TripDispatch, TripContext, TripId, SidebarSetter } from './Studio';
 import styled from 'styled-components';
 
 import L from "leaflet";
 import { getLIcon } from './LeafletIcon';
 import CountingTextArea from './CountingTextArea';
-import { array } from 'prop-types';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, set } from 'lodash';
+import PoiDetails from './POIDetails';
 
 const Label = styled.label`
   display: block;
@@ -19,14 +19,18 @@ const Label = styled.label`
 `
 
 function NewPoiForm({ day }) {
+  // global contexts
   const dispatch = useContext(TripDispatch);
   const trip = useContext(TripContext);
+  const tripId = useContext(TripId);
+  const sidebarSetter = useContext(SidebarSetter);
 
   // day state vars
   const [selDay, setSelDay] = useState(day);
   const [selDayPois, setSelDayPois] = useState([]);
   const [selPoiOrder, setSelPoiOrder] = useState(0);
   // poi state vars
+  const [poiCoordinates, setPoiCoordinates] = useState(null);
   const [poiLoc, setPoiLoc] = useState("");
   // - keeps track of the poi Marker for convenience of user after saving.
   const mapRef = React.useContext(MapInstance);
@@ -37,8 +41,9 @@ function NewPoiForm({ day }) {
   const [poiDesc, setPoiDesc] = useState("");
   // - photos
   const [photos, setPhotos] = useState([]);
-  const dropbox = useRef();
+
   const fileInputRef = useRef();
+  const photosArea = useRef();
 
   //#region Day Information.
   function getLastOrderedDay() {
@@ -93,6 +98,10 @@ function NewPoiForm({ day }) {
     console.log(day);
     setSelDay(day);
   }
+
+  function onChangePOIOrder(e) {
+    setSelPoiOrder(parseInt(e.target.value));
+  }
   //#endregion
 
   //#region Poi Information.
@@ -100,6 +109,7 @@ function NewPoiForm({ day }) {
     console.log(result);
 
     setPoiLoc(result.label);
+    setPoiCoordinates([result.y, result.x]);
     // need to add the Poi marker.
     // needs to be same color as the day.
     const newPlaceIcon = getLIcon("ffffff");
@@ -155,8 +165,6 @@ function NewPoiForm({ day }) {
 
   //#endregion
 
-  function addNewPoi(e) {
-    e.preventDefault();
   /**
    * Adds a POI using the given information from the user.
    * @param {*} e 
@@ -179,6 +187,7 @@ function NewPoiForm({ day }) {
       });
     }
 
+    // debug
     console.log({
       type: "add",
       payload: {
@@ -233,22 +242,6 @@ function NewPoiForm({ day }) {
     sidebarSetter.setContent(<AddPoiSuccess
       lastAddedPoi={{ dayId: selDay.id, order: selPoiOrder }}
     />);
-
-    // need to collect information from and dispatch for the following:
-    /**
-     * The POI:
-     * coordinates
-     * dayId
-     * description
-     * order (poi)
-     * tripId
-     * 
-     * The Photos:
-     * poiId
-     * path (filename)
-     * description
-     */
-    // photos only show up after a re-render of the state.
   }
 
   /**
@@ -309,13 +302,15 @@ function NewPoiForm({ day }) {
             value={selDay?.order}
             onChange={onChangeDayOrder}>
             {
-              trip.days.map((day, index) => {
-                return <option
-                  key={index}
-                  value={index}>
-                  {index + 1}
-                </option>
-              })
+              trip.days
+                .sort((dayA, dayB) => dayA.order - dayB.order)
+                .map((day, index) => {
+                  return <option
+                    key={index}
+                    value={index}>
+                    {index + 1}
+                  </option>
+                })
             }
           </select>
         </Label>
@@ -325,7 +320,8 @@ function NewPoiForm({ day }) {
             key={selPoiOrder}
             name="poi-order-in-day"
             id="poi-order-select"
-            defaultValue={selPoiOrder}>
+            value={selPoiOrder}
+            onChange={onChangePOIOrder}>
             {
               selDayPois.length !== 0 ?
                 (enumeratePoiOrderOptions()) :
@@ -365,11 +361,12 @@ function NewPoiForm({ day }) {
         </Label>
         <div>
           <input ref={fileInputRef} type="file" id="fileElem" multiple accept="image/*" style={{ display: "none" }} onChange={fileChange} />
-          <div>
+          <div ref={photosArea}>
             {
               photos.map((photo, index) => {
+
                 return (
-                  <div key={index}>
+                  <div className="uploaded-photo" key={index}>
                     <p>{photo.name}</p>
                     <img src={URL.createObjectURL(photo)} alt={photo.name} />
                     <CountingTextArea
@@ -384,14 +381,14 @@ function NewPoiForm({ day }) {
               })
             }
           </div>
-          <button onClick={onAddPhoto}>Add Le Photo</button>
+          <button onClick={onAddPhoto}>Add Photo</button>
         </div>
       </section>
+      <button disabled={!poiLoc} onClick={addNewPoi}>Add POI</button>
     </div>
   )
 }
 
-function AddPoi({ sidebarSetter }) {
 function AddPoiSuccess({ lastAddedPoi }) {
   const sidebarSetter = useContext(SidebarSetter);
   const trip = useContext(TripContext);
@@ -409,7 +406,7 @@ function AddPoiSuccess({ lastAddedPoi }) {
 
   return (
     <div>
-      <h1>Success! New POI added.</h1>
+      <h1>Success! New Point of Interest added.</h1>
       <button onClick={displayForm}>Add Another POI</button>
       <button onClick={displayPoi}>View Added POI</button>
     </div>
