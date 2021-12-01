@@ -29,14 +29,21 @@ export function tripReducer(state, action) {
     }
     case 'add_poi': {
       const stateCopy = _.cloneDeep(state);
-      const { dayId, photos, order,  ...values} = action.payload;
+      let { dayId, photos, order, title, description, ...values} = action.payload;
 
       let poiId = findGreatestId(stateCopy.pois);
+
+      // assign default title
+      if (title.length === 0) {
+        title = "Untitled POI";
+      }
 
       let record = {
           dayId,
           id: poiId,
           order,
+          title,
+          description,
           ...values
       };
 

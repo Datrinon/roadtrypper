@@ -19,6 +19,10 @@ import LocationInput from './LocationInput';
 import EditLocation from './EditLocation';
 
 
+let ItalicSpan = styled.span`
+  font-style: italic;
+`
+
 // ! SAMPLE_FLAG ! Remove this later when finished debugging.
 function importSampleImages(r = require.context("../../../data/images", false, /\.(png|jpe?g|svg)$/)) {
   let images = {};
@@ -205,7 +209,14 @@ function PoiDetails({ activePin }) {
     //#endregion
 
     //#region Description
-    const descDisplay = (<p className="details desc">{activePoi.description}</p>)
+    
+
+    const descDisplay = (<p className="details desc">
+      {activePoi.description.length === 0 ?
+        <ItalicSpan>No description provided.</ItalicSpan> :
+        activePoi.description 
+      }
+      </p>);
 
     const descEdit = (<textarea defaultValue={activePoi.description} ref={poiDescEditRef} />)
 
