@@ -6,26 +6,33 @@ export const TRIP_ACTIONS = {
 };
 
 //TODO
-//Add / Edit / Remove should trigger an update for tripReducer.
+//Add / Edit / Remove should trigger an timestamp update for tripReducer.
+function findGreatestId(table) {
+  let id = table.reduce((greatestId, item) => {
+    if (item.id > greatestId) {
+      return item.id;
+    } else {
+      return greatestId;
+    }
+  }, -1);
+
+  id += 1;
+
+  return id;
+}
+
 
 export function tripReducer(state, action) {
   switch (action.type) {
     case 'load': {
       return action.payload;
     }
+    case 'add_poi': {
     case 'add': {
       const stateCopy = _.cloneDeep(state);
       const { type, fkname, fkid, ...values } = action.payload;
-      
-      let id = stateCopy[type].reduce((greatestId, item) => {
-        if (item.id > greatestId) {
-          return item.id;
-        } else {
-          return greatestId;
-        }
-      }, -1);
 
-      id += 1;
+      let id = findGreatestId(stateCopy[type]);
 
       let record;
       if (fkid === null || fkid === undefined) {
