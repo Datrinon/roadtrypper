@@ -1,9 +1,21 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { TripDispatch, TripContext, TripId, SidebarSetter } from "./Studio";
 
 // TODO
 
-function NewDayForm() {
+function NewDayForm({ activeDay }) {
+  
+  const dispatch = useContext(TripDispatch);
+  const trip = useContext(TripContext);
+  const tripId = useContext(TripId);
+
+  useEffect(() => {
+    if (!activeDay) {
+      // TODO 
+      // we set the day to the last day.
+    }
+
+  }, []);
 
   function onAddDay() {
 
@@ -27,11 +39,7 @@ function NewDayForm() {
     });
 
   }
-
-  const dispatch = useContext(TripDispatch);
-  const trip = useContext(TripContext);
-  const tripId = useContext(TripId);
-
+  
   return (
     <form>
       <h1>Add Day</h1>
