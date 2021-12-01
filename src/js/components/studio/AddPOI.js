@@ -201,20 +201,18 @@ function NewPoiForm({ day }) {
       }
     });
 
-    if (payloadPhotos === null) {
-      dispatch({
-        type: "add_poi",
-        payload: {
-          dayId: selDay.id,
-          description: poiDesc,
-          photos: payloadPhotos,
-          order: selPoiOrder,
-          title: poiTitle,
-          coordinates: poiCoordinates,
-          tripId
-        }
-      });
-    }
+    dispatch({
+      type: "add_poi",
+      payload: {
+        dayId: selDay.id,
+        description: poiDesc,
+        photos: payloadPhotos,
+        order: selPoiOrder,
+        title: poiTitle,
+        coordinates: poiCoordinates,
+        tripId
+      }
+    });
 
     // remove marker...
     poiMarker.current.remove();
