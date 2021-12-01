@@ -157,6 +157,97 @@ function NewPoiForm({ day }) {
 
   function addNewPoi(e) {
     e.preventDefault();
+  /**
+   * Adds a POI using the given information from the user.
+   * @param {*} e 
+   */
+  function addNewPoi() {
+    let payloadPhotos = null;
+    if (photos.length !== 0) {
+      const descriptions = photosArea
+        .current
+        .querySelectorAll(".add-photo-description");
+
+      // ! SAMPLE_FLAG
+      payloadPhotos = photos.map((photo, index) => {
+        return {
+          path: photo.name,
+          description: descriptions
+            .item(index)
+            .querySelector(`#new-photo-desc${index}`).value
+        }
+      });
+    }
+
+    console.log({
+      type: "add",
+      payload: {
+        type: "pois",
+        fkname: "dayId",
+        fkid: selDay.id,
+        payloadPhotos,
+        order: selPoiOrder,
+        description: poiDesc,
+        title: poiTitle,
+        coordinates: poiCoordinates,
+        tripId
+      }
+    });
+
+    if (payloadPhotos === null) {
+      dispatch({
+        type: "add_poi",
+        payload: {
+          type: "pois",
+          fkname: "dayId",
+          fkid: selDay.id,
+          description: poiDesc,
+          order: selPoiOrder,
+          title: poiTitle,
+          coordinates: poiCoordinates,
+          tripId
+        }
+      });
+    } else {
+      dispatch({
+        type: "add_poi",
+        payload: {
+          type: "pois",
+          fkname: "dayId",
+          fkid: selDay.id,
+          photos: payloadPhotos,
+          description: poiDesc,
+          order: selPoiOrder,
+          title: poiTitle,
+          coordinates: poiCoordinates,
+          tripId
+        }
+      });
+    }
+
+
+
+    // remove marker...
+    poiMarker.current.remove();
+    // prompt option to add or view.
+    sidebarSetter.setContent(<AddPoiSuccess
+      lastAddedPoi={{ dayId: selDay.id, order: selPoiOrder }}
+    />);
+
+    // need to collect information from and dispatch for the following:
+    /**
+     * The POI:
+     * coordinates
+     * dayId
+     * description
+     * order (poi)
+     * tripId
+     * 
+     * The Photos:
+     * poiId
+     * path (filename)
+     * description
+     */
     // photos only show up after a re-render of the state.
   }
 

@@ -28,6 +28,47 @@ export function tripReducer(state, action) {
       return action.payload;
     }
     case 'add_poi': {
+      const stateCopy = _.cloneDeep(state);
+      const { type, fkname, fkid, photos, order, ...values } = action.payload;
+
+      let poiId = findGreatestId(stateCopy[type]);
+
+      let record = {
+          [fkname]: fkid,
+          id: poiId,
+          order,
+          ...values
+      };
+
+      // deal with order here.
+      // any poi on the same day that has an order >= to the one we chose,
+      // we want to increment by one to make space for it.
+      stateCopy.pois.forEach(poi => {
+        if (poi.dayId === fkid && poi.order >= order) {
+          poi.order += 1;
+        }
+      });
+
+      stateCopy[type].push(record);
+
+      console.log({photos});
+
+      // now add the photos here too.
+      if (photos !== null && photos !== undefined) {
+        let startingPhotoId = findGreatestId(stateCopy.photos);
+
+        photos.forEach((photo, index) => {          
+          stateCopy.photos.push({
+            id: startingPhotoId + index,
+            description: photo.description,
+            path: photo.path,
+            poiId
+          });
+        });
+      }
+
+      return stateCopy;
+    }
     case 'add': {
       const stateCopy = _.cloneDeep(state);
       const { type, fkname, fkid, ...values } = action.payload;
