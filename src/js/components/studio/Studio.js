@@ -17,13 +17,11 @@ import STATE from "../ComponentState";
 import Sidebar from './Sidebar';
 import useSidebar from '../../hooks/useSidebar';
 
-
-// Only the details need a dispatch and global context, the general
-// trip info can be passed around as normal state.
 export const TripDispatch = React.createContext(null);
 export const TripContext = React.createContext(null);
 export const TripId = React.createContext(null);
 export const MapInstance = React.createContext(null);
+export const SidebarSetter = React.createContext(null);
 
 function Studio({ tripId }) {
   const abortController = new AbortController(); // ! Use this later when you fetch data from fbase.
@@ -101,27 +99,29 @@ function Studio({ tripId }) {
       <TripContext.Provider value={trip}>
         <MapInstance.Provider value={mapRef}>
           <TripDispatch.Provider value={tripDispatch}>
-            <div style={{ padding: "25px 5px" }}>
-              <p>DEV MODE: STUDIO PAGE.</p>
-              <input
-                className="trip-title"
-                placeholder="Untitled Trip"
-                value={trip.title}
-                onChange={onChangeTitle} />
-              <div className="add-options">
-                <AddDay sidebarSetter={sidebarSetter} />
-                <AddPOI sidebarSetter={sidebarSetter} />
+            <SidebarSetter.Provider value={sidebarSetter}>
+              <div style={{ padding: "25px 5px" }}>
+                <p>DEV MODE: STUDIO PAGE.</p>
+                <input
+                  className="trip-title"
+                  placeholder="Untitled Trip"
+                  value={trip.title}
+                  onChange={onChangeTitle} />
+                <div className="add-options">
+                  <AddDay />
+                  <AddPOI />
+                </div>
+                <div className="days">
+                  {mapDayDataToCards()}
+                </div>
+                <Map data={trip} setActivePin={setActivePin} />
+                <Sidebar
+                  ref={sidebarRef}
+                  visible={sidebarValues.visible}
+                  content={sidebarValues.content}
+                />
               </div>
-              <div className="days">
-                {mapDayDataToCards()}
-              </div>
-              <Map data={trip} setActivePin={setActivePin} />
-              <Sidebar
-                ref={sidebarRef}
-                visible={sidebarValues.visible}
-                content={sidebarValues.content}
-              />
-            </div>
+            </SidebarSetter.Provider>
           </TripDispatch.Provider>
         </MapInstance.Provider>
       </TripContext.Provider>
