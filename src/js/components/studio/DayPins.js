@@ -13,12 +13,15 @@ import { FeatureGroup, Marker, Tooltip } from 'react-leaflet';
  * day. Requires the points of interests for that given day and the
  * user assigned color.
  */
-function DayPins({ pois, dayId, icon, mapRef, setActivePin }) {
+function DayPins({ pois, day, icon, mapRef, setActivePin, setActiveDay }) {
 
   const groupRef = useRef();
 
   function addHandlerToDayCard() {
-    document.querySelector(`.day-card[data-id='${dayId}']`).onclick = () => {
+    document.querySelector(`.day-card[data-id='${day.id}']`).onclick = () => {
+
+      setActiveDay(day);
+
       const group = groupRef.current;
       if (Object.keys(group.getBounds()).length === 0) {
         return;

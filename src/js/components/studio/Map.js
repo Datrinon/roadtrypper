@@ -28,7 +28,7 @@ const MapStyled = styled.div`
   width: 300px;
   border: 5px solid red;
 `
-function Map({ data, setActivePin }) {
+function Map({ data, setActivePin, setActiveDay }) {
 
   const mapRef = React.useContext(MapInstance);
   const masterFeatureGroup = useRef();
@@ -53,9 +53,11 @@ function Map({ data, setActivePin }) {
           key={index}
           pois={pois}
           icon={icon}
-          dayId={day.id}
+          day={day}
           mapRef={mapRef}
-          setActivePin={setActivePin} />
+          setActivePin={setActivePin}
+          setActiveDay={setActiveDay}
+          />
       )
     });
   }

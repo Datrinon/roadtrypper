@@ -28,6 +28,7 @@ function Studio({ tripId }) {
   const [trip, tripDispatch] = useReducer(tripReducer, null);
   const [pageState, setPageState] = useState(STATE.LOADING);
   const [activePin, setActivePin] = useState(null);
+  const [activeDay, setActiveDay] = useState(null);
 
   const [sidebarValues, sidebarSetter, sidebarRef] = useSidebar();
 
@@ -109,12 +110,15 @@ function Studio({ tripId }) {
                   onChange={onChangeTitle} />
                 <div className="add-options">
                   <AddDay />
-                  <AddPOI />
+                  <AddPOI activeDay={activeDay}/>
                 </div>
                 <div className="days">
                   {mapDayDataToCards()}
                 </div>
-                <Map data={trip} setActivePin={setActivePin} />
+                <Map
+                  data={trip}
+                  setActivePin={setActivePin}
+                  setActiveDay={setActiveDay} />
                 <Sidebar
                   ref={sidebarRef}
                   visible={sidebarValues.visible}

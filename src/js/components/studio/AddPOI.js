@@ -391,11 +391,11 @@ function AddPoiSuccess({ lastAddedPoi }) {
   )
 }
 
-function AddPoi() {
+function AddPoi({activeDay}) {
   const sidebarSetter = useContext(SidebarSetter);
 
   function showAddPoi() {
-    sidebarSetter.setContent(<NewPoiForm />);
+    sidebarSetter.setContent(<NewPoiForm day={activeDay}/>);
     sidebarSetter.setVisible(true);
   }
 
