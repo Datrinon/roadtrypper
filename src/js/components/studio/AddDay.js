@@ -1,12 +1,13 @@
 import { useContext } from "react";
-import { TripDispatch, TripContext } from "./Studio";
+import { TripDispatch, TripContext, TripId } from "./Studio";
 
 // TODO
 
-export default function AddDay({sidebarSetter}) {
+export default function AddDay() {
 
   const dispatch = useContext(TripDispatch);
   const trip = useContext(TripContext);
+  const tripId = useContext(TripId);
 
   function onAddDay() {
     let randomColor = "";
@@ -21,7 +22,7 @@ export default function AddDay({sidebarSetter}) {
         type:"days",
         fkname: null,
         fkid: null,
-        tripId: trip.days[0].tripId,
+        tripId: tripId,
         order: trip.days.length,
         title: "",
         color: randomColor, 
