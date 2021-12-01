@@ -16,7 +16,7 @@ export function tripReducer(state, action) {
     case 'add': {
       const stateCopy = _.cloneDeep(state);
       const { type, fkname, fkid, ...values } = action.payload;
-
+      
       let id = stateCopy[type].reduce((greatestId, item) => {
         if (item.id > greatestId) {
           return item.id;
@@ -28,7 +28,7 @@ export function tripReducer(state, action) {
       id += 1;
 
       let record;
-      if (!fkid) {
+      if (fkid === null || fkid === undefined) {
         record = {
           id,
           ...values
