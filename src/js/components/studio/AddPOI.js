@@ -18,27 +18,6 @@ const Label = styled.label`
   }
 `
 
-const HiddenFileInput = styled.input`
-  position: absolute !important;
-  height: 1px;
-  width: 1px;
-  overflow: hidden;
-  clip: rect(1px, 1px, 1px, 1px);
-
-  &:focus + label {
-    outline: thin dotted;
-  }
-  &:focus-within + label {
-    outline: thin dotted;
-  }
-`
-
-const Dropbox = styled.div`
-  border: 1px solid blue;
-  height: 50px;
-  width: 50px;
-`
-
 function NewPoiForm({ day }) {
   const dispatch = useContext(TripDispatch);
   const trip = useContext(TripContext);
