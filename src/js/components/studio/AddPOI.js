@@ -8,6 +8,7 @@ import L from "leaflet";
 import { getLIcon } from './LeafletIcon';
 import CountingTextArea from './CountingTextArea';
 import { array } from 'prop-types';
+import { cloneDeep } from 'lodash';
 
 const Label = styled.label`
   display: block;
@@ -214,6 +215,17 @@ function NewPoiForm({ day }) {
     setPhotos(photos.concat(newPhotos));
   }
 
+  function removePhotoFromBuffer(removeIndex) {
+    // setPhotos(photos.filter((photo, index) => index !== removeIndex));
+    setPhotos(prevPhotos => {
+      const photos = cloneDeep(prevPhotos);
+      photos.splice(removeIndex, 1);
+      // prevPhotos.splice(removeIndex, 1);
+      // console.log(prevPhotos);
+      return photos;
+    })
+  }
+
   return (
     <div>
       <h1>Adding Poi</h1>
@@ -283,7 +295,6 @@ function NewPoiForm({ day }) {
         </Label>
         <div>
           <input ref={fileInputRef} type="file" id="fileElem" multiple accept="image/*" style={{ display: "none" }} onChange={fileChange} />
-          <button onClick={onAddPhoto}>Add Le Photo</button>
           <div>
             {
               photos.map((photo, index) => {
@@ -298,10 +309,12 @@ function NewPoiForm({ day }) {
                       startText={""}
                       classNames={["add-photo-description"]}
                     />
+                    <button onClick={removePhotoFromBuffer.bind(null, index)}>Remove This Photo</button>
                   </div>)
               })
             }
           </div>
+          <button onClick={onAddPhoto}>Add Le Photo</button>
         </div>
       </section>
     </div>
