@@ -14,9 +14,18 @@ let Card = styled.div`
   }
 `;
 
-function DayCard({ day, pois }) {
+
+function DayCard({ setActiveDay, day, pois }) {
+
+  function onCardClick(day) {
+    setActiveDay(day);
+  }
+
   return (
-    <Card data-id={day.id} className="day-card">
+    <Card
+      onClick={onCardClick.bind(null, day)}
+      data-id={day.id}
+      className="day-card">
       <h2>Day {day.order + 1}: {day.title}</h2>
       <ul>
         {pois
