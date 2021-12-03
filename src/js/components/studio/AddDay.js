@@ -1,24 +1,26 @@
-import React, { useContext, useState, useEffect } from "react";
-import { TripDispatch, TripContext, TripId, SidebarSetter } from "./Studio";
-
+import { useContext, useEffect, useState } from "react";
+import { TripDispatch, TripContext, TripId } from "./Studio";
 // TODO
-
-function NewDayForm({ activeDay }) {
-  
+// alter the order based on the active day given, meaning, we need the active day.
+// three things
+// add the active day prop from the studio
+// adjust the order based on that
+// then, you can work with the active day on the sidebar.
+export default function AddDay({activeDay, setActiveDay}) {
   const dispatch = useContext(TripDispatch);
   const trip = useContext(TripContext);
+  const [tripDaysLength, setTripDaysLength] = useState(trip.days.length);
   const tripId = useContext(TripId);
 
   useEffect(() => {
-    if (!activeDay) {
-      // TODO 
-      // we set the day to the last day.
-    }
+    if (tripDaysLength !== trip.days.length) {
+      const day = trip.days.find(day => day.order === trip.days.length);
 
-  }, []);
+      setActiveDay(day);
+    }
+  }, [trip.days.length]);
 
   function onAddDay() {
-
     let randomColor = "";
     for (let i = 0; i < 3; i++) {
       let result = Math.round(Math.random() * 256).toString(16).padStart(2, '0');
@@ -37,27 +39,9 @@ function NewDayForm({ activeDay }) {
         color: randomColor,
       }
     });
-
-  }
-  
-  return (
-    <form>
-      <h1>Add Day</h1>
-      <p>You can add a day here.</p>
-    </form>
-  )
-}
-
-export default function AddDay() {
-  const sidebarSetter = useContext(SidebarSetter);
-
-  function displayForm() {
-    sidebarSetter.setContent(<NewDayForm />);
-    sidebarSetter.setVisible(true);
   }
 
   return (
-    <button className="add-day" type="button" onClick={displayForm}>Add Day</button>
-
+    <button className="add-day" type="button" onClick={onAddDay}>Add Day</button>
   )
 }
