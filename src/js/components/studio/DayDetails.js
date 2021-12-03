@@ -9,6 +9,7 @@ function DayDetails({day}) {
   
   // edit refs
   const dayOrderEditRef = useRef();
+  const dayTitleEditRef = useRef();
 
   function renderDayOrder() {
     // day order display
@@ -54,6 +55,31 @@ function DayDetails({day}) {
         onClickSave={updateDayOrder} />);
   }
 
+  function renderDayTitle() {
+    let displayDayTitle = <h2>{day.title}</h2>
+    let editDayTitle = <input
+      defaultValue={day.title}
+      ref={dayTitleEditRef}
+    />
+
+    let updateDayTitle = () => {
+      dispatch({
+        type: "edit",
+        payload: {
+          type: "days",
+          id: day.id,
+          key: "title",
+          value: dayTitleEditRef.current.value,
+        }
+      });
+    };
+
+    return (<HoverToEditInput
+      displayVer={displayDayTitle}
+      editVer={editDayTitle}
+      onClickSave={updateDayTitle}/>);
+  }
+
   function renderPOICards() {
 
   }
@@ -62,6 +88,7 @@ function DayDetails({day}) {
     <div>
       <h1>Day Details</h1>
       {renderDayOrder()}
+      {renderDayTitle()}
       {/* 
       To add:
         Title HoverToEdit
