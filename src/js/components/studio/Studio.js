@@ -108,6 +108,19 @@ function Studio({ tripId }) {
     }
   }, [activeDay]);
 
+  useEffect(() => {
+    if (activeDay) {
+      console.log("ayo");
+      // any time trip days or pois changes
+      // update the activeDay and activePin too.
+      // ? Caution: Will referential check be an issue for us here?
+      // ? No, because use of the reducer guarantees an update.
+      // ? Because it makes a clone of the state, which will 
+      // ? have a different address.
+      const activeDayUpdated = trip?.days.find(day => day.id === activeDay.id);
+      setActiveDay(activeDayUpdated);
+    }
+  }, [trip?.days, trip?.pois]);
 
   //#region :Render Logic
   if (pageState === STATE.LOADING) {
