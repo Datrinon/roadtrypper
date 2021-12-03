@@ -1,6 +1,13 @@
 import React, {useEffect, useContext, useRef} from 'react'
+import styled from 'styled-components';
 import HoverToEditInput from './HoverToEditInput'
+import POICard from './POICard';
 import { TripContext, TripDispatch } from './Studio';
+
+const POICardContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+`
 
 function DayDetails({day}) {
   
@@ -107,11 +114,32 @@ function DayDetails({day}) {
           defaultValue={`#${day.color}`}
           onBlur={changeDayColor}
         />
+        {/* TODO work on this later. */}
+        {/* <span 
+          className="day-color-pin"
+          style={{
+            "background-color" : `#${day.color}`,
+            width: "32px",
+            height: "32px"
+          }}
+          >
+          &nbsp;
+        </span> */}
       </label>
     );
   }
 
   function renderPOICards() {
+    const pois = trip.pois
+      .filter(poi => poi.dayId === day.id)
+      .sort((poiA, poiB) => poiA.order - poiB.order);
+
+    return (
+      <POICardContainer>
+        {pois.map(poi => <POICard poi={poi} />)}
+      </POICardContainer>
+    )
+    
 
   }
   
@@ -121,6 +149,7 @@ function DayDetails({day}) {
       {renderDayOrder()}
       {renderDayTitle()}
       {renderColorPicker()}
+      {renderPOICards()}
       {/* 
       To add:
         Title HoverToEdit
