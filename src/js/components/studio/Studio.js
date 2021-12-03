@@ -11,12 +11,15 @@ import Map from "./Map";
 import PoiDetails from './POIDetails';
 import AddDay from './AddDay';
 import AddPOI from './AddPOI';
+import DayDetails from './DayDetails';
 
 // Page Loading Management
 import STATE from "../ComponentState";
 import Sidebar from './Sidebar';
 import useSidebar from '../../hooks/useSidebar';
 
+
+// ! code begin
 export const TripDispatch = React.createContext(null);
 export const TripContext = React.createContext(null);
 export const TripId = React.createContext(null);
@@ -83,10 +86,20 @@ function Studio({ tripId }) {
   useEffect(() => {
     console.log(activePin);
     if (activePin !== null) {
-      sidebarSetter.setContent(<PoiDetails activePin={activePin.poi} />)
+      sidebarSetter.setContent(<PoiDetails activePin={activePin.poi} />);
       sidebarSetter.setVisible(true);
     }
   }, [activePin]);
+
+  // sets the active day. for now
+  // !TODO
+  // As we develop activeDay is the priority, but in production activePin should
+  useEffect(() => {
+    if (activeDay !== null) {
+      sidebarSetter.setContent(<DayDetails activeDay={activeDay} />);
+      sidebarSetter.setVisible(true);
+    }
+  }, [activeDay]);
 
 
   //#region :Render Logic
@@ -109,7 +122,7 @@ function Studio({ tripId }) {
                   value={trip.title}
                   onChange={onChangeTitle} />
                 <div className="add-options">
-                  <AddDay />
+                  <AddDay setActiveDay={setActiveDay} />
                   <AddPOI activeDay={activeDay}/>
                 </div>
                 <div className="days">
