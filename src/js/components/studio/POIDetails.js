@@ -141,10 +141,12 @@ function PoiDetails({ activePin }) {
       }
 
       dispatch({
-        type: "rearrange_poi",
+        type: "rearrange",
         payload: {
+          type: "pois",
           id: activePoi.id,
-          newOrder: parseInt(poiOrderEditRef.current.value)
+          newOrder: parseInt(poiOrderEditRef.current.value),
+          fk: "dayId"
         }
       })
     }
