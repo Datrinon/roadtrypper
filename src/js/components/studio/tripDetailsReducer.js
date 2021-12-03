@@ -114,10 +114,8 @@ export function tripReducer(state, action) {
 
       return stateCopy;
     }
-    // ! TODO
-    // Could be useful for other move operations outside of the POI.
+    // for moving POIs to another day.
     case 'move_poi': {
-      // for moving POIs to another day.
       const stateCopy = _.cloneDeep(state);
       const { "id": poiId, "newDay": newDayOrder } = action.payload;
 
@@ -139,17 +137,29 @@ export function tripReducer(state, action) {
 
       return stateCopy;
     }
-    case 'rearrange_poi': {
+    // rearrange a POI or day. provide the type, id, new value to move to,
+    // and the FK to categorize records (if any).
+    case 'rearrange' : {
       const stateCopy = _.cloneDeep(state);
-      const { "id": poiId, "newOrder": newPoiOrder } = action.payload;
+      const { type, id, newOrder, fk } = action.payload;
 
-      const poi = stateCopy.pois.find(poi => poi.id === poiId);
-      const poiWithNewOrder = stateCopy.pois.find(newPoi => (
-        newPoi.dayId === poi.dayId && newPoi.order === newPoiOrder
+      const table = stateCopy[type];
+      const record = table.find(item => item.id === id);
+
+      let existingRecordWithMatchingOrder;
+      
+      if (fk) {
+        existingRecordWithMatchingOrder = table.find(item => (
+          item[fk] === record[fk] && item.order === newOrder
         ));
+      } else {
+        existingRecordWithMatchingOrder = table.find(item => (
+          item.order === newOrder
+        ));
+      }
 
-      poiWithNewOrder.order = poi.order; // assign this the old order
-      poi.order = newPoiOrder; // give ours the new order
+      existingRecordWithMatchingOrder.order = record.order; // assign this old order
+      record.order = newOrder; // give this the new order value.
 
       return stateCopy;
     }
