@@ -80,6 +80,37 @@ function DayDetails({day}) {
       onClickSave={updateDayTitle}/>);
   }
 
+  function renderColorPicker() {
+    function changeDayColor(e) {
+      let color = e.target.value;
+      color = color.slice(1, color.length); 
+
+      console.log(color);
+
+      dispatch({
+        type: "edit",
+        payload: {
+          type: "days",
+          id: day.id,
+          key: "color",
+          value: color
+        }
+      });
+    }
+
+    return (
+      <label for="day-color">
+        Pin Color
+        <input id="day-color"
+          type="color"
+          name="day-color"
+          defaultValue={`#${day.color}`}
+          onBlur={changeDayColor}
+        />
+      </label>
+    );
+  }
+
   function renderPOICards() {
 
   }
@@ -89,6 +120,7 @@ function DayDetails({day}) {
       <h1>Day Details</h1>
       {renderDayOrder()}
       {renderDayTitle()}
+      {renderColorPicker()}
       {/* 
       To add:
         Title HoverToEdit
