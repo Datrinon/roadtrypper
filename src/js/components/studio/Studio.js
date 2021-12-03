@@ -41,16 +41,18 @@ function Studio({ tripId }) {
    * Takes each day in the day array and maps it into a card.
    */
   function mapDayDataToCards() {
-    const cards = trip.days.map((day) => {
+    const cards = trip.days
+      .sort((dayA, dayB) => dayA.order - dayB.order)
+      .map((day) => {
+        const pois = trip.pois.filter(poi => poi.dayId === day.id);
 
-      const pois = trip.pois.filter(poi => poi.dayId === day.id);
-
-      return <DayCard
-        key={trip.general.uid + day.id}
-        day={day}
-        pois={pois}
-      />
-    });
+        return <DayCard
+          key={trip.general.uid + day.id}
+          setActiveDay={setActiveDay}
+          day={day}
+          pois={pois}
+        />
+      });
 
     return cards;
   }
@@ -91,12 +93,17 @@ function Studio({ tripId }) {
     }
   }, [activePin]);
 
-  // sets the active day. for now
-  // !TODO
-  // As we develop activeDay is the priority, but in production activePin should
+  // sets the active day. 
+  /*
+    ? Q: Does it conflict with activePin?
+      A: No, because remember these useEffect hooks only run if one of these
+      values change. Since we're guaranteed only ONE will change between renders
+      (the user can't click two items as one render), the sidebar will update
+      with this latest content instead.
+  */
   useEffect(() => {
     if (activeDay !== null) {
-      sidebarSetter.setContent(<DayDetails activeDay={activeDay} />);
+      sidebarSetter.setContent(<DayDetails day={activeDay} />);
       sidebarSetter.setVisible(true);
     }
   }, [activeDay]);
@@ -123,7 +130,7 @@ function Studio({ tripId }) {
                   onChange={onChangeTitle} />
                 <div className="add-options">
                   <AddDay setActiveDay={setActiveDay} />
-                  <AddPOI activeDay={activeDay}/>
+                  <AddPOI activeDay={activeDay} />
                 </div>
                 <div className="days">
                   {mapDayDataToCards()}
