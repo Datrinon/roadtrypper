@@ -130,8 +130,7 @@ function Studio({ tripId }) {
                 </div>
                 <Map
                   data={trip}
-                  setActivePin={setActivePin}
-                  setActiveDay={setActiveDay} />
+                  setActivePin={setActivePin} />
                 <Sidebar
                   ref={sidebarRef}
                   visible={sidebarValues.visible}
