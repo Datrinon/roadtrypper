@@ -27,6 +27,14 @@ export function tripReducer(state, action) {
     case 'load': {
       return action.payload;
     }
+    case 'edit_general': {
+      
+      let { key, value } = action.payload;
+
+      stateCopy.general[key] = value;
+
+      return stateCopy;
+    }
     case 'add_poi': {
       const stateCopy = _.cloneDeep(state);
       let { dayId, photos, order, title, description, ...values} = action.payload;

@@ -78,6 +78,15 @@ function Studio({ tripId }) {
 
   //TODO Stub for title manipulation. Finish later.
   function onChangeTitle(e) {
+    tripDispatch({
+      type: 'edit_general',
+      payload: {
+        type: 'general',
+        id: trip.general.id,
+        key: "title",
+        value: e.target.value
+      }
+    })
     // setTrip({
     //   ...trip,
     //   title: e.target.value,
@@ -142,6 +151,7 @@ function Studio({ tripId }) {
                   className="trip-title"
                   placeholder="Untitled Trip"
                   value={trip.title}
+                  value={trip.general.title}
                   onChange={onChangeTitle} />
                 <div className="add-options">
                   <AddDay setActiveDay={setActiveDay} />
