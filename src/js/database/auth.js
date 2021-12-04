@@ -53,7 +53,6 @@ let userInfo;
 onAuthStateChanged(auth, (user) => {
   if (user) {
     userInfo = user;
-    console.log(userInfo);
   } else {
     // signed out, 
     // do not allow access to app
@@ -61,18 +60,9 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-const authStateObserver = () => {
-  return onAuthStateChanged(auth, (user) => {
-    if (user) {
-      userInfo = user;
-      console.log(userInfo);
-    } else {
-      // signed out, 
-      // do not allow access to app
-      userInfo = null;
-    }
-  });
+const authStateObserver = (nextOrObserver) => {
+  return onAuthStateChanged(auth, nextOrObserver);
 }
 
 
-export {createUserAccount, signInUser, auth, userInfo};
+export {createUserAccount, signInUser, auth, authStateObserver};
