@@ -14,6 +14,16 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const fbase = initializeApp(firebaseConfig);
+const fbService = initializeApp(firebaseConfig);
+/**
+ * 
+ * ?: What is this?
+ * A: It's an object which stores configuration information
+ * and shares authentication info across the various
+ * Firebase services, like Storage and Firestore.
+ * 
+ * Each time you initialize one of these services
+ * as an object, you provide the service with the app object.
+ */
 
-export default fbase;
+export default fbService;
