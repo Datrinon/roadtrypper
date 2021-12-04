@@ -105,7 +105,7 @@ function Studio({ tripId }) {
     if (activeDay !== null) {
       sidebarSetter.setContent(<DayDetails
           setActivePin={setActivePin}
-          day={activeDay}
+          day={activeDay.data}
         />);
       sidebarSetter.setVisible(true);
     }
