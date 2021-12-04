@@ -1,9 +1,9 @@
+import fbService from "./config";
 import { getAuth,
-         createUserWithEmailandPassword,
+         createUserWithEmailAndPassword,
          signInWithEmailAndPassword,
          onAuthStateChanged,
-       } from "firebase/auth"
-import fbService from "./config";
+       } from "firebase/auth";
 
 const auth = getAuth(fbService);
 
@@ -13,7 +13,7 @@ const auth = getAuth(fbService);
 async function createUserAccount(email, password) {
   try {
     let credentials =
-      await createUserWithEmailandPassword(auth, email, password);
+      await createUserWithEmailAndPassword(auth, email, password);
     
   } catch (error) {
     console.log("Sign-up error!");

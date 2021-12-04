@@ -25,5 +25,4 @@ const fbService = initializeApp(firebaseConfig);
  * Each time you initialize one of these services
  * as an object, you provide the service with the app object.
  */
-
 export default fbService;
