@@ -103,7 +103,10 @@ function Studio({ tripId }) {
   */
   useEffect(() => {
     if (activeDay !== null) {
-      sidebarSetter.setContent(<DayDetails day={activeDay} />);
+      sidebarSetter.setContent(<DayDetails
+          setActivePin={setActivePin}
+          day={activeDay}
+        />);
       sidebarSetter.setVisible(true);
     }
   }, [activeDay]);

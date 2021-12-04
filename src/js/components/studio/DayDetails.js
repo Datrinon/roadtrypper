@@ -9,7 +9,7 @@ const POICardContainer = styled.div`
   flex-direction: row;
 `
 
-function DayDetails({day}) {
+function DayDetails({day, setActivePin}) {
   
   const trip = useContext(TripContext);
   const dispatch = useContext(TripDispatch);
@@ -136,7 +136,10 @@ function DayDetails({day}) {
 
     return (
       <POICardContainer>
-        {pois.map(poi => <POICard poi={poi} />)}
+        {pois.map(poi => (<POICard
+            poi={poi}
+            setActivePin={setActivePin}
+          />))}
       </POICardContainer>
     )
     

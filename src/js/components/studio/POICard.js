@@ -15,12 +15,22 @@ const POICardBox = styled.div`
   border: 1px solid aqua;
 `
 
-function POICard({poi}) {
+function POICard({poi, setActivePin}) {
   
   const trip = useContext(TripContext);
 
+  function onClickPOICard() {
+    let timestamp = new Date();
+    let data = {
+      time: timestamp,
+      poi
+    }
+    setActivePin(data);
+  }
+
   return (
     <POICardBox
+      onClick={onClickPOICard}
       className="poi-card">
       <h3>{poi.title}</h3>
     </POICardBox>
