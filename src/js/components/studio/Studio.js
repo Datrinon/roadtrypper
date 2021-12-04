@@ -62,7 +62,7 @@ function Studio({ tripId }) {
     DB.loadProjectData(tripId, abortController)
       .then((tripData) => {
         tripDispatch({
-          type: 'load',
+          type: 'init',
           payload: tripData
         });
 
@@ -126,7 +126,8 @@ function Studio({ tripId }) {
       // ? No, because use of the reducer guarantees an update.
       // ? Because it makes a clone of the state, which will 
       // ? have a different address.
-      const activeDayUpdated = trip?.days.find(day => day.id === activeDay.id);
+      const activeDayUpdated =
+        trip?.days.find(day => day.id === activeDay.id);
       setActiveDay(activeDayUpdated);
       // TODO
       // consider implementing this to refresh active pin
@@ -138,7 +139,28 @@ function Studio({ tripId }) {
     return <div>Loading</div>;
   }
 
-  console.log(trip);
+  /**
+   * Convert ms into an american (MM-DD-YYYY HH:MM AM/PM) timestamp.
+   * @param {*} ms - value in ms
+   * @returns 
+   */
+  function getTimestamp(ms) {
+    let time = new Date(ms);
+
+    let month = time.getMonth() + 1;
+    let day = time.getDate();
+    let year = time.getFullYear();
+    let hours = time.getHours();
+    let minutes = time.getMinutes();
+    let period = "A.M.";
+    if (hours > 12) {
+      hours = hours - 12;
+      period = "P.M.";
+    }
+
+    return `${month}/${day}/${year}, ${hours}:${minutes} ${period}`;
+  }
+  
   return (
     <TripId.Provider value={tripId}>
       <TripContext.Provider value={trip}>
@@ -146,13 +168,12 @@ function Studio({ tripId }) {
           <TripDispatch.Provider value={tripDispatch}>
             <SidebarSetter.Provider value={sidebarSetter}>
               <div style={{ padding: "25px 5px" }}>
-                <p>DEV MODE: STUDIO PAGE.</p>
                 <input
                   className="trip-title"
                   placeholder="Untitled Trip"
-                  value={trip.title}
-                  value={trip.general.title}
-                  onChange={onChangeTitle} />
+                  defaultValue={trip.general.title}
+                  onBlur={onChangeTitle} />
+                <p>Last Update: {getTimestamp(trip.general.lastAccessed)}</p>
                 <div className="add-options">
                   <AddDay setActiveDay={setActiveDay} />
                   <AddPOI activeDay={activeDay} />
