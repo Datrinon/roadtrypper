@@ -23,8 +23,16 @@ function findGreatestId(table) {
 
 
 export function tripReducer(state, action) {
+  // make a copy of the state before working with it.
+  const stateCopy = _.cloneDeep(state);
+  // and then update the accessed time.
+  if (stateCopy !== null) {
+    stateCopy.general.lastAccessed = Date.now();
+  }
+
+
   switch (action.type) {
-    case 'load': {
+    case 'init': {
       return action.payload;
     }
     case 'edit_general': {
@@ -36,7 +44,7 @@ export function tripReducer(state, action) {
       return stateCopy;
     }
     case 'add_poi': {
-      const stateCopy = _.cloneDeep(state);
+      
       let { dayId, photos, order, title, description, ...values} = action.payload;
 
       let poiId = findGreatestId(stateCopy.pois);
@@ -85,7 +93,7 @@ export function tripReducer(state, action) {
       return stateCopy;
     }
     case 'add': {
-      const stateCopy = _.cloneDeep(state);
+      
       const { type, fkname, fkid, ...values } = action.payload;
 
       let id = findGreatestId(stateCopy[type]);
@@ -109,7 +117,7 @@ export function tripReducer(state, action) {
       return stateCopy;
     }
     case 'edit': {
-      const stateCopy = _.cloneDeep(state);
+      
       const { type, id, key, value } = action.payload;
 
       console.log(stateCopy);
@@ -124,7 +132,7 @@ export function tripReducer(state, action) {
     }
     // for moving POIs to another day.
     case 'move_poi': {
-      const stateCopy = _.cloneDeep(state);
+      
       const { "id": poiId, "newDay": newDayOrder } = action.payload;
 
       const poi = stateCopy.pois.find(poi => poi.id === poiId);
@@ -148,7 +156,7 @@ export function tripReducer(state, action) {
     // rearrange a POI or day. provide the type, id, new value to move to,
     // and the FK to categorize records (if any).
     case 'rearrange' : {
-      const stateCopy = _.cloneDeep(state);
+      
       const { type, id, newOrder, fk } = action.payload;
 
       const table = stateCopy[type];
@@ -172,7 +180,7 @@ export function tripReducer(state, action) {
       return stateCopy;
     }
     case 'delete': {
-      const stateCopy = _.cloneDeep(state);
+      
       const { type, id } = action.payload;
 
       const deleteIndex = stateCopy[type].findIndex(record => record.id === id);
