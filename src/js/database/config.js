@@ -17,7 +17,7 @@ const firebaseConfig = {
 const fbService = initializeApp(firebaseConfig);
 /**
  * 
- * ?: What is this?
+ * ?: What is `fbService`?
  * A: It's an object which stores configuration information
  * and shares authentication info across the various
  * Firebase services, like Storage and Firestore.
