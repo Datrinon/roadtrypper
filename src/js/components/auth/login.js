@@ -1,12 +1,17 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom';
+import { signInUser } from '../../database/auth';
 
 function Login() {
 
-  const [uid, setUid] = useState("");
-  const [pw, setPw] = useState("");
+  const [uid, setUid] = useState("test@test.com");
+  const [pw, setPw] = useState("abc123!");
 
   function onSignInSubmit(e) {
     e.preventDefault();
+    signInUser(uid, pw).then((result) => {
+      console.log(result);
+    })
   }
 
   return (
@@ -31,8 +36,9 @@ function Login() {
             onChange={(e) => setPw(e.target.value)}
           />
         </label>
+        <button>Login</button>
       </form>
-      <button>Create a New Account</button>
+      <Link to="/signup/">Create a New Account</Link>
       <button>Sign in with Google</button>
       <button>View Demo Mode</button>
     </div>
@@ -41,6 +47,8 @@ function Login() {
      * Form which lets sign up / login
      * with email / password
      * or google account.
+     * 
+     * Error if credentials are invalid.
      */
   )
 }

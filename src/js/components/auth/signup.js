@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom';
+import { createUserAccount } from '../../database/auth';
+
 
 function SignUp() {
   const [uid, setUid] = useState("");
@@ -40,8 +43,11 @@ function SignUp() {
             onChange={(e) => setPw(e.target.value)}
           />
         </label>
+        <button>Submit</button>
       </form>
-      <button>Submit</button>
+      <Link to="/signup/login/">
+        Existing User? Log in here.
+      </Link>
     </div>
     /**
      * To add;

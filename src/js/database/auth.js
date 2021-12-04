@@ -12,13 +12,15 @@ const auth = getAuth(fbService);
  */
 async function createUserAccount(email, password) {
   try {
-    let credentials =
-      await createUserWithEmailAndPassword(auth, email, password);
+    let credentials = await createUserWithEmailAndPassword(auth, email, password);
     
+    return credentials;
   } catch (error) {
     console.log("Sign-up error!");
     console.log(error);
+    return null;
   }
+
 }
 
 /**
@@ -28,9 +30,12 @@ async function signInUser(email, password) {
   try {
     let credentials = 
       await signInWithEmailAndPassword(auth, email, password);
+
+    return credentials;
   } catch (error) {
     console.log("Login error!");
     console.log(error);
+    return null;
   }
 }
 
@@ -40,11 +45,15 @@ async function signInUser(email, password) {
  * Paired with onAuthStateChanged, we can tell if the user 
  * is signed in depending on the value that this variable
  * is assigned.
+ * 
+ * Unfortunately, there doesn't seem to be a way to
+ * truly separate the code from this.
  */
 let userInfo;
 onAuthStateChanged(auth, (user) => {
   if (user) {
     userInfo = user;
+    console.log(userInfo);
   } else {
     // signed out, 
     // do not allow access to app
@@ -52,4 +61,18 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-export {createUserAccount, signInUser, userInfo};
+const authStateObserver = () => {
+  return onAuthStateChanged(auth, (user) => {
+    if (user) {
+      userInfo = user;
+      console.log(userInfo);
+    } else {
+      // signed out, 
+      // do not allow access to app
+      userInfo = null;
+    }
+  });
+}
+
+
+export {createUserAccount, signInUser, auth, userInfo};
