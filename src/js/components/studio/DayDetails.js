@@ -11,12 +11,15 @@ const POICardContainer = styled.div`
 
 function DayDetails({day, setActivePin}) {
   
+  console.log(day);
+
   const trip = useContext(TripContext);
   const dispatch = useContext(TripDispatch);
   
   // edit refs
   const dayOrderEditRef = useRef();
   const dayTitleEditRef = useRef();
+  const colorEditRef = useRef();
 
   function renderDayOrder() {
     // day order display
@@ -87,6 +90,10 @@ function DayDetails({day, setActivePin}) {
       onClickSave={updateDayTitle}/>);
   }
 
+  useEffect(() => {
+    colorEditRef.current.defaultValue = `#${day.color}`;
+  }, [day]);
+
   function renderColorPicker() {
     function changeDayColor(e) {
       let color = e.target.value;
@@ -105,14 +112,17 @@ function DayDetails({day, setActivePin}) {
       });
     }
 
+    console.log(day.color);
+
     return (
-      <label for="day-color">
+      <label key={day.color} htmlFor="day-color">
         Pin Color
         <input id="day-color"
           type="color"
           name="day-color"
           defaultValue={`#${day.color}`}
           onBlur={changeDayColor}
+          ref={colorEditRef}
         />
         {/* TODO work on this later. */}
         {/* <span 

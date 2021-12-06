@@ -47,7 +47,7 @@ function Dropdown({ visible, children }, ref) {
     }
   }, [display]);
 
-  console.log(display);
+  
   return (
     <DropdownMenuContainer
       visible={display}
