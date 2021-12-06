@@ -10,7 +10,7 @@ import React, { useState, useRef, useEffect } from 'react'
  * have the following properties...:
  * 
  * @prop {boolean} visible - True if visible, false if not visible. 
- * @prop {string} contents - The contents of the sidebar to display.
+ * @prop {HTMLElement} contents - The contents of the sidebar to display.
  */
  export default function useSidebar(init = null) {
   const [sidebarVisible, setSidebarVisible] = useState(init?.visible ?? false);

@@ -4,7 +4,7 @@ import { signInUser } from '../../database/auth';
 
 function Login() {
 
-  
+
 
   const [uid, setUid] = useState("test@test.com");
   const [pw, setPw] = useState("abc123!");
@@ -20,7 +20,7 @@ function Login() {
     <div>
       <h1>Log In</h1>
       <form onSubmit={onSignInSubmit}>
-        <label for="uid-email">
+        <label htmlFor="uid-email">
           Login
           <input
             type="email"
@@ -29,7 +29,7 @@ function Login() {
             onChange={(e) => setUid(e.target.value)}
           />
         </label>
-        <label for="uid-pw">
+        <label htmlFor="uid-pw">
           Password
           <input
             id="pw"

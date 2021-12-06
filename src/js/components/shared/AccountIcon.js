@@ -1,6 +1,8 @@
-import React, { useContext } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import styled from 'styled-components';
+import useDropdown from '../../hooks/useDropdown';
 import { UserContext } from '../Router'
+import Dropdown from '../studio/Dropdown';
 
 const Icon = styled.div`
     background-color: navy;
@@ -31,14 +33,19 @@ const IconText = styled.div`
 function AccountIcon() {
 
   const user = useContext(UserContext);
-
+  const [dropdownVisible, setDropdownVisible, dropdownRef] = useDropdown();
 
   return (
     <div>
-      <Icon>
+      <Icon onClick={setDropdownVisible.bind(null, true)}>
         <IconText>
           {user.email[0]}
         </IconText>
+        <Dropdown visible={dropdownVisible} ref={dropdownRef}>
+          <ul>
+            <li>Here's your dropdown, bro.</li>
+          </ul>
+        </Dropdown>
       </Icon>
     </div>
   )
