@@ -52,7 +52,7 @@ async function signInUser(email, password) {
  */
 
 function signOutUser() {
-  signOut();
+  signOut(auth);
 }
 
 const authStateObserver = (nextOrObserver) => {
@@ -60,4 +60,4 @@ const authStateObserver = (nextOrObserver) => {
 }
 
 
-export {createUserAccount, signInUser, auth, authStateObserver};
+export {createUserAccount, signInUser, signOutUser, auth, authStateObserver};

@@ -1,8 +1,10 @@
 import React, { useContext, useRef, useState } from 'react'
 import styled from 'styled-components';
+import { signOutUser } from '../../database/auth';
 import useDropdown from '../../hooks/useDropdown';
 import { UserContext } from '../Router'
 import Dropdown from '../studio/Dropdown';
+
 
 const Icon = styled.div`
     background-color: navy;
@@ -44,6 +46,7 @@ function AccountIcon() {
         <Dropdown visible={dropdownVisible} ref={dropdownRef}>
           <ul>
             <li>Here's your dropdown, bro.</li>
+            <li><button onClick={signOutUser}>Sign Out.</button></li>
           </ul>
         </Dropdown>
       </Icon>

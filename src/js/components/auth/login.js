@@ -4,8 +4,6 @@ import { signInUser } from '../../database/auth';
 
 function Login() {
 
-
-
   const [uid, setUid] = useState("test@test.com");
   const [pw, setPw] = useState("abc123!");
 
