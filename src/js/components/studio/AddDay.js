@@ -1,22 +1,23 @@
 import { useContext, useEffect, useState } from "react";
 import { TripDispatch, TripContext, TripId } from "./Studio";
+
 // TODO
-// alter the order based on the active day given, meaning, we need the active day.
-// three things
-// add the active day prop from the studio
-// adjust the order based on that
-// then, you can work with the active day on the sidebar.
+// [] Use the activeDay prop to splice days.
 export default function AddDay({activeDay, setActiveDay}) {
   const dispatch = useContext(TripDispatch);
   const trip = useContext(TripContext);
-  const [tripDaysLength, setTripDaysLength] = useState(trip.days.length);
+  const [tripCached, setTripCached] = useState(trip);
   const tripId = useContext(TripId);
 
   useEffect(() => {
-    if (tripDaysLength !== trip.days.length) {
-      const day = trip.days.find(day => day.order === trip.days.length);
+    console.log(tripCached.days.length);
+    console.log(trip.days.length);
+    if (tripCached.days.length !== trip.days.length) {
+      const day = trip.days.find(day => day.order === trip.days.length - 1);
+      
+      setActiveDay({ data : day, time: Date.now() });
 
-      setActiveDay(day);
+      setTripCached(trip);
     }
   }, [trip.days.length]);
 
@@ -39,6 +40,7 @@ export default function AddDay({activeDay, setActiveDay}) {
         color: randomColor,
       }
     });
+
   }
 
   return (

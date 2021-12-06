@@ -67,7 +67,7 @@ function Studio({ tripId }) {
           payload: tripData
         });
 
-        setPageState(STATE.READY)
+        setPageState(STATE.READY);
       })
       .catch((e) => console.log(e));
 
@@ -112,28 +112,22 @@ function Studio({ tripId }) {
       with this latest content instead.
   */
   useEffect(() => {
-    if (activeDay !== null) {
+    console.log({activeDay});
+    if (activeDay) {
       sidebarSetter.setContent(<DayDetails
-          setActivePin={setActivePin}
-          day={activeDay.data}
-        />);
+        setActivePin={setActivePin}
+        day={activeDay.data}
+      />);
       sidebarSetter.setVisible(true);
     }
   }, [activeDay]);
 
+
+  //trip debug
   useEffect(() => {
-    if (activeDay) {
-      // ? Caution: Will referential check be an issue for us here?
-      // ? No, because use of the reducer guarantees an update.
-      // ? Because it makes a clone of the state, which will 
-      // ? have a different address.
-      const activeDayUpdated =
-        trip?.days.find(day => day.id === activeDay.id);
-      setActiveDay(activeDayUpdated);
-      // TODO
-      // consider implementing this to refresh active pin
-    }
-  }, [trip?.days]);
+    console.log("trip debug");
+    console.log(trip);
+  }, [trip]);
 
   //#region :Render Logic
   if (pageState === STATE.LOADING) {
@@ -161,7 +155,8 @@ function Studio({ tripId }) {
 
     return `${month}/${day}/${year}, ${hours}:${minutes} ${period}`;
   }
-  
+
+
   return (
     <TripId.Provider value={tripId}>
       <TripContext.Provider value={trip}>
