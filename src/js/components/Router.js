@@ -46,12 +46,15 @@ function Router() {
     <HashRouter>
       <UserContext.Provider value={userInfo}>
         <Switch>
+          {/* Home page redirects to the studio. */}
           <Route exact path="/">
             {userInfo ? <Redirect to="/studio/" /> : <Redirect to="/signup/login" />}
           </Route>
+          {/* Protected Content */}
           <Route exact path="/studio">
             {userInfo ? <Studio /> : <Redirect to="/signup/login" />}
           </Route>
+          {/* Auth pages; redirect if the user is already signed in. */}
           <Route exact path="/signup/login">
             {userInfo ? <Redirect to="/studio/" /> : <Login />}
           </Route>

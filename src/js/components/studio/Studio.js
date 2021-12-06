@@ -17,6 +17,7 @@ import DayDetails from './DayDetails';
 import STATE from "../ComponentState";
 import Sidebar from './Sidebar';
 import useSidebar from '../../hooks/useSidebar';
+import StudioHeader from './StudioHeader';
 
 
 // ! code begin
@@ -167,6 +168,7 @@ function Studio({ tripId }) {
         <MapInstance.Provider value={mapRef}>
           <TripDispatch.Provider value={tripDispatch}>
             <SidebarSetter.Provider value={sidebarSetter}>
+              <StudioHeader />
               <div style={{ padding: "25px 5px" }}>
                 <input
                   className="trip-title"

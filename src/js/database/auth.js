@@ -3,6 +3,7 @@ import { getAuth,
          createUserWithEmailAndPassword,
          signInWithEmailAndPassword,
          onAuthStateChanged,
+         signOut
        } from "firebase/auth";
 
 const auth = getAuth(fbService);
@@ -49,16 +50,10 @@ async function signInUser(email, password) {
  * Unfortunately, there doesn't seem to be a way to
  * truly separate the code from this.
  */
-let userInfo;
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    userInfo = user;
-  } else {
-    // signed out, 
-    // do not allow access to app
-    userInfo = null;
-  }
-});
+
+function signOutUser() {
+  signOut();
+}
 
 const authStateObserver = (nextOrObserver) => {
   return onAuthStateChanged(auth, nextOrObserver);
