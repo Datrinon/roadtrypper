@@ -30,8 +30,6 @@ function importSampleImages(r = require.context("../../../data/images", false, /
   return images;
 }
 
-function PoiDetails({ activePin }) {
-  console.log(activePin);
   const [activePoi, setActivePoi] = useState(activePin);
   const [sampleImages, setSampleImages] = useState(importSampleImages()); // ! SAMPLE_FLAG ! debug, remove later.
   const [day, setDay] = useState(null);
@@ -57,10 +55,8 @@ function PoiDetails({ activePin }) {
 
 
   useEffect(() => {
-    if (!!activePin) {
       updateData();
     }
-  }, [activePin, trip]);
 
   function launchGalleryView(index) {
     setGalleryStartingIndex(index);
@@ -253,6 +249,18 @@ function PoiDetails({ activePin }) {
             alt={photo.description} />
         </figure>
       );
+    }
+
+    function deletePOI() {
+      setActivePin(null);
+
+      dispatch({
+        type: "delete",
+        payload: {
+          type: "pois",
+          id : activePin.id
+        }
+      });
     }
 
     return (
