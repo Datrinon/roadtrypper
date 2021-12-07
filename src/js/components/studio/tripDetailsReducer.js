@@ -21,6 +21,18 @@ function findGreatestId(table) {
   return id;
 }
 
+function getIndexWithGreatestOrder(table) {
+  let order = table.reduce((greatestOrder, item) => {
+    if (item.order > greatestOrder) {
+      return item.order;
+    } else {
+      return greatestOrder;
+    }
+  }, -1);
+
+  return table.findIndex(item => item.order === order);
+}
+
 
 export function tripReducer(state, action) {
   // make a copy of the state before working with it.
@@ -112,7 +124,33 @@ export function tripReducer(state, action) {
         };
       }
 
-      stateCopy[type].push(record);
+      // if the added value has an 'order' attribute
+      console.log({values});
+      if (values.order !== null && values.order !== undefined) {
+        // we can take that order to 
+        // get the index of any existing item
+        // and then splice.
+        let index = stateCopy[type].findIndex(item => item.order === values.order);
+        
+        // none were found, so we just add it to the end of the array.
+        if (index === -1) {
+          index = stateCopy[type].length;  
+        } 
+
+        stateCopy[type].splice(index, 0, record);
+        
+        // now, use a for loop to increment each subsequent item's order by 1.
+        // start on current index plus one.
+        for (let i = index + 1; i < stateCopy[type].length; i++) {
+          console.log(i);
+          stateCopy[type][i].order += 1;
+        }
+
+      } else {
+        // otherwise just push it to end.
+        stateCopy[type].push(record);
+      }
+
 
       return stateCopy;
     }
