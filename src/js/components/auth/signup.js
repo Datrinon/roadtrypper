@@ -2,9 +2,11 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import { createUserAccount } from '../../database/auth';
 import PWRequirements from './PWrequirements';
+import COMPONENT_STATE from '../ComponentState';
 
 
 function SignUp() {
+  const [pageState, setPageState] = useState(COMPONENT_STATE.READY);
   const [uid, setUid] = useState("guest-account@gmail.com");
   const [pw, setPw] = useState("Test12345!!");
   const [showPWRequirements, setShowPWRequirements] = useState(false);
@@ -20,12 +22,19 @@ function SignUp() {
     }
 
     createUserAccount(uid, pw);
+    setPageState(COMPONENT_STATE.LOADING);
   }
 
   function handlePwChange(e) {
     setPw(e.target.value);
 
     setReqsMet(false);
+  }
+
+  if (pageState === COMPONENT_STATE.LOADING) {
+    return (
+      <p>Sign-up successful. Logging you in...</p>
+    )
   }
 
   return (

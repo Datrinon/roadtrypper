@@ -38,11 +38,11 @@ const PASSWORD_TESTS = [
 
 function PWRequirements({ password, setReqsMet }) {
 
-  function mapReq(req) {
+  function mapReq(req, index) {
     let passed = req.test(password);
 
     return (
-      <div>
+      <div key={index}>
         <p>
           {passed &&
             <span>✔</span>
