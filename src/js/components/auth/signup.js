@@ -5,14 +5,19 @@ import PWRequirements from './PWrequirements';
 
 
 function SignUp() {
-  const [uid, setUid] = useState("");
-  const [pw, setPw] = useState("");
+  const [uid, setUid] = useState("guest-account@gmail.com");
+  const [pw, setPw] = useState("Test12345!!");
   const [showPWRequirements, setShowPWRequirements] = useState(false);
   const [confirmPw, setConfirmPw] = useState("");
   const [reqsMet, setReqsMet] = useState(false);
+  const [error, setError] = useState("");
 
   function onSignUpSubmit(e) {
     e.preventDefault();
+
+    if (confirmPw !== pw) {
+      setError("Passwords do not match.");
+    }
   }
 
   function handlePwChange(e) {
@@ -56,6 +61,9 @@ function SignUp() {
             value={confirmPw}
             onChange={(e) => setPw(e.target.value)}
           />
+        <div className="error-field">
+          {error}
+        </div>
         </label>
         <button disabled={!reqsMet}>Submit</button>
       </form>
