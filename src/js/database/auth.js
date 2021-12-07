@@ -59,5 +59,16 @@ const authStateObserver = (nextOrObserver) => {
   return onAuthStateChanged(auth, nextOrObserver);
 }
 
+const manageUserState = (user, setState) => {
+  if (user) {
+    console.log(user);
+    setState(user);
+  } else {
+    // signed out, 
+    // do not allow access to app
+    setState(user);
+  }
+};
+
 
 export {createUserAccount, signInUser, signOutUser, auth, authStateObserver};
