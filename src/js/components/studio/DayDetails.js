@@ -153,25 +153,22 @@ function DayDetails({day, setActivePin}) {
           />))}
       </POICardContainer>
     )
-    
-
   }
   
+  function deleteDay() {
+     
+  }
+
   return (
     <div>
       <h1>Day Details</h1>
+      <button onClick={deleteDay}>Delete</button>
       {renderDayOrder()}
       {renderDayTitle()}
       {renderColorPicker()}
       {renderPOICards()}
       {/* 
-      To add:
-        Title HoverToEdit
-        Color HoverToEdit
-        POI Listing
-        Get the first image of each POI and set that as the background,
-        create a card.
-        Default background of the card is an abstract, generic map image.
+      
        */}
     </div>
   )
