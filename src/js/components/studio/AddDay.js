@@ -11,7 +11,7 @@ export default function AddDay({activeDay, setActiveDay}) {
   const tripId = useContext(TripId);
 
   useEffect(() => {
-    if (tripCached.days.length !== trip.days.length) {
+    if (tripCached.days.length < trip.days.length) {
       const day = trip.days.find(day => day.order === addedDayOrder);
       
       setActiveDay({ data : day, time: Date.now() });

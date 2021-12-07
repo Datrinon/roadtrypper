@@ -97,8 +97,6 @@ function Studio({ tripId }) {
 
   useEffect(() => {
     console.log(activePin);
-    if (activePin !== null) {
-      sidebarSetter.setContent(<PoiDetails activePin={activePin.poi} />);
       sidebarSetter.setVisible(true);
     }
   }, [activePin]);
@@ -112,13 +110,17 @@ function Studio({ tripId }) {
       with this latest content instead.
   */
   useEffect(() => {
+    console.log("Active Day: ");
     console.log({activeDay});
     if (activeDay) {
       sidebarSetter.setContent(<DayDetails
         setActivePin={setActivePin}
+        setActiveDay={setActiveDay}
         day={activeDay.data}
       />);
       sidebarSetter.setVisible(true);
+    } else {
+      sidebarSetter.setContent(null);
     }
   }, [activeDay]);
 

@@ -63,7 +63,7 @@ function Sidebar({ visible, content }, ref) {
             {collapsed ? "(DEBUG. currently collapsed)" : "(DEBUG. not collapsed)"}
           </p>
           <section className="sidebar-contents">
-            {!collapsed && content}
+            {!collapsed && (content ?? "No Day or POI currently selected.")}
           </section>
         </SidebarContent>
       </FlexWrapper>
