@@ -2,19 +2,19 @@
  * A dictionary containing a listing of the tables used in this 
  * application, alongside their relations to others.
  */
-const SCHEMA = {
-  day : {
+const DATA_SCHEMA = {
+  days : {
     parent: null,
     parentKey: null,
-    child: "poi"
+    child: "pois"
   },
-  poi : {
+  pois : {
     parent: "day",
     parentKey: "dayId",
-    child: "photo",
+    child: "photos",
   },
-  photo: {
-    parent: "poi",
+  photos: {
+    parent: "pois",
     parentKey: "poiId",
     child: null
   },
@@ -26,4 +26,4 @@ const SCHEMA = {
 
 }
 
-export default SCHEMA;
+export default DATA_SCHEMA;

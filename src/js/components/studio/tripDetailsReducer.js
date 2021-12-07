@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import DATA_SCHEMA from '../../model/data-hierarchy';
 
 export const TRIP_ACTIONS = {
   LOAD: "load",
@@ -48,7 +49,7 @@ export function tripReducer(state, action) {
       return action.payload;
     }
     case 'edit_general': {
-      
+
       let { key, value } = action.payload;
 
       stateCopy.general[key] = value;
@@ -56,8 +57,8 @@ export function tripReducer(state, action) {
       return stateCopy;
     }
     case 'add_poi': {
-      
-      let { dayId, photos, order, title, description, ...values} = action.payload;
+
+      let { dayId, photos, order, title, description, ...values } = action.payload;
 
       let poiId = findGreatestId(stateCopy.pois);
 
@@ -67,12 +68,12 @@ export function tripReducer(state, action) {
       }
 
       let record = {
-          dayId,
-          id: poiId,
-          order,
-          title,
-          description,
-          ...values
+        dayId,
+        id: poiId,
+        order,
+        title,
+        description,
+        ...values
       };
 
       // deal with order here.
@@ -86,13 +87,13 @@ export function tripReducer(state, action) {
 
       stateCopy.pois.push(record);
 
-      console.log({photos});
+      console.log({ photos });
 
       // now add the photos here too.
       if (photos !== null && photos !== undefined) {
         let startingPhotoId = findGreatestId(stateCopy.photos);
 
-        photos.forEach((photo, index) => {          
+        photos.forEach((photo, index) => {
           stateCopy.photos.push({
             id: startingPhotoId + index,
             description: photo.description,
@@ -105,7 +106,7 @@ export function tripReducer(state, action) {
       return stateCopy;
     }
     case 'add': {
-      
+
       const { type, fkname, fkid, ...values } = action.payload;
 
       let id = findGreatestId(stateCopy[type]);
@@ -125,20 +126,20 @@ export function tripReducer(state, action) {
       }
 
       // if the added value has an 'order' attribute
-      console.log({values});
+      console.log({ values });
       if (values.order !== null && values.order !== undefined) {
         // we can take that order to 
         // get the index of any existing item
         // and then splice.
         let index = stateCopy[type].findIndex(item => item.order === values.order);
-        
+
         // none were found, so we just add it to the end of the array.
         if (index === -1) {
-          index = stateCopy[type].length;  
-        } 
+          index = stateCopy[type].length;
+        }
 
         stateCopy[type].splice(index, 0, record);
-        
+
         // now, use a for loop to increment each subsequent item's order by 1.
         // start on current index plus one.
         for (let i = index + 1; i < stateCopy[type].length; i++) {
@@ -155,7 +156,7 @@ export function tripReducer(state, action) {
       return stateCopy;
     }
     case 'edit': {
-      
+
       const { type, id, key, value } = action.payload;
 
       console.log(stateCopy);
@@ -170,7 +171,7 @@ export function tripReducer(state, action) {
     }
     // for moving POIs to another day.
     case 'move_poi': {
-      
+
       const { "id": poiId, "newDay": newDayOrder } = action.payload;
 
       const poi = stateCopy.pois.find(poi => poi.id === poiId);
@@ -193,15 +194,15 @@ export function tripReducer(state, action) {
     }
     // rearrange a POI or day. provide the type, id, new value to move to,
     // and the FK to categorize records (if any).
-    case 'rearrange' : {
-      
+    case 'rearrange': {
+
       const { type, id, newOrder, fk } = action.payload;
 
       const table = stateCopy[type];
       const record = table.find(item => item.id === id);
 
       let existingRecordWithMatchingOrder;
-      
+
       if (fk) {
         existingRecordWithMatchingOrder = table.find(item => (
           item[fk] === record[fk] && item.order === newOrder
@@ -218,12 +219,52 @@ export function tripReducer(state, action) {
       return stateCopy;
     }
     case 'delete': {
-      
+
       const { type, id } = action.payload;
 
+      // first, delete the record.
       const deleteIndex = stateCopy[type].findIndex(record => record.id === id);
-
       stateCopy[type].splice(deleteIndex, 1);
+
+      // now we need to recursively delete anything else containing that id.
+      // we go down the tree...
+      let child = DATA_SCHEMA[type].child;
+      let idsToDelete = [id];
+
+      // so now, imagine we're in the POI...
+      while (child !== null) {
+        // get the name of the parent key in that object.
+        let parentKey = DATA_SCHEMA[child].parentKey;
+
+        let deletedChildrenIds = [];
+        
+        for (let id of idsToDelete) {
+          // then we run a filter to get all items with IDs that aren't that,
+          // effectively eliminating the entries with id.
+          let result = stateCopy[child].filter(item => {
+            if (item[parentKey] !== id) {
+              return true;
+            } 
+            
+            deletedChildrenIds.push(item.id);
+            return false;
+          });
+          
+          // assign that result to the table now.
+          stateCopy[child] = result;
+        }
+
+        // now get the child of this child.
+        child = DATA_SCHEMA[child].child;
+        // assign the children ids to the idsToDelete variable,
+        // as we do not want to keep any descendants associated with these children.
+        idsToDelete = deletedChildrenIds;
+
+        // repeat until null to delete.
+      }
+
+      //? now the order?
+      // work on that later.
 
       return stateCopy;
     }
@@ -238,4 +279,5 @@ export function tripReducer(state, action) {
 // Note: Reducer should not have any side effects.
 // Do not allow API / fetch calls inside of the reducer.
 // That is not the right place.
+// Use MIDDLEWARE instead.
 // ! ! !
