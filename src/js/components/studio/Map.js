@@ -50,7 +50,7 @@ function Map({ data, setActivePin }) {
 
       return (
         <DayPins
-          key={index}
+          key={day.id}
           pois={pois}
           icon={icon}
           day={day}
