@@ -1,22 +1,31 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import { createUserAccount } from '../../database/auth';
+import PWRequirements from './PWrequirements';
 
 
 function SignUp() {
   const [uid, setUid] = useState("");
   const [pw, setPw] = useState("");
+  const [showPWRequirements, setShowPWRequirements] = useState(false);
   const [confirmPw, setConfirmPw] = useState("");
+  const [reqsMet, setReqsMet] = useState(false);
 
   function onSignUpSubmit(e) {
     e.preventDefault();
+  }
+
+  function handlePwChange(e) {
+    setPw(e.target.value);
+
+    setReqsMet(false);
   }
 
   return (
     <div>
       <h1>Sign Up</h1>
       <form onSubmit={onSignUpSubmit}>
-        <label for="uid-email">
+        <label htmlFor="uid-email">
           Email
           <input
             type="email"
@@ -25,25 +34,30 @@ function SignUp() {
             onChange={(e) => setUid(e.target.value)}
           />
         </label>
-        <label for="uid-pw">
-          Password
-          <input
-            id="pw"
-            type="password"
-            value={pw}
-            onChange={(e) => setPw(e.target.value)}
-          />
-        </label>
-        <label for="uid-pw">
+        <div>
+          <label htmlFor="uid-pw">
+            Password
+            <input
+              id="uid-pw"
+              type="password"
+              value={pw}
+              onChange={handlePwChange}
+              onFocus={(e) => setShowPWRequirements(true)}
+              onBlur={(e) => setShowPWRequirements(false)}
+            />
+          </label>
+          <PWRequirements password={pw} setReqsMet={setReqsMet} />
+        </div>
+        <label htmlFor="uid-confirm-pw">
           Confirm Password
           <input
-            id="pw"
+            id="uid-confirm-pw"
             type="password"
-            value={pw}
+            value={confirmPw}
             onChange={(e) => setPw(e.target.value)}
           />
         </label>
-        <button>Submit</button>
+        <button disabled={!reqsMet}>Submit</button>
       </form>
       <Link to="/signup/login/">
         Existing User? Log in here.
