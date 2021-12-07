@@ -146,7 +146,8 @@ function DayDetails({day, setActivePin}) {
 
     return (
       <POICardContainer>
-        {pois.map(poi => (<POICard
+        {pois.map((poi, index) => (<POICard
+            key={index}
             poi={poi}
             setActivePin={setActivePin}
           />))}

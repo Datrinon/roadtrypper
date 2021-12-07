@@ -172,7 +172,7 @@ function Studio({ tripId }) {
                   onBlur={onChangeTitle} />
                 <p>Last Update: {getTimestamp(trip.general.lastAccessed)}</p>
                 <div className="add-options">
-                  <AddDay setActiveDay={setActiveDay} />
+                  <AddDay activeDay={activeDay} setActiveDay={setActiveDay} />
                   <AddPOI activeDay={activeDay} />
                 </div>
                 <div className="days">

@@ -7,13 +7,12 @@ export default function AddDay({activeDay, setActiveDay}) {
   const dispatch = useContext(TripDispatch);
   const trip = useContext(TripContext);
   const [tripCached, setTripCached] = useState(trip);
+  const [addedDayOrder, setAddedDayOrder] = useState(null);
   const tripId = useContext(TripId);
 
   useEffect(() => {
-    console.log(tripCached.days.length);
-    console.log(trip.days.length);
     if (tripCached.days.length !== trip.days.length) {
-      const day = trip.days.find(day => day.order === trip.days.length - 1);
+      const day = trip.days.find(day => day.order === addedDayOrder);
       
       setActiveDay({ data : day, time: Date.now() });
 
@@ -28,6 +27,8 @@ export default function AddDay({activeDay, setActiveDay}) {
       randomColor += result;
     }
 
+    let orderVal = activeDay ? activeDay.data.order + 1 : trip.days.length;
+
     dispatch({
       type: "add",
       payload: {
@@ -35,12 +36,13 @@ export default function AddDay({activeDay, setActiveDay}) {
         fkname: null,
         fkid: null,
         tripId: tripId,
-        order: trip.days.length,
+        order: orderVal,
         title: "",
         color: randomColor,
       }
     });
 
+    setAddedDayOrder(orderVal);
   }
 
   return (
