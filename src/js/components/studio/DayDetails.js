@@ -9,7 +9,7 @@ const POICardContainer = styled.div`
   flex-direction: row;
 `
 
-function DayDetails({day, setActivePin}) {
+function DayDetails({day, setActivePin, setActiveDay}) {
   
   console.log(day);
 
@@ -110,6 +110,7 @@ function DayDetails({day, setActivePin}) {
           value: color
         }
       });
+
     }
 
     console.log(day.color);
@@ -156,13 +157,21 @@ function DayDetails({day, setActivePin}) {
   }
   
   function deleteDay() {
-     
+     dispatch({
+       type: "delete",
+       payload: {
+         type: "days",
+         id : day.id
+       }
+     })
+
+     setActiveDay(null);
   }
 
   return (
     <div>
       <h1>Day Details</h1>
-      <button onClick={deleteDay}>Delete</button>
+      <button onClick={deleteDay}>Delete Day</button>
       {renderDayOrder()}
       {renderDayTitle()}
       {renderColorPicker()}
