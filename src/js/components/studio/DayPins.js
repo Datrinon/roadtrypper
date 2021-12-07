@@ -40,7 +40,7 @@ function DayPins({ pois, day, icon, mapRef, setActivePin }) {
     const lastClicked = Date.now();
     
     setActivePin({
-      poi,
+      data: poi,
       lastClicked
     });
   }

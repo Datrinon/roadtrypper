@@ -30,6 +30,7 @@ function importSampleImages(r = require.context("../../../data/images", false, /
   return images;
 }
 
+function PoiDetails({ activePin, setActivePin }) {
   const [activePoi, setActivePoi] = useState(activePin);
   const [sampleImages, setSampleImages] = useState(importSampleImages()); // ! SAMPLE_FLAG ! debug, remove later.
   const [day, setDay] = useState(null);
@@ -55,8 +56,11 @@ function importSampleImages(r = require.context("../../../data/images", false, /
 
 
   useEffect(() => {
+    console.log(activePin);
+    if (activePin) {
       updateData();
     }
+  }, [activePin]);
 
   function launchGalleryView(index) {
     setGalleryStartingIndex(index);
@@ -265,6 +269,7 @@ function importSampleImages(r = require.context("../../../data/images", false, /
 
     return (
       <>
+        <button onClick={deletePOI}>Delete</button>
         {belongsToDayElement}
         {poiOrderElement}
         {dayTitleElement}

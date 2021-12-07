@@ -96,8 +96,16 @@ function Studio({ tripId }) {
   }
 
   useEffect(() => {
+    console.log("Active Pin: ");
     console.log(activePin);
+    if (activePin) {
+      sidebarSetter.setContent(<PoiDetails
+        activePin={activePin.data}
+        setActivePin={setActivePin}
+      />);
       sidebarSetter.setVisible(true);
+    } else {
+      sidebarSetter.setContent(null);
     }
   }, [activePin]);
 
@@ -129,6 +137,12 @@ function Studio({ tripId }) {
   useEffect(() => {
     console.log("trip debug");
     console.log(trip);
+
+    // prevent stale active pois from occurring if the trip
+    // was just reset.
+    if (activePin) {
+      setActivePin({data: trip.pois[activePin.data.id], time: Date.now()});
+    }
   }, [trip]);
 
   //#region :Render Logic
