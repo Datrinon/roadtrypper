@@ -18,7 +18,7 @@ let Card = styled.div`
 function DayCard({ setActiveDay, day, pois }) {
 
   function onCardClick(day) {
-    let time = new Date();
+    let time = Date.now();
     
     let data = {
       time,

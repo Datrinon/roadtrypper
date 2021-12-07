@@ -22,7 +22,6 @@ function DayPins({ pois, day, icon, mapRef, setActivePin }) {
    */
   function addHandlerToDayCard() {
     document.querySelector(`.day-card[data-id='${day.id}']`).onclick = () => {
-
       const group = groupRef.current;
       if (Object.keys(group.getBounds()).length === 0) {
         return;
@@ -38,7 +37,7 @@ function DayPins({ pois, day, icon, mapRef, setActivePin }) {
   }, []);
 
   function onMarkerClick(poi) {
-    const lastClicked = new Date();
+    const lastClicked = Date.now();
     
     setActivePin({
       poi,
