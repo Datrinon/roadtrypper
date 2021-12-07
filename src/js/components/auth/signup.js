@@ -8,7 +8,7 @@ function SignUp() {
   const [uid, setUid] = useState("guest-account@gmail.com");
   const [pw, setPw] = useState("Test12345!!");
   const [showPWRequirements, setShowPWRequirements] = useState(false);
-  const [confirmPw, setConfirmPw] = useState("");
+  const [confirmPw, setConfirmPw] = useState("Test12345!!");
   const [reqsMet, setReqsMet] = useState(false);
   const [error, setError] = useState("");
 
@@ -18,6 +18,8 @@ function SignUp() {
     if (confirmPw !== pw) {
       setError("Passwords do not match.");
     }
+
+    createUserAccount(uid, pw);
   }
 
   function handlePwChange(e) {
