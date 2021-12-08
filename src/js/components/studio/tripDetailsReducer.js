@@ -327,18 +327,6 @@ export function tripReducer(state, action) {
 
 
         if (attr.parentKey) {
-          // modify this to make groups of the altered elements.
-
-          // const groups = stateCopy[type].reduce((groups, item) => {
-          //   if (groups[item[attr.parentKey]]) {
-          //     groups[item[attr.parentKey]].push(item);
-          //   } else {
-          //     groups[item[attr.parentKey]] = [item];
-          //   }
-
-          //   return groups;
-          // }, []);
-
           const groups = [];
 
           for (let i = 0; i < attr.parentKeyVals; i++) {
