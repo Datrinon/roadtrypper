@@ -23,7 +23,7 @@ function POICard({poi, setActivePin}) {
     let timestamp = new Date();
     let data = {
       time: timestamp,
-      poi
+      data: poi
     }
     setActivePin(data);
   }

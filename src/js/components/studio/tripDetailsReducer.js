@@ -1,3 +1,4 @@
+/* eslint-disable no-loop-func */
 import _ from 'lodash'
 import DATA_SCHEMA from '../../model/data-hierarchy';
 
@@ -33,7 +34,6 @@ function getIndexWithGreatestOrder(table) {
 
   return table.findIndex(item => item.order === order);
 }
-
 
 export function tripReducer(state, action) {
   // make a copy of the state before working with it.
@@ -221,13 +221,26 @@ export function tripReducer(state, action) {
     case 'delete': {
 
       const { type, id } = action.payload;
+      let typesToReorder = [];
 
       // first, delete the record.
       const deleteIndex = stateCopy[type].findIndex(record => record.id === id);
+
+      // does it need to be reordered? Yes if not the end of the array
+      // and the item of that array has an order attribute
+      // we need to also get the parent key to narrow each categorization.
+      if (deleteIndex !== stateCopy[type].length - 1
+        && stateCopy[type][deleteIndex].order !== undefined) {
+        typesToReorder.push({ type, parentKey: DATA_SCHEMA[type].parentKey });
+      }
+
+      debugger;
+
       stateCopy[type].splice(deleteIndex, 1);
 
-      // now we need to recursively delete anything else containing that id.
-      // we go down the tree...
+      // now we need to recursively delete anything else containing that id as
+      // a foreign key.
+      // we go down the tree if there's actually a child branch.
       let child = DATA_SCHEMA[type].child;
       let idsToDelete = [id];
 
@@ -237,19 +250,28 @@ export function tripReducer(state, action) {
         let parentKey = DATA_SCHEMA[child].parentKey;
 
         let deletedChildrenIds = [];
-        
+
         for (let id of idsToDelete) {
           // then we run a filter to get all items with IDs that aren't that,
           // effectively eliminating the entries with id.
-          let result = stateCopy[child].filter(item => {
+          let tableLength = stateCopy[child].length;
+
+
+          let result = stateCopy[child].filter((item, index) => {
             if (item[parentKey] !== id) {
               return true;
-            } 
-            
+            }
+
             deletedChildrenIds.push(item.id);
+
+            // add to reorder if the item.id is not the end of the array.
+            if (index !== tableLength - 1) {
+              typesToReorder.push({ type, parentKey: DATA_SCHEMA[type].parentKey });
+            }
+
             return false;
           });
-          
+
           // assign that result to the table now.
           stateCopy[child] = result;
         }
@@ -263,8 +285,60 @@ export function tripReducer(state, action) {
         // repeat until null to delete.
       }
 
-      //? now the order?
-      // work on that later.
+      debugger;
+
+      // filter out duplicate objects
+      let inSet = [];
+      let typesSet = [];
+      for (let i = 0; i < typesToReorder.length; i++) {
+        if (inSet.includes(typesToReorder.type)) {
+          continue;
+        } else {
+          inSet.push(typesToReorder.type);
+          typesSet.push(typesToReorder[i]);
+        }
+      }
+
+      typesToReorder = typesSet;
+
+      for (let attr of typesToReorder) {
+        // use reduce to group each of these items by their parentKey.
+        if (attr.parentKey) {
+          const groups = stateCopy[type].reduce((groups, item) => {
+            if (groups[item[attr.parentKey]]) {
+              groups[item[attr.parentKey]].push(item);
+            } else {
+              groups[item[attr.parentKey]] = [item];
+            }
+
+            return groups;
+          }, []);
+
+
+          // ? Ideally, I don't have to do anything since these items
+          // ? maintain their original references.
+          // ! TODO - Selective Sort - only let altered parentIds change.
+          groups.forEach(group => {
+            group
+              .sort((itemA, itemB) => itemA.order - itemB.order)
+              .forEach((item, index) => {
+                item.order = index;
+              })
+          })
+
+          // for each of these groups, sort their items.
+          debugger;
+        } else {
+          // no parent key? in this case we just can sort directly
+          // sort each of these
+          stateCopy[type].sort((itemA, itemB) => itemA.order - itemB.order);
+          // Needs to account for foreign key differences.
+          // use hierarchy...
+          for (let i = 0; i < stateCopy[type].length; i++) {
+            stateCopy[type][i].order = i;
+          }
+        }
+      }
 
       return stateCopy;
     }
