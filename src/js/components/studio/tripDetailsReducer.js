@@ -219,6 +219,7 @@ export function tripReducer(state, action) {
       return stateCopy;
     }
     case 'delete': {
+      const t0 = performance.now();
 
       const { type, id } = action.payload;
       let typesToReorder = [];
@@ -231,7 +232,19 @@ export function tripReducer(state, action) {
       // we need to also get the parent key to narrow each categorization.
       if (deleteIndex !== stateCopy[type].length - 1
         && stateCopy[type][deleteIndex].order !== undefined) {
-        typesToReorder.push({ type, parentKey: DATA_SCHEMA[type].parentKey });
+
+        let parentKey = DATA_SCHEMA[type].parentKey;
+        let parentKeyVals = [];
+
+        if (parentKey) {
+          parentKeyVals.push(stateCopy[type][deleteIndex][parentKey]);
+        }
+
+        typesToReorder.push({
+          type,
+          parentKey,
+          parentKeyVals,
+        });
       }
 
       stateCopy[type].splice(deleteIndex, 1);
@@ -242,7 +255,6 @@ export function tripReducer(state, action) {
       let child = DATA_SCHEMA[type].child;
       let idsToDelete = [id];
 
-      // so now, imagine we're in the POI...
       while (child !== null) {
         // get the name of the parent key in that object.
         let parentKey = DATA_SCHEMA[child].parentKey;
@@ -263,7 +275,18 @@ export function tripReducer(state, action) {
 
             // add to reorder if the item.id is not the end of the array.
             if (index !== tableLength - 1) {
-              typesToReorder.push({ type, parentKey: DATA_SCHEMA[type].parentKey });
+              let parentKey = DATA_SCHEMA[child].parentKey;
+              let parentKeyVals = [];
+
+              if (parentKey) {
+                parentKeyVals.push(stateCopy[child][index][parentKey]);
+              }
+
+              typesToReorder.push({
+                type : child,
+                parentKey,
+                parentKeyVals,
+              });
             }
 
             return false;
@@ -298,21 +321,36 @@ export function tripReducer(state, action) {
 
       for (let attr of typesToReorder) {
         // use reduce to group each of these items by their parentKey.
+        // ! TODO - Selective Sort - only let altered parentIds change.
+
+
+
+
         if (attr.parentKey) {
-          const groups = stateCopy[type].reduce((groups, item) => {
-            if (groups[item[attr.parentKey]]) {
-              groups[item[attr.parentKey]].push(item);
-            } else {
-              groups[item[attr.parentKey]] = [item];
-            }
+          // modify this to make groups of the altered elements.
 
-            return groups;
-          }, []);
+          // const groups = stateCopy[type].reduce((groups, item) => {
+          //   if (groups[item[attr.parentKey]]) {
+          //     groups[item[attr.parentKey]].push(item);
+          //   } else {
+          //     groups[item[attr.parentKey]] = [item];
+          //   }
 
+          //   return groups;
+          // }, []);
+
+          const groups = [];
+
+          for (let i = 0; i < attr.parentKeyVals; i++) {
+            let group =
+              stateCopy[attr.type]
+                .filter(item => item[attr.parentKey] === attr.parentKeyVals[i]);
+
+            groups.push(group);
+          }
 
           // ? Ideally, I don't have to do anything since these items
           // ? maintain their original references.
-          // ! TODO - Selective Sort - only let altered parentIds change.
           groups.forEach(group => {
             group
               .sort((itemA, itemB) => itemA.order - itemB.order)
@@ -333,6 +371,10 @@ export function tripReducer(state, action) {
           }
         }
       }
+
+      const t1 = performance.now();
+
+      console.log("TIME TO DELETE: " + (t1 - t0));
 
       return stateCopy;
     }
