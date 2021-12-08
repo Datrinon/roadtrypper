@@ -2,8 +2,22 @@
 import { MOCK_TRIP_ID } from '../../data/sample-days';
 
 
+async function loadSampleTrip(signal) {
+  let trips = [];
 
-async function loadProjectData(tripId, signal) {
+  let trip = (await import("../../data/sample-trip.json")).default;
+
+  trips.push(trip);
+
+  if (signal.aborted) {
+    return Promise.reject(new Error("The request was cancelled early."));
+  }
+
+  return Promise.resolve(trips);
+}
+
+
+async function loadSampleProjectData(tripId, signal) {
   let general;
   let days;
   let pois;
@@ -28,4 +42,4 @@ async function loadProjectData(tripId, signal) {
   })
 }
 
-export { loadProjectData };
+export { loadSampleTrip, loadSampleProjectData };

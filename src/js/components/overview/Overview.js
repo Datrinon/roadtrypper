@@ -1,10 +1,12 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import * as s from '../styled/template.style'
 
 // components
 import AccountIcon from '../shared/AccountIcon'
 import SearchField from '../shared/SearchField'
+import { loadSampleTrip } from '../../database/data';
+import TripCard from './TripCard';
 
 
 /**
@@ -12,6 +14,8 @@ import SearchField from '../shared/SearchField'
  * @returns 
  */
 function Overview() {
+  const [trips, setTrips] = useState(null);
+  const abort = useRef(new AbortController());
 
   const searchRef = useRef();
 
@@ -22,6 +26,27 @@ function Overview() {
   function mapSearchResultsToElem() {
 
   }
+
+  useEffect(() => {
+
+    loadSampleTrip(abort.current)
+    .then((trips) => {
+      setTrips(trips);
+    })
+    .catch((e) => console.log(e));
+
+    return () => {
+      abort.current.abort();
+    }
+  }, []);
+
+  if (trips === null) {
+    return (
+      <p>Loading...</p>
+    )
+  }
+
+  console.log(trips);
 
   return (
     <div>
@@ -38,7 +63,15 @@ function Overview() {
           classNames={["trips-search"]} />
       </s.Header>
       <div>
+        <button>(Floating Button) Start a New Trip</button>
+      </div>
+      <div>
         Contains Trip Cards
+        {trips.map(trip => {
+          return <TripCard
+            key={trip.id}
+            trip={trip} />
+        })}
       </div>
       Overview.
       {/* 

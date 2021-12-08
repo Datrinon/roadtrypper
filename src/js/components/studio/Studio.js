@@ -60,7 +60,7 @@ function Studio({ tripId }) {
 
   // This useEffect is for loading data.
   useEffect(() => {
-    DB.loadProjectData(tripId, abortController)
+    DB.loadSampleProjectData(tripId, abortController)
       .then((tripData) => {
         tripDispatch({
           type: 'init',
