@@ -48,12 +48,12 @@ function DayPins({ pois, day, icon, mapRef, setActivePin }) {
   return (
     <FeatureGroup ref={groupRef}>
       {
-        pois.map((poi, index) => {
+        pois.map((poi) => {
           // console.log(poi.coordinates);
           // console.log(icon);
           return (
           <Marker
-            key={index}
+            key={poi.id}
             position={poi.coordinates}
             icon={icon}
             eventHandlers={{

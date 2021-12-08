@@ -2,6 +2,14 @@ import React, { useState, useEffect, useContext } from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons"
 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//!                        !
+//!                        !
+//! DEPRECATED. DO NOT USE.!
+//!                        !
+//!                        !
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 import * as s from "./POIDetails.style";
 import "../../../css/POIDetails.css";
 import { TripContext, TripDispatch } from './Studio';

@@ -14,7 +14,6 @@ import GalleryView from './GalleryView';
 
 // trip information and reducer
 import { MapInstance, TripContext, TripDispatch } from './Studio';
-import POIDetailsEditForm from './POIDetailsEditForm';
 import LocationInput from './LocationInput';
 import EditLocation from './EditLocation';
 
@@ -80,7 +79,7 @@ function PoiDetails({ activePin, setActivePin }) {
           // I just need map to return with the index.
           trip.days.map((day, index) => {
             return <option
-              key={index}
+              key={day.id}
               value={index}>
               Day {index + 1}
             </option>

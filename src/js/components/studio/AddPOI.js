@@ -284,7 +284,7 @@ function NewPoiForm({ day }) {
                 .sort((dayA, dayB) => dayA.order - dayB.order)
                 .map((day, index) => {
                   return <option
-                    key={index}
+                    key={day.id}
                     value={index}>
                     {index + 1}
                   </option>
