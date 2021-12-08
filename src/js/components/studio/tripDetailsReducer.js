@@ -234,8 +234,6 @@ export function tripReducer(state, action) {
         typesToReorder.push({ type, parentKey: DATA_SCHEMA[type].parentKey });
       }
 
-      debugger;
-
       stateCopy[type].splice(deleteIndex, 1);
 
       // now we need to recursively delete anything else containing that id as
@@ -255,7 +253,6 @@ export function tripReducer(state, action) {
           // then we run a filter to get all items with IDs that aren't that,
           // effectively eliminating the entries with id.
           let tableLength = stateCopy[child].length;
-
 
           let result = stateCopy[child].filter((item, index) => {
             if (item[parentKey] !== id) {
@@ -284,8 +281,6 @@ export function tripReducer(state, action) {
 
         // repeat until null to delete.
       }
-
-      debugger;
 
       // filter out duplicate objects
       let inSet = [];
@@ -327,7 +322,6 @@ export function tripReducer(state, action) {
           })
 
           // for each of these groups, sort their items.
-          debugger;
         } else {
           // no parent key? in this case we just can sort directly
           // sort each of these
