@@ -20,7 +20,7 @@ function Overview() {
   }
 
   function mapSearchResultsToElem() {
-    
+
   }
 
   return (
@@ -34,9 +34,19 @@ function Overview() {
           suggestionMap={mapSearchResultsToElem}
           debounceTimer={250}
           fasterFirstSearch={null}
-          className={["trips-search"]} />
+          placeholder={"Search for a trip..."}
+          classNames={["trips-search"]} />
       </s.Header>
+      <div>
+        Contains Trip Cards
+      </div>
       Overview.
+      {/* 
+      To Add:
+      1. Trip Card Component
+      2. Click interactivity to make card redirect to the studio
+      3. Use a dummy ID please placed in the URL.
+       */}
     </div>
   )
 }

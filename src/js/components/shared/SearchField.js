@@ -43,6 +43,7 @@ const SearchField = React.forwardRef(({
   onSearchCallback,
   debounceTimer,
   fasterFirstSearch,
+  placeholder,
   classNames }, ref) => {
 
   const [suggestions, setSuggestions] = useState(null);
@@ -243,6 +244,7 @@ const SearchField = React.forwardRef(({
           onChange={() => setInvalidSearchTerm(null)}
           type="search"
           disabled={submitPressed}
+          placeholder={placeholder}
         />
         <button type="submit" disabled={submitPressed}>Search</button>
         {
