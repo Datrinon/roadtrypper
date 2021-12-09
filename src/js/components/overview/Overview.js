@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 
 import * as s from '../styled/template.style'
+import * as overviewStyle from './Overview.style';
 
 // components
 import AccountIcon from '../shared/AccountIcon'
@@ -29,7 +30,7 @@ function Overview() {
 
   useEffect(() => {
 
-    loadSampleTrip(abort.current)
+    loadSampleTrip(abort.current, true)
     .then((trips) => {
       setTrips(trips);
     })
@@ -65,14 +66,13 @@ function Overview() {
       <div>
         <button>(Floating Button) Start a New Trip</button>
       </div>
-      <div>
-        Contains Trip Cards
+      <overviewStyle.TripCardLayout>
         {trips.map(trip => {
           return <TripCard
             key={trip.id}
             trip={trip} />
         })}
-      </div>
+      </overviewStyle.TripCardLayout>
       Overview.
       {/* 
       To Add:
