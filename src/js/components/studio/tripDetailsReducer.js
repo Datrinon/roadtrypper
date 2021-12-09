@@ -321,10 +321,6 @@ export function tripReducer(state, action) {
 
       for (let attr of typesToReorder) {
         // use reduce to group each of these items by their parentKey.
-        // ! TODO - Selective Sort - only let altered parentIds change.
-
-
-
 
         if (attr.parentKey) {
           const groups = [];

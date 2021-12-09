@@ -1,7 +1,11 @@
 // Firestore
 import { getFirestore,
          collection,
-         addDoc
+         addDoc,
+         query,
+         where,
+         getDocs,
+         orderBy
  } from "firebase/firestore";
 
 
@@ -14,6 +18,7 @@ import fbService from "./config";
 
 
 const db = getFirestore(fbService);
+const tripsStore = collection(db, "trips");
 
 /**
  * Adds a trip to the database. Just provide the author name; other attributes
@@ -22,10 +27,9 @@ const db = getFirestore(fbService);
  * @param {UserImpl} User authentication object associated with the log-in.
  * @returns 
  */
-async function addTrip(user) {
+async function addTrip(user, signal) {
   try {
     let trip = new Trip(
-      user.uid,
       user.email,
       "Untitled Trip"
     );
@@ -34,7 +38,14 @@ async function addTrip(user) {
     // worked.
     trip = {...trip};
 
-    const docRef = await addDoc(collection(db, "trips"), trip);
+    // extra security tag.
+    trip.uid = user.uid;
+
+    const docRef = await addDoc(tripsStore, trip);
+
+    if (signal.aborted) {
+      return Promise.reject(new Error("The request was cancelled early."));
+    }
 
     console.log("Document written: ", docRef);
 
@@ -42,6 +53,46 @@ async function addTrip(user) {
   } catch (e) {
     console.error("Error adding document: ", e);
   }
+}
+
+/**
+ * Load the user's trips.
+ * @param {UserImpl} user - The authenticated user's information.
+ * @param {AbortController} signal - Allows request to be canceled if user navigates before finish.
+ * @param {string} orderByAttr - The attribute on trip to order by (title / date).
+ * @param {string} direction - Direction to sort by; 'asc' or 'desc'.
+ * @returns 
+ */
+async function loadTrips(user,
+  signal,
+  orderByAttr = 'lastAccessed',
+  direction = 'desc') {
+  const trips = [];
+
+  const q = query(tripsStore,
+      where("author", "==", user.uid), orderBy(orderByAttr, direction));
+  
+  const querySnapshot = await getDocs(q);
+
+  if (signal.aborted) {
+    return Promise.reject(new Error("The request was cancelled early."));
+  }
+
+  querySnapshot.forEach((doc) => {
+    const trip = new Trip(
+      doc.email, // censor the UID from being published.
+      // in the upcoming sec phase the UID won't be accessible on reads.
+      doc.title,
+      doc.createDate,
+      doc.lastAccessed
+    );
+
+    trip.tripId = doc.id;
+
+    trips.push(trip);
+  })
+
+  return trips;
 }
 
 //#region Sample Data
@@ -109,4 +160,4 @@ async function loadSampleProjectData(tripId, signal) {
 
 //#endregion
 
-export { loadSampleTrip, loadSampleProjectData, addTrip };
+export { loadSampleTrip, loadSampleProjectData, addTrip, loadTrips };

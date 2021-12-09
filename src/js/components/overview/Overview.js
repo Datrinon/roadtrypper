@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useContext } from 'react'
 
 import * as s from '../styled/template.style'
 import * as overviewStyle from './Overview.style';
@@ -6,9 +6,10 @@ import * as overviewStyle from './Overview.style';
 // components
 import AccountIcon from '../shared/AccountIcon'
 import SearchField from '../shared/SearchField'
-import { loadSampleTrip } from '../../database/data';
+import { loadSampleTrip, loadTrips } from '../../database/data';
 import TripCard from './TripCard';
 import AddTrip from './AddTrip';
+import { UserContext } from '../Router';
 
 
 /**
@@ -18,6 +19,8 @@ import AddTrip from './AddTrip';
 function Overview() {
   const [trips, setTrips] = useState(null);
   const abort = useRef(new AbortController());
+
+  const user = useContext(UserContext);
 
   const searchRef = useRef();
 
@@ -84,7 +87,7 @@ function Overview() {
 
   useEffect(() => {
 
-    loadSampleTrip(abort.current, true)
+    loadTrips(user, abort.current)
     .then((trips) => {
       setTrips(trips);
     })
