@@ -20,35 +20,45 @@ function Overview() {
 
   const searchRef = useRef();
 
+  // sorts
+  const [titleDescOrder, setTitleDescOrder] = useState(false);
+  const [dateDescOrder, setDateDescOrder] = useState(true);
+
   function sortTrips(type) {
     const tripsCopy = [...trips];
-    
 
     switch (type) {
       case "title":
         tripsCopy.sort((tripA, tripB) => {
           if (tripA.title < tripB.title) {
-            return -1;
+            return titleDescOrder ? -1 : 1;
           }
           if (tripA.title > tripB.title) {
-            return 1;
+            return titleDescOrder ? 1 : -1;
           }
 
           return 0;
         })
+
+        setTitleDescOrder(prevState => !prevState);
+
         break;
       case "date":
+
         tripsCopy.sort((tripA, tripB) => {
           if (tripA.lastAccessed < tripB.lastAccessed) {
-            return -1;
+            return dateDescOrder ? 1 : -1;
           }
 
           if (tripA.lastAccessed > tripB.lastAccessed) {
-            return 1;
+            return dateDescOrder ? -1 : 1;
           }
 
           return 0;
         })
+
+        setDateDescOrder(prevState => !prevState);
+
         break;
       default:
         break;
@@ -57,8 +67,8 @@ function Overview() {
     setTrips(tripsCopy);
     /**
      * TODO here.
-     * 1. Basic sorts
-     * 2. Sort asc / desc
+     * 1. Ascending Sorts
+     * 2. Descending Sorts
      * 3. Sort aggregate.
      */
   }
@@ -111,8 +121,12 @@ function Overview() {
       </div>
       <div>
         Sorter.
-        <button onClick={sortTrips.bind(null, "title")}>Sort by title</button>
-        <button onClick={sortTrips.bind(null, "date")}>Sort by date</button>
+        <button onClick={sortTrips.bind(null, "title")}>
+          Sort by title {titleDescOrder ? "desc" : "asc"}
+        </button>
+        <button onClick={sortTrips.bind(null, "date")}>
+          Sort by date {dateDescOrder ? "desc" : "asc"}
+        </button>
       </div>
       <overviewStyle.TripCardLayout>
         {trips.map(trip => {
