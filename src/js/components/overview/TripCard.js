@@ -2,6 +2,8 @@ import React, { useRef } from 'react'
 import TripCover from '../../../data/images/city-map-vector.png'
 import styled from 'styled-components';
 
+import { Link } from "react-router-dom";
+
 // hooks
 import useDropdown from '../../hooks/useDropdown';
 // components
@@ -48,19 +50,7 @@ function TripCard({ trip }) {
 
   return (
     <TripCardContainer>
-      <div
-        onClick={(e) => {
-          e.stopPropagation();
-          openProject(e, false);
-        }}
-        role="button"
-        tabIndex="0"
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            openProject(e, false);
-          }
-        }}
-      >
+      <Link to={trip.tripid}>
         <TripCardImg src={TripCover} alt="A colorful graphic representation of a map." />
         <h2 className="trip-title">
           {trip.title}
@@ -68,7 +58,7 @@ function TripCard({ trip }) {
         <p>
           Last Opened {convertMsToDate(trip.lastAccessed)}
         </p>
-      </div>
+      </Link>
       <Options>
         <button onClick={setDropdownVisible.bind(null, true)} ref={dropdownRef}>
           Options

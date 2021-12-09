@@ -4,7 +4,7 @@ import { HashRouter, Switch, Route, Redirect } from "react-router-dom";
 
 // components
 import Studio from "./studio/Studio";
-import Overview from "./overview/Overview";
+import Overview from "./trips/Overview";
 import Login from './auth/login';
 import SignUp from './auth/signup';
 
@@ -26,15 +26,15 @@ function Router() {
           {/* <Route exact path="/studio">
             {userInfo ? <Studio /> : <Redirect to="/signup/login" />}
           </Route> */}
-          <Route exact path="/overview">
+          <Route exact path="/trips">
             {userInfo ? <Overview /> : <Redirect to="/signup/login" />}
           </Route>
           {/* Auth pages; redirect if the user is already signed in. */}
           <Route exact path="/signup/login">
-            {userInfo ? <Redirect to="/overview/" /> : <Login setUserInfo={setUserInfo}/>}
+            {userInfo ? <Redirect to="/trips/" /> : <Login setUserInfo={setUserInfo}/>}
           </Route>
           <Route exact path="/signup/" component={SignUp}>
-            {userInfo ? <Redirect to="/overview/" /> : <SignUp />}
+            {userInfo ? <Redirect to="/trips/" /> : <SignUp />}
           </Route>
         </Switch>
       </UserContext.Provider>
