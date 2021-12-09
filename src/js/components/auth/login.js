@@ -5,6 +5,7 @@ import { UserContext } from '../Router';
 
 // auth data
 import { authStateObserver } from '../../database/auth'
+import { set } from 'lodash';
 
 function Login({ setUserInfo }) {
 
@@ -30,6 +31,7 @@ function Login({ setUserInfo }) {
         // signed out, 
         // do not allow access to app
         setUserInfo(null);
+        setUser(null);
       }
     };
 
@@ -43,8 +45,9 @@ function Login({ setUserInfo }) {
     }
   }, []);
 
+  console.log(user);
   if (user === undefined) {
-    return <div></div>
+    return <div>F</div>
   }
 
   return (
