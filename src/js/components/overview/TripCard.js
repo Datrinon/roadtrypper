@@ -64,13 +64,9 @@ function TripCard({ trip }) {
         <Dropdown visible={dropdownVisible} ref={dropdownRef}>
           <ul>
             <li>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  openProject(e, true);
-                }}>
+              <Link to={trip.tripid} target="_blank">
                 Open in New Tab
-              </button>
+              </Link>
             </li>
             <li>Remove</li>
           </ul>
