@@ -41,8 +41,6 @@ function TripCard({ trip }) {
 
   const [dropdownVisible, setDropdownVisible, dropdownRef] = useDropdown();
 
-  const container = useRef(null);
-
   function openProject(e, newTab = false) {
     console.log("You opened the project...");
     console.log(newTab);
