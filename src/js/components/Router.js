@@ -9,11 +9,40 @@ import Login from './auth/login';
 import SignUp from './auth/signup';
 import NotFound from './shared/NotFound';
 
+// db
+import { authStateObserver } from '../database/auth';
+
+
+
 export const UserContext = React.createContext(null);
 
 
 function Router() {
   const [userInfo, setUserInfo] = useState(null);
+
+  useEffect(() => {
+
+    // this is our callback to execute when authentication state changes.
+    const manageUserState = (user) => {
+      if (user) {
+        console.log(user);
+        setUserInfo(user);
+      } else {
+        // signed out, 
+        // do not allow access to app
+        setUserInfo(null);
+      }
+    };
+
+    // this method watches the authentication state of the application.
+    // it returns a cleanup function, so, we invoke that in 
+    // the return of this hook.
+    const unsubscribe = authStateObserver(manageUserState);
+
+    return () => {
+      unsubscribe();
+    }
+  }, []);
 
   return (
     <HashRouter>
