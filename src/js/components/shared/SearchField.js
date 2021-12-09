@@ -20,10 +20,12 @@ const BlockButton = styled.button`
  * Please provide all of the following parameters to use this component. You may
  * also provide a ref if you wish to get a reference to the value of the searchbar,
  * which is useful for updating its value based on the result.
- * @param {function: returns []} fetchForSuggestions - A callback to invoke and obtain suggestions. It should return an array of results.
+ * @param {function: returns []} fetchForSuggestions - A callback to invoke and
+ * obtain suggestions. It should return an array of results.
  * @param {function} suggestionMap - A callback which maps suggestions into elements.
- * @param {function} onSearchCallback - A callback to invoke when the user presses SEARCH.
- * Ideally, this should be the same click callback that you use inside of your suggestionMap.
+ * @param {function} onSearchCallback - A callback to invoke when the user
+ * presses SEARCH. Ideally, this should be the same click callback that you use
+ * inside of your suggestionMap.
  * @param {number} debounceTimer - A timer to wait to expire before invoking the 
  * fetch suggestions.
  * @param {number} fasterFirstSearch - Optional timer for the first search. This
@@ -41,6 +43,7 @@ const SearchField = React.forwardRef(({
   onSearchCallback,
   debounceTimer,
   fasterFirstSearch,
+  placeholder,
   classNames }, ref) => {
 
   const [suggestions, setSuggestions] = useState(null);
@@ -241,6 +244,7 @@ const SearchField = React.forwardRef(({
           onChange={() => setInvalidSearchTerm(null)}
           type="search"
           disabled={submitPressed}
+          placeholder={placeholder}
         />
         <button type="submit" disabled={submitPressed}>Search</button>
         {

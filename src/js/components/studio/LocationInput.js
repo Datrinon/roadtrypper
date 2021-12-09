@@ -11,7 +11,7 @@ import { debounce } from 'lodash';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMapMarked, faSpinner } from '@fortawesome/free-solid-svg-icons'
 
-import SearchField from './SearchField';
+import SearchField from '../shared/SearchField';
 
 const ListingBox = styled.div`
   display: flex;

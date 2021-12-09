@@ -18,6 +18,7 @@ import STATE from "../ComponentState";
 import Sidebar from './Sidebar';
 import useSidebar from '../../hooks/useSidebar';
 import StudioHeader from './StudioHeader';
+import { useParams } from 'react-router';
 
 
 // ! code begin
@@ -27,7 +28,10 @@ export const TripId = React.createContext(null);
 export const MapInstance = React.createContext(null);
 export const SidebarSetter = React.createContext(null);
 
-function Studio({ tripId }) {
+function Studio() {
+  const tripId = useParams().tripId;
+  console.log(tripId);
+
   const abortController = new AbortController(); // ! Use this later when you fetch data from fbase.
   const [trip, tripDispatch] = useReducer(tripReducer, null);
   const [pageState, setPageState] = useState(STATE.LOADING);
@@ -60,7 +64,7 @@ function Studio({ tripId }) {
 
   // This useEffect is for loading data.
   useEffect(() => {
-    DB.loadProjectData(tripId, abortController)
+    DB.loadSampleProjectData(tripId, abortController)
       .then((tripData) => {
         tripDispatch({
           type: 'init',

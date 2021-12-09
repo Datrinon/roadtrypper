@@ -2,8 +2,42 @@
 import { MOCK_TRIP_ID } from '../../data/sample-days';
 
 
+/**
+ * Load a sample trip
+ * @param {AbortController} signal - Allows for aborting
+ * @param {boolean} duplicate - Whether or not to duplicate the trip,
+ * which is useful for layout purposes. Duplicated trips
+ * get a random name and timestamp.
+ * @returns 
+ */
+async function loadSampleTrip(signal, duplicate=false) {
+  let trips = [];
 
-async function loadProjectData(tripId, signal) {
+  let trip = (await import("../../data/sample-trip.json")).default;
+
+  let alphabet = "amcdnopbefghijkl";
+
+  trips.push(trip);
+
+  if (duplicate) {
+    for (let i = 0; i < 10; i++) {
+      let tripClone = {...trip};
+      tripClone.title = alphabet[i] + "-trip";
+      tripClone.lastAccessed = Date.now() + 176670000 * i;
+      trips.push(tripClone);
+    }
+  } 
+
+
+  if (signal.aborted) {
+    return Promise.reject(new Error("The request was cancelled early."));
+  }
+
+  return Promise.resolve(trips);
+}
+
+
+async function loadSampleProjectData(tripId, signal) {
   let general;
   let days;
   let pois;
@@ -28,4 +62,4 @@ async function loadProjectData(tripId, signal) {
   })
 }
 
-export { loadProjectData };
+export { loadSampleTrip, loadSampleProjectData };
