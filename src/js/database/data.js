@@ -15,7 +15,7 @@ async function loadSampleTrip(signal, duplicate=false) {
 
   let trip = (await import("../../data/sample-trip.json")).default;
 
-  let alphabet = "abcdefghijklmnop";
+  let alphabet = "amcdnopbefghijkl";
 
   trips.push(trip);
 

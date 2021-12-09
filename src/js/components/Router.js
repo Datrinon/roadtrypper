@@ -47,6 +47,8 @@ function Router() {
   }, []);
 
   if (userInfo === undefined) {
+    // TODO
+    // Remove this.
     return <div>TEST! PLEASE REMOVE LATER.</div>
   }
 

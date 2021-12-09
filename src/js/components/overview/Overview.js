@@ -20,6 +20,49 @@ function Overview() {
 
   const searchRef = useRef();
 
+  function sortTrips(type) {
+    const tripsCopy = [...trips];
+    
+
+    switch (type) {
+      case "title":
+        tripsCopy.sort((tripA, tripB) => {
+          if (tripA.title < tripB.title) {
+            return -1;
+          }
+          if (tripA.title > tripB.title) {
+            return 1;
+          }
+
+          return 0;
+        })
+        break;
+      case "date":
+        tripsCopy.sort((tripA, tripB) => {
+          if (tripA.lastAccessed < tripB.lastAccessed) {
+            return -1;
+          }
+
+          if (tripA.lastAccessed > tripB.lastAccessed) {
+            return 1;
+          }
+
+          return 0;
+        })
+        break;
+      default:
+        break;
+    }
+
+    setTrips(tripsCopy);
+    /**
+     * TODO here.
+     * 1. Basic sorts
+     * 2. Sort asc / desc
+     * 3. Sort aggregate.
+     */
+  }
+
   function fetchTrips() {
 
   }
@@ -65,6 +108,11 @@ function Overview() {
       </s.Header>
       <div>
         <button>(Floating Button) Start a New Trip</button>
+      </div>
+      <div>
+        Sorter.
+        <button onClick={sortTrips.bind(null, "title")}>Sort by title</button>
+        <button onClick={sortTrips.bind(null, "date")}>Sort by date</button>
       </div>
       <overviewStyle.TripCardLayout>
         {trips.map(trip => {
