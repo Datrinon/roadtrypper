@@ -13,23 +13,8 @@ import { faMapMarked, faSpinner } from '@fortawesome/free-solid-svg-icons'
 
 import SearchField from '../shared/SearchField';
 
-const ListingBox = styled.div`
-  display: flex;
-  flex-direction: row;
-`
+import * as s from '../styled/template.style';
 
-const ListingLabel = styled.p`
-  max-width: 45ch;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  margin: 0.3em 0;
-`
-
-const ListingName = styled.span`
-  font-weight: bold;
-  font-size: 1.25em;
-`
 
 const MapIcon = styled(FontAwesomeIcon)`
   font-size: 1.25em;
@@ -109,19 +94,19 @@ function LocationInput({ onClickPOIMarker }) {
     const label = result.label.split(", ");
 
     return (
-      <ListingBox
+      <s.ListingBox
         key={index}
         onClick={registerPlaceOnMap.bind(null, result)}
         tabIndex={-1}>
         <MapIcon icon={faMapMarked} />
-        <ListingLabel>
-          <ListingName className="listing-name">
+        <s.ListingLabel>
+          <s.ListingName className="listing-name">
             {label.shift()}
-          </ListingName>
+          </s.ListingName>
           {label.length >= 1 && ", "}
           {label.join(", ")}
-        </ListingLabel>
-      </ListingBox>
+        </s.ListingLabel>
+      </s.ListingBox>
 
     );
   }
