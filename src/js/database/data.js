@@ -19,13 +19,14 @@ const db = getFirestore(fbService);
  * Adds a trip to the database. Just provide the author name; other attributes
  * in `Trip` will be assigned default values and user-specific chracteristics.
  * 
- * @param {string} author - Creator of the trip. Preferably, it is their UID.
+ * @param {UserImpl} User authentication object associated with the log-in.
  * @returns 
  */
-async function addTrip(author) {
+async function addTrip(user) {
   try {
     let trip = new Trip(
-      author,
+      user.uid,
+      user.email,
       "Untitled Trip"
     );
 

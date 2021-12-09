@@ -8,8 +8,9 @@ class Trip {
   lastAccessed;
   uid;
   
-  constructor(author, title, createDate = null, lastAccessed = null) {
+  constructor(author, email, title, createDate = null, lastAccessed = null) {
     this.author = author;
+    this.email = email;
     this.title = title;
     this.createDate = createDate ?? Date.now();
     this.lastAccessed = lastAccessed ?? Date.now();
