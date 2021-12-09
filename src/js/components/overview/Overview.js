@@ -8,6 +8,7 @@ import AccountIcon from '../shared/AccountIcon'
 import SearchField from '../shared/SearchField'
 import { loadSampleTrip } from '../../database/data';
 import TripCard from './TripCard';
+import AddTrip from './AddTrip';
 
 
 /**
@@ -116,9 +117,7 @@ function Overview() {
           placeholder={"Search for a trip..."}
           classNames={["trips-search"]} />
       </s.Header>
-      <div>
-        <button>(Floating Button) Start a New Trip</button>
-      </div>
+      <AddTrip />
       <div>
         Sorter.
         <button onClick={sortTrips.bind(null, "title")}>
