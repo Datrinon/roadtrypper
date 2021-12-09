@@ -79,12 +79,14 @@ async function loadTrips(user,
   }
 
   querySnapshot.forEach((doc) => {
+    const data = doc.data();
+
     const trip = new Trip(
-      doc.email, // censor the UID from being published.
+      data.email, // censor the UID from being published.
       // in the upcoming sec phase the UID won't be accessible on reads.
-      doc.title,
-      doc.createDate,
-      doc.lastAccessed
+      data.title,
+      data.createDate,
+      data.lastAccessed
     );
 
     trip.tripId = doc.id;
