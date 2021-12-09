@@ -9,7 +9,6 @@ import { set } from 'lodash';
 
 function Login({ setUserInfo }) {
 
-  const [user, setUser] = useState(undefined);
   const [uid, setUid] = useState("test@test.com");
   const [pw, setPw] = useState("abc123!");
 
@@ -20,35 +19,6 @@ function Login({ setUserInfo }) {
     })
   }
 
-  useEffect(() => {
-
-    // this is our callback to execute when authentication state changes.
-    const manageUserState = (user) => {
-      if (user) {
-        console.log(user);
-        setUserInfo(user);
-      } else {
-        // signed out, 
-        // do not allow access to app
-        setUserInfo(null);
-        setUser(null);
-      }
-    };
-
-    // this method watches the authentication state of the application.
-    // it returns a cleanup function, so, we invoke that in 
-    // the return of this hook.
-    const unsubscribe = authStateObserver(manageUserState);
-
-    return () => {
-      unsubscribe();
-    }
-  }, []);
-
-  console.log(user);
-  if (user === undefined) {
-    return <div>F</div>
-  }
 
   return (
     <div>

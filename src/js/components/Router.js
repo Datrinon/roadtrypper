@@ -18,10 +18,12 @@ export const UserContext = React.createContext(null);
 
 
 function Router() {
-  const [userInfo, setUserInfo] = useState(null);
+  const [userInfo, setUserInfo] = useState(undefined);
 
+  // need this duplicate here so ourlogin doesnt clean up the observer.
+  // TODO move the callback to login, send the unsubscribe here.
+  // It's causing the problem with the redirects...
   useEffect(() => {
-
     // this is our callback to execute when authentication state changes.
     const manageUserState = (user) => {
       if (user) {
@@ -44,6 +46,10 @@ function Router() {
     }
   }, []);
 
+  if (userInfo === undefined) {
+    return <div>TEST! PLEASE REMOVE LATER.</div>
+  }
+
   return (
     <HashRouter>
       <UserContext.Provider value={userInfo}>
@@ -61,7 +67,7 @@ function Router() {
           </Route>
           {/* Auth pages; redirect if the user is already signed in. */}
           <Route exact path="/signup/login">
-            {userInfo ? <Redirect to="/trips/" /> : <Login setUserInfo={setUserInfo}/>}
+            {userInfo ? <Redirect to="/trips/" /> : <Login/>}
           </Route>
           <Route exact path="/signup/" component={SignUp}>
             {userInfo ? <Redirect to="/trips/" /> : <SignUp />}
