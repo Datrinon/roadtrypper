@@ -1,6 +1,49 @@
+// Firestore
+import { getFirestore,
+         collection,
+         addDoc
+ } from "firebase/firestore";
+
+
+// Models
+import Trip from "../model/trip";
+
 // Sample Data
 import { MOCK_TRIP_ID } from '../../data/sample-days';
+import fbService from "./config";
 
+
+const db = getFirestore(fbService);
+
+/**
+ * Adds a trip to the database. Just provide the author name; other attributes
+ * in `Trip` will be assigned default values and user-specific chracteristics.
+ * 
+ * @param {string} author - Creator of the trip. Preferably, it is their UID.
+ * @returns 
+ */
+async function addTrip(author) {
+  try {
+    let trip = new Trip(
+      author,
+      "Untitled Trip"
+    );
+
+    // addDoc only wants objects, not custom objects, so let's try shallow copying properties.
+    // worked.
+    trip = {...trip};
+
+    const docRef = await addDoc(collection(db, "trips"), trip);
+
+    console.log("Document written: ", docRef);
+
+    return docRef;
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
+}
+
+//#region Sample Data
 
 /**
  * Load a sample trip
@@ -24,6 +67,7 @@ async function loadSampleTrip(signal, duplicate=false) {
       let tripClone = {...trip};
       tripClone.title = alphabet[i] + "-trip";
       tripClone.lastAccessed = Date.now() + 176670000 * i;
+      tripClone.id = i + 1;
       trips.push(tripClone);
     }
   } 
@@ -62,4 +106,6 @@ async function loadSampleProjectData(tripId, signal) {
   })
 }
 
-export { loadSampleTrip, loadSampleProjectData };
+//#endregion
+
+export { loadSampleTrip, loadSampleProjectData, addTrip };

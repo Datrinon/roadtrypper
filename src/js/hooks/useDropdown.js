@@ -47,8 +47,6 @@ import React, { useState, useRef, useEffect } from 'react'
     const config = { attributes : true };
 
     if (dropdownRef.current) {
-      console.log("Dropdown: ");
-      console.log(dropdownRef.current);
       dropdownObserver.current.observe(dropdownRef.current, config);
     }
   }, [dropdownRef.current]);
