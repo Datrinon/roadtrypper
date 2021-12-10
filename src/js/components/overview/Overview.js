@@ -174,7 +174,9 @@ function Overview() {
         {trips.map(trip => {
           return <TripCard
             key={trip.tripId}
-            trip={trip} />
+            trip={trip}
+            setTrips={setTrips}
+            />
         })}
       </overviewStyle.TripCardLayout>
       Overview.

@@ -6,7 +6,8 @@ import { getFirestore,
          where,
          getDocs,
          orderBy,
-         limit
+         deleteDoc,
+         doc
  } from "firebase/firestore";
 
 
@@ -99,6 +100,14 @@ async function loadTrips(user,
   return trips;
 }
 
+/**
+ * Delete a trip.
+ * TODO Need to also delete the documents in its subcollections too.
+ */
+async function deleteTrip(tripId) {
+  await deleteDoc(doc(db, "trips", tripId));
+}
+
 //#region Sample Data
 
 /**
@@ -164,4 +173,4 @@ async function loadSampleProjectData(tripId, signal) {
 
 //#endregion
 
-export { loadSampleTrip, loadSampleProjectData, addTrip, loadTrips };
+export { loadSampleTrip, loadSampleProjectData, addTrip, loadTrips, deleteTrip };

@@ -8,6 +8,8 @@ import { Link } from "react-router-dom";
 import useDropdown from '../../hooks/useDropdown';
 // components
 import Dropdown from '../studio/Dropdown';
+import { deleteTrip } from '../../database/data';
+import { cloneDeep } from 'lodash';
 
 const TripCardContainer = styled.div`
   width: 210px;
@@ -37,14 +39,30 @@ function convertMsToDate(ms) {
   return `${month}/${day}/${year}`;
 }
 
-function TripCard({ trip }) {
+function TripCard({ trip, setTrips }) {
 
   const [dropdownVisible, setDropdownVisible, dropdownRef] = useDropdown();
 
-  function openProject(e, newTab = false) {
-    console.log("You opened the project...");
-    console.log(newTab);
+  function onRemove() {
+    let deleteId = trip.tripId;
+
+    console.log(deleteId);
+    deleteTrip(deleteId).then(() => {
+      console.log("deleted...");
+
+      setTrips(prevTrips => {
+        let trips = cloneDeep(prevTrips)
+
+        let index = trips.findIndex(trip => trip.tripId === deleteId);
+        trips.splice(index, 1);
+
+        return trips;
+      })
+    })
+    
   }
+
+
 
   return (
     <TripCardContainer>
@@ -71,7 +89,11 @@ function TripCard({ trip }) {
                 Open in New Tab
               </Link>
             </li>
-            <li>Remove</li>
+            <li>
+              <button onClick={onRemove}>
+              Remove
+              </button>
+            </li>
           </ul>
         </Dropdown>
       </Options>
