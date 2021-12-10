@@ -125,8 +125,6 @@ export function tripReducer(state, action) {
         };
       }
 
-      // if the added value has an 'order' attribute
-      console.log({ values });
       if (values.order !== null && values.order !== undefined) {
         // we can take that order to 
         // get the index of any existing item

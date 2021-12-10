@@ -1,4 +1,4 @@
-import React, {useReducer, useEffect} from 'react'
+import React, {useReducer, useEffect, useState} from 'react'
 
 /**
  * A modified version of useReducer hook which in any dispatch call also
@@ -12,12 +12,17 @@ function useReducerWithMiddleware(
   middlewareFns,
   afterwareFns
 ) {
-  const [state, dispatch] = React.useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  // represents the state before dispatch call.
+  const [preState, setPreState] = useState(state);
 
   const actionRef = React.useRef();
 
 
   function dispatchWithMiddleware(action) {
+    setPreState(state);
+
     middlewareFns.forEach((middlewareFn) => middlewareFn(action));
     
     actionRef.current = action;
@@ -34,7 +39,12 @@ function useReducerWithMiddleware(
 
     console.log("in the chamber of use effect...");
     console.log(state);
-    afterwareFns.forEach((afterwareFn) => afterwareFn(actionRef.current));
+    afterwareFns.forEach((afterwareFn) => afterwareFn(
+      {
+        pre: preState,
+        post: state
+      },
+      actionRef.current));
 
     actionRef.current = null;
   }, [afterwareFns]);

@@ -20,7 +20,7 @@ import useSidebar from '../../hooks/useSidebar';
 import StudioHeader from './StudioHeader';
 import { useParams } from 'react-router';
 import useReducerWithMiddleware from '../../hooks/useReducerWithMiddleware';
-import logger from '../../database/middleware';
+import logger from '../../database/afterware';
 
 
 // ! code begin
