@@ -63,6 +63,11 @@ const SearchField = React.forwardRef(({
   }
 
   function renderSearchResults(results) {
+
+    if (!results) {
+      return;
+    }
+
     let listedResults = results.map(suggestionMap);
 
     // prevents bubbling up throug hthe dom tree, which would cause 
