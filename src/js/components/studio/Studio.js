@@ -35,7 +35,10 @@ function Studio() {
   console.log(tripId);
 
   const abortController = new AbortController(); // ! Use this later when you fetch data from fbase.
-  const [trip, tripDispatch] = useReducerWithMiddleware(tripReducer, null, logger);
+  const [trip, tripDispatch] = useReducerWithMiddleware(tripReducer,
+    null,
+    [],
+    [logger]);
   const [pageState, setPageState] = useState(STATE.LOADING);
   const [activePin, setActivePin] = useState(null);
   const [activeDay, setActiveDay] = useState(null);
