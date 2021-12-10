@@ -19,6 +19,8 @@ import Sidebar from './Sidebar';
 import useSidebar from '../../hooks/useSidebar';
 import StudioHeader from './StudioHeader';
 import { useParams } from 'react-router';
+import useReducerWithMiddleware from '../../hooks/useReducerWithMiddleware';
+import logger from '../../database/middleware';
 
 
 // ! code begin
@@ -33,7 +35,7 @@ function Studio() {
   console.log(tripId);
 
   const abortController = new AbortController(); // ! Use this later when you fetch data from fbase.
-  const [trip, tripDispatch] = useReducer(tripReducer, null);
+  const [trip, tripDispatch] = useReducerWithMiddleware(tripReducer, null, logger);
   const [pageState, setPageState] = useState(STATE.LOADING);
   const [activePin, setActivePin] = useState(null);
   const [activeDay, setActiveDay] = useState(null);
