@@ -103,7 +103,11 @@ function Map({ data, setActivePin }) {
 
   return (
     <>
-      <button onClick={showOverview}>See Overview</button>
+      <button
+        onClick={showOverview}
+        disabled={data.pois.length === 0}>
+          See Overview
+      </button>
       <MapStyled id="map" data-testid="map">
         <MapContainer
           whenCreated={whenMapCreated}
