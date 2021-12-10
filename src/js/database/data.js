@@ -72,7 +72,7 @@ async function loadTrips(user,
   const trips = [];
 
   const q = query(tripsStore,
-      where("author", "==", user.uid),
+      where("uid", "==", user.uid),
       orderBy(orderByAttr, direction));
   
   const querySnapshot = await getDocs(q);

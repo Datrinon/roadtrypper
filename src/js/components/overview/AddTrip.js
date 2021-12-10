@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react'
+import React, {useState, useContext, useRef, useEffect} from 'react'
 
 import { addTrip } from '../../database/data'
 import { UserContext } from '../Router'
@@ -8,6 +8,7 @@ import { useHistory } from 'react-router-dom';
 function AddTrip() {
 
   const [disabled, setDisabled] = useState(false);
+  const abort = useRef(new AbortController());
 
   const user = useContext(UserContext);
   const history = useHistory();
@@ -15,10 +16,18 @@ function AddTrip() {
   function onAddTrip(e) {
     setDisabled(true);
 
-    addTrip(user).then((docRef) => {
+    addTrip(user, abort).then((docRef) => {
+      console.log(docRef);
       history.push(docRef.id);
     })
   }
+
+  useEffect(() => {
+
+    return () => {
+      abort.current.abort();
+    }
+  }, []);
 
   return (
     <div>
