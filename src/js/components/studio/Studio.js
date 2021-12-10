@@ -66,8 +66,14 @@ function Studio() {
   useEffect(() => {
     DB.loadTripData(tripId, abortController)
       .then((result) => {
-        console.log("Supposedly, you would do something by now.");
+        console.log("Supposedly, you would do a dispatch now.");
         console.log(result);
+        tripDispatch({
+          type: 'init',
+          payload: result
+        });
+
+        setPageState(STATE.READY);
       })
       .catch((e) => console.error(e));
 

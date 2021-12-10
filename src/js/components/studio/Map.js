@@ -38,11 +38,9 @@ function Map({ data, setActivePin }) {
 
 
   function placeDayPOIPins() {
-
     return data.days.map((day, index) => {
 
       const pois = data.pois.filter(poi => poi.dayId === day.id);
-
       const icon = new LeafIcon({
         iconUrl:
           `https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|${day.color}&chf=a,s,ee00FFFF`
@@ -110,7 +108,7 @@ function Map({ data, setActivePin }) {
         <MapContainer
           whenCreated={whenMapCreated}
           // defaults to NYC if there aren't any coordinates placed.
-          center={!!data.pois ? calcCoordinateAverage() : [40.730610, -73.935242]}
+          center={data.pois.length !== 0 ? calcCoordinateAverage() : [40.730610, -73.935242]}
           zoom={7}
           scrollWheelZoom={true}
         >
