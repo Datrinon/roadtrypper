@@ -4,6 +4,7 @@ import { getFirestore,
          addDoc,
          query,
          where,
+         getDoc,
          getDocs,
          orderBy,
          deleteDoc,
@@ -173,4 +174,41 @@ async function loadSampleProjectData(tripId, signal) {
 
 //#endregion
 
-export { loadSampleTrip, loadSampleProjectData, addTrip, loadTrips, deleteTrip };
+
+async function loadTripData(tripId, signal) {
+  let tripData = {};
+
+  let collectionNames = ["days", "pois", "photos"];
+
+  if (signal.aborted) {
+    return Promise.reject(new Error("The request was cancelled early."));
+  }
+
+  for (let name of collectionNames) {
+    let docsArr = [];
+    let subcolQuery = query(collection(db, "trips", tripId, name));
+
+    let data = await getDocs(subcolQuery);
+    
+    if (!data.empty) {
+      data.forEach((doc) => {
+        docsArr.push(doc.data());
+      })
+    }
+
+    tripData[name] = docsArr;
+  }
+
+  let generalDoc = await getDoc(doc(db, "trips", tripId));
+
+  tripData.general = generalDoc.data();
+
+  return tripData;
+}
+
+export { loadSampleTrip,
+         loadSampleProjectData,
+         addTrip,
+         loadTrips,
+         loadTripData,
+         deleteTrip };

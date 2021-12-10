@@ -52,7 +52,7 @@ function Studio() {
         const pois = trip.pois.filter(poi => poi.dayId === day.id);
 
         return <DayCard
-          key={trip.general.uid + day.id}
+          key={day.id}
           setActiveDay={setActiveDay}
           day={day}
           pois={pois}
@@ -64,16 +64,24 @@ function Studio() {
 
   // This useEffect is for loading data.
   useEffect(() => {
-    DB.loadSampleProjectData(tripId, abortController)
-      .then((tripData) => {
-        tripDispatch({
-          type: 'init',
-          payload: tripData
-        });
-
-        setPageState(STATE.READY);
+    DB.loadTripData(tripId, abortController)
+      .then((result) => {
+        console.log("Supposedly, you would do something by now.");
+        console.log(result);
       })
-      .catch((e) => console.log(e));
+      .catch((e) => console.error(e));
+
+
+    // DB.loadSampleProjectData(tripId, abortController)
+    //   .then((tripData) => {
+    //     tripDispatch({
+    //       type: 'init',
+    //       payload: tripData
+    //     });
+
+    //     setPageState(STATE.READY);
+    //   })
+    //   .catch((e) => console.log(e));
 
     return () => {
       // Aborts any fetch request.
@@ -81,7 +89,6 @@ function Studio() {
     }
   }, []);
 
-  //TODO Stub for title manipulation. Finish later.
   function onChangeTitle(e) {
     tripDispatch({
       type: 'edit_general',
@@ -91,12 +98,7 @@ function Studio() {
         key: "title",
         value: e.target.value
       }
-    })
-    // setTrip({
-    //   ...trip,
-    //   title: e.target.value,
-    //   lastUpdated: Date.now()
-    // });
+    });
   }
 
   useEffect(() => {
