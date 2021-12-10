@@ -48,18 +48,19 @@ function TripCard({ trip, setTrips }) {
 
     console.log(deleteId);
     deleteTrip(deleteId).then(() => {
-      console.log("deleted...");
-
-      setTrips(prevTrips => {
-        let trips = cloneDeep(prevTrips)
-
-        let index = trips.findIndex(trip => trip.tripId === deleteId);
-        trips.splice(index, 1);
-
-        return trips;
-      })
+      console.log("deleted on server");
     })
     
+    setTrips(prevTrips => {
+      let trips = cloneDeep(prevTrips)
+
+      let index = trips.findIndex(trip => trip.tripId === deleteId);
+      trips.splice(index, 1);
+
+      console.log("deleted on memory");
+
+      return trips;
+    })
   }
 
 
