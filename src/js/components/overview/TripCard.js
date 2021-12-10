@@ -48,7 +48,7 @@ function TripCard({ trip }) {
 
   return (
     <TripCardContainer>
-      <Link to={trip.tripid}>
+      <Link to={trip.tripId}>
         <TripCardImg src={TripCover} alt="A colorful graphic representation of a map." />
         <h2 className="trip-title">
           {trip.title}

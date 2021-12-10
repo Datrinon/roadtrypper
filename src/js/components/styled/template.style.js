@@ -1,3 +1,4 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styled from 'styled-components';
 
 export const Header = styled.div`
@@ -22,4 +23,15 @@ export const ListingLabel = styled.p`
 export const ListingName = styled.span`
   font-weight: bold;
   font-size: 1.25em;
+`
+
+export const ListingSubstrMatch = styled.b`
+  font-weight: 600;
+  color: red;
+`
+
+export const FAIcon = styled(FontAwesomeIcon)`
+  font-size: 1.25em;
+  margin: 0 5px;
+  align-self: center;
 `

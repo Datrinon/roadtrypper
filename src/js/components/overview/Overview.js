@@ -10,6 +10,8 @@ import { loadSampleTrip, loadTrips } from '../../database/data';
 import TripCard from './TripCard';
 import AddTrip from './AddTrip';
 import { UserContext } from '../Router';
+import { faMap } from '@fortawesome/free-solid-svg-icons';
+import { stringify } from '@firebase/util';
 
 
 /**
@@ -78,11 +80,49 @@ function Overview() {
   }
 
   function fetchTrips() {
+    let query = searchRef.current.value.toLowerCase();
 
+    if (query.length < 3) {
+      return;
+    }
+
+    let matchingTrips = trips.filter(trip => trip.title.toLowerCase().includes(query));
+
+    console.log(matchingTrips);
+
+    if (matchingTrips.length !== 0) {
+      matchingTrips = matchingTrips.map(elem => {
+        let split = elem.title.toLowerCase().split(query);
+        // it's always goigng to be in the middle.
+        let highlightedResult = (
+          <span>{split[0]}
+            <s.ListingSubstrMatch>{query}</s.ListingSubstrMatch>
+            {split[1]}
+          </span>
+        )
+        return {
+          match: highlightedResult,
+          tripId: elem.tripId
+        }
+      })
+    }
+
+    return matchingTrips;
   }
 
-  function mapSearchResultsToElem() {
+  function mapSearchResultsToElem(result, index) {
 
+    return (
+      <s.ListingBox
+        key={index}
+        onClick={(e) => alert("TODO")}
+        tabIndex={-1}>
+        <s.FAIcon icon={faMap} />
+        <s.ListingLabel className="listing-name">
+          {result.match}
+        </s.ListingLabel>
+      </s.ListingBox>
+    );
   }
 
   useEffect(() => {
@@ -115,7 +155,7 @@ function Overview() {
           ref={searchRef}
           fetchForSuggestions={fetchTrips}
           suggestionMap={mapSearchResultsToElem}
-          debounceTimer={250}
+          debounceTimer={400}
           fasterFirstSearch={null}
           placeholder={"Search for a trip..."}
           classNames={["trips-search"]} />
@@ -133,7 +173,7 @@ function Overview() {
       <overviewStyle.TripCardLayout>
         {trips.map(trip => {
           return <TripCard
-            key={trip.id}
+            key={trip.tripId}
             trip={trip} />
         })}
       </overviewStyle.TripCardLayout>

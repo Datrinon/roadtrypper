@@ -16,12 +16,6 @@ import SearchField from '../shared/SearchField';
 import * as s from '../styled/template.style';
 
 
-const MapIcon = styled(FontAwesomeIcon)`
-  font-size: 1.25em;
-  margin: 0 5px;
-  align-self: center;
-`
-
 /**
  * A search field component that will search locations using the nominatim API
  * and then return them onto the map. Has a callback prop which will invoke
@@ -98,7 +92,7 @@ function LocationInput({ onClickPOIMarker }) {
         key={index}
         onClick={registerPlaceOnMap.bind(null, result)}
         tabIndex={-1}>
-        <MapIcon icon={faMapMarked} />
+        <s.FAIcon icon={faMapMarked} />
         <s.ListingLabel>
           <s.ListingName className="listing-name">
             {label.shift()}

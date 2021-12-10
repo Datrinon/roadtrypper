@@ -5,7 +5,8 @@ import { getFirestore,
          query,
          where,
          getDocs,
-         orderBy
+         orderBy,
+         limit
  } from "firebase/firestore";
 
 
@@ -70,7 +71,8 @@ async function loadTrips(user,
   const trips = [];
 
   const q = query(tripsStore,
-      where("author", "==", user.uid), orderBy(orderByAttr, direction));
+      where("author", "==", user.uid),
+      orderBy(orderByAttr, direction));
   
   const querySnapshot = await getDocs(q);
 
