@@ -22,16 +22,9 @@ let ItalicSpan = styled.span`
   font-style: italic;
 `
 
-// ! SAMPLE_FLAG ! Remove this later when finished debugging.
-function importSampleImages(r = require.context("../../../data/images", false, /\.(png|jpe?g|svg)$/)) {
-  let images = {};
-  r.keys().forEach((item) => { images[item.replace('./', '')] = r(item)["default"]; });
-  return images;
-}
 
 function PoiDetails({ activePin, setActivePin }) {
   const [activePoi, setActivePoi] = useState(activePin);
-  const [sampleImages, setSampleImages] = useState(importSampleImages()); // ! SAMPLE_FLAG ! debug, remove later.
   const [day, setDay] = useState(null);
   const [photos, setPhotos] = useState(null);
   const [galleryStartingIndex, setGalleryStartingIndex] = useState(null);
@@ -247,7 +240,7 @@ function PoiDetails({ activePin, setActivePin }) {
         <figure
           key={"" + day.id + photo.id}>
           <s.Thumbnail
-            src={sampleImages[photo.path]}
+            src={photo.path}
             onClick={launchGalleryView.bind(null, index)}
             alt={photo.description} />
         </figure>
@@ -298,7 +291,6 @@ function PoiDetails({ activePin, setActivePin }) {
       {galleryStartingIndex !== null && (
         <section className="gallery">
           <GalleryView
-            SAMPLE_IMAGES={sampleImages}
             startingPhoto={photos[galleryStartingIndex]}
             startingIndex={galleryStartingIndex}
             poiPhotos={photos}

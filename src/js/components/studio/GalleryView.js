@@ -4,8 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight, faChevronLeft, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { faMehBlank } from '@fortawesome/free-regular-svg-icons';
 
-import SAMPLE_POIS from '../../../data/sample-pois';
-
 import * as s from "./POIDetails.style";
 
 import GalleryHeader from './GalleryHeader';
@@ -73,7 +71,7 @@ function NoPhotosFound({ poiId, startingIndex }) {
   )
 }
 
-function GalleryView({ SAMPLE_IMAGES, startingPhoto, startingIndex, poiPhotos, poiId, closeGalleryView }) {
+function GalleryView({ startingPhoto, startingIndex, poiPhotos, poiId, closeGalleryView }) {
   const [loading, setLoading] = useState(true);
   const [photos, setPhotos] = useState(poiPhotos);
   const [activePhoto, setActivePhoto] = useState(null);
@@ -109,7 +107,7 @@ function GalleryView({ SAMPLE_IMAGES, startingPhoto, startingIndex, poiPhotos, p
       • POIDetails updates `poiPhotos`
       • Since GalleryView is listening to changes for `poiPhotos`, it refreshes
         its own photos to sync it with that of the POI. 
-      • Additionally, if the user is parked on the last photo of the last photo,
+      • Additionally, if the user is parked on the last photo of the gallery,
         it means we have to also alter the `activeIndex`.
       • We alter the `activeIndex` to be that poiPhotos' last element.
       • If we don't do this, then the useEffect will call on an activeIndex
@@ -142,7 +140,7 @@ function GalleryView({ SAMPLE_IMAGES, startingPhoto, startingIndex, poiPhotos, p
     let loadImg = () => {
       return new Promise((resolve, reject) => {
         let img = new Image();
-        img.src = SAMPLE_IMAGES[photo.path]; //! SAMPLE_FLAG
+        img.src = photo.path;
 
         console.log(img);
 
@@ -176,7 +174,7 @@ function GalleryView({ SAMPLE_IMAGES, startingPhoto, startingIndex, poiPhotos, p
 
       return (
         <div>
-          <p>Error!</p>
+          <p>Error! Photo could not be loaded.</p>
           <p>{error}</p>
         </div>
       );
@@ -223,7 +221,7 @@ function GalleryView({ SAMPLE_IMAGES, startingPhoto, startingIndex, poiPhotos, p
             return (
               <s.Thumbnail
                 key={"" + photo.id + index}
-                src={SAMPLE_IMAGES[photo.path]}
+                src={photo.path}
                 alt={"Thumbnail for image about: " + photo.description}
                 onClick={setActiveIndex.bind(null, index)}
               />
