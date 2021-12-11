@@ -14,10 +14,6 @@ import { addTripData } from "./data";
  *  b.
  */
 
-// special steps to be taken for this because it goes to firebase storage.
-function handlePhotoUpload() {
-
-}
 
 
 function handleAdd(post, payload, signal) {

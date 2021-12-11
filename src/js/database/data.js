@@ -11,6 +11,13 @@ import { getFirestore,
          doc
  } from "firebase/firestore";
 
+import { getStorage,
+         ref,
+         uploadBytes
+} from "firebase/storage";
+
+// UUID
+import { v4 as uuidv4 } from 'uuid';
 
 // Models
 import Trip from "../model/trip";
@@ -23,6 +30,11 @@ import fbService from "./config";
 const db = getFirestore(fbService);
 const tripsStore = collection(db, "trips");
 
+const storage = getStorage(fbService);
+const storageRef = ref(storage);
+
+// TODO
+// remove later
 function getSubcollection(tripId, category) {
   return collection(db, "trips", tripId, category);
 }
@@ -229,6 +241,33 @@ async function addTripData(tripId, collectionName, data, signal) {
   const docRef = await addDoc(subcol, data);
 
   console.log(`Data successfully added; can be seen at ${docRef}.`);
+
+  return docRef;
+}
+
+async function addTripPhoto(tripId, photo, signal) {
+  if (signal.aborted) {
+    return Promise.reject(new Error("Operation failed; request was cancelled."));
+  }
+
+  const filepath = `trips/${tripId}/${uuidv4()}/${photo.path}`;
+  
+  const tripsRef = ref(storage, filepath);
+  
+  // upload the photo and get the filepath.
+  // Note -- either add BLOB property or use a base64 encoded string.
+  await uploadBytes(tripsRef, photo.blob);
+
+  // then, add to the photos on firestore...
+  const docRef = await addTripData(tripId, "photos", photo, signal);
+
+  
+  return docRef;
+
+
+   
+
+
 }
 
 export { loadSampleTrip,
