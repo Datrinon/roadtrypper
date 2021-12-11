@@ -23,6 +23,10 @@ import fbService from "./config";
 const db = getFirestore(fbService);
 const tripsStore = collection(db, "trips");
 
+function getSubcollection(tripId, category) {
+  return collection(db, "trips", tripId, category);
+}
+
 /**
  * Adds a trip to the database. Just provide the author name; other attributes
  * in `Trip` will be assigned default values and user-specific chracteristics.
@@ -203,12 +207,34 @@ async function loadTripData(tripId, signal) {
 
   tripData.general = generalDoc.data();
 
+  tripData.tripId = tripId;
+
   return tripData;
+}
+
+/**
+ * Adds data to a specific subcollection in the trip.
+ * @param {*} collectionName 
+ * @param {*} data 
+ */
+async function addTripData(tripId, collectionName, data, signal) {
+  let subcol = collection(db, "trips", tripId, collectionName);
+
+  
+  if (signal.aborted) {
+    return Promise.reject(new Error("Operation failed; request was cancelled."));
+  }
+
+
+  const docRef = await addDoc(subcol, data);
+
+  console.log(`Data successfully added; can be seen at ${docRef}.`);
 }
 
 export { loadSampleTrip,
          loadSampleProjectData,
          addTrip,
+         addTripData,
          loadTrips,
          loadTripData,
          deleteTrip };

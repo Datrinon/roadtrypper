@@ -2,6 +2,36 @@
  * These functions manages the post-operations
  * after the dispatch of the app's reducer in Studio fires.
  */
+import Day from "../model/day";
+import { addTripData } from "./data";
+
+
+/**
+ * Make sure the following reducer functions work.
+ * 1. Add
+ *  a. Adding Day
+ *  b.
+ */
+
+function handleAdd(post, payload, signal) {
+
+  // use the payload value to correctly identify the post.
+  let data;
+  
+  switch(payload.type) {
+    case "days": {
+      let day = post.days.find(day => day.order === payload.order);
+
+      data = new Day(day.id, day.order, day.title, day.color);
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+
+  addTripData(post.tripId, payload.type, {...data}, signal);
+}
 
 /**
  * Updates the database based on the taken action.
@@ -11,8 +41,17 @@
  * Our goal is to keep both of these in synchronization.
  * @param {object} action - the action object sent to the dispatch.
  */
-function updateDatabase(state, action) {
+function updateDatabase(state, action, signal) {
   console.log({state, action});
+  switch (action.type) {
+    case "add": {
+      handleAdd(state.post, action.payload, signal);
+      break;
+    }
+    default: {
+      break;
+    }
+  }
 }
 
 const logger = (action) => {
