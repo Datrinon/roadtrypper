@@ -195,7 +195,7 @@ function GalleryView({ startingPhoto, startingIndex, poiPhotos, poiId, closeGall
 
     return (
       <>
-        {<GalleryHeader activePhoto={photos[activeIndex]} />}
+        {<GalleryHeader activePhoto={photos[activeIndex]} loading={loading}/>}
         <GalleryPhoto
           photo={photos[activeIndex]}
           callback={setLoading.bind(null, false)}

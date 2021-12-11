@@ -12,7 +12,7 @@ import useModal from '../../hooks/useModal';
 import CountingTextArea from './CountingTextArea';
 import SAMPLE_PHOTOS from '../../../data/sample-photos';
 
-function GalleryHeader({ activePhoto }) {
+function GalleryHeader({ activePhoto, loading }) {
 
   const trip = useContext(TripContext);
   const dispatch = useContext(TripDispatch);
@@ -164,26 +164,26 @@ function GalleryHeader({ activePhoto }) {
   return (
     <>
       <header className="options-panel">
-        <button onClick={showAddPhotoModal}>
+        <button onClick={showAddPhotoModal} disabled={loading}>
           <span>
             <FontAwesomeIcon icon={faFileImage} />
           </span>
           Add Photo
         </button>
-        <button onClick={showEditDescModal}>
+        <button onClick={showEditDescModal} disabled={loading}>
           <span>
             <FontAwesomeIcon icon={faEdit} />
           </span>
           Edit Description
         </button>
-        <button onClick={showEditPhotoModal}>
+        <button onClick={showEditPhotoModal} disabled={loading}>
           <span>
             <FontAwesomeIcon icon={faImage} />
             <FontAwesomeIcon icon={faPencilAlt} />
           </span>
           Change Photo
         </button>
-        <button onClick={showDeleteModal}>
+        <button onClick={showDeleteModal} disabled={loading}>
           <span>
             <FontAwesomeIcon icon={faTrashAlt} />
           </span>
