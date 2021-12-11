@@ -21,6 +21,8 @@ import StudioHeader from './StudioHeader';
 import { useParams } from 'react-router';
 import useReducerWithMiddleware from '../../hooks/useReducerWithMiddleware';
 import logger from '../../database/afterware';
+import LastUpdated from './LastUpdated';
+import { onUpdatingEnd, onUpdatingStart } from '../../database/middleware';
 
 
 // ! code begin
@@ -37,8 +39,8 @@ function Studio() {
   const abortController = new AbortController(); // ! Use this later when you fetch data from fbase.
   const [trip, tripDispatch] = useReducerWithMiddleware(tripReducer,
     null,
-    [],
-    [logger]);
+    [onUpdatingStart],
+    [logger, onUpdatingEnd]);
   const [pageState, setPageState] = useState(STATE.LOADING);
   const [activePin, setActivePin] = useState(null);
   const [activeDay, setActiveDay] = useState(null);
@@ -81,18 +83,6 @@ function Studio() {
         setPageState(STATE.READY);
       })
       .catch((e) => console.error(e));
-
-
-    // DB.loadSampleProjectData(tripId, abortController)
-    //   .then((tripData) => {
-    //     tripDispatch({
-    //       type: 'init',
-    //       payload: tripData
-    //     });
-
-    //     setPageState(STATE.READY);
-    //   })
-    //   .catch((e) => console.log(e));
 
     return () => {
       // Aborts any fetch request.
@@ -167,27 +157,7 @@ function Studio() {
     return <div>Loading</div>;
   }
 
-  /**
-   * Convert ms into an american (MM-DD-YYYY HH:MM AM/PM) timestamp.
-   * @param {*} ms - value in ms
-   * @returns 
-   */
-  function getTimestamp(ms) {
-    let time = new Date(ms);
 
-    let month = time.getMonth() + 1;
-    let day = time.getDate();
-    let year = time.getFullYear();
-    let hours = time.getHours();
-    let minutes = time.getMinutes();
-    let period = "A.M.";
-    if (hours > 12) {
-      hours = hours - 12;
-      period = "P.M.";
-    }
-
-    return `${month}/${day}/${year}, ${hours}:${minutes} ${period}`;
-  }
 
 
   return (
@@ -203,7 +173,7 @@ function Studio() {
                   placeholder="Untitled Trip"
                   defaultValue={trip.general.title}
                   onBlur={onChangeTitle} />
-                <p>Last Update: {getTimestamp(trip.general.lastAccessed)}</p>
+                <LastUpdated time={trip.general.lastAccessed}/>
                 <div className="add-options">
                   <AddDay activeDay={activeDay} setActiveDay={setActiveDay} />
                   <AddPOI activeDay={activeDay} />
