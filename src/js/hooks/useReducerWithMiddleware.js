@@ -1,4 +1,4 @@
-import React, {useReducer, useEffect, useState} from 'react'
+import React, {useReducer, useEffect, useRef, useState} from 'react'
 
 /**
  * A modified version of useReducer hook which in any dispatch call also
@@ -13,11 +13,11 @@ function useReducerWithMiddleware(
   afterwareFns
 ) {
   const [state, dispatch] = useReducer(reducer, initialState);
-
+  const signal = useRef(new AbortController());
   // represents the state before dispatch call.
   const [preState, setPreState] = useState(state);
 
-  const actionRef = React.useRef();
+  const actionRef = useRef();
 
 
   function dispatchWithMiddleware(action) {
@@ -44,9 +44,14 @@ function useReducerWithMiddleware(
         pre: preState,
         post: state
       },
-      actionRef.current));
+      actionRef.current,
+      signal.current));
 
     actionRef.current = null;
+
+    return () => {
+      signal.current.abort();
+    }
   }, [afterwareFns]);
 
   return [state, dispatchWithMiddleware];
