@@ -50,6 +50,11 @@ function NewPoiForm({ day }) {
     return trip.days.reduce((latestDay, day) => {
       return day.order > latestDay.order ? day : latestDay;
     }, trip.days[0]);
+
+    const sortedDays = trip.days.sort((dayA, dayB) => dayA.order - dayB.order);
+
+    return sortedDays[trip.days.length - 1]
+      
   }
 
   function getGreatestOrder(max, poi) {
