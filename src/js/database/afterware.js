@@ -3,6 +3,7 @@
  * after the dispatch of the app's reducer in Studio fires.
  */
 import Day from "../model/day";
+import Poi from "../model/poi";
 import { addTripData } from "./data";
 
 
@@ -12,6 +13,12 @@ import { addTripData } from "./data";
  *  a. Adding Day
  *  b.
  */
+
+// special steps to be taken for this because it goes to firebase storage.
+function handlePhotoUpload() {
+
+}
+
 
 function handleAdd(post, payload, signal) {
 
@@ -23,6 +30,26 @@ function handleAdd(post, payload, signal) {
       let day = post.days.find(day => day.order === payload.order);
 
       data = new Day(day.id, day.order, day.title, day.color);
+      break;
+    }
+    case "add_poi": {
+      let poi = post.pois.find(poi => {
+        return poi.order === payload.order
+          && poi.dayId === payload.dayId
+      });
+    
+      data = new Poi(poi.id,
+        poi.dayId,
+        poi.description,
+        poi.order,
+        poi.title,
+        poi.coordinates);
+
+      // also need to take some time to handle the photos uploads, too.
+      
+
+      addTripData(post.tripId, "photos", )
+
       break;
     }
     default: {
