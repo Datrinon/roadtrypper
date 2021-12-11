@@ -23,6 +23,7 @@ import useReducerWithMiddleware from '../../hooks/useReducerWithMiddleware';
 import logger from '../../database/afterware';
 import LastUpdated from './LastUpdated';
 import { onUpdatingEnd, onUpdatingStart } from '../../database/middleware';
+import TripTitle from './TripTitle';
 
 
 // ! code begin
@@ -90,17 +91,6 @@ function Studio() {
     }
   }, []);
 
-  function onChangeTitle(e) {
-    tripDispatch({
-      type: 'edit_general',
-      payload: {
-        type: 'general',
-        id: trip.general.id,
-        key: "title",
-        value: e.target.value
-      }
-    });
-  }
 
   useEffect(() => {
     console.log("Active Pin: ");
@@ -168,11 +158,7 @@ function Studio() {
             <SidebarSetter.Provider value={sidebarSetter}>
               <StudioHeader />
               <div style={{ padding: "25px 5px" }}>
-                <input
-                  className="trip-title"
-                  placeholder="Untitled Trip"
-                  defaultValue={trip.general.title}
-                  onBlur={onChangeTitle} />
+                <TripTitle />
                 <LastUpdated time={trip.general.lastAccessed}/>
                 <div className="add-options">
                   <AddDay activeDay={activeDay} setActiveDay={setActiveDay} />
