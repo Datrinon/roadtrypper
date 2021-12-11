@@ -10,6 +10,9 @@ import CountingTextArea from './CountingTextArea';
 import { cloneDeep, set } from 'lodash';
 import PoiDetails from './POIDetails';
 
+import { v4 as uuidv4 } from 'uuid';
+
+
 const Label = styled.label`
   display: block;
 
@@ -47,9 +50,6 @@ function NewPoiForm({ day }) {
 
   //#region Day Information.
   function getLastOrderedDay() {
-    return trip.days.reduce((latestDay, day) => {
-      return day.order > latestDay.order ? day : latestDay;
-    }, trip.days[0]);
 
     const sortedDays = trip.days.sort((dayA, dayB) => dayA.order - dayB.order);
 
@@ -57,7 +57,7 @@ function NewPoiForm({ day }) {
       
   }
 
-  function getGreatestOrder(max, poi) {
+  function getLastOrderedPOI(max, poi) {
     if (poi.order > max) {
       return poi.order;
     } else {
@@ -71,7 +71,7 @@ function NewPoiForm({ day }) {
 
     pois = trip.pois.filter(poi => poi.dayId === day.id);
 
-    greatestPoiOrder = pois.reduce(getGreatestOrder, 0);
+    greatestPoiOrder = pois.reduce(getLastOrderedPOI, 0);
     greatestPoiOrder = greatestPoiOrder === 0 ? 0 : greatestPoiOrder + 1;
 
     setSelDayPois(pois);
@@ -83,6 +83,7 @@ function NewPoiForm({ day }) {
 
     if (!selDay) {
       lastDay = getLastOrderedDay();
+      console.log(lastDay);
 
       setSelDay(lastDay);
     } else {
@@ -100,7 +101,6 @@ function NewPoiForm({ day }) {
 
   function onChangeDayOrder(e) {
     const day = trip.days.find(day => day.order === parseInt(e.target.value));
-    console.log(day);
     setSelDay(day);
   }
 
@@ -172,7 +172,6 @@ function NewPoiForm({ day }) {
 
   /**
    * Adds a POI using the given information from the user.
-   * @param {*} e 
    */
   function addNewPoi() {
     let payloadPhotos = null;
@@ -184,7 +183,8 @@ function NewPoiForm({ day }) {
       // ! SAMPLE_FLAG
       payloadPhotos = photos.map((photo, index) => {
         return {
-          path: photo.name,
+          file: photo,
+          path: `trips/${tripId}/${uuidv4()}/${photo.name}`,
           description: descriptions
             .item(index)
             .querySelector(`#new-photo-desc${index}`).value
@@ -272,6 +272,8 @@ function NewPoiForm({ day }) {
     })
   }
 
+  console.log(selDay);
+
   return (
     <div>
       <h1>Adding Poi</h1>
@@ -290,8 +292,8 @@ function NewPoiForm({ day }) {
                 .map((day, index) => {
                   return <option
                     key={day.id}
-                    value={index}>
-                    {index + 1}
+                    value={day.order}>
+                    {day.order + 1}
                   </option>
                 })
             }

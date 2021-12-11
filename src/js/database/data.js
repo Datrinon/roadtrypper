@@ -13,11 +13,9 @@ import { getFirestore,
 
 import { getStorage,
          ref,
-         uploadBytes
+         uploadBytes,
+         getDownloadURL
 } from "firebase/storage";
-
-// UUID
-import { v4 as uuidv4 } from 'uuid';
 
 // Models
 import Trip from "../model/trip";
@@ -240,7 +238,7 @@ async function addTripData(tripId, collectionName, data, signal) {
 
   const docRef = await addDoc(subcol, data);
 
-  console.log(`Data successfully added; can be seen at ${docRef}.`);
+  console.log(`Data successfully added; can be seen at ${docRef.id}.`);
 
   return docRef;
 }
@@ -250,30 +248,36 @@ async function addTripPhoto(tripId, photo, signal) {
     return Promise.reject(new Error("Operation failed; request was cancelled."));
   }
 
-  const filepath = `trips/${tripId}/${uuidv4()}/${photo.path}`;
+  // (Moved this to AddPOI so we can have a way to identify the photo
+  //  on firestore)
+  ////const filepath = `trips/${tripId}/${uuidv4()}/${photo.path}`;
   
-  const tripsRef = ref(storage, filepath);
+  const imgRef = ref(storage, photo.path);
   
   // upload the photo and get the filepath.
   // Note -- either add BLOB property or use a base64 encoded string.
-  await uploadBytes(tripsRef, photo.blob);
+  const fileSnapshot = await uploadBytes(imgRef, photo.file);
+  const publicImageUrl = await getDownloadURL(imgRef);
 
-  // then, add to the photos on firestore...
-  const docRef = await addTripData(tripId, "photos", photo, signal);
+  // and then add photos to the firestore.
+  const photoObjForDoc = {
+    poiId: photo.poiId,
+    id: photo.id,
+    path: publicImageUrl,
+    storageUri: fileSnapshot.metadata.fullPath
+  };
+
+  const docRef = await addTripData(tripId, "photos", photoObjForDoc, signal);
 
   
   return docRef;
-
-
-   
-
-
 }
 
 export { loadSampleTrip,
          loadSampleProjectData,
          addTrip,
          addTripData,
+         addTripPhoto,
          loadTrips,
          loadTripData,
          deleteTrip };

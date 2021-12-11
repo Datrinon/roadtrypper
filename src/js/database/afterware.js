@@ -2,9 +2,10 @@
  * These functions manages the post-operations
  * after the dispatch of the app's reducer in Studio fires.
  */
+import SAMPLE_PHOTOS from "../../data/sample-photos";
 import Day from "../model/day";
 import Poi from "../model/poi";
-import { addTripData } from "./data";
+import { addTripData, addTripPhoto } from "./data";
 
 
 /**
@@ -14,8 +15,43 @@ import { addTripData } from "./data";
  *  b.
  */
 
+function handleAddPoi(post, payload, signal) {
+  let poi = post.pois.find(poi => {
+    return poi.order === payload.order
+      && poi.dayId === payload.dayId
+  });
 
+  let data = new Poi(poi.id,
+    poi.dayId,
+    poi.description,
+    poi.order,
+    poi.title,
+    poi.coordinates);
 
+  addTripData(post.tripId, "pois", {...data}, signal);
+
+  // also need to take some time to handle the photos uploads, too.
+  // where tf is the file upload lmao.
+  if (payload.photos !== null) {
+    payload.photos.forEach(photo => {
+      let postPhoto = post.photos.find(postPic => postPic.path === photo.path);
+
+      // photo after work has been done to it in the reducer.
+      let photoToUpload = {
+        ...photo, // get file + path + description
+        // also need the poiId and id 
+        id: postPhoto.id,
+        poiId: postPhoto.poiId
+      }
+
+      addTripPhoto(post.tripId, photoToUpload, signal);
+    })
+  }
+}
+
+/** 
+ * Handles various add cases.
+ */
 function handleAdd(post, payload, signal) {
 
   // use the payload value to correctly identify the post.
@@ -26,26 +62,8 @@ function handleAdd(post, payload, signal) {
       let day = post.days.find(day => day.order === payload.order);
 
       data = new Day(day.id, day.order, day.title, day.color);
-      break;
-    }
-    case "add_poi": {
-      let poi = post.pois.find(poi => {
-        return poi.order === payload.order
-          && poi.dayId === payload.dayId
-      });
-    
-      data = new Poi(poi.id,
-        poi.dayId,
-        poi.description,
-        poi.order,
-        poi.title,
-        poi.coordinates);
 
-      // also need to take some time to handle the photos uploads, too.
-      
-
-      addTripData(post.tripId, "photos", )
-
+      addTripData(post.tripId, payload.type, {...data}, signal);
       break;
     }
     default: {
@@ -53,7 +71,6 @@ function handleAdd(post, payload, signal) {
     }
   }
 
-  addTripData(post.tripId, payload.type, {...data}, signal);
 }
 
 /**
@@ -70,6 +87,9 @@ function updateDatabase(state, action, signal) {
     case "add": {
       handleAdd(state.post, action.payload, signal);
       break;
+    }
+    case "add_poi": {
+      handleAddPoi(state.post, action.payload, signal);
     }
     default: {
       break;

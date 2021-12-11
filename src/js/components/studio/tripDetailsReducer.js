@@ -2,6 +2,7 @@
 import _ from 'lodash'
 import DATA_SCHEMA from '../../model/data-hierarchy';
 
+
 export const TRIP_ACTIONS = {
   LOAD: "load",
   EDIT: "edit"
