@@ -5,26 +5,23 @@ import * as s from '../styled/template.style';
  * An image which shows a loading animation prior to it being loaded.
  * @returns 
  */
-function LoadingImage({path, alt}) {
+function LoadingImage({src, alt, callbackOnReady}) {
 
   const signal = useRef(new AbortController());
-  const [image, setImage] = useState((<p>Loading!</p>));
-  const [imageLoading, setImageLoading] = useState(true);
+  const [content, setContent] = useState((<p>Loading!</p>));
   
   function loadImg(signal) {
     return new Promise((resolve, reject) => {
       let img = new Image();
-      img.src = path;
+      img.src = src;
 
       console.log(img);
 
       img.onload = () => {
-        setImageLoading(false);
         resolve(img);
       }
 
       img.onerror = () => {
-        setImageLoading(false);
         reject(new Error("Could not load the image from the server."));
       }
 
@@ -36,14 +33,23 @@ function LoadingImage({path, alt}) {
 
 
   useEffect(() => {
-    loadImg(signal.current).then((result) => {
-      setImage((
+
+    loadImg(signal.current)
+    .then((result) => {
+      setContent((
         <s.Photo
           src={result.src}
           alt={alt}
         />
+      ));
+
+      callbackOnReady();
+    })
+    .catch((error) => {
+      setContent((
+        <p>{error.message}</p>
       ))
-    });
+    })
 
     return () => {
       signal.current.abort();
@@ -53,7 +59,7 @@ function LoadingImage({path, alt}) {
   
   return (
     <div className="le-loading-image">
-      {image}
+      {content}
     </div>
   )
 }

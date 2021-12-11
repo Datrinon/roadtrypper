@@ -9,12 +9,14 @@ import * as s from "./POIDetails.style";
 import GalleryHeader from './GalleryHeader';
 import CountingTextArea from './CountingTextArea';
 import { TripDispatch } from './Studio';
+import LoadingImage from '../shared/LoadingImage';
 
 function GalleryLoading() {
   return (
     <p>Loading</p>
   )
 }
+
 
 function NoPhotosFound({ poiId, startingIndex }) {
   // if starting index = -1, then we send the user here immediately upon opening gallery view.
@@ -43,9 +45,7 @@ function NoPhotosFound({ poiId, startingIndex }) {
     });
   }
 
-  let Warning = styled.h1`
-    display: ${props => props.visible ? "initial" : "none"};
-  `
+
 
   return (
     <div className="no-photos-found">
@@ -71,19 +71,26 @@ function NoPhotosFound({ poiId, startingIndex }) {
   )
 }
 
+let Warning = styled.h1`
+  display: ${props => props.visible ? "initial" : "none"};
+`
+
+
+const GalleryViewContainer = styled.div`
+border: 1px solid fuchsia;
+`
+
+const Photo = styled.img`
+border: 1px solid orange;
+`
+
 function GalleryView({ startingPhoto, startingIndex, poiPhotos, poiId, closeGalleryView }) {
   const [loading, setLoading] = useState(true);
   const [photos, setPhotos] = useState(poiPhotos);
   const [activePhoto, setActivePhoto] = useState(null);
   const [activeIndex, setActiveIndex] = useState(startingIndex);
 
-  const GalleryView = styled.div`
-    border: 1px solid fuchsia;
-  `
 
-  const Photo = styled.img`
-    border: 1px solid orange;
-  `
 
   //⛳ This updates the photos for the gallery if poiPhotos changes
   useEffect(() => {
@@ -125,62 +132,10 @@ function GalleryView({ startingPhoto, startingIndex, poiPhotos, poiId, closeGall
       return;
     }
 
-    console.log({ activeIndex, photos });
-
-    prepPhotoForDisplay(photos[activeIndex]).then(result => {
-      setActivePhoto(result);
-    })
-
-  }, [JSON.stringify(photos[activeIndex]), activeIndex])
-
-
-  async function prepPhotoForDisplay(photo) {
     setLoading(true);
 
-    let loadImg = () => {
-      return new Promise((resolve, reject) => {
-        let img = new Image();
-        img.src = photo.path;
-
-        console.log(img);
-
-        img.onload = () => {
-          setLoading(false);
-          resolve(img);
-        }
-
-        img.onerror = () => {
-          setLoading(false);
-          reject(new Error("Could not load the image from the server."));
-        }
-      });
-    }
-
-    try {
-      let result = await loadImg();
-
-      console.log(result);
-
-      return (
-        <figure>
-          <Photo
-            src={result.src}
-            alt={photo.description}
-          />
-          <figcaption>{photo.description}</figcaption>
-        </figure>
-      )
-    } catch (error) {
-
-      return (
-        <div>
-          <p>Error! Photo could not be loaded.</p>
-          <p>{error}</p>
-        </div>
-      );
-    }
-  }
-
+    setActivePhoto(photos[activeIndex]);
+  }, [JSON.stringify(photos[activeIndex]), activeIndex])
 
   // need to keep activeIndex to keep forward/backward cycling.
   // changing the activeIndex will change the activeId.
@@ -238,19 +193,20 @@ function GalleryView({ startingPhoto, startingIndex, poiPhotos, poiId, closeGall
     }
 
 
-    return loading ?
-      (<GalleryLoading />) :
-      (
-        <>
-          {<GalleryHeader activePhoto={photos[activeIndex]} />}
-          {activePhoto}
-          {photos.length > 1 && controls}
-        </>
-      )
+    return (
+      <>
+        {<GalleryHeader activePhoto={photos[activeIndex]} />}
+        <GalleryPhoto
+          photo={photos[activeIndex]}
+          callback={setLoading.bind(null, false)}
+        />
+        {photos.length > 1 && controls}
+      </>
+    )
   }
 
   return (
-    <GalleryView>
+    <GalleryViewContainer>
       <button onClick={() => closeGalleryView()}>
         <span>
           <FontAwesomeIcon icon={faTimes} />
@@ -260,8 +216,23 @@ function GalleryView({ startingPhoto, startingIndex, poiPhotos, poiId, closeGall
       <div className="exhibition">
         {determineRender()}
       </div>
-    </GalleryView>
+    </GalleryViewContainer>
   )
 }
+
+function GalleryPhoto({ photo, callback }) {
+  return (
+    <figure>
+      <LoadingImage
+        src={photo.path}
+        alt={photo.description}
+        callbackOnReady={callback}
+      />
+      <figcaption>{photo.description}</figcaption>
+    </figure>
+  )
+}
+
+
 
 export default GalleryView
