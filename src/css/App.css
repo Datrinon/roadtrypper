@@ -1,3 +1,8 @@
 .no-display {
   display: none !important;
 }
+
+.thumbnail {
+  width: 64px;
+  height: 64px;
+}

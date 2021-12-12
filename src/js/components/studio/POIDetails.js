@@ -11,6 +11,8 @@ import "../../../css/POIDetails.css";
 // components
 import HoverToEditInput from './HoverToEditInput';
 import GalleryView from './GalleryView';
+import LoadingImage from '../shared/LoadingImage';
+
 
 // trip information and reducer
 import { MapInstance, TripContext, TripDispatch } from './Studio';
@@ -239,9 +241,10 @@ function PoiDetails({ activePin, setActivePin }) {
       return (
         <figure
           key={"" + day.id + photo.id}>
-          <s.Thumbnail
+          <LoadingImage
             src={photo.path}
             onClick={launchGalleryView.bind(null, index)}
+            classNames={["thumbnail"]}
             alt={photo.description} />
         </figure>
       );

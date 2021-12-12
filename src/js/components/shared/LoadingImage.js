@@ -5,7 +5,7 @@ import * as s from '../styled/template.style';
  * An image which shows a loading animation prior to it being loaded.
  * @returns 
  */
-function LoadingImage({src, alt, callbackOnReady}) {
+function LoadingImage({src, alt, callbackOnReady, onClick, classNames}) {
 
   const signal = useRef(new AbortController());
   const [content, setContent] = useState((<p>Loading!</p>));
@@ -39,11 +39,15 @@ function LoadingImage({src, alt, callbackOnReady}) {
       setContent((
         <s.Photo
           src={result.src}
+          onClick={onClick}
           alt={alt}
+          className={classNames?.join(" ")}
         />
       ));
 
-      callbackOnReady();
+      if (callbackOnReady) {
+        callbackOnReady();
+      }
     })
     .catch((error) => {
       setContent((
