@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import LoadingGfx from '../shared/LoadingGfx';
 
 
 const ModalHeader = styled.h1`
@@ -32,12 +33,25 @@ const ModalBody = styled.div`
 const Modal = React.forwardRef(
 ({visible, title, confirm, dismissMsg, content }, ref) => {
     const [display, setDisplay] = useState(visible);
+    const [runningSubmitOp, setRunningSubmitOp] = useState(false);
+
+    const submitButton = useRef();
 
     useEffect(() => {
       setDisplay(visible);
     }, [visible])
 
     function closeModal() {
+      setDisplay(false);
+    }
+
+    function onSubmitModal(e) {
+      debugger;
+      setRunningSubmitOp(true);
+      submitButton.current.disabled = true;
+      
+      confirm.callback(e);
+
       setDisplay(false);
     }
 
@@ -61,10 +75,14 @@ const Modal = React.forwardRef(
     } else {
       Wrapper = ({ content }) => {
         return (
-          <form onSubmit={confirm.callback}>
+          <form onSubmit={(e) => {
+            e.preventDefault();
+            onSubmitModal(e);
+            }}>
             {content}
+            <LoadingGfx visible={runningSubmitOp}/>
             <div className="controls">
-              <button type="">{confirm.msg}</button>
+              <button type="" ref={submitButton}>{confirm.msg}</button>
               {dismissButton}
             </div>
           </form>

@@ -59,7 +59,7 @@ function handleAddPhoto(post, payload, signal) {
   let remainingPhotoInfo = new Photo(
     postPhoto.poiId,
     postPhoto.id,
-    null,
+    postPhoto.path,
     postPhoto.description
   );
   

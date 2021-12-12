@@ -49,6 +49,7 @@ function GalleryHeader({ activePhoto, loading }) {
         }
       });
     });
+    // in the meanwhile play loading animation.
   }
 
   function showAddPhotoModal() {
