@@ -2,10 +2,10 @@
  * These functions manages the post-operations
  * after the dispatch of the app's reducer in Studio fires.
  */
-import SAMPLE_PHOTOS from "../../data/sample-photos";
+import Photo from "../model/photo";
 import Day from "../model/day";
 import Poi from "../model/poi";
-import { addTripData, addTripPhoto } from "./data";
+import { addTripData, addTripPhoto, editTripData } from "./data";
 
 
 /**
@@ -45,15 +45,40 @@ function handleAddPoi(post, payload, signal) {
       }
 
       addTripPhoto(post.tripId, photoToUpload, signal);
+
+      //! Gonna run into an issue when uploading, need to stop it at the form.
     })
   }
+}
+
+function handleAddPhoto(post, payload, signal) {
+  
+  let postPhoto = post.photos.find(postPic => postPic.path === payload.path);
+  
+  // get the photo information
+  let remainingPhotoInfo = new Photo(
+    postPhoto.poiId,
+    postPhoto.id,
+    null,
+    postPhoto.description
+  );
+  
+  // the photo document is already there from the pre-dispatch,
+  // so all we have to do now is just edit it to account for
+  // the logic that the dispatch ran.
+  editTripData(post.tripId,
+    "photos",
+    {...remainingPhotoInfo},
+    "path",
+    postPhoto.path,
+    signal);
+  
 }
 
 /** 
  * Handles various add cases.
  */
 function handleAdd(post, payload, signal) {
-
   // use the payload value to correctly identify the post.
   let data;
   
@@ -70,7 +95,6 @@ function handleAdd(post, payload, signal) {
       break;
     }
   }
-
 }
 
 /**
@@ -85,7 +109,11 @@ function updateDatabase(state, action, signal) {
   console.log({state, action});
   switch (action.type) {
     case "add": {
-      handleAdd(state.post, action.payload, signal);
+      if (action.payload.type === "photos") {
+        handleAddPhoto(state.post, action.payload, signal);
+      } else {
+        handleAdd(state.post, action.payload, signal);
+      } 
       break;
     }
     case "add_poi": {

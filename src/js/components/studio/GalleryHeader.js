@@ -5,17 +5,19 @@ import { faPencilAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 import { TripContext, TripDispatch } from './Studio';
 
-import DUMMY_NEW_PHOTO from "../../../data/images/url04.jpg"
+import { v4 as uuidv4 } from 'uuid';
 
 import Modal from './Modal';
 import useModal from '../../hooks/useModal';
 import CountingTextArea from './CountingTextArea';
-import SAMPLE_PHOTOS from '../../../data/sample-photos';
+import { addTripPhoto } from '../../database/data';
+import useAbortController from '../../hooks/useAbortController';
 
 function GalleryHeader({ activePhoto, loading }) {
 
   const trip = useContext(TripContext);
   const dispatch = useContext(TripDispatch);
+  const signal = useAbortController();
 
   const [modalValues, modalSetter, modalRef] = useModal();
 
@@ -26,35 +28,30 @@ function GalleryHeader({ activePhoto, loading }) {
     // TODO
     // Get firebase to upload the image somehow.
 
-    let filepath = e.target.querySelector("#photo-file")
-      .value;
+    let file = e.target.querySelector("#photo-file").files[0];
     // get the filename of the image.
-    filepath = filepath.match(/(\\|\/)(?!.+(\\|\/).+)(?<path>.+)/).groups.path;
     let description = e.target.querySelector("#photo-description").value;
 
-    // get the id...
+    let path = `trips/${trip.tripId}/${uuidv4()}/${file.name}`;
+    // 1. upload the file and get the filepath from firebase
+    // just need the file path and the file.
+    addTripPhoto(trip.tripId, file, path, signal).then((path) => {
+      console.log(path);
 
-    dispatch({
-      type: "add",
-      payload: {
-        type: "photos",
-        fkname: "poiId",
-        fkid: activePhoto.poiId,
-        path: filepath,
-        description
-      }
-    })
-
-    // gotta set the photos after this to update it locally...?
-    // the POI details is still alive, so it should refresh the photos on trip change.
-    // (It didn't)
+      dispatch({
+        type: "add",
+        payload: {
+          type: "photos",
+          fkname: "poiId",
+          fkid: activePhoto.poiId,
+          path: path,
+          description
+        }
+      });
+    });
   }
 
   function showAddPhotoModal() {
-    // ! SAMPLE_FLAG
-    // For now, we're limited on what we can do since we don't have Firebase
-    // integration yet. However, we can work on getting the dispatch function
-    // right.
     modalSetter.setVisible(true);
     modalSetter.setTitle("Add a Photo");
     modalSetter.setConfirm({ msg: "Add", callback: addPhoto })
@@ -136,7 +133,7 @@ function GalleryHeader({ activePhoto, loading }) {
   function deletePhoto(e) {
     e.preventDefault();
 
-    console.log({activePhoto});
+    console.log({ activePhoto });
 
     dispatch({
       type: "delete",
