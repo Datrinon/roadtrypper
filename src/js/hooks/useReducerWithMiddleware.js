@@ -52,7 +52,7 @@ function useReducerWithMiddleware(
     return () => {
       signal.current.abort();
     }
-  }, [afterwareFns]);
+  }, [state]); // try state, since it's always guaranteed to run.
 
   return [state, dispatchWithMiddleware];
 }
