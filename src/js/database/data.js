@@ -244,6 +244,7 @@ async function addTripData(tripId, collectionName, data, signal) {
 }
 
 async function addTripPhoto(tripId, photo, signal) {
+async function addTripPhoto(tripId, file, path, signal) {
   if (signal.aborted) {
     return Promise.reject(new Error("Operation failed; request was cancelled."));
   }
@@ -254,23 +255,39 @@ async function addTripPhoto(tripId, photo, signal) {
   
   const imgRef = ref(storage, photo.path);
   
+
+  const imgRef = ref(storage, path);
+
   // upload the photo and get the filepath.
   // Note -- either add BLOB property or use a base64 encoded string.
   const fileSnapshot = await uploadBytes(imgRef, photo.file);
+  const fileSnapshot = await uploadBytes(imgRef, file);
   const publicImageUrl = await getDownloadURL(imgRef);
 
   // and then add photos to the firestore.
   const photoObjForDoc = {
     poiId: photo.poiId,
     id: photo.id,
+  // // and then add photos to the firestore.
+  // const photoObjForDoc = {
+  //   poiId: photo.poiId,
+  //   id: photo.id,
+  //   path: publicImageUrl,
+  //   storageUri: fileSnapshot.metadata.fullPath,
+  //   description: photo.description
+  // };
+
+  const photoDataForDoc = {
     path: publicImageUrl,
     storageUri: fileSnapshot.metadata.fullPath
   };
 
   const docRef = await addTripData(tripId, "photos", photoObjForDoc, signal);
+  const docRef = await addTripData(tripId, "photos", photoDataForDoc, signal);
 
   
   return docRef;
+  return publicImageUrl;
 }
 
 export { loadSampleTrip,
