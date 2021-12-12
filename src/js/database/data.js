@@ -1,20 +1,24 @@
 // Firestore
-import { getFirestore,
-         collection,
-         addDoc,
-         query,
-         where,
-         getDoc,
-         getDocs,
-         orderBy,
-         deleteDoc,
-         doc
- } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  query,
+  where,
+  getDoc,
+  getDocs,
+  orderBy,
+  deleteDoc,
+  updateDoc,
+  doc,
+  limit,
+} from "firebase/firestore";
 
-import { getStorage,
-         ref,
-         uploadBytes,
-         getDownloadURL
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL
 } from "firebase/storage";
 
 // Models
@@ -53,7 +57,7 @@ async function addTrip(user, signal) {
 
     // addDoc only wants objects, not custom objects, so let's try shallow copying properties.
     // worked.
-    trip = {...trip};
+    trip = { ...trip };
 
     // extra security tag.
     trip.uid = user.uid;
@@ -87,9 +91,9 @@ async function loadTrips(user,
   const trips = [];
 
   const q = query(tripsStore,
-      where("uid", "==", user.uid),
-      orderBy(orderByAttr, direction));
-  
+    where("uid", "==", user.uid),
+    orderBy(orderByAttr, direction));
+
   const querySnapshot = await getDocs(q);
 
   if (signal.aborted) {
@@ -133,7 +137,7 @@ async function deleteTrip(tripId) {
  * get a random name and timestamp.
  * @returns 
  */
-async function loadSampleTrip(signal, duplicate=false) {
+async function loadSampleTrip(signal, duplicate = false) {
   let trips = [];
 
   let trip = (await import("../../data/sample-trip.json")).default;
@@ -144,13 +148,13 @@ async function loadSampleTrip(signal, duplicate=false) {
 
   if (duplicate) {
     for (let i = 0; i < 10; i++) {
-      let tripClone = {...trip};
+      let tripClone = { ...trip };
       tripClone.title = alphabet[i] + "-trip";
       tripClone.lastAccessed = Date.now() + 176670000 * i;
       tripClone.id = i + 1;
       trips.push(tripClone);
     }
-  } 
+  }
 
 
   if (signal.aborted) {
@@ -203,7 +207,7 @@ async function loadTripData(tripId, signal) {
     let subcolQuery = query(collection(db, "trips", tripId, name));
 
     let data = await getDocs(subcolQuery);
-    
+
     if (!data.empty) {
       data.forEach((doc) => {
         docsArr.push(doc.data());
@@ -230,7 +234,7 @@ async function loadTripData(tripId, signal) {
 async function addTripData(tripId, collectionName, data, signal) {
   let subcol = collection(db, "trips", tripId, collectionName);
 
-  
+
   if (signal.aborted) {
     return Promise.reject(new Error("Operation failed; request was cancelled."));
   }
@@ -243,7 +247,34 @@ async function addTripData(tripId, collectionName, data, signal) {
   return docRef;
 }
 
-async function addTripPhoto(tripId, photo, signal) {
+
+async function editTripData(tripId,
+  collectionName,
+  data,
+  idAttr,
+  idVal,
+  signal) {
+
+  if (signal.aborted) {
+    return Promise.reject(new Error("Operation failed; request was cancelled."));
+  }
+
+  let subcol = collection(db, "trips", tripId, collectionName);
+
+  const q = query(subcol, where(idAttr, "==", idVal), limit(1));
+  // const q = query(tripsStore,
+  //   where("uid", "==", user.uid),
+  //   orderBy(orderByAttr, direction));
+  const querySnapshot = await getDocs(q);
+
+  console.log({data});
+  await updateDoc(querySnapshot.docs[0].ref, data);
+
+  console.log('Data successfully edited.');
+}
+
+
+
 async function addTripPhoto(tripId, file, path, signal) {
   if (signal.aborted) {
     return Promise.reject(new Error("Operation failed; request was cancelled."));
@@ -252,22 +283,14 @@ async function addTripPhoto(tripId, file, path, signal) {
   // (Moved this to AddPOI so we can have a way to identify the photo
   //  on firestore)
   ////const filepath = `trips/${tripId}/${uuidv4()}/${photo.path}`;
-  
-  const imgRef = ref(storage, photo.path);
-  
 
   const imgRef = ref(storage, path);
 
   // upload the photo and get the filepath.
   // Note -- either add BLOB property or use a base64 encoded string.
-  const fileSnapshot = await uploadBytes(imgRef, photo.file);
   const fileSnapshot = await uploadBytes(imgRef, file);
   const publicImageUrl = await getDownloadURL(imgRef);
 
-  // and then add photos to the firestore.
-  const photoObjForDoc = {
-    poiId: photo.poiId,
-    id: photo.id,
   // // and then add photos to the firestore.
   // const photoObjForDoc = {
   //   poiId: photo.poiId,
@@ -282,19 +305,19 @@ async function addTripPhoto(tripId, file, path, signal) {
     storageUri: fileSnapshot.metadata.fullPath
   };
 
-  const docRef = await addTripData(tripId, "photos", photoObjForDoc, signal);
   const docRef = await addTripData(tripId, "photos", photoDataForDoc, signal);
 
-  
-  return docRef;
   return publicImageUrl;
 }
 
-export { loadSampleTrip,
-         loadSampleProjectData,
-         addTrip,
-         addTripData,
-         addTripPhoto,
-         loadTrips,
-         loadTripData,
-         deleteTrip };
+export {
+  loadSampleTrip,
+  loadSampleProjectData,
+  addTrip,
+  addTripData,
+  addTripPhoto,
+  loadTrips,
+  loadTripData,
+  deleteTrip,
+  editTripData
+};
