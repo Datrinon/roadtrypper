@@ -54,7 +54,7 @@ function LoadingImage({src, alt, callbackOnReady}) {
     return () => {
       signal.current.abort();
     }
-  }, []);
+  }, [src]);
 
   
   return (
