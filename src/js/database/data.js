@@ -253,27 +253,35 @@ async function addTripData(tripId, collectionName, data, signal) {
 }
 
 
+/**
+ * Edit a trip's data.
+ * @param {*} tripId - The ID of the trip.
+ * @param {*} collectionName - The name of collection to edit in the trip.
+ * @param {*} data - Object containing data.
+ * @param {*} ref - Reference to particular document in collection.
+ * @param {*} signal - Signal for abort in case the request should be cancelled.
+ * @returns 
+ */
 async function editTripData(tripId,
   collectionName,
   data,
-  idAttr,
-  idVal,
+  ref,
   signal) {
+
 
   if (signal.aborted) {
     return Promise.reject(new Error("Operation failed; request was cancelled."));
   }
 
-  let subcol = collection(db, "trips", tripId, collectionName);
+  debugger;
 
-  const q = query(subcol, where(idAttr, "==", idVal), limit(1));
-  // const q = query(tripsStore,
-  //   where("uid", "==", user.uid),
-  //   orderBy(orderByAttr, direction));
-  const querySnapshot = await getDocs(q);
+  // let subcol = collection(db, "trips", tripId, collectionName, ref);
+  // const q = query(subcol, where(idAttr, "==", idVal), limit(1));
+  // const querySnapshot = await getDocs(q);
 
-  console.log({data});
-  await updateDoc(querySnapshot.docs[0].ref, data);
+  // console.log({data})
+  ;
+  await updateDoc(ref, data);
 
   console.log('Data successfully edited.');
 }
@@ -312,7 +320,7 @@ async function addTripPhoto(tripId, file, path, signal) {
 
   const docRef = await addTripData(tripId, "photos", photoDataForDoc, signal);
 
-  return publicImageUrl;
+  return {ref: docRef, path: publicImageUrl};
 }
 
 export {

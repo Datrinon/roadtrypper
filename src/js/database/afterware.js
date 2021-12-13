@@ -73,8 +73,7 @@ function handleAddPhoto(post, payload) {
   editTripData(post.tripId,
     "photos",
     {...remainingPhotoInfo},
-    "path",
-    postPhoto.path,
+    payload.ref,
     signalRef);
   
 }
