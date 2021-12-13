@@ -255,15 +255,12 @@ async function addTripData(tripId, collectionName, data, signal) {
 
 /**
  * Edit a trip's data.
- * @param {*} tripId - The ID of the trip.
- * @param {*} collectionName - The name of collection to edit in the trip.
  * @param {*} data - Object containing data.
  * @param {*} ref - Reference to particular document in collection.
  * @param {*} signal - Signal for abort in case the request should be cancelled.
  * @returns 
  */
-async function editTripData(tripId,
-  collectionName,
+async function editTripData(
   data,
   ref,
   signal) {

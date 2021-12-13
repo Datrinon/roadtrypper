@@ -46,7 +46,6 @@ const Modal = React.forwardRef(
     }
 
     function onSubmitModal(e) {
-      debugger;
       setRunningSubmitOp(true);
       submitButton.current.disabled = true;
 

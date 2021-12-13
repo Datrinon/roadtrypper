@@ -194,7 +194,7 @@ function NewPoiForm({ day }) {
 
     // debug
     console.log({
-      type: "add",
+      type: "add_poi",
       payload: {
         dayId: selDay.id,
         description: poiDesc,

@@ -32,33 +32,58 @@ function handleAddPoi(post, payload) {
     poi.title,
     poi.coordinates);
 
-  addTripData(post.tripId, "pois", {...data});
+  // this trip data
+  addTripData(post.tripId, "pois", { ...data }, signalRef).then(docRef => {
+    // use the ref to attach 
+    dispatchRef({
+      type: "attach_ref",
+      payload: {
+        type: "pois",
+        id: poi.id,
+        ref: docRef
+      }
+    })
+  });
+
 
   // also need to take some time to handle the photos uploads, too.
-  // where tf is the file upload lmao.
   if (payload.photos !== null) {
     payload.photos.forEach(photo => {
       let postPhoto = post.photos.find(postPic => postPic.path === photo.path);
 
-      // photo after work has been done to it in the reducer.
-      let photoToUpload = {
-        ...photo, // get file + path + description
-        // also need the poiId and id 
-        id: postPhoto.id,
-        poiId: postPhoto.poiId
-      }
+      addTripPhoto(post.tripId, photo.file, photo.path, signalRef)
+        .then(({ ref, path }) => {
+          dispatchRef({
+            type: "attach_ref_edit_photo_path",
+            payload: {
+              id: postPhoto.id,
+              ref: ref,
+              path: path,
+            }
+          });
 
-      addTripPhoto(post.tripId, photoToUpload, signalRef);
+          let photoInfo = new Photo(
+            postPhoto.poiId,
+            postPhoto.id,
+            path,
+            postPhoto.description
+          );
 
-      //! Gonna run into an issue when uploading, need to stop it at the form.
+          editTripData(
+            { ...photoInfo },
+            ref,
+            signalRef
+          );
+        })
+
     })
   }
 }
 
 function handleAddPhoto(post, payload) {
-  
+
   let postPhoto = post.photos.find(postPic => postPic.path === payload.path);
-  
+
   // get the photo information
   let remainingPhotoInfo = new Photo(
     postPhoto.poiId,
@@ -66,16 +91,15 @@ function handleAddPhoto(post, payload) {
     postPhoto.path,
     postPhoto.description
   );
-  
+
   // the photo document is already there from the pre-dispatch,
   // so all we have to do now is just edit it to account for
   // the logic that the dispatch ran.
-  editTripData(post.tripId,
-    "photos",
-    {...remainingPhotoInfo},
+  editTripData(
+    { ...remainingPhotoInfo },
     payload.ref,
     signalRef);
-  
+
 }
 
 /** 
@@ -85,8 +109,8 @@ function handleAdd(post, payload) {
   // use the payload value to correctly identify the post.
   let dataInState;
   let data;
-  
-  switch(payload.type) {
+
+  switch (payload.type) {
     case "days": {
       dataInState = post.days.find(day => day.order === payload.order);
 
@@ -102,7 +126,7 @@ function handleAdd(post, payload) {
     }
   }
 
-  addTripData(post.tripId, payload.type, {...data}, signalRef).then(docRef => {
+  addTripData(post.tripId, payload.type, { ...data }, signalRef).then(docRef => {
     // use the ref to attach 
     dispatchRef({
       type: "attach_ref",
@@ -136,10 +160,10 @@ function updateDatabase(dispatch, state, action, signal) {
       // firebase storage.
       if (action.payload.type === "photos") {
         handleAddPhoto(state.post, action.payload);
-      // everything else is normal.
+        // everything else is normal.
       } else {
         handleAdd(state.post, action.payload);
-      } 
+      }
       break;
     }
     case "add_poi": {
