@@ -19,6 +19,8 @@ import { MapInstance, TripContext, TripDispatch } from './Studio';
 import LocationInput from './LocationInput';
 import EditLocation from './EditLocation';
 
+import PLACEHOLDER_IMG from '../../../data/spin-32.gif';
+
 
 let ItalicSpan = styled.span`
   font-style: italic;
@@ -245,12 +247,19 @@ function PoiDetails({ activePin, setActivePin }) {
     //#endregion
 
     function mapThumbnails(photo, index) {
+
+      let onClickAction = launchGalleryView.bind(null, index);
+
+      if (photo.path === PLACEHOLDER_IMG) {
+        onClickAction = null;
+      }
+
       return (
         <figure
           key={"" + day.id + photo.id}>
           <LoadingImage
             src={photo.path}
-            onClick={launchGalleryView.bind(null, index)}
+            onClick={onClickAction}
             classNames={["thumbnail"]}
             alt={photo.description} />
         </figure>

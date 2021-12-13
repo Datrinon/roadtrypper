@@ -294,7 +294,6 @@ async function addTripPhoto(tripId, file, path, signal) {
   //  on firestore)
   ////const filepath = `trips/${tripId}/${uuidv4()}/${photo.path}`;
 
-  debugger;
 
   const imgRef = ref(storage, path);
 

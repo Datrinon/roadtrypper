@@ -89,7 +89,7 @@ function LocationInput({ onClickPOIMarker }) {
 
     return (
       <s.ListingBox
-        key={index}
+        key={Date.now()}
         onClick={registerPlaceOnMap.bind(null, result)}
         tabIndex={-1}>
         <s.FAIcon icon={faMapMarked} />
