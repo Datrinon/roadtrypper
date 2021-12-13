@@ -210,7 +210,12 @@ async function loadTripData(tripId, signal) {
 
     if (!data.empty) {
       data.forEach((doc) => {
-        docsArr.push(doc.data());
+        let obj = {
+          ref: doc.ref,
+          ...doc.data(),
+        };
+
+        docsArr.push(obj);
       })
     }
 
