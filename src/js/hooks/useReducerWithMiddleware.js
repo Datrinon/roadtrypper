@@ -40,6 +40,7 @@ function useReducerWithMiddleware(
     console.log("in the chamber of use effect...");
     console.log(state);
     afterwareFns.forEach((afterwareFn) => afterwareFn(
+      dispatch,
       {
         pre: preState,
         post: state

@@ -49,9 +49,20 @@ const Modal = React.forwardRef(
       debugger;
       setRunningSubmitOp(true);
       submitButton.current.disabled = true;
-      
-      confirm.callback(e);
 
+      confirm.callback(e);
+      // problem here is that the afterware runs,
+      // which causes issues for us.
+      // TODO
+      //// mutation observer, eh.
+      // MO is not a good idea because it increases coupling between
+      // modal and other components.
+      // to do later, focus on the remaining firestore middlewares.
+
+      // ! NOTE !
+      // ! Does not work because afterware !
+      setRunningSubmitOp(false);
+      submitButton.current.disabled = false;
       setDisplay(false);
     }
 

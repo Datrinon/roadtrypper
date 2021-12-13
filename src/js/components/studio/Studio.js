@@ -20,7 +20,7 @@ import useSidebar from '../../hooks/useSidebar';
 import StudioHeader from './StudioHeader';
 import { useParams } from 'react-router';
 import useReducerWithMiddleware from '../../hooks/useReducerWithMiddleware';
-import logger from '../../database/afterware';
+import updateDB from '../../database/afterware';
 import LastUpdated from './LastUpdated';
 import { onUpdatingEnd, onUpdatingStart } from '../../database/middleware';
 import TripTitle from './TripTitle';
@@ -41,7 +41,7 @@ function Studio() {
   const [trip, tripDispatch] = useReducerWithMiddleware(tripReducer,
     null,
     [onUpdatingStart],
-    [logger, onUpdatingEnd]);
+    [updateDB, onUpdatingEnd]);
   const [pageState, setPageState] = useState(STATE.LOADING);
   const [activePin, setActivePin] = useState(null);
   const [activeDay, setActiveDay] = useState(null);

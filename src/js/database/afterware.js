@@ -82,12 +82,19 @@ function handleAddPhoto(post, payload) {
 /** 
  * Handles various add cases.
  */
+function handleAdd(post, payload) {
   // use the payload value to correctly identify the post.
+  let dataInState;
   let data;
   
   switch(payload.type) {
     case "days": {
+      dataInState = post.days.find(day => day.order === payload.order);
 
+      data = new Day(dataInState.id,
+        dataInState.order,
+        dataInState.title,
+        dataInState.color);
 
       break;
     }
@@ -95,6 +102,19 @@ function handleAddPhoto(post, payload) {
       break;
     }
   }
+
+  addTripData(post.tripId, payload.type, {...data}, signalRef).then(docRef => {
+    // use the ref to attach 
+    dispatchRef({
+      type: "attach_ref",
+      payload: {
+        type: payload.type,
+        id: dataInState.id,
+        ref: docRef
+      }
+    })
+  });
+
 }
 
 /**
