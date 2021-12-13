@@ -8,6 +8,10 @@ import Poi from "../model/poi";
 import { addTripData, addTripPhoto, editTripData } from "./data";
 
 
+// let these be global (in the span of this file) for easier use.
+let dispatchRef;
+let signalRef;
+
 /**
  * Make sure the following reducer functions work.
  * 1. Add
@@ -15,7 +19,7 @@ import { addTripData, addTripPhoto, editTripData } from "./data";
  *  b.
  */
 
-function handleAddPoi(post, payload, signal) {
+function handleAddPoi(post, payload) {
   let poi = post.pois.find(poi => {
     return poi.order === payload.order
       && poi.dayId === payload.dayId
@@ -28,7 +32,7 @@ function handleAddPoi(post, payload, signal) {
     poi.title,
     poi.coordinates);
 
-  addTripData(post.tripId, "pois", {...data}, signal);
+  addTripData(post.tripId, "pois", {...data});
 
   // also need to take some time to handle the photos uploads, too.
   // where tf is the file upload lmao.
@@ -44,14 +48,14 @@ function handleAddPoi(post, payload, signal) {
         poiId: postPhoto.poiId
       }
 
-      addTripPhoto(post.tripId, photoToUpload, signal);
+      addTripPhoto(post.tripId, photoToUpload, signalRef);
 
       //! Gonna run into an issue when uploading, need to stop it at the form.
     })
   }
 }
 
-function handleAddPhoto(post, payload, signal) {
+function handleAddPhoto(post, payload) {
   
   let postPhoto = post.photos.find(postPic => postPic.path === payload.path);
   
@@ -71,24 +75,20 @@ function handleAddPhoto(post, payload, signal) {
     {...remainingPhotoInfo},
     "path",
     postPhoto.path,
-    signal);
+    signalRef);
   
 }
 
 /** 
  * Handles various add cases.
  */
-function handleAdd(post, payload, signal) {
   // use the payload value to correctly identify the post.
   let data;
   
   switch(payload.type) {
     case "days": {
-      let day = post.days.find(day => day.order === payload.order);
 
-      data = new Day(day.id, day.order, day.title, day.color);
 
-      addTripData(post.tripId, payload.type, {...data}, signal);
       break;
     }
     default: {
@@ -105,19 +105,26 @@ function handleAdd(post, payload, signal) {
  * Our goal is to keep both of these in synchronization.
  * @param {object} action - the action object sent to the dispatch.
  */
-function updateDatabase(state, action, signal) {
-  console.log({state, action});
+function updateDatabase(dispatch, state, action, signal) {
+  // assign the two globals we have these references
+  dispatchRef = dispatch;
+  signalRef = signal;
+  // 
+
   switch (action.type) {
     case "add": {
+      // photos is a special case because it requires use of 
+      // firebase storage.
       if (action.payload.type === "photos") {
-        handleAddPhoto(state.post, action.payload, signal);
+        handleAddPhoto(state.post, action.payload);
+      // everything else is normal.
       } else {
-        handleAdd(state.post, action.payload, signal);
+        handleAdd(state.post, action.payload);
       } 
       break;
     }
     case "add_poi": {
-      handleAddPoi(state.post, action.payload, signal);
+      handleAddPoi(state.post, action.payload);
     }
     default: {
       break;
