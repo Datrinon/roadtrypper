@@ -56,6 +56,13 @@ function PoiDetails({ activePin, setActivePin }) {
     }
   }, [activePin]);
 
+  useEffect(() => {
+    console.log("New photos hook");
+    if (photos) {
+      setPhotos(trip.photos.filter(photo => photo.poiId === activePoi.id));
+    }
+  }, [trip.photos]);
+
   function launchGalleryView(index) {
     setGalleryStartingIndex(index);
   }

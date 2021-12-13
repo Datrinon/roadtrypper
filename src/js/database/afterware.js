@@ -49,7 +49,10 @@ function handleAddPoi(post, payload) {
   // also need to take some time to handle the photos uploads, too.
   if (payload.photos !== null) {
     payload.photos.forEach(photo => {
-      let postPhoto = post.photos.find(postPic => postPic.path === photo.path);
+      let postPhoto = post.photos.find(postPic => (
+        postPic.realpath === photo.path));
+
+      debugger;
 
       addTripPhoto(post.tripId, photo.file, photo.path, signalRef)
         .then(({ ref, path }) => {

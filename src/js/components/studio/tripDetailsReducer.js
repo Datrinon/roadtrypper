@@ -1,6 +1,7 @@
 /* eslint-disable no-loop-func */
 import _ from 'lodash'
 import DATA_SCHEMA from '../../model/data-hierarchy';
+import IMG_PLACEHOLDER from "../../../data/spin-32.gif";
 
 
 export const TRIP_ACTIONS = {
@@ -236,14 +237,16 @@ export function tripReducer(state, action) {
       console.log({ photos });
 
       // now add the photos here too.
-      if (photos !== null && photos !== undefined) {
+      if (photos) {
         let startingPhotoId = findGreatestId(stateCopy.photos);
 
+        // we're going to use a placeholder image for this.f
         photos.forEach((photo, index) => {
           stateCopy.photos.push({
             id: startingPhotoId + index,
             description: photo.description,
-            path: photo.path,
+            path: IMG_PLACEHOLDER,
+            realpath: photo.path,
             poiId
           });
         });
@@ -271,7 +274,7 @@ export function tripReducer(state, action) {
         };
       }
 
-      if (values.order !== null && values.order !== undefined) {
+      if (values.order) {
         // we can take that order to 
         // get the index of any existing item
         // and then splice.

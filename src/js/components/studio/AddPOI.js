@@ -272,8 +272,6 @@ function NewPoiForm({ day }) {
     })
   }
 
-  console.log(selDay);
-
   return (
     <div>
       <h1>Adding Poi</h1>
