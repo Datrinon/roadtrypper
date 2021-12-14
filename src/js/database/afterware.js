@@ -122,6 +122,31 @@ function handleAdd(post, payload) {
 
       break;
     }
+    case "photos": {
+      dataInState = post.photos.find(photo => photo.realpath === payload.realpath);
+
+      addTripPhoto(post.tripId, payload.file, payload.realpath, signalRef).then(async ({ref, path}) => {
+        let remainingData = new Photo(
+          dataInState.poiId,
+          dataInState.id,
+          path,
+          dataInState.description
+        )
+
+        dispatchRef({
+          type: "attach_ref_edit_photo_path",
+          payload: {
+            id: dataInState.id,
+            ref: ref,
+            path: path,
+          }
+        });
+
+        debugger;
+
+        await editTripData({...remainingData}, ref, signalRef);
+      })
+    }
     default: {
       break;
     }
@@ -159,16 +184,17 @@ function updateDatabase(dispatch, state, action, signal) {
     case "add": {
       // photos is a special case because it requires use of 
       // firebase storage.
-      if (action.payload.type === "photos") {
-        handleAddPhoto(state.post, action.payload);
-        // everything else is normal.
-      } else {
-        handleAdd(state.post, action.payload);
-      }
+      // ! Not anymore if we use the PLACEHOLDER method.
+      // if (action.payload.type === "photos") {
+      //   handleAddPhoto(state.post, action.payload);
+      //   // everything else is normal.
+      // } else { }
+      handleAdd(state.post, action.payload);
       break;
     }
     case "add_poi": {
       handleAddPoi(state.post, action.payload);
+      break;
     }
     default: {
       break;

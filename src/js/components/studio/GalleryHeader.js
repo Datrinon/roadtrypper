@@ -13,11 +13,13 @@ import CountingTextArea from './CountingTextArea';
 import { addTripPhoto } from '../../database/data';
 import useAbortController from '../../hooks/useAbortController';
 
+import PLACEHOLDER_IMG from '../../../data/spin-32.gif';
+
+
 function GalleryHeader({ activePhoto, loading }) {
 
   const trip = useContext(TripContext);
   const dispatch = useContext(TripDispatch);
-  const signal = useAbortController();
 
   const [modalValues, modalSetter, modalRef] = useModal();
 
@@ -30,23 +32,38 @@ function GalleryHeader({ activePhoto, loading }) {
     let description = e.target.querySelector("#photo-description").value;
 
     let path = `trips/${trip.tripId}/${uuidv4()}/${file.name}`;
-    // 1. upload the file and get the filepath from firebase
-    // just need the file path and the file.
-    addTripPhoto(trip.tripId, file, path, signal).then(({ref, path}) => {
-      console.log(path);
-
-      dispatch({
-        type: "add",
-        payload: {
-          type: "photos",
-          fkname: "poiId",
-          fkid: activePhoto.poiId,
-          path: path,
-          ref: ref,
-          description
-        }
-      });
+    // ! Now that we have a placeholder, we can use that instead.
+    dispatch({
+      type: "add",
+      payload: {
+        type: "photos",
+        fkname: "poiId",
+        fkid: activePhoto.poiId,
+        path: PLACEHOLDER_IMG,
+        realpath: path,
+        file,
+        description
+      }
     });
+
+    // // 1. upload the file and get the filepath from firebase
+    // // just need the file path and the file.
+    // addTripPhoto(trip.tripId, file, path, signal).then(({ref, path}) => {
+    //   console.log(path);
+
+    //   dispatch({
+    //     type: "add",
+    //     payload: {
+    //       type: "photos",
+    //       fkname: "poiId",
+    //       fkid: activePhoto.poiId,
+    //       path: PLACEHOLDER_IMG,
+    //       realpath: path,
+    //       ref: ref,
+    //       description
+    //     }
+    //   });
+    // });
   }
 
   function showAddPhotoModal() {

@@ -192,6 +192,7 @@ function GalleryView({ startingPhoto, startingIndex, poiPhotos, poiId, closeGall
       return <NoPhotosFound poiId={poiId} startingIndex={startingIndex} />
     }
 
+    console.log(photos);
 
     return (
       <>
@@ -221,6 +222,7 @@ function GalleryView({ startingPhoto, startingIndex, poiPhotos, poiId, closeGall
 }
 
 function GalleryPhoto({ photo, callback }) {
+  
   return (
     <figure>
       <LoadingImage
