@@ -48,8 +48,6 @@ const Modal = React.forwardRef(
     function onSubmitModal(e) {
       // setRunningSubmitOp(true);
       // submitButton.current.disabled = true;
-      debugger;
-
       confirm.callback(e);
       // problem here is that the afterware runs,
       // which causes issues for us.

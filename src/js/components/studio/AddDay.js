@@ -1,8 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { TripDispatch, TripContext, TripId } from "./Studio";
 
-// TODO
-// [] Use the activeDay prop to splice days.
 export default function AddDay({activeDay, setActiveDay}) {
   const dispatch = useContext(TripDispatch);
   const trip = useContext(TripContext);

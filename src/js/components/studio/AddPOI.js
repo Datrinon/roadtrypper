@@ -29,7 +29,7 @@ function NewPoiForm({ day }) {
   const sidebarSetter = useContext(SidebarSetter);
 
   // day state vars
-  const [selDay, setSelDay] = useState(day);
+  const [selDay, setSelDay] = useState(day?.data);
   const [selDayPois, setSelDayPois] = useState([]);
   const [selPoiOrder, setSelPoiOrder] = useState(0);
   // poi state vars
@@ -57,13 +57,6 @@ function NewPoiForm({ day }) {
       
   }
 
-  function getLastOrderedPOI(max, poi) {
-    if (poi.order > max) {
-      return poi.order;
-    } else {
-      return max;
-    }
-  }
 
   function updatePoiData(day) {
     let pois;
@@ -71,15 +64,24 @@ function NewPoiForm({ day }) {
 
     pois = trip.pois.filter(poi => poi.dayId === day.id);
 
-    greatestPoiOrder = pois.reduce(getLastOrderedPOI, 0);
-    greatestPoiOrder = greatestPoiOrder === 0 ? 0 : greatestPoiOrder + 1;
+    if (pois.length === 0) {
+      greatestPoiOrder = 0;
+    } else {
+      pois.sort((poiA, poiB) => poiA.order - poiB.order);
+      greatestPoiOrder = pois[pois.length - 1].order + 1;
+    }
 
     setSelDayPois(pois);
     setSelPoiOrder(greatestPoiOrder);
+
+    console.log("In updatePoiData, in AddPOI.js...:");
+    console.log(pois);
   }
 
   useEffect(() => {
     let lastDay;
+
+
 
     if (!selDay) {
       lastDay = getLastOrderedDay();
@@ -89,6 +91,9 @@ function NewPoiForm({ day }) {
     } else {
       lastDay = selDay;
     }
+
+    console.log("UseEffect Hook, Add POI.");
+    console.log(lastDay);
 
     updatePoiData(lastDay);
   }, []);
