@@ -5,7 +5,7 @@
 import Photo from "../model/photo";
 import Day from "../model/day";
 import Poi from "../model/poi";
-import { addTripData, addTripPhoto, editTripData } from "./data";
+import { addTripData, addTripPhoto, deleteFile, editTripData, getPhotoStorageUri } from "./data";
 
 
 // let these be global (in the span of this file) for easier use.
@@ -178,28 +178,7 @@ function handleEdit(post, payload) {
 
         editTripData(data, payload.ref, signalRef);
       } else if (payload.key === "path") {
-        addTripPhoto(post.tripId, payload.file, payload.realpath, signalRef, false)
-          .then(({ path, storageUri }) => {
-            debugger; 
-
-            dispatchRef({
-              type: "attach_ref_edit_photo_path",
-              payload: {
-                id: payload.id,
-                ref: payload.ref,
-                path: path
-              }
-            });
-
-            let data = {
-              path,
-              storageUri 
-            };
-  
-            editTripData(data, payload.ref, signalRef);
-          });
-
-
+        replacePhoto(post, payload);
       }
       break;
     }
@@ -208,6 +187,39 @@ function handleEdit(post, payload) {
   }
 }
 
+function replacePhoto(post, payload) {
+  addTripPhoto(post.tripId, payload.file, payload.realpath, signalRef, false)
+    .then(async ({ path, storageUri }) => {
+      dispatchRef({
+        type: "attach_ref_edit_photo_path",
+        payload: {
+          id: payload.id,
+          ref: payload.ref,
+          path: path
+        }
+      });
+
+      let data = {
+        path,
+        storageUri
+      };
+
+      let oldStorageUri = await getPhotoStorageUri(payload.ref);
+
+      await editTripData(data, payload.ref, signalRef);
+
+      console.log("Photo changed successfully, we can delete now.");
+
+      await deleteFile(oldStorageUri, signalRef);
+
+      console.log("Photo deleted.");
+    }).catch((error) => {
+      console.error(error);
+      console.log("Error committing photo change.");
+    })
+
+
+}
 
 /**
  * Updates the database based on the taken action.

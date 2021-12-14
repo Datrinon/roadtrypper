@@ -19,7 +19,8 @@ import {
   getStorage,
   ref,
   uploadBytes,
-  getDownloadURL
+  getDownloadURL,
+  deleteObject
 } from "firebase/storage";
 
 // Models
@@ -271,20 +272,16 @@ async function editTripData(
     return Promise.reject(new Error("Operation failed; request was cancelled."));
   }
 
-  debugger;
-
   // let subcol = collection(db, "trips", tripId, collectionName, ref);
   // const q = query(subcol, where(idAttr, "==", idVal), limit(1));
   // const querySnapshot = await getDocs(q);
 
   // console.log({data})
-  ;
-  await updateDoc(ref, data);
+  console.log('Data being edited...');
+  
+  return updateDoc(ref, data);
 
-  console.log('Data successfully edited.');
 }
-
-
 
 async function addTripPhoto(tripId, file, path, signal, addDoc=true) {
   if (signal.aborted) {
@@ -326,14 +323,36 @@ async function addTripPhoto(tripId, file, path, signal, addDoc=true) {
   }
 }
 
+/**
+ * Delete a file held in storage.
+ * @param {StoragePath} path - The path where the file is stored.
+ */
+async function deleteFile(path, signal) {
+  if (signal.aborted) {
+    return Promise.reject(new Error("Operation failed; request was cancelled."));
+  }
+
+  debugger;
+
+  return deleteObject(ref(storage, path));
+}
+
+async function getPhotoStorageUri(ref) {
+  const photo = await getDoc(ref);
+
+  return photo.get("storageUri");
+}
+
 export {
   loadSampleTrip,
   loadSampleProjectData,
   addTrip,
   addTripData,
   addTripPhoto,
+  getPhotoStorageUri,
   loadTrips,
   loadTripData,
   deleteTrip,
+  deleteFile,
   editTripData
 };
