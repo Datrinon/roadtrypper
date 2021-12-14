@@ -142,7 +142,7 @@ function handleAdd(post, payload) {
           }
         });
 
-        debugger;
+        //debugger; // remove this one and let's role afterward.
 
         await editTripData({...remainingData}, ref, signalRef);
       })

@@ -27,12 +27,29 @@ function GalleryHeader({ activePhoto, loading }) {
   function addPhoto(e) {
     e.preventDefault();
 
+    debugger;
+
     let file = e.target.querySelector("#photo-file").files[0];
     // get the filename of the image.
     let description = e.target.querySelector("#photo-description").value;
 
     let path = `trips/${trip.tripId}/${uuidv4()}/${file.name}`;
     // ! Now that we have a placeholder, we can use that instead.
+
+    console.log("GalleryHeader Add()");
+    console.log({
+      type: "add",
+      payload: {
+        type: "photos",
+        fkname: "poiId",
+        fkid: activePhoto.poiId,
+        path: PLACEHOLDER_IMG,
+        realpath: path,
+        file,
+        description
+      }
+    });
+
     dispatch({
       type: "add",
       payload: {
@@ -45,6 +62,8 @@ function GalleryHeader({ activePhoto, loading }) {
         description
       }
     });
+
+
 
     // // 1. upload the file and get the filepath from firebase
     // // just need the file path and the file.

@@ -138,7 +138,9 @@ function Studio() {
     // prevent stale active pois from occurring if the trip
     // was just reset.
     if (activePin) {
-      setActivePin({data: trip.pois[activePin.data.id], time: Date.now()});
+      let data = trip.pois.find(poi => poi.id === activePin.data.id);
+
+      setActivePin({data, time: Date.now()});
     }
   }, [trip]);
 

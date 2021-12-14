@@ -8,8 +8,12 @@ import * as s from "./POIDetails.style";
 
 import GalleryHeader from './GalleryHeader';
 import CountingTextArea from './CountingTextArea';
-import { TripDispatch } from './Studio';
+import { TripContext, TripDispatch } from './Studio';
 import LoadingImage from '../shared/LoadingImage';
+
+import PLACEHOLDER_IMG from '../../../data/spin-32.gif';
+import { v4 as uuidv4 } from 'uuid';
+
 
 function GalleryLoading() {
   return (
@@ -24,13 +28,17 @@ function NoPhotosFound({ poiId, startingIndex }) {
 
   const fileRef = useRef();
   const descRef = useRef();
+  const trip = useContext(TripContext);
 
   const dispatch = useContext(TripDispatch);
 
   function addPhoto(e) {
     e.preventDefault();
     // get filename
-    let path = fileRef.current.value.match(/(\\|\/)(?!.+(\\|\/).+)(?<path>.+)/).groups.path;
+    // let path = fileRef.current.value.match(/(\\|\/)(?!.+(\\|\/).+)(?<path>.+)/).groups.path;
+    // let description = descRef.current.value;
+    let file = fileRef.current.files[0];
+    let path = `trips/${trip.tripId}/${uuidv4()}/${file.name}`;
     let description = descRef.current.value;
 
     dispatch({
@@ -39,10 +47,26 @@ function NoPhotosFound({ poiId, startingIndex }) {
         type: "photos",
         fkname: "poiId",
         fkid: poiId,
-        path,
+        path: PLACEHOLDER_IMG,
+        realpath: path,
+        file,
         description
       }
     });
+
+    // dispatch({
+    //   type: "add",
+    //   payload: {
+    //     type: "photos",
+    //     fkname: "poiId",
+    //     fkid: poiId,
+    //     path,
+    //     description
+    //   }
+    // });
+    // TODO
+    // ! Combine View and Header's function into one.
+    // ! Got tripped up by duplication. Now we know why duplicating code == bad.
   }
 
 

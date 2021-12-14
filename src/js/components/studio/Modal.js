@@ -46,8 +46,9 @@ const Modal = React.forwardRef(
     }
 
     function onSubmitModal(e) {
-      setRunningSubmitOp(true);
-      submitButton.current.disabled = true;
+      // setRunningSubmitOp(true);
+      // submitButton.current.disabled = true;
+      debugger;
 
       confirm.callback(e);
       // problem here is that the afterware runs,
@@ -60,9 +61,9 @@ const Modal = React.forwardRef(
 
       // ! NOTE !
       // ! Does not work because afterware !
-      setRunningSubmitOp(false);
-      submitButton.current.disabled = false;
-      setDisplay(false);
+      // setRunningSubmitOp(false);
+      // submitButton.current.disabled = false;
+      // setDisplay(false);
     }
 
     let Wrapper;
@@ -85,10 +86,7 @@ const Modal = React.forwardRef(
     } else {
       Wrapper = ({ content }) => {
         return (
-          <form onSubmit={(e) => {
-            e.preventDefault();
-            onSubmitModal(e);
-            }}>
+          <form onSubmit={onSubmitModal}>
             {content}
             <LoadingGfx visible={runningSubmitOp}/>
             <div className="controls">
