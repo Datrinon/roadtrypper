@@ -166,6 +166,23 @@ function handleAdd(post, payload) {
 
 }
 
+
+function handleEdit(post, payload) {
+  switch(payload.type) {
+    case "photos": {
+      // Just need the ref and the key / description assembled into an obj.
+      let data = {
+        [payload.key] : payload.value
+      }
+      editTripData(data, payload.ref, signalRef);
+      break;
+    }
+    default: 
+      break;
+  }
+}
+
+
 /**
  * Updates the database based on the taken action.
  * @param {object} state - the state object, with pre and post conditions.
@@ -182,19 +199,15 @@ function updateDatabase(dispatch, state, action, signal) {
 
   switch (action.type) {
     case "add": {
-      // photos is a special case because it requires use of 
-      // firebase storage.
-      // ! Not anymore if we use the PLACEHOLDER method.
-      // if (action.payload.type === "photos") {
-      //   handleAddPhoto(state.post, action.payload);
-      //   // everything else is normal.
-      // } else { }
       handleAdd(state.post, action.payload);
       break;
     }
     case "add_poi": {
       handleAddPoi(state.post, action.payload);
       break;
+    }
+    case "edit": {
+      handleEdit(state.post, action.payload);
     }
     default: {
       break;

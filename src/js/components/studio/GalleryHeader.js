@@ -62,27 +62,6 @@ function GalleryHeader({ activePhoto, loading }) {
         description
       }
     });
-
-
-
-    // // 1. upload the file and get the filepath from firebase
-    // // just need the file path and the file.
-    // addTripPhoto(trip.tripId, file, path, signal).then(({ref, path}) => {
-    //   console.log(path);
-
-    //   dispatch({
-    //     type: "add",
-    //     payload: {
-    //       type: "photos",
-    //       fkname: "poiId",
-    //       fkid: activePhoto.poiId,
-    //       path: PLACEHOLDER_IMG,
-    //       realpath: path,
-    //       ref: ref,
-    //       description
-    //     }
-    //   });
-    // });
   }
 
   function showAddPhotoModal() {
@@ -110,7 +89,8 @@ function GalleryHeader({ activePhoto, loading }) {
         type: "photos",
         id: activePhoto.id,
         key: "description",
-        value: e.target.querySelector("#photo-edit-description").value
+        value: e.target.querySelector("#photo-edit-description").value,
+        ref: activePhoto.ref
       }
     })
   }
