@@ -14,6 +14,7 @@ import { addTripPhoto } from '../../database/data';
 import useAbortController from '../../hooks/useAbortController';
 
 import PLACEHOLDER_IMG from '../../../data/spin-32.gif';
+import { getBase64 } from '../../util/getbase64';
 
 
 function GalleryHeader({ activePhoto, loading }) {
@@ -24,7 +25,7 @@ function GalleryHeader({ activePhoto, loading }) {
   const [modalValues, modalSetter, modalRef] = useModal();
 
 
-  function addPhoto(e) {
+  async function addPhoto(e) {
     e.preventDefault();
 
     debugger;
@@ -56,7 +57,7 @@ function GalleryHeader({ activePhoto, loading }) {
         type: "photos",
         fkname: "poiId",
         fkid: activePhoto.poiId,
-        path: PLACEHOLDER_IMG,
+        path: await getBase64(file),
         realpath: path,
         file,
         description

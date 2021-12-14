@@ -13,6 +13,7 @@ import LoadingImage from '../shared/LoadingImage';
 
 import PLACEHOLDER_IMG from '../../../data/spin-32.gif';
 import { v4 as uuidv4 } from 'uuid';
+import { getBase64 } from '../../util/getbase64';
 
 
 function GalleryLoading() {
@@ -32,7 +33,7 @@ function NoPhotosFound({ poiId, startingIndex }) {
 
   const dispatch = useContext(TripDispatch);
 
-  function addPhoto(e) {
+  async function addPhoto(e) {
     e.preventDefault();
     // get filename
     // let path = fileRef.current.value.match(/(\\|\/)(?!.+(\\|\/).+)(?<path>.+)/).groups.path;
@@ -47,7 +48,7 @@ function NoPhotosFound({ poiId, startingIndex }) {
         type: "photos",
         fkname: "poiId",
         fkid: poiId,
-        path: PLACEHOLDER_IMG,
+        path: await getBase64(file),
         realpath: path,
         file,
         description

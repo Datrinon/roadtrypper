@@ -150,8 +150,6 @@ function Studio() {
   }
 
 
-
-
   return (
     <TripId.Provider value={tripId}>
       <TripContext.Provider value={trip}>
