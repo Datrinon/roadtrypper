@@ -1,13 +1,13 @@
-import { firebaseConfig } from "./config";
+import fbService from "./config";
 import { getAuth,
          createUserWithEmailAndPassword,
          signInWithEmailAndPassword,
          onAuthStateChanged,
          signOut
        } from "firebase/auth";
-import { initializeApp } from "@firebase/app";
 
-const fbService = initializeApp(firebaseConfig);
+
+// const fbService = initializeApp(firebaseConfig);
 
 const auth = getAuth(fbService);
 

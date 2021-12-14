@@ -1,3 +1,4 @@
+import fbService from "./config";
 // Firestore
 import {
   getFirestore,
@@ -26,11 +27,8 @@ import Trip from "../model/trip";
 
 // Sample Data
 import { MOCK_TRIP_ID } from '../../data/sample-days';
-//import fbService from "./config";
-import { firebaseConfig } from "./config";
-import { initializeApp } from "@firebase/app";
 
-const fbService = initializeApp(firebaseConfig);
+// const fbService = initializeApp(firebaseConfig);
 
 const db = getFirestore(fbService);
 const tripsStore = collection(db, "trips");
