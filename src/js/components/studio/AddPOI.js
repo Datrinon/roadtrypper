@@ -11,6 +11,7 @@ import { cloneDeep, set } from 'lodash';
 import PoiDetails from './POIDetails';
 
 import { v4 as uuidv4 } from 'uuid';
+import { getBase64 } from '../../util/getbase64';
 
 
 const Label = styled.label`
@@ -50,11 +51,9 @@ function NewPoiForm({ day }) {
 
   //#region Day Information.
   function getLastOrderedDay() {
-
     const sortedDays = trip.days.sort((dayA, dayB) => dayA.order - dayB.order);
 
     return sortedDays[trip.days.length - 1]
-      
   }
 
 
@@ -80,9 +79,6 @@ function NewPoiForm({ day }) {
 
   useEffect(() => {
     let lastDay;
-
-
-
     if (!selDay) {
       lastDay = getLastOrderedDay();
       console.log(lastDay);
@@ -178,23 +174,30 @@ function NewPoiForm({ day }) {
   /**
    * Adds a POI using the given information from the user.
    */
-  function addNewPoi() {
+  async function addNewPoi() {
     let payloadPhotos = null;
     if (photos.length !== 0) {
       const descriptions = photosArea
         .current
         .querySelectorAll(".add-photo-description");
 
-      // ! SAMPLE_FLAG
-      payloadPhotos = photos.map((photo, index) => {
+      // ?
+      // Remember that when you use async, you return a promise
+      // Thus, in the exterior, you must also use async to unwrap
+      // the promise. In the case of multiple concurrent async calls
+      // you use Promise.all.
+      payloadPhotos = await Promise.all(photos.map(async (photo, index) => {
         return {
           file: photo,
-          path: `trips/${tripId}/${uuidv4()}/${photo.name}`,
+          path: await getBase64(photo),
+          realpath: `trips/${tripId}/${uuidv4()}/${photo.name}`,
           description: descriptions
             .item(index)
             .querySelector(`#new-photo-desc${index}`).value
         }
-      });
+      }));
+
+      debugger;
     }
 
     // debug
@@ -401,11 +404,11 @@ function AddPoiSuccess({ lastAddedPoi }) {
   )
 }
 
-function AddPoi({activeDay}) {
+function AddPoi({ activeDay }) {
   const sidebarSetter = useContext(SidebarSetter);
 
   function showAddPoi() {
-    sidebarSetter.setContent(<NewPoiForm day={activeDay}/>);
+    sidebarSetter.setContent(<NewPoiForm day={activeDay} />);
     sidebarSetter.setVisible(true);
   }
 

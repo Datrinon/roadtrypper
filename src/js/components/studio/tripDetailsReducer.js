@@ -240,13 +240,14 @@ export function tripReducer(state, action) {
       if (photos) {
         let startingPhotoId = findGreatestId(stateCopy.photos);
 
-        // we're going to use a placeholder image for this.f
+        //// we're going to use a placeholder image for this.f
+        // not anymore with the base64 method.
         photos.forEach((photo, index) => {
           stateCopy.photos.push({
             id: startingPhotoId + index,
             description: photo.description,
-            path: IMG_PLACEHOLDER,
-            realpath: photo.path,
+            path: photo.path,
+            realpath: photo.realpath,
             poiId
           });
         });

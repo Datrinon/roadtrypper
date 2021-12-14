@@ -50,9 +50,11 @@ function handleAddPoi(post, payload) {
   if (payload.photos !== null) {
     payload.photos.forEach(photo => {
       let postPhoto = post.photos.find(postPic => (
-        postPic.realpath === photo.path));
+        postPic.realpath === photo.realpath));
 
-      addTripPhoto(post.tripId, photo.file, photo.path, signalRef)
+      debugger;
+
+      addTripPhoto(post.tripId, photo.file, photo.realpath, signalRef)
         .then(({ ref, path }) => {
           dispatchRef({
             type: "attach_ref_edit_photo_path",
