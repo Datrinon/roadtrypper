@@ -125,7 +125,7 @@ function handleAdd(post, payload) {
     case "photos": {
       dataInState = post.photos.find(photo => photo.realpath === payload.realpath);
 
-      addTripPhoto(post.tripId, payload.file, payload.realpath, signalRef).then(async ({ref, path}) => {
+      addTripPhoto(post.tripId, payload.file, payload.realpath, signalRef).then(async ({ ref, path }) => {
         let remainingData = new Photo(
           dataInState.poiId,
           dataInState.id,
@@ -144,7 +144,7 @@ function handleAdd(post, payload) {
 
         //debugger; // remove this one and let's role afterward.
 
-        await editTripData({...remainingData}, ref, signalRef);
+        await editTripData({ ...remainingData }, ref, signalRef);
       })
     }
     default: {
@@ -168,16 +168,42 @@ function handleAdd(post, payload) {
 
 
 function handleEdit(post, payload) {
-  switch(payload.type) {
+  switch (payload.type) {
     case "photos": {
-      // Just need the ref and the key / description assembled into an obj.
-      let data = {
-        [payload.key] : payload.value
+      if (payload.key === "description") {
+        // Just need the ref and the key / description assembled into an obj.
+        let data = {
+          [payload.key]: payload.value
+        }
+
+        editTripData(data, payload.ref, signalRef);
+      } else if (payload.key === "path") {
+        addTripPhoto(post.tripId, payload.file, payload.realpath, signalRef, false)
+          .then(({ path, storageUri }) => {
+            debugger; 
+
+            dispatchRef({
+              type: "attach_ref_edit_photo_path",
+              payload: {
+                id: payload.id,
+                ref: payload.ref,
+                path: path
+              }
+            });
+
+            let data = {
+              path,
+              storageUri 
+            };
+  
+            editTripData(data, payload.ref, signalRef);
+          });
+
+
       }
-      editTripData(data, payload.ref, signalRef);
       break;
     }
-    default: 
+    default:
       break;
   }
 }

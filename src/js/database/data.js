@@ -286,7 +286,7 @@ async function editTripData(
 
 
 
-async function addTripPhoto(tripId, file, path, signal) {
+async function addTripPhoto(tripId, file, path, signal, addDoc=true) {
   if (signal.aborted) {
     return Promise.reject(new Error("Operation failed; request was cancelled."));
   }
@@ -312,14 +312,18 @@ async function addTripPhoto(tripId, file, path, signal) {
   //   description: photo.description
   // };
 
-  const photoDataForDoc = {
-    path: publicImageUrl,
-    storageUri: fileSnapshot.metadata.fullPath
-  };
-
-  const docRef = await addTripData(tripId, "photos", photoDataForDoc, signal);
-
-  return {ref: docRef, path: publicImageUrl};
+  if (addDoc) {
+    const photoDataForDoc = {
+      path: publicImageUrl,
+      storageUri: fileSnapshot.metadata.fullPath
+    };
+  
+    const docRef = await addTripData(tripId, "photos", photoDataForDoc, signal);
+  
+    return {ref: docRef, path: publicImageUrl};
+  } else {
+    return {path: publicImageUrl, storageUri: fileSnapshot.metadata.fullPath};
+  }
 }
 
 export {

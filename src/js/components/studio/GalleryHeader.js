@@ -115,21 +115,32 @@ function GalleryHeader({ activePhoto, loading }) {
 
   function updatePhotoPath(e) {
     e.preventDefault();
-    //! SAMPLE FLAG
-    // Need to implement Firebase to complete
-    let filepath = e.target.querySelector("#photo-file-update").value;
-    // get the filename of the image.
-    filepath = filepath.match(/(\\|\/)(?!.+(\\|\/).+)(?<path>.+)/).groups.path;
+    //! 
+    // I'mma try to use base64 instead here.
+    // we handle over the preview first
+    // then after that we just replace with the firebase URL.
+    let file = e.target.querySelector("#photo-file-update").files[0];
 
-    dispatch({
-      type: "edit",
-      payload: {
-        type: "photos",
-        id: activePhoto.id,
-        key: "path",
-        value: filepath
-      }
-    })
+    const reader = new FileReader();
+
+    reader.readAsDataURL(file);
+
+    let path = `trips/${trip.tripId}/${uuidv4()}/${file.name}`;
+
+    reader.addEventListener("load", () => {
+      dispatch({
+        type: "edit",
+        payload: {
+          type: "photos",
+          id: activePhoto.id,
+          key: "path",
+          value: reader.result,
+          realpath: path,
+          file,
+          ref: activePhoto.ref
+        }
+      })
+    });
   }
 
   function showEditPhotoModal() {
