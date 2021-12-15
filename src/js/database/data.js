@@ -332,9 +332,29 @@ async function deleteFile(path, signal) {
     return Promise.reject(new Error("Operation failed; request was cancelled."));
   }
 
-  debugger;
-
   return deleteObject(ref(storage, path));
+}
+
+/**
+ * Deletes the photo referenced via the given ref.
+ * @param {DocumentReference} ref 
+ * @param {AbortController} signal 
+ * @returns 
+ */
+async function deletePhoto(ref, signal) {
+  if (signal.aborted) {
+    return Promise.reject(new Error("Operation failed; request was cancelled."));
+  }
+
+  const storageUri = await getPhotoStorageUri(ref);
+
+  // now delete both the file and the doc.
+  await Promise.all([
+    deleteDoc(ref),
+    deleteFile(storageUri, signal)
+  ]);
+
+  console.log("Photo deleted successfully.");
 }
 
 async function getPhotoStorageUri(ref) {
@@ -354,5 +374,6 @@ export {
   loadTripData,
   deleteTrip,
   deleteFile,
+  deletePhoto,
   editTripData
 };

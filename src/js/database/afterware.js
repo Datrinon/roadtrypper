@@ -5,7 +5,7 @@
 import Photo from "../model/photo";
 import Day from "../model/day";
 import Poi from "../model/poi";
-import { addTripData, addTripPhoto, deleteFile, editTripData, getPhotoStorageUri } from "./data";
+import { addTripData, addTripPhoto, deleteFile, deletePhoto, editTripData, getPhotoStorageUri } from "./data";
 
 
 // let these be global (in the span of this file) for easier use.
@@ -219,9 +219,28 @@ function replacePhoto(post, payload) {
       console.error(error);
       console.log("Error committing photo change.");
     })
-
-
 }
+
+
+function handleDelete(post, payload) {
+  switch(payload.type) {
+    case "photos": {
+      // photos is an easy case to deal with, it's just about deleting
+      // the photo. Nothing to reorder.
+      // just have to delete the doc.
+      // and then delete the file.
+      deletePhoto(payload.ref, signalRef);
+
+      console.log("Photo deleted successfully");
+
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+}
+
 
 /**
  * Updates the database based on the taken action.
@@ -248,6 +267,11 @@ function updateDatabase(dispatch, state, action, signal) {
     }
     case "edit": {
       handleEdit(state.post, action.payload);
+      break;
+    }
+    case "delete": {
+      handleDelete(state.post, action.payload);
+      break;
     }
     default: {
       break;

@@ -165,7 +165,8 @@ function GalleryHeader({ activePhoto, loading }) {
       type: "delete",
       payload: {
         type: "photos",
-        id: activePhoto.id
+        id: activePhoto.id,
+        ref: activePhoto.ref
       }
     })
   }
