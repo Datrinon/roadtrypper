@@ -324,17 +324,39 @@ function handlePOIMove(state, payload) {
 
   // update object contains the order and dayId.
   // no other modifications.
-  let poiTable = state.post.pois;
+  const prePoiTable = state.pre.pois;
+  const postPoiTable = state.post.pois;
 
-  let movedPoi = poiTable.find(poi => payload.id === poi.id);
+  const movedPoi = postPoiTable.find(poi => payload.id === poi.id);
 
-  let movedItemData = {
+  const movedItemData = {
     dayId: movedPoi.dayId,
     order: movedPoi.order
   };
 
+  // now we get the other pois in the original one and we update that.
+  const originalPoiDayId = prePoiTable.find(poi => poi.id === payload.id).dayId;
+  const otherDayPOIs = state.post.pois.filter(poi => poi.dayId === originalPoiDayId);
+
+  const otherPOIRequests = otherDayPOIs.map((poi) => {
+    let data = {
+      order: poi.order
+    };
+    
+    // return an array of promises for each POI in that day...
+    return new Promise((resolve) => {
+      editTripData(data, poi.ref, signalRef);
+
+      resolve();
+    })
+  })
+
   editTripData(movedItemData, movedPoi.ref, signalRef).then(() => {
     console.log("The POI was moved successfully on Firestore.");
+
+    Promise.all(otherPOIRequests).then(() => {
+      console.log("Then, the POIs on that other day were also reorganized.");
+    })
   })
 }
 
