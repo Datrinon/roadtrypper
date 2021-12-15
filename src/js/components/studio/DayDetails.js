@@ -34,7 +34,7 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
       {
         days.map((day) => {
           return (<option
-            key={day.order}
+            key={day.id}
             value={day.order}>
             {day.order + 1}
           </option>

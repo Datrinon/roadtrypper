@@ -207,8 +207,6 @@ function handleEdit(post, payload) {
       ||  payload.key === "title"
       ) {
         makeStandardEdit(payload);
-      } else if (payload.key === "title") {
-        makeStandardEdit(payload);
       }
       break;
     }
@@ -270,6 +268,58 @@ function handleDelete(post, payload) {
 }
 
 
+function handleRearrange(state, payload) {
+  console.log({state, payload});
+  // swapper, the record that was active when initiating the swap
+  // swapped, the record that was in the place where swapper wants to move into.
+
+  let preTable = state.pre[payload.type];
+  
+  let swapper = preTable.find(item => item.id === payload.id);
+
+  let swappee;
+  if (payload.fk) {
+    // if it has a foreign key
+    // make sure it has the same value
+    // and then look for its place in the old table.
+    // that's how you can get the ref for the object
+    swappee = preTable.find(item => {
+      return (
+        item[payload.fk] === swapper[payload.fk]
+        && item.order === payload.newOrder
+      )
+    });
+  } else {
+    swappee = preTable.find(item => {
+      return (
+        item.order === payload.newOrder
+      )
+    });
+  }
+
+  let swapperUpdate = {
+    // swappee order is equivalent to
+    // the payload order
+    order: swappee.order,
+  };
+
+  let swappeeUpdate = {
+    // give the swapped the swapper's old order.
+    order: swapper.order
+  }
+
+  Promise.all([
+    editTripData(swapperUpdate, swapper.ref, signalRef),
+    editTripData(swappeeUpdate, swappee.ref, signalRef)
+  ]).then(() => {
+    console.log("Rearrangement saved.");
+  }).catch((error) => {
+    console.log("Rearrangement failed; some error occurred");
+    console.error(error);
+  })
+}
+
+
 /**
  * Updates the database based on the taken action.
  * @param {object} state - the state object, with pre and post conditions.
@@ -296,6 +346,9 @@ function updateDatabase(dispatch, state, action, signal) {
     case "edit": {
       handleEdit(state.post, action.payload);
       break;
+    }
+    case "rearrange": {
+      handleRearrange(state, action.payload);
     }
     case "delete": {
       handleDelete(state.post, action.payload);

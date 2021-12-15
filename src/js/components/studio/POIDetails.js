@@ -157,7 +157,8 @@ function PoiDetails({ activePin, setActivePin }) {
           type: "pois",
           id: activePoi.id,
           newOrder: parseInt(poiOrderEditRef.current.value),
-          fk: "dayId"
+          fk: "dayId",
+          ref: activePoi.ref
         }
       })
     }
