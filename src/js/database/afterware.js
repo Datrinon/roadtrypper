@@ -194,7 +194,20 @@ function handleEdit(post, payload) {
       break;
     }
     case "pois": {
-      if (payload.key === "coordinates") {
+      if (payload.key === "coordinates"
+      ||  payload.key === "title"
+      ||  payload.key === "description"
+      ) {
+        makeStandardEdit(payload);
+      }
+      break;
+    }
+    case "days": {
+      if (payload.key === "color"
+      ||  payload.key === "title"
+      ) {
+        makeStandardEdit(payload);
+      } else if (payload.key === "title") {
         makeStandardEdit(payload);
       }
       break;

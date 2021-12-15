@@ -67,7 +67,13 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
   }
 
   function renderDayTitle() {
-    let displayDayTitle = <h2>{day.title}</h2>
+    let displayDayTitle;
+    if (day.title.length === 0) {
+      displayDayTitle = (<h2 className="details day untitled">Untitled Day</h2>);
+    } else {
+      displayDayTitle = (<h2 className="details day">{day.title}</h2>);
+    }
+    
     let editDayTitle = <input
       defaultValue={day.title}
       ref={dayTitleEditRef}
@@ -81,6 +87,7 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
           id: day.id,
           key: "title",
           value: dayTitleEditRef.current.value,
+          ref: day.ref
         }
       });
     };
@@ -108,7 +115,8 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
           type: "days",
           id: day.id,
           key: "color",
-          value: color
+          value: color,
+          ref: day.ref
         }
       });
 

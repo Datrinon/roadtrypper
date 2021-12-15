@@ -161,7 +161,12 @@ function PoiDetails({ activePin, setActivePin }) {
     //#endregion
 
     //#region Day Title
-    let dayTitleDisplay = (<h2 className="details day">{day.title}</h2>);
+    let dayTitleDisplay;
+    if (day.title.length === 0) {
+      dayTitleDisplay = (<h2 className="details day untitled">Untitled Day</h2>);
+    } else {
+      dayTitleDisplay = (<h2 className="details day">{day.title}</h2>);
+    }
 
     let dayTitleEdit = (<input
       className="details day-edit"
@@ -176,6 +181,7 @@ function PoiDetails({ activePin, setActivePin }) {
           id: day.id,
           key: "title",
           value: dayTitleEditRef.current.value,
+          ref: day.ref
         }
       });
     };
@@ -202,6 +208,7 @@ function PoiDetails({ activePin, setActivePin }) {
           id: activePoi.id,
           key: "title",
           value: poiTitleEditRef.current.value,
+          ref: activePoi.ref
         }
       });
     }
@@ -233,6 +240,7 @@ function PoiDetails({ activePin, setActivePin }) {
           id: activePoi.id,
           key: "description",
           value: poiDescEditRef.current.value,
+          ref: activePoi.ref
         }
       });
     }
@@ -297,7 +305,7 @@ function PoiDetails({ activePin, setActivePin }) {
   }
 
   if (!activePin || !day) {
-    console.log("ayo");
+    console.log("If there's no activePin or day, we don't load anything!");
     return null;
   }
 
