@@ -219,6 +219,9 @@ async function loadTripData(tripId, signal) {
 
         docsArr.push(obj);
       })
+
+      // now for QoL, let's sort the id
+      docsArr.sort((itemA, itemB) => itemA.id - itemB.id);
     }
 
     tripData[name] = docsArr;
