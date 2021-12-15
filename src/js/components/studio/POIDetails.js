@@ -100,7 +100,6 @@ function PoiDetails({ activePin, setActivePin }) {
       </select>)
 
     let onBelongsToDayUpdate = () => {
-
       // if the selected day is the same, then don't update.
       if (poiDayEditRef.current.value === day.order) {
         return;
@@ -172,8 +171,7 @@ function PoiDetails({ activePin, setActivePin }) {
     //#region Day Title
     // ! Fix le bug with this stale reference...
     let dayTitleDisplay;
-    console.log("passing by day title in renderView() of POIDetails.js...:");
-    console.log(day);
+
     if (day.title.length === 0) {
       dayTitleDisplay = (<h2 className="details day untitled">Untitled Day</h2>);
     } else {

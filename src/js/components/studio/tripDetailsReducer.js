@@ -324,6 +324,7 @@ export function tripReducer(state, action) {
 
       const poi = stateCopy.pois.find(poi => poi.id === poiId);
       const day = stateCopy.days.find(day => day.order === newDayOrder);
+      const oldDayId = poi.dayId;
 
       // find the last placed item of that day.
       const newPOIOrder = stateCopy.pois.reduce((max, poi) => {
@@ -331,12 +332,25 @@ export function tripReducer(state, action) {
           max = poi.order;
         }
         return max;
-      }, 0);
+      }, -1);
 
       // change the dayId of this poi
       poi.dayId = day.id;
       // place the poi at the end of the pois belonging to that day.
-      poi.order = newPOIOrder === 0 ? 0 : newPOIOrder + 1;
+      poi.order = newPOIOrder < 0 ? 0 : newPOIOrder + 1;
+
+      //TODO
+      //rearrange the POIs belonging to the dayId it was just taken from.
+      const otherDayPOIs = stateCopy.pois
+          .filter(other => other.dayId === oldDayId);
+
+      otherDayPOIs.sort((poiA, poiB) => poiA.order - poiB.order);
+
+      debugger;
+
+      otherDayPOIs.forEach((poi, index) => {
+        poi.order = index;
+      });
 
       return stateCopy;
     }

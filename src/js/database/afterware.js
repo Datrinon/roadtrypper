@@ -269,7 +269,6 @@ function handleDelete(post, payload) {
 
 
 function handleRearrange(state, payload) {
-  console.log({state, payload});
   // swapper, the record that was active when initiating the swap
   // swapped, the record that was in the place where swapper wants to move into.
 
@@ -319,6 +318,25 @@ function handleRearrange(state, payload) {
   })
 }
 
+function handlePOIMove(state, payload) {
+  console.log("handlePOIMove, in afterware.js");
+  console.log({state, payload});
+
+  // update object contains the order and dayId.
+  // no other modifications.
+  let poiTable = state.post.pois;
+
+  let movedPoi = poiTable.find(poi => payload.id === poi.id);
+
+  let movedItemData = {
+    dayId: movedPoi.dayId,
+    order: movedPoi.order
+  };
+
+  editTripData(movedItemData, movedPoi.ref, signalRef).then(() => {
+    console.log("The POI was moved successfully on Firestore.");
+  })
+}
 
 /**
  * Updates the database based on the taken action.
@@ -349,6 +367,11 @@ function updateDatabase(dispatch, state, action, signal) {
     }
     case "rearrange": {
       handleRearrange(state, action.payload);
+      break;
+    }
+    case "move_poi": {
+      handlePOIMove(state, action.payload);
+      break;
     }
     case "delete": {
       handleDelete(state.post, action.payload);
