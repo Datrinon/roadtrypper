@@ -25,7 +25,8 @@ function EditLocation({activePoi}) {
         type: "pois",
         id: activePoi.id,
         key: "coordinates",
-        value: coordinates
+        value: coordinates,
+        ref: activePoi.ref
       }
     });
     setEditModeOn(false); // closes the edit location prompt.

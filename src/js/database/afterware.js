@@ -168,19 +168,34 @@ function handleAdd(post, payload) {
 
 }
 
+/**
+ * For standard edit cases, where we just have to edit a single field. 
+ * Unlike others where we need to rearrange documents.
+ */
+function makeStandardEdit(payload) {
+  // Just need the ref and the key / description assembled into an obj.
+  let data = {
+    [payload.key]: payload.value
+  }
+
+  editTripData(data, payload.ref, signalRef).then(() => {
+    console.log("Trip data edited successfully.");
+  })
+}
 
 function handleEdit(post, payload) {
   switch (payload.type) {
     case "photos": {
       if (payload.key === "description") {
-        // Just need the ref and the key / description assembled into an obj.
-        let data = {
-          [payload.key]: payload.value
-        }
-
-        editTripData(data, payload.ref, signalRef);
+        makeStandardEdit(payload);
       } else if (payload.key === "path") {
         replacePhoto(post, payload);
+      }
+      break;
+    }
+    case "pois": {
+      if (payload.key === "coordinates") {
+        makeStandardEdit(payload);
       }
       break;
     }
@@ -223,7 +238,7 @@ function replacePhoto(post, payload) {
 
 
 function handleDelete(post, payload) {
-  switch(payload.type) {
+  switch (payload.type) {
     case "photos": {
       // photos is an easy case to deal with, it's just about deleting
       // the photo. Nothing to reorder.

@@ -200,20 +200,6 @@ function NewPoiForm({ day }) {
       debugger;
     }
 
-    // debug
-    console.log({
-      type: "add_poi",
-      payload: {
-        dayId: selDay.id,
-        description: poiDesc,
-        photos: payloadPhotos,
-        order: selPoiOrder,
-        title: poiTitle,
-        coordinates: poiCoordinates,
-        tripId
-      }
-    });
-
     dispatch({
       type: "add_poi",
       payload: {
