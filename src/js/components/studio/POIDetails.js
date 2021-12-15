@@ -65,6 +65,14 @@ function PoiDetails({ activePin, setActivePin }) {
     }
   }, [trip.photos]);
 
+  useEffect(() => {
+    // if the days changes, that means we should update the day.
+    // this is important for reflecting the correct title...
+    if (day) {
+      setDay(trip.days.find(day => day.id === activePoi.dayId));
+    }
+  }, [trip.days]);
+
   function launchGalleryView(index) {
     setGalleryStartingIndex(index);
   }
@@ -161,7 +169,10 @@ function PoiDetails({ activePin, setActivePin }) {
     //#endregion
 
     //#region Day Title
+    // ! Fix le bug with this stale reference...
     let dayTitleDisplay;
+    console.log("passing by day title in renderView() of POIDetails.js...:");
+    console.log(day);
     if (day.title.length === 0) {
       dayTitleDisplay = (<h2 className="details day untitled">Untitled Day</h2>);
     } else {

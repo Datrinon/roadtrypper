@@ -92,6 +92,7 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
       });
     };
 
+    //! Fix le bug with the day title
     return (<HoverToEditInput
       displayVer={displayDayTitle}
       editVer={editDayTitle}
@@ -100,6 +101,7 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
 
   useEffect(() => {
     colorEditRef.current.defaultValue = `#${day.color}`;
+
   }, [day]);
 
   function renderColorPicker() {

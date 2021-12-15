@@ -142,6 +142,12 @@ function Studio() {
 
       setActivePin({data, time: Date.now()});
     }
+    // likewise for days
+    if (activeDay) {
+      let data = trip.days.find(day => day.id === activeDay.data.id);
+
+      setActiveDay({data, time: Date.now()});
+    }
   }, [trip]);
 
   //#region :Render Logic
