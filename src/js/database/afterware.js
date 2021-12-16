@@ -443,6 +443,24 @@ function handlePOIMove(state, payload) {
 }
 
 
+function handleGeneralEdit(state, action) {
+  // alright so we can use edit trip data
+  // so we just need the general ref
+  // then the key
+  // then the update
+  // object key update
+  // thats the data
+  // pass it over to edit trip data...
+
+  // take the value from after dispatch in case some preprocessing is done
+  // with it.
+  let data = {
+    [action.payload.key]: state.post.general[action.payload.key]
+  };
+
+  editTripData(data, state.post.ref, signalRef);
+}
+
 
 /**
  * Updates the database based on the taken action.
@@ -481,6 +499,10 @@ function updateDatabase(dispatch, state, action, signal) {
     }
     case "delete": {
       handleDelete(state, action.payload);
+      break;
+    }
+    case "edit_general": {
+      handleGeneralEdit(state, action);
       break;
     }
     default: {
