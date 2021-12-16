@@ -68,6 +68,12 @@ function Map({ data, setActivePin }) {
   }
 
   function calcCoordinateAverage() {
+    // if data.days / data.pois is non-existent or length is 0, default to NY coordinates.
+    if ((!data.days || !data.pois) 
+    || (data.days.length === 0 || data.pois.length === 0)) {
+      return [40.730610, -73.935242];
+    }
+    
     let numCoordinates = 0;
     let total = data.days.reduce((sum, day) => {
 
