@@ -252,9 +252,7 @@ function regeneratePOIOrders(poi) {
   };
 
   // return an array of promises for each POI in that day...
-  return new Promise((resolve) => {
-    editTripData(data, poi.ref, signalRef).then(() => resolve());
-  })
+  return editTripData.bind(null, data, poi.ref, signalRef);
 }
 
 function handleDelete(state, payload) {
@@ -400,12 +398,13 @@ function handlePOIMove(state, payload) {
 
   const otherPOIRequests = otherDayPOIs.map(regeneratePOIOrders);
 
-  editTripData(movedItemData, movedPoi.ref, signalRef).then(() => {
+  editTripData(movedItemData, movedPoi.ref, signalRef).then(async () => {
     console.log("The POI was moved successfully on Firestore.");
 
-    Promise.all(otherPOIRequests).then(() => {
-      console.log("Then, the POIs on that other day were also reorganized.");
-    })
+    // limit concurrency 
+    while (otherPOIRequests.length) {
+      await Promise.allSettled(otherPOIRequests.splice(0, 2).map(f => f()));
+    }
   })
 }
 
