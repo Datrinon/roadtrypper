@@ -5,7 +5,7 @@
 import Photo from "../model/photo";
 import Day from "../model/day";
 import Poi from "../model/poi";
-import { addTripData, addTripPhoto, deleteFile, deletePhoto, deleteTripData, editTripData, getPhotoStorageUri } from "./data";
+import { addTripData, addTripPhoto, deleteFile, deletePhoto, deleteTrip, deleteTripData, editTripData, getPhotoStorageUri } from "./data";
 
 // let these be global (in the span of this file) for easier use.
 let dispatchRef;
@@ -246,13 +246,15 @@ function replacePhoto(post, payload) {
     })
 }
 
-function regeneratePOIOrders(poi) {
+/**
+ *  */ 
+function regenerateOrder(item) {
   let data = {
-    order: poi.order
+    order: item.order
   };
 
   // return an array of promises for each POI in that day...
-  return editTripData.bind(null, data, poi.ref, signalRef);
+  return editTripData.bind(null, data, item.ref, signalRef);
 }
 
 function handleDelete(state, payload) {
@@ -268,19 +270,51 @@ function handleDelete(state, payload) {
       break;
     }
     case "pois": {
-      // in pois you deal with your first case of waterfall deletion.
-      // the associated photos must also be eliminated too.
-      // also, you have to worry about reordering POIs.
-      // suggest that you run a console.log here...
       console.log("case POIs, handleDelete, in afterware.js:")
       console.log({ state, payload });
       // for pois, simply just pois and photos
-      // delete the poi.
+
       const poi = state.pre.pois.find(poi => poi.id === payload.id);
       deletePOIandPhotos(poi, state);
 
       break;
     }
+    case "days": {
+      // now for this, we have to delete the associated POIs AND all their photos.
+      // we probably want to try multiple delete on a day before we
+      // delete the day itself. 
+      // like we just take it in strides.
+      console.log("case Days, handleDelete, in afterware.js:");
+      console.log({ state, payload });
+      // first thing to do is identify all POIs removed...
+      // then we can run deletePOI and photos for each of them.
+      // we start with the day.id...
+      const dayId = payload.id;
+      // and then we can use that to identify all associated POIs.
+      const pois = state.pre.pois.filter(poi => poi.dayId === dayId);
+      // we can run all of those in a for loop.
+      (async () => {
+        for (let i = 0; i < pois.length; i++) {
+          // and because of the merit of async we can await each of these.
+          await deletePOIandPhotos(pois[i], state);
+        }
+
+        // then after that runs, we can delete the day itself.
+        await deleteTripData(payload.ref, signalRef);
+        
+        // then we just need to reorder all of the days...
+        const dayOrderReqs = state.post.days.map(regenerateOrder);
+
+
+        while(dayOrderReqs.length) {
+          await Promise.allSettled(dayOrderReqs.splice(0, 2).map(f => f()))
+        }
+
+        // and then we'll be done after that.
+      })();
+      
+      break;
+    } 
     default: {
       break;
     }
@@ -396,7 +430,7 @@ function handlePOIMove(state, payload) {
   const originalPoiDayId = prePoiTable.find(poi => poi.id === payload.id).dayId;
   const otherDayPOIs = state.post.pois.filter(poi => poi.dayId === originalPoiDayId);
 
-  const otherPOIRequests = otherDayPOIs.map(regeneratePOIOrders);
+  const otherPOIRequests = otherDayPOIs.map(regenerateOrder);
 
   editTripData(movedItemData, movedPoi.ref, signalRef).then(async () => {
     console.log("The POI was moved successfully on Firestore.");

@@ -182,7 +182,8 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
       type: "delete",
       payload: {
         type: "days",
-        id: day.id
+        id: day.id,
+        ref: day.ref
       }
     })
 
