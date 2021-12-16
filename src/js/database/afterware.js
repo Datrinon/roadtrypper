@@ -122,6 +122,19 @@ function handleAdd(post, payload) {
         dataInState.title,
         dataInState.color);
 
+      addTripData(post.tripId, payload.type, { ...data }, signalRef).then(docRef => {
+        // use the ref to attach 
+        dispatchRef({
+          type: "attach_ref",
+          payload: {
+            type: payload.type,
+            id: dataInState.id,
+            ref: docRef
+          }
+        })
+      });
+
+
       break;
     }
     case "photos": {
@@ -134,6 +147,14 @@ function handleAdd(post, payload) {
           path,
           dataInState.description
         )
+      addTripPhoto(post.tripId, payload.file, payload.realpath, signalRef)
+        .then(async ({ ref, path }) => {
+          let remainingData = new Photo(
+            dataInState.poiId,
+            dataInState.id,
+            path,
+            dataInState.description
+          )
 
         dispatchRef({
           type: "attach_ref_edit_photo_path",
@@ -143,29 +164,27 @@ function handleAdd(post, payload) {
             path: path,
           }
         });
+          dispatchRef({
+            type: "attach_ref_edit_photo_path",
+            payload: {
+              id: dataInState.id,
+              ref: ref,
+              path: path,
+            }
+          });
 
         //debugger; // remove this one and let's role afterward.
+          //debugger; // remove this one and let's role afterward.
 
         await editTripData({ ...remainingData }, ref, signalRef);
       })
+          await editTripData({ ...remainingData }, ref, signalRef);
+        })
     }
     default: {
       break;
     }
   }
-
-  addTripData(post.tripId, payload.type, { ...data }, signalRef).then(docRef => {
-    // use the ref to attach 
-    dispatchRef({
-      type: "attach_ref",
-      payload: {
-        type: payload.type,
-        id: dataInState.id,
-        ref: docRef
-      }
-    })
-  });
-
 }
 
 /**
@@ -197,6 +216,8 @@ function handleEdit(post, payload) {
       if (payload.key === "coordinates"
       ||  payload.key === "title"
       ||  payload.key === "description"
+        || payload.key === "title"
+        || payload.key === "description"
       ) {
         makeStandardEdit(payload);
       }
@@ -205,6 +226,7 @@ function handleEdit(post, payload) {
     case "days": {
       if (payload.key === "color"
       ||  payload.key === "title"
+        || payload.key === "title"
       ) {
         makeStandardEdit(payload);
       }
