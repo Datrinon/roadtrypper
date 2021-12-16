@@ -79,6 +79,7 @@ function NewPoiForm({ day }) {
 
   useEffect(() => {
     let lastDay;
+
     if (!selDay) {
       lastDay = getLastOrderedDay();
       console.log(lastDay);

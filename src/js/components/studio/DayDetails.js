@@ -164,7 +164,10 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
         poi={poi}
         setActivePin={setActivePin}/>));
     } else {
-      section = <AddPoi activeDay={day} />
+      const dayData = {
+        data : day
+      }
+      section = <AddPoi activeDay={dayData} />
     }
 
     return (
