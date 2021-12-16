@@ -2,6 +2,7 @@ Firestore Rules Section
 - Users must be logged in to access trips or any facet of the database.
 - Users can only access their own trips.
 - All data thereafter in the trip is user-restricted.
+- They may contain (and only contain) the properties as seen in the sample database.
 
 
 Control Access to Specific Field Section

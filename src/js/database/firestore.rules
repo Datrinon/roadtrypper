@@ -4,27 +4,89 @@ service cloud.firestore {
   	
     // this function checks if the uid in the request sent matches that on the trip
     // they're trying to access.
-    function signedIn() {
+    function authenticated(tripId) {
     	return get(/databases/$(database)/documents/trips/$(tripId)).data.uid == request.auth.uid;
     }
-  
-    // remember all rules must point to a document.
-    match /trips/{tripId} {
-    	// users may only CRUD trips with their own UID.
-    	allow create: if request.auth != null && request.auth.uid == request.resource.data.uid;
-      allow read, update, delete: if request.auth != null && request.auth.uid == resource.data.uid;
+    
+    // Ensures the request does not contain a UID component.
+    function doesNotContainUID() {
+    	return (!request.resource.data.keys().hasAny(['uid']));
     }
     
-    match /trips/{tripId}/days/{poiId} {
-    	allow read, write: if signedIn();
+    // remember all rules must point to a document.
+    match /trips/{tripId} {
+    	function UIDmatches() {
+      	return request.auth != null && request.auth.uid == resource.data.uid;
+      }
+    
+    	function hasOnlyTheseKeys() {
+      	return request.resource.data.keys().hasOnly(['author', 'createDate', 'lastAccessed', 'title', 'uid'])
+      }
+    	// users may only CRUD trips with their own UID.
+    	allow create: if request.auth != null 
+      && request.auth.uid == request.resource.data.uid
+      && hasOnlyTheseKeys();
+      
+      allow read, delete: if UIDmatches();
+      
+      allow update: if UIDmatches() && doesNotContainUID();
+    }
+    
+    // the request's id is the same as the id stored on file.
+    function leftIdUnaltered() {
+    	return request.resource.data.id == resource.data.id;
+    }
+    
+    match /trips/{tripId}/days/{dayId} {
+			function hasOnlyTheseKeys() {
+      	return request.resource.data.keys().hasOnly([
+        	'id',
+          'order',
+          'title',
+          'color'
+        ])
+      }
+      // reminder
+      // write is shorthand for CREATE, UPDATE, and DELETE.
+      // read is shorthand for GET and LIST.
+    	allow read: if authenticated(tripId);
+      allow create: if authenticated(tripId) && hasOnlyTheseKeys();
+      allow update: if authenticated(tripId) && hasOnlyTheseKeys() && leftIdUnaltered();
+      allow delete: if authenticated(tripId);
     }
     
     match /trips/{tripId}/pois/{poiId} {
-    	allow read, write: if signedIn();
+      function hasOnlyTheseKeys() {
+      	return request.resource.data.keys().hasOnly([
+        	'dayId',
+          'id',
+          'order',
+          'title',
+          'coordinates',
+          'description'
+        ])
+      }
+    
+      allow read: if authenticated(tripId);
+      allow create: if authenticated(tripId) && hasOnlyTheseKeys();
+      allow update: if authenticated(tripId) && hasOnlyTheseKeys() && leftIdUnaltered();
+      allow delete: if authenticated(tripId);
     }
     
     match /trips/{tripId}/photos/{photoId} {
-    	allow read, write: if signedIn();
+      function hasOnlyTheseKeys() {
+      	return request.resource.data.keys().hasOnly([
+        	'poiId',
+          'id',
+          'path',
+          'description'
+        ])
+      }
+      
+      allow read: if authenticated(tripId);
+      allow create: if authenticated(tripId) && hasOnlyTheseKeys();
+      allow update: if authenticated(tripId) && hasOnlyTheseKeys() && leftIdUnaltered();
+      allow delete: if authenticated(tripId);
     }  
   }
 }
