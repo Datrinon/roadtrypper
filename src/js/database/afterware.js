@@ -269,6 +269,18 @@ function replacePhoto(post, payload) {
     })
 }
 
+function regeneratePOIOrders(poi) {
+  let data = {
+    order: poi.order
+  };
+
+  // return an array of promises for each POI in that day...
+  return new Promise((resolve) => {
+    editTripData(data, poi.ref, signalRef);
+
+    resolve();
+  })
+}
 
 function handleDelete(post, payload) {
   switch (payload.type) {
