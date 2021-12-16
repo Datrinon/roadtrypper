@@ -453,6 +453,7 @@ function handlePOIMove(state, payload) {
  * @param {object} action - the action object sent to the dispatch.
  */
 function updateDatabase(dispatch, state, action, signal) {
+  let isDatabaseAction = true;
   // assign the two globals we have these references
   dispatchRef = dispatch;
   signalRef = signal;
@@ -483,8 +484,19 @@ function updateDatabase(dispatch, state, action, signal) {
       break;
     }
     default: {
+      isDatabaseAction = false;
       break;
     }
+  }
+
+  // if the user committed a database action,
+  // we should update the last accessed time for the trip doc.
+  if (isDatabaseAction) {
+    let timestamp = {
+      lastAccessed: state.post.general.lastAccessed
+    };
+    
+    editTripData(timestamp, state.post.ref, signalRef);
   }
 }
 

@@ -230,6 +230,7 @@ async function loadTripData(tripId, signal) {
   let generalDoc = await getDoc(doc(db, "trips", tripId));
 
   tripData.general = generalDoc.data();
+  tripData.ref = generalDoc.ref;
 
   tripData.tripId = tripId;
 
