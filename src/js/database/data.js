@@ -279,8 +279,8 @@ async function editTripData(
 
   // console.log({data})
   console.log('Data being edited...');
-  
-  return updateDoc(ref, data);
+
+  await updateDoc(ref, data);
 }
 
 async function deleteTripData(ref, signal) {
@@ -347,8 +347,10 @@ async function deletePhoto(ref, signal) {
   debugger;
 
   // now delete both the file and the doc.
-  deleteDoc(ref);
-  deleteFile(storageUri, signal)
+  await Promise.allSettled([
+    deleteDoc(ref),
+    deleteFile(storageUri, signal)
+  ]);
 
   console.log("Photo deleted successfully.");
 }

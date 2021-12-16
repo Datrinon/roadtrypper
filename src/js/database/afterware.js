@@ -6,7 +6,6 @@ import Photo from "../model/photo";
 import Day from "../model/day";
 import Poi from "../model/poi";
 import { addTripData, addTripPhoto, deleteFile, deletePhoto, deleteTripData, editTripData, getPhotoStorageUri } from "./data";
-import pLimit from 'p-limit';
 
 // let these be global (in the span of this file) for easier use.
 let dispatchRef;
@@ -254,9 +253,7 @@ function regeneratePOIOrders(poi) {
 
   // return an array of promises for each POI in that day...
   return new Promise((resolve) => {
-    editTripData(data, poi.ref, signalRef);
-
-    resolve();
+    editTripData(data, poi.ref, signalRef).then(() => resolve());
   })
 }
 
@@ -284,7 +281,6 @@ function handleDelete(state, payload) {
       const poi = state.pre.pois.find(poi => poi.id === payload.id);
       deletePOIandPhotos(poi, state);
 
-
       break;
     }
     default: {
@@ -297,41 +293,38 @@ function handleDelete(state, payload) {
  * Deletes a POI and its photos.
  * @param {POI} poi 
  */
-function deletePOIandPhotos(poi, state) {
+async function deletePOIandPhotos(poi, state) {
   let requests;
   // then, delete the photos with the same poiId.
   const photosToDelete = state.pre.photos.filter(photo => photo.poiId === poi.id);
 
+  const poiDeleteRequest = deleteTripData.bind(null, poi.ref, signalRef);
+  
   const photoDeleteRequests = photosToDelete.map((photo) => {
-    return new Promise((resolve) => {
-      deletePhoto(photo.ref, signalRef);
-      resolve();
-    })
+    return deletePhoto.bind(null, photo.ref, signalRef);
   });
 
-  const poiDeleteRequest = new Promise((resolve) => {
-    deleteTripData(poi.ref, signalRef);
-    resolve();
-  });
-
-
-  //Promise.all([poiDeleteRequest, ...photoDeleteRequests]);
-
-  // now we have to rearrange the POIs in the database.
-  // they're already rearranged in POST state, luckily,
-  // so it's a matter of pulling out the DayID matching ones and running
-  // an update over all of those.
   const otherPOIsInSameDay = state.post.pois.filter(other => other.dayId === poi.dayId);
 
-  const poiReorderReqs = otherPOIsInSameDay.map(regeneratePOIOrders);
+  const poiReorderReqs = otherPOIsInSameDay.map((poi) => {
+    let data = {
+      order: poi.order
+    };
 
+    return editTripData.bind(null, data, poi.ref, signalRef);
+  });
+
+  // now requests is full of async function binds.
   requests = [poiDeleteRequest, ...photoDeleteRequests, ...poiReorderReqs];
 
   debugger;
 
-  Promise.all(requests).then(() => {
-    console.log("Deletion operation complete.");
-  })
+  // do the splice
+  while (requests.length) {
+    // 2 at a time
+    await Promise.allSettled(requests.splice(0, 2).map(f => f()));
+  }
+
 }
 
 
