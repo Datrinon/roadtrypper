@@ -5,13 +5,12 @@
 import Photo from "../model/photo";
 import Day from "../model/day";
 import Poi from "../model/poi";
-import { addTripData, addTripPhoto, deleteFile, deletePhoto, editTripData, getPhotoStorageUri } from "./data";
-
+import { addTripData, addTripPhoto, deleteFile, deletePhoto, deleteTripData, editTripData, getPhotoStorageUri } from "./data";
+import pLimit from 'p-limit';
 
 // let these be global (in the span of this file) for easier use.
 let dispatchRef;
 let signalRef;
-
 /**
  * Make sure the following reducer functions work.
  * 1. Add
@@ -140,13 +139,6 @@ function handleAdd(post, payload) {
     case "photos": {
       dataInState = post.photos.find(photo => photo.realpath === payload.realpath);
 
-      addTripPhoto(post.tripId, payload.file, payload.realpath, signalRef).then(async ({ ref, path }) => {
-        let remainingData = new Photo(
-          dataInState.poiId,
-          dataInState.id,
-          path,
-          dataInState.description
-        )
       addTripPhoto(post.tripId, payload.file, payload.realpath, signalRef)
         .then(async ({ ref, path }) => {
           let remainingData = new Photo(
@@ -156,14 +148,6 @@ function handleAdd(post, payload) {
             dataInState.description
           )
 
-        dispatchRef({
-          type: "attach_ref_edit_photo_path",
-          payload: {
-            id: dataInState.id,
-            ref: ref,
-            path: path,
-          }
-        });
           dispatchRef({
             type: "attach_ref_edit_photo_path",
             payload: {
@@ -173,11 +157,8 @@ function handleAdd(post, payload) {
             }
           });
 
-        //debugger; // remove this one and let's role afterward.
           //debugger; // remove this one and let's role afterward.
 
-        await editTripData({ ...remainingData }, ref, signalRef);
-      })
           await editTripData({ ...remainingData }, ref, signalRef);
         })
     }
@@ -214,8 +195,6 @@ function handleEdit(post, payload) {
     }
     case "pois": {
       if (payload.key === "coordinates"
-      ||  payload.key === "title"
-      ||  payload.key === "description"
         || payload.key === "title"
         || payload.key === "description"
       ) {
@@ -225,7 +204,6 @@ function handleEdit(post, payload) {
     }
     case "days": {
       if (payload.key === "color"
-      ||  payload.key === "title"
         || payload.key === "title"
       ) {
         makeStandardEdit(payload);
@@ -282,7 +260,7 @@ function regeneratePOIOrders(poi) {
   })
 }
 
-function handleDelete(post, payload) {
+function handleDelete(state, payload) {
   switch (payload.type) {
     case "photos": {
       // photos is an easy case to deal with, it's just about deleting
@@ -292,6 +270,20 @@ function handleDelete(post, payload) {
       deletePhoto(payload.ref, signalRef);
 
       console.log("Photo deleted successfully");
+      break;
+    }
+    case "pois": {
+      // in pois you deal with your first case of waterfall deletion.
+      // the associated photos must also be eliminated too.
+      // also, you have to worry about reordering POIs.
+      // suggest that you run a console.log here...
+      console.log("case POIs, handleDelete, in afterware.js:")
+      console.log({ state, payload });
+      // for pois, simply just pois and photos
+      // delete the poi.
+      const poi = state.pre.pois.find(poi => poi.id === payload.id);
+      deletePOIandPhotos(poi, state);
+
 
       break;
     }
@@ -301,13 +293,54 @@ function handleDelete(post, payload) {
   }
 }
 
+/**
+ * Deletes a POI and its photos.
+ * @param {POI} poi 
+ */
+function deletePOIandPhotos(poi, state) {
+  let requests;
+  // then, delete the photos with the same poiId.
+  const photosToDelete = state.pre.photos.filter(photo => photo.poiId === poi.id);
+
+  const photoDeleteRequests = photosToDelete.map((photo) => {
+    return new Promise((resolve) => {
+      deletePhoto(photo.ref, signalRef);
+      resolve();
+    })
+  });
+
+  const poiDeleteRequest = new Promise((resolve) => {
+    deleteTripData(poi.ref, signalRef);
+    resolve();
+  });
+
+
+  //Promise.all([poiDeleteRequest, ...photoDeleteRequests]);
+
+  // now we have to rearrange the POIs in the database.
+  // they're already rearranged in POST state, luckily,
+  // so it's a matter of pulling out the DayID matching ones and running
+  // an update over all of those.
+  const otherPOIsInSameDay = state.post.pois.filter(other => other.dayId === poi.dayId);
+
+  const poiReorderReqs = otherPOIsInSameDay.map(regeneratePOIOrders);
+
+  requests = [poiDeleteRequest, ...photoDeleteRequests, ...poiReorderReqs];
+
+  debugger;
+
+  Promise.all(requests).then(() => {
+    console.log("Deletion operation complete.");
+  })
+}
+
 
 function handleRearrange(state, payload) {
   // swapper, the record that was active when initiating the swap
   // swapped, the record that was in the place where swapper wants to move into.
 
   let preTable = state.pre[payload.type];
-  
+
   let swapper = preTable.find(item => item.id === payload.id);
 
   let swappee;
@@ -354,7 +387,7 @@ function handleRearrange(state, payload) {
 
 function handlePOIMove(state, payload) {
   console.log("handlePOIMove, in afterware.js");
-  console.log({state, payload});
+  console.log({ state, payload });
 
   // update object contains the order and dayId.
   // no other modifications.
@@ -372,18 +405,7 @@ function handlePOIMove(state, payload) {
   const originalPoiDayId = prePoiTable.find(poi => poi.id === payload.id).dayId;
   const otherDayPOIs = state.post.pois.filter(poi => poi.dayId === originalPoiDayId);
 
-  const otherPOIRequests = otherDayPOIs.map((poi) => {
-    let data = {
-      order: poi.order
-    };
-    
-    // return an array of promises for each POI in that day...
-    return new Promise((resolve) => {
-      editTripData(data, poi.ref, signalRef);
-
-      resolve();
-    })
-  })
+  const otherPOIRequests = otherDayPOIs.map(regeneratePOIOrders);
 
   editTripData(movedItemData, movedPoi.ref, signalRef).then(() => {
     console.log("The POI was moved successfully on Firestore.");
@@ -393,6 +415,8 @@ function handlePOIMove(state, payload) {
     })
   })
 }
+
+
 
 /**
  * Updates the database based on the taken action.
@@ -407,7 +431,6 @@ function updateDatabase(dispatch, state, action, signal) {
   dispatchRef = dispatch;
   signalRef = signal;
   // 
-
   switch (action.type) {
     case "add": {
       handleAdd(state.post, action.payload);
@@ -430,7 +453,7 @@ function updateDatabase(dispatch, state, action, signal) {
       break;
     }
     case "delete": {
-      handleDelete(state.post, action.payload);
+      handleDelete(state, action.payload);
       break;
     }
     default: {
