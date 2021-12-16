@@ -1,0 +1,30 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents { 
+  	
+    // this function checks if the uid in the request sent matches that on the trip
+    // they're trying to access.
+    function signedIn() {
+    	return get(/databases/$(database)/documents/trips/$(tripId)).data.uid == request.auth.uid;
+    }
+  
+    // remember all rules must point to a document.
+    match /trips/{tripId} {
+    	// users may only CRUD trips with their own UID.
+    	allow create: if request.auth != null && request.auth.uid == request.resource.data.uid;
+      allow read, update, delete: if request.auth != null && request.auth.uid == resource.data.uid;
+    }
+    
+    match /trips/{tripId}/days/{poiId} {
+    	allow read, write: if signedIn();
+    }
+    
+    match /trips/{tripId}/pois/{poiId} {
+    	allow read, write: if signedIn();
+    }
+    
+    match /trips/{tripId}/photos/{photoId} {
+    	allow read, write: if signedIn();
+    }  
+  }
+}

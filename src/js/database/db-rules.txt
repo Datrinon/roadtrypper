@@ -1,0 +1,9 @@
+Firestore Rules Section
+- Users must be logged in to access trips or any facet of the database.
+- Users can only access their own trips.
+- All data thereafter in the trip is user-restricted.
+
+
+Control Access to Specific Field Section
+- Users cannot modify the UID attribute in the trips field [this is not part of rules, since firestore rules cannot filter out information.]
+- The UID attribute must not be exposed in a read.
