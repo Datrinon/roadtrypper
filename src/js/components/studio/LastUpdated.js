@@ -17,14 +17,34 @@ function getTimestamp(ms) {
   let year = time.getFullYear();
   let hours = time.getHours();
   let minutes = time.getMinutes();
-  let period = "A.M.";
-  if (hours > 12) {
+  let period = "AM";
+
+  if (hours === 0) {
+    hours = 12;
+  } else if (hours === 12) {
+    period = "PM";
+  } else if (hours > 12) {
+    // any hour beyond 12.
     hours = hours - 12;
-    period = "P.M.";
+    period = "PM";
   }
+
+  minutes = minutes.toString().padStart(2, '0')
 
   return `${month}/${day}/${year}, ${hours}:${minutes} ${period}`;
 }
+
+  /* Test
+   const HOUR = 3600000;
+
+    for (let i = 0; i < 24; i++) {
+        let time = Date.now() + HOUR * i;
+        
+        let ts = getTimestamp(time);
+        
+        console.log(ts);
+    }
+   */
 
 function LastUpdated({ time }) {
   return (
@@ -32,7 +52,7 @@ function LastUpdated({ time }) {
       <p className={"timestamp"}>Last Update: {getTimestamp(time)}</p>
       <FontAwesomeIcon
         icon={faSave}
-        className={"loading no-display"}/>
+        className={"loading no-display"} />
     </>
   )
 }
