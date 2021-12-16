@@ -269,8 +269,6 @@ async function editTripData(
   data,
   ref,
   signal) {
-
-
   if (signal.aborted) {
     return Promise.reject(new Error("Operation failed; request was cancelled."));
   }
@@ -283,7 +281,16 @@ async function editTripData(
   console.log('Data being edited...');
   
   return updateDoc(ref, data);
+}
 
+async function deleteTripData(ref, signal) {
+  if (signal.aborted) {
+    return Promise.reject(new Error("Operation failed; request was cancelled."));
+  }
+
+  await deleteDoc(ref);
+
+  console.log(`Document at ${ref.path} was deleted.`);
 }
 
 async function addTripPhoto(tripId, file, path, signal, addDoc=true) {
@@ -291,26 +298,12 @@ async function addTripPhoto(tripId, file, path, signal, addDoc=true) {
     return Promise.reject(new Error("Operation failed; request was cancelled."));
   }
 
-  // (Moved this to AddPOI so we can have a way to identify the photo
-  //  on firestore)
-  ////const filepath = `trips/${tripId}/${uuidv4()}/${photo.path}`;
-
-
   const imgRef = ref(storage, path);
 
   // upload the photo and get the filepath.
   // Note -- either add BLOB property or use a base64 encoded string.
   const fileSnapshot = await uploadBytes(imgRef, file);
   const publicImageUrl = await getDownloadURL(imgRef);
-
-  // // and then add photos to the firestore.
-  // const photoObjForDoc = {
-  //   poiId: photo.poiId,
-  //   id: photo.id,
-  //   path: publicImageUrl,
-  //   storageUri: fileSnapshot.metadata.fullPath,
-  //   description: photo.description
-  // };
 
   if (addDoc) {
     const photoDataForDoc = {
@@ -351,11 +344,11 @@ async function deletePhoto(ref, signal) {
 
   const storageUri = await getPhotoStorageUri(ref);
 
+  debugger;
+
   // now delete both the file and the doc.
-  await Promise.all([
-    deleteDoc(ref),
-    deleteFile(storageUri, signal)
-  ]);
+  deleteDoc(ref);
+  deleteFile(storageUri, signal)
 
   console.log("Photo deleted successfully.");
 }
@@ -376,6 +369,7 @@ export {
   loadTrips,
   loadTripData,
   deleteTrip,
+  deleteTripData,
   deleteFile,
   deletePhoto,
   editTripData
