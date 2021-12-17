@@ -393,6 +393,7 @@ function AddPoiSuccess({ lastAddedPoi }) {
 
 function AddPoi({ activeDay }) {
   const sidebarSetter = useContext(SidebarSetter);
+  const trip = useContext(TripContext);
 
   function showAddPoi() {
     sidebarSetter.setContent(<NewPoiForm day={activeDay} />);
@@ -400,7 +401,11 @@ function AddPoi({ activeDay }) {
   }
 
   return (
-    <button className="add-Poi" type="button" onClick={showAddPoi}>Add POI</button>
+    <button
+      className="add-Poi"
+      type="button"
+      onClick={showAddPoi}
+      disabled={trip.days.length === 0}>Add POI</button>
   )
 }
 
