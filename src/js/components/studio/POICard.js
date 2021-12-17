@@ -20,7 +20,7 @@ function POICard({poi, setActivePin}) {
   const trip = useContext(TripContext);
 
   function onClickPOICard() {
-    let timestamp = new Date();
+    let timestamp = Date.now();
     let data = {
       time: timestamp,
       data: poi
