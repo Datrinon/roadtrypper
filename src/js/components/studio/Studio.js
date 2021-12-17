@@ -147,6 +147,7 @@ function Studio() {
     // }
   }, [activePin, activeDay]);
 
+  //#region dead 
   // sets the active day. 
   /*
     ? Q: Does it conflict with activePin?
@@ -204,27 +205,28 @@ function Studio() {
   
   //   }    
   // }, [trip]);
+  //#endregion
 
 
   // trip debug
-  useEffect(() => {
-    console.log("Refreshing activePin and/or activeDay...");
-    console.log(trip);
+  // useEffect(() => {
+  //   console.log("Refreshing activePin and/or activeDay...");
+  //   console.log(trip);
 
-    // prevent stale active pois from occurring if the trip
-    // was just reset.
-    if (activePin) {
-      let data = trip.pois.find(poi => poi.id === activePin.data.id);
+  //   // prevent stale active pois from occurring if the trip
+  //   // was just reset.
+  //   if (activePin) {
+  //     let data = trip.pois.find(poi => poi.id === activePin.data.id);
 
-      setActivePin({data, time: activePin.time});
-    }
-    // likewise for days
-    if (activeDay) {
-      let data = trip.days.find(day => day.id === activeDay.data.id);
+  //     setActivePin({data, time: activePin.time});
+  //   }
+  //   // likewise for days
+  //   if (activeDay) {
+  //     let data = trip.days.find(day => day.id === activeDay.data.id);
 
-      setActiveDay({data, time: activeDay.time});
-    }
-  }, [trip]);
+  //     setActiveDay({data, time: activeDay.time});
+  //   }
+  // }, [trip]);
 
   //#region :Render Logic
   if (pageState === STATE.LOADING) {
