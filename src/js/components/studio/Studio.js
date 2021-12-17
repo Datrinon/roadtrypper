@@ -93,18 +93,59 @@ function Studio() {
 
 
   useEffect(() => {
-    console.log("Active Pin: ");
     console.log(activePin);
-    if (activePin) {
+    if (!activePin && !activeDay) {
+      sidebarSetter.setContent(null);
+      return;
+    } else if (activePin && !activeDay) {
+
       sidebarSetter.setContent(<PoiDetails
         activePin={activePin.data}
         setActivePin={setActivePin}
       />);
       sidebarSetter.setVisible(true);
-    } else {
-      sidebarSetter.setContent(null);
+    } else if (!activePin && activeDay) {
+
+      sidebarSetter.setContent(<DayDetails
+        setActivePin={setActivePin}
+        setActiveDay={setActiveDay}
+        day={activeDay.data}
+      />);
+      sidebarSetter.setVisible(true);
+    } else if (activePin && activeDay) {
+      console.log("Determining which to render on sidebar: ");
+      // conflicting case
+      // whichever has the latest time gets to be set.
+      debugger;
+      if (activePin.time > activeDay.time) {
+        sidebarSetter.setContent(<PoiDetails
+          activePin={activePin.data}
+          setActivePin={setActivePin}
+        />);
+        sidebarSetter.setVisible(true);
+
+      } else {
+
+        sidebarSetter.setContent(<DayDetails
+          setActivePin={setActivePin}
+          setActiveDay={setActiveDay}
+          day={activeDay.data}
+        />);
+        sidebarSetter.setVisible(true);
+
+      }
     }
-  }, [activePin]);
+
+    // if (activePin) {
+    //   sidebarSetter.setContent(<PoiDetails
+    //     activePin={activePin.data}
+    //     setActivePin={setActivePin}
+    //   />);
+    //   sidebarSetter.setVisible(true);
+    // } else {
+    //   sidebarSetter.setContent(null);
+    // }
+  }, [activePin, activeDay]);
 
   // sets the active day. 
   /*
@@ -114,25 +155,60 @@ function Studio() {
       (the user can't click two items as one render), the sidebar will update
       with this latest content instead.
   */
-  useEffect(() => {
-    console.log("Active Day: ");
-    console.log({activeDay});
-    if (activeDay) {
-      sidebarSetter.setContent(<DayDetails
-        setActivePin={setActivePin}
-        setActiveDay={setActiveDay}
-        day={activeDay.data}
-      />);
-      sidebarSetter.setVisible(true);
-    } else {
-      sidebarSetter.setContent(null);
-    }
-  }, [activeDay]);
+  // useEffect(() => {
+  //   console.log("Active Day: ");
+  //   console.log({activeDay});
+  //   if (activeDay) {
+  //     sidebarSetter.setContent(<DayDetails
+  //       setActivePin={setActivePin}
+  //       setActiveDay={setActiveDay}
+  //       day={activeDay.data}
+  //     />);
+  //     sidebarSetter.setVisible(true);
+  //   } else {
+  //     sidebarSetter.setContent(null);
+  //   }
+  // }, [activeDay]);
+
+  // useEffect(() => {
+  //   if (!activePin && !activeDay) {
+  //     return;
+  //   }
+
+  //   const latestPoi = trip.pois.find(poi => poi.id === activePin?.data.id);
+  //   const latestDay = trip.days.find(day => day.id === activeDay?.data.id);
+  //   const refreshPoi = setActivePin.bind(null, {data: latestPoi, time: Date.now()});
+  //   const refreshDay = setActiveDay.bind(null, {data: latestDay, time: Date.now()});
+
+  //   if (activePin && !activeDay) {
+  //     refreshPoi();
+  //   } else if (!activePin && activeDay) {
+  //     refreshDay();
+  //   } else if (activePin && activeDay) {
+  //     let firstUpdate;
+  //     let secondUpdate;
+
+  //     // need to know which one to update last...
+  //     // we can check which was last set, which is the one that was last
+  //     // clicked.
+  //     if (activePin.time > activeDay.time) {
+  //       firstUpdate = refreshDay;
+  //       secondUpdate = refreshPoi;
+  //     } else {
+  //       firstUpdate = refreshPoi;
+  //       secondUpdate = refreshDay;
+  //     }
+  
+  //     firstUpdate();
+  //     secondUpdate();
+  
+  //   }    
+  // }, [trip]);
 
 
-  //trip debug
+  // trip debug
   useEffect(() => {
-    console.log("trip debug");
+    console.log("Refreshing activePin and/or activeDay...");
     console.log(trip);
 
     // prevent stale active pois from occurring if the trip
@@ -140,13 +216,13 @@ function Studio() {
     if (activePin) {
       let data = trip.pois.find(poi => poi.id === activePin.data.id);
 
-      setActivePin({data, time: Date.now()});
+      setActivePin({data, time: activePin.time});
     }
     // likewise for days
     if (activeDay) {
       let data = trip.days.find(day => day.id === activeDay.data.id);
 
-      setActiveDay({data, time: Date.now()});
+      setActiveDay({data, time: activeDay.time});
     }
   }, [trip]);
 
