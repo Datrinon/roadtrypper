@@ -9,9 +9,10 @@ service cloud.firestore {
     }
     
     // Ensures the request does not contain a UID component.
-    function doesNotContainUID() {
-    	return (!request.resource.data.keys().hasAny(['uid']));
-    }
+    // We use this when we edit the trip variable.
+    // function doesNotContainUID() {
+    // 	return (!request.resource.data.keys().hasAny(['uid']));
+    // }
     
     // remember all rules must point to a document.
     match /trips/{tripId} {
@@ -20,7 +21,12 @@ service cloud.firestore {
       }
     
     	function hasOnlyTheseKeys() {
-      	return request.resource.data.keys().hasOnly(['author', 'createDate', 'lastAccessed', 'title', 'uid'])
+      	return request.resource.data.keys().hasOnly([
+        'author',
+        'createDate',
+        'lastAccessed',
+        'title',
+        'uid']);
       }
     	// users may only CRUD trips with their own UID.
     	allow create: if request.auth != null 
@@ -29,7 +35,8 @@ service cloud.firestore {
       
       allow read, delete: if UIDmatches();
       
-      allow update: if UIDmatches() && doesNotContainUID();
+      allow update: if UIDmatches() 
+      && (!request.resource.data.diff(resource.data).affectedKeys().hasAny(['uid', 'author', 'createDate']));
     }
     
     // the request's id is the same as the id stored on file.
@@ -44,7 +51,7 @@ service cloud.firestore {
           'order',
           'title',
           'color'
-        ])
+        ]);
       }
       // reminder
       // write is shorthand for CREATE, UPDATE, and DELETE.
@@ -64,7 +71,7 @@ service cloud.firestore {
           'title',
           'coordinates',
           'description'
-        ])
+        ]);
       }
     
       allow read: if authenticated(tripId);
@@ -79,13 +86,14 @@ service cloud.firestore {
         	'poiId',
           'id',
           'path',
-          'description'
-        ])
+          'description',
+          'storageUri'
+        ]);
       }
       
       allow read: if authenticated(tripId);
       allow create: if authenticated(tripId) && hasOnlyTheseKeys();
-      allow update: if authenticated(tripId) && hasOnlyTheseKeys() && leftIdUnaltered();
+      allow update: if authenticated(tripId) && hasOnlyTheseKeys();
       allow delete: if authenticated(tripId);
     }  
   }

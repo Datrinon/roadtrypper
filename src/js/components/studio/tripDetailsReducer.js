@@ -9,8 +9,6 @@ export const TRIP_ACTIONS = {
   EDIT: "edit"
 };
 
-//TODO
-//Add / Edit / Remove should trigger an timestamp update for tripReducer.
 function findGreatestId(table) {
   let id = table.reduce((greatestId, item) => {
     if (item.id > greatestId) {
