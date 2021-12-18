@@ -116,7 +116,6 @@ function Studio() {
       console.log("Determining which to render on sidebar: ");
       // conflicting case
       // whichever has the latest time gets to be set.
-      debugger;
       if (activePin.time > activeDay.time) {
         sidebarSetter.setContent(<PoiDetails
           activePin={activePin.data}
@@ -136,6 +135,11 @@ function Studio() {
       }
     }
 
+    // TODO
+    // If this is actually valid
+    // then you're gonna want to 
+    // refactor setVisible true to the end of the block.
+    
     // if (activePin) {
     //   sidebarSetter.setContent(<PoiDetails
     //     activePin={activePin.data}

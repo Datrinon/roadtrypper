@@ -58,6 +58,7 @@ function PoiDetails({ activePin, setActivePin }) {
     }
   }, [activePin]);
 
+  // ! Candidate for removal b/c of studio effect for [trip].
   useEffect(() => {
     console.log("New photos hook");
     if (photos) {

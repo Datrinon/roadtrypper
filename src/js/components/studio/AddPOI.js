@@ -198,7 +198,6 @@ function NewPoiForm({ day }) {
         }
       }));
 
-      debugger;
     }
 
     dispatch({

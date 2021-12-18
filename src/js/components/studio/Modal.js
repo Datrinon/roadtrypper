@@ -61,7 +61,7 @@ const Modal = React.forwardRef(
       // ! Does not work because afterware !
       // setRunningSubmitOp(false);
       // submitButton.current.disabled = false;
-      // setDisplay(false);
+      setDisplay(false);
     }
 
     let Wrapper;
