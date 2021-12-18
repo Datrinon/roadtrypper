@@ -37,17 +37,19 @@ async function createUserAccount(email, password) {
 /**
  * Signs in the user with given credentials using Firebase.
  */
-async function signInUser(email, password) {
-  try {
-    let credentials = 
-      await signInWithEmailAndPassword(auth, email, password);
+function signInUser(email, password) {
+  // try {
+  //   let credentials = 
+  //     await 
 
-    return credentials;
-  } catch (error) {
-    console.log("Login error!");
-    console.log(error);
-    return null;
-  }
+  //   return credentials;
+  // } catch (error) {
+  //   console.log("Login error!");
+  //   console.log(error);
+  //   debugger;
+  //   return error;
+  // }
+  return signInWithEmailAndPassword(auth, email, password);
 }
 
 
