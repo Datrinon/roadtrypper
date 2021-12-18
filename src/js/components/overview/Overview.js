@@ -12,7 +12,7 @@ import AddTrip from './AddTrip';
 import { UserContext } from '../Router';
 import { faMap } from '@fortawesome/free-solid-svg-icons';
 import { stringify } from '@firebase/util';
-
+import HomeLogo from '../shared/HomeLogo';
 
 /**
  * This shows us all the trips in the user's account.
@@ -150,6 +150,7 @@ function Overview() {
     <div>
       <s.Header>
         Overview Header.
+        <HomeLogo/>
         <AccountIcon />
         <SearchField
           ref={searchRef}

@@ -114,10 +114,6 @@ function GalleryHeader({ activePhoto, loading }) {
 
   function updatePhotoPath(e) {
     e.preventDefault();
-    //! 
-    // I'mma try to use base64 instead here.
-    // we handle over the preview first
-    // then after that we just replace with the firebase URL.
     let file = e.target.querySelector("#photo-file-update").files[0];
 
     const reader = new FileReader();

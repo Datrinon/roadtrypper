@@ -106,8 +106,7 @@ async function loadTrips(user,
     const data = doc.data();
 
     const trip = new Trip(
-      data.email, // censor the UID from being published.
-      // in the upcoming sec phase the UID won't be accessible on reads.
+      data.author, 
       data.title,
       data.createDate,
       data.lastAccessed
