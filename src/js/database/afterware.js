@@ -5,7 +5,8 @@
 import Photo from "../model/photo";
 import Day from "../model/day";
 import Poi from "../model/poi";
-import { addTripData, addTripPhoto, deleteFile, deletePhoto, deleteTrip, deleteTripData, editTripData, getPhotoStorageUri } from "./data";
+import { addTripData, addTripPhoto, deleteFile, deletePhoto, deleteTrip, deleteTripData, editTripData, getPhotoStorageUri, updateTimestamp } from "./data";
+import { updateDoc } from "firebase/firestore";
 
 // let these be global (in the span of this file) for easier use.
 let dispatchRef;
@@ -17,7 +18,9 @@ let signalRef;
  *  b.
  */
 
-function handleAddPoi(post, payload) {
+function handleAddPoi(state, payload) {
+  const post = state.post;
+
   let poi = post.pois.find(poi => {
     return poi.order === payload.order
       && poi.dayId === payload.dayId
@@ -107,7 +110,8 @@ function handleAddPhoto(post, payload) {
 /** 
  * Handles various add cases.
  */
-function handleAdd(post, payload) {
+function handleAdd(state, payload) {
+  const post = state.post;
   // use the payload value to correctly identify the post.
   let dataInState;
   let data;
@@ -184,7 +188,8 @@ function makeStandardEdit(payload) {
   })
 }
 
-function handleEdit(post, payload) {
+function handleEdit(state, payload) {
+  const post = state.post;
   switch (payload.type) {
     case "photos": {
       if (payload.key === "description") {
@@ -250,7 +255,7 @@ function replacePhoto(post, payload) {
 }
 
 /**
- *  */ 
+ *  */
 function regenerateOrder(item) {
   let data = {
     order: item.order
@@ -267,7 +272,7 @@ async function handleDelete(state, payload) {
       // the photo. Nothing to reorder.
       // just have to delete the doc.
       // and then delete the file.
-      await deletePhoto(payload.ref, payload.storageUri ,signalRef);
+      await deletePhoto(payload.ref, payload.storageUri, signalRef);
       break;
     }
     case "pois": {
@@ -302,20 +307,20 @@ async function handleDelete(state, payload) {
 
         // then after that runs, we can delete the day itself.
         await deleteTripData(payload.ref, signalRef);
-        
+
         // then we just need to reorder all of the days...
         const dayOrderReqs = state.post.days.map(regenerateOrder);
 
 
-        while(dayOrderReqs.length) {
+        while (dayOrderReqs.length) {
           await Promise.allSettled(dayOrderReqs.splice(0, 2).map(f => f()))
         }
 
         // and then we'll be done after that.
       })();
-      
+
       break;
-    } 
+    }
     default: {
       break;
     }
@@ -332,7 +337,7 @@ async function deletePOIandPhotos(poi, state) {
   const photosToDelete = state.pre.photos.filter(photo => photo.poiId === poi.id);
 
   const poiDeleteRequest = deleteTripData.bind(null, poi.ref, signalRef);
-  
+
   const photoDeleteRequests = photosToDelete.map((photo) => {
     return deletePhoto.bind(null, photo.ref, photo.storageUri, signalRef);
   });
@@ -472,7 +477,7 @@ function handleGeneralEdit(state, payload) {
  * Our goal is to keep both of these in synchronization.
  * @param {object} action - the action object sent to the dispatch.
  */
-async function updateDatabase(dispatch, state, action, signal) {
+function updateDatabase(dispatch, state, action, signal) {
   let dbAction;
   let isDatabaseAction = true;
   // assign the two globals we have these references
@@ -481,38 +486,76 @@ async function updateDatabase(dispatch, state, action, signal) {
   // 
   switch (action.type) {
     case "add": {
-      handleAdd(state.post, action.payload);
+      dbAction = handleAdd;
+      // handleAdd(state, action.payload);
       break;
     }
     case "add_poi": {
-      handleAddPoi(state.post, action.payload);
+      dbAction = handleAddPoi;
+      // handleAddPoi(state, action.payload);
       break;
     }
     case "edit": {
-      handleEdit(state.post, action.payload);
+      dbAction = handleEdit;
+      // handleEdit(state, action.payload);
       break;
     }
     case "rearrange": {
-      handleRearrange(state, action.payload);
+      dbAction = handleRearrange;
+      // handleRearrange(state, action.payload);
       break;
     }
     case "move_poi": {
-      handlePOIMove(state, action.payload);
+      dbAction = handlePOIMove;
+      // handlePOIMove(state, action.payload);
       break;
     }
     case "delete": {
-      await handleDelete(state, action.payload);
+      dbAction = handleDelete;
+      // await handleDelete(state, action.payload);
       break;
     }
     case "edit_general": {
-      handleGeneralEdit(state, action.payload);
+      dbAction = handleGeneralEdit;
+      // handleGeneralEdit(state, action.payload);
       break;
     }
     default: {
-      isDatabaseAction = false;
-      break;
+      // nothing to do, return early.
+      return;
     }
   }
+
+  let timestamp = {
+    lastAccessed: state.post.general.lastAccessed
+  };
+
+  // let's edit first, then we can do whatever with the database.
+  debugger;
+
+  updateTimestamp(state.post.ref.path, timestamp);
+  dbAction(state, action.payload);
+
+  
+
+  // editTripData(timestamp, state.post.ref, signalRef);
+  
+  // console.log("Timestamp editing");
+  // updateDoc(state.post.ref, timestamp).then(() => {
+  //   console.log("Timestamp finished");
+    
+  //   dbAction(state, action.payload);
+  // })
+
+
+
+  // if (isDatabaseAction) {
+  //   let timestamp = {
+  //     lastAccessed: state.post.general.lastAccessed
+  //   };
+
+  //   editTripData(timestamp, state.post.ref, signalRef);
+  // }
 
   // ! Temporarily disabled
   // ! It is causing mutation issues 
@@ -523,7 +566,7 @@ async function updateDatabase(dispatch, state, action, signal) {
   //   let timestamp = {
   //     lastAccessed: state.post.general.lastAccessed
   //   };
-    
+
   //   editTripData(timestamp, state.post.ref, signalRef);
   // }
 }

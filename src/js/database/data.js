@@ -259,6 +259,15 @@ async function addTripData(tripId, collectionName, data, signal) {
 }
 
 
+function updateTimestamp(tripPath, timestamp) {
+  updateDoc(doc(db, tripPath), timestamp);
+  //doc(db, tripPath).then(ref => {
+ //   updateDoc(ref, timestamp);
+ // })
+}
+
+
+
 /**
  * Edit a trip's data.
  * @param {*} data - Object containing data.
@@ -284,6 +293,7 @@ async function editTripData(
   await updateDoc(ref, data);
 }
 
+
 async function deleteTripData(ref, signal) {
   if (signal.aborted) {
     return Promise.reject(new Error("Operation failed; request was cancelled."));
@@ -293,6 +303,7 @@ async function deleteTripData(ref, signal) {
 
   console.log(`Document at ${ref.path} was deleted.`);
 }
+
 
 async function addTripPhoto(tripId, file, path, signal, addDoc=true) {
   if (signal.aborted) {
@@ -345,6 +356,9 @@ async function deletePhoto(ref, uri, signal) {
   await deleteDoc(ref);
   await deleteFile(uri);
 
+  //! Warning
+  //! Using getDoc will *always* fail the delete on second operations
+  //! Seems like an internal Firestore issue.
   // console.log("BEGINNING DELETEPHOTO");
   // // write this classically.
   // getDoc(ref)
@@ -393,5 +407,6 @@ export {
   deleteTripData,
   deleteFile,
   deletePhoto,
-  editTripData
+  editTripData,
+  updateTimestamp
 };
