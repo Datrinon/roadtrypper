@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom';
-import { signInUser } from '../../database/auth'
+import { signInUser, useGoogleSignIn } from '../../database/auth'
 import { UserContext } from '../Router';
 
 // auth data
@@ -45,7 +45,7 @@ function Login({ setUserInfo }) {
         <button>Login</button>
       </form>
       <Link to="/signup/">Create a New Account</Link>
-      <button>Sign in with Google</button>
+      <button onClick={useGoogleSignIn}>Sign in with Google</button>
       <button>View Demo Mode</button>
     </div>
     /**

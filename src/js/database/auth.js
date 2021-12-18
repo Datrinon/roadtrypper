@@ -3,13 +3,20 @@ import { getAuth,
          createUserWithEmailAndPassword,
          signInWithEmailAndPassword,
          onAuthStateChanged,
-         signOut
+         signOut,
+         GoogleAuthProvider,
+         signInWithRedirect
        } from "firebase/auth";
 
 
 // const fbService = initializeApp(firebaseConfig);
 
 const auth = getAuth(fbService);
+const googleProvider = new GoogleAuthProvider();
+
+function useGoogleSignIn() {
+  signInWithRedirect(auth, googleProvider);
+}
 
 /**
  * Creates a user account with given credentials using Firebase.
@@ -74,4 +81,4 @@ const manageUserState = (user, setState) => {
 };
 
 
-export {createUserAccount, signInUser, signOutUser, auth, authStateObserver};
+export {createUserAccount, signInUser, signOutUser, auth, authStateObserver, useGoogleSignIn};
