@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useRef } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import styled from 'styled-components';
 import AddPoi from './AddPOI';
 import HoverToEditInput from './HoverToEditInput'
@@ -12,10 +12,12 @@ const POICardContainer = styled.div`
 
 function DayDetails({ day, setActivePin, setActiveDay }) {
 
-  console.log(day);
 
   const trip = useContext(TripContext);
   const dispatch = useContext(TripDispatch);
+
+  // let the component manage its own state.
+  const [dayState, setDayState] = useState(day);
 
   // edit refs
   const dayOrderEditRef = useRef();
@@ -25,11 +27,11 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
   function renderDayOrder() {
     // day order display
     let days = trip.days.sort((dayA, dayB) => dayA.order - dayB.order);
-    let displayDayOrder = <h1>Day {day.order + 1}</h1>;
+    let displayDayOrder = <h1>Day {dayState.order + 1}</h1>;
     let editDayOrder = (<select
       name="poi-order"
       id="poi-order-select"
-      defaultValue={day.order}
+      defaultValue={dayState.order}
       ref={dayOrderEditRef}>
       {
         days.map((day) => {
@@ -44,7 +46,7 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
     </select>);
     let updateDayOrder = () => {
       // if the selected order is the same, then don't update
-      if (dayOrderEditRef.current.value === day.order) {
+      if (dayOrderEditRef.current.value === dayState.order) {
         return;
       }
 
@@ -52,7 +54,7 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
         type: "rearrange",
         payload: {
           type: "days",
-          id: day.id,
+          id: dayState.id,
           newOrder: parseInt(dayOrderEditRef.current.value),
           fk: null,
         }
@@ -68,14 +70,14 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
 
   function renderDayTitle() {
     let displayDayTitle;
-    if (day.title.length === 0) {
+    if (dayState.title.length === 0) {
       displayDayTitle = (<h2 className="details day untitled">Untitled Day</h2>);
     } else {
-      displayDayTitle = (<h2 className="details day">{day.title}</h2>);
+      displayDayTitle = (<h2 className="details day">{dayState.title}</h2>);
     }
     
     let editDayTitle = <input
-      defaultValue={day.title}
+      defaultValue={dayState.title}
       ref={dayTitleEditRef}
     />
 
@@ -84,10 +86,10 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
         type: "edit",
         payload: {
           type: "days",
-          id: day.id,
+          id: dayState.id,
           key: "title",
           value: dayTitleEditRef.current.value,
-          ref: day.ref
+          ref: dayState.ref
         }
       });
     };
@@ -99,10 +101,24 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
       onClickSave={updateDayTitle} />);
   }
 
-  useEffect(() => {
-    colorEditRef.current.defaultValue = `#${day.color}`;
+  // useEffect(() => {
+  //   colorEditRef.current.defaultValue = `#${day.color}`;
 
-  }, [day]);
+  // }, [day]);
+  
+  // as long as this component is alive and trip is being changed,
+  // we should refresh the day state.
+  // because the only possible changes that could occur while this component
+  // is active are edits to the current day.
+  useEffect(() => {
+    const updatedDay = trip.days.find(day => day.id === dayState.id);
+    
+    setDayState(updatedDay);
+    
+    return () => {
+      console.log("DayDetails.js: Dismounting DayDetails component...");
+    }
+  }, [trip]);
 
   function renderColorPicker() {
     function changeDayColor(e) {
@@ -115,24 +131,26 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
         type: "edit",
         payload: {
           type: "days",
-          id: day.id,
+          id: dayState.id,
           key: "color",
           value: color,
-          ref: day.ref
+          ref: dayState.ref
         }
       });
 
     }
 
-    console.log(day.color);
+    console.log(dayState.color);
 
     return (
-      <label key={day.color} htmlFor="day-color">
+      <label key={dayState.color} htmlFor="day-color">
         Pin Color
-        <input id="day-color"
+        <input
+          key={dayState.color}
+          id="day-color"
           type="color"
           name="day-color"
-          defaultValue={`#${day.color}`}
+          defaultValue={`#${dayState.color}`}
           onBlur={changeDayColor}
           ref={colorEditRef}
         />
@@ -153,7 +171,7 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
 
   function renderPOICards() {
     const pois = trip.pois
-      .filter(poi => poi.dayId === day.id)
+      .filter(poi => poi.dayId === dayState.id)
       .sort((poiA, poiB) => poiA.order - poiB.order);
 
     let section;
@@ -165,7 +183,7 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
         setActivePin={setActivePin}/>));
     } else {
       const dayData = {
-        data : day
+        data : dayState
       }
       section = <AddPoi activeDay={dayData} />
     }
@@ -182,8 +200,8 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
       type: "delete",
       payload: {
         type: "days",
-        id: day.id,
-        ref: day.ref
+        id: dayState.id,
+        ref: dayState.ref
       }
     })
 

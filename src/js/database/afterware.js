@@ -530,8 +530,6 @@ function updateDatabase(dispatch, state, action, signal) {
     lastAccessed: state.post.general.lastAccessed
   };
 
-  // let's edit first, then we can do whatever with the database.
-  debugger;
 
   updateTimestamp(state.post.ref.path, timestamp);
   dbAction(state, action.payload);
