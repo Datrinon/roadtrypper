@@ -1,12 +1,18 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
-import { createUserAccount } from '../../database/auth';
+import { createUserAccount, issueEmailVerification } from '../../database/auth';
 import PWRequirements from './PWrequirements';
-import COMPONENT_STATE from '../ComponentState';
+import { UserContext } from '../Router';
 
+
+const COMPONENT_STATE = {
+  ready: "ready",
+  verification_sent: "verify"
+}
 
 function SignUp() {
-  const [pageState, setPageState] = useState(COMPONENT_STATE.READY);
+
+  const [pageState, setPageState] = useState(COMPONENT_STATE.ready);
   const [uid, setUid] = useState("guest-account@gmail.com");
   const [pw, setPw] = useState("Test12345!!");
   const [showPWRequirements, setShowPWRequirements] = useState(false);
@@ -14,15 +20,18 @@ function SignUp() {
   const [reqsMet, setReqsMet] = useState(false);
   const [error, setError] = useState("");
 
-  function onSignUpSubmit(e) {
+  async function onSignUpSubmit(e) {
     e.preventDefault();
 
     if (confirmPw !== pw) {
       setError("Passwords do not match.");
     }
 
-    createUserAccount(uid, pw);
-    setPageState(COMPONENT_STATE.LOADING);
+    await createUserAccount(uid, pw);
+
+    await issueEmailVerification();
+
+    setPageState(COMPONENT_STATE.verification_sent);
   }
 
   function handlePwChange(e) {
@@ -31,9 +40,29 @@ function SignUp() {
     setReqsMet(false);
   }
 
-  if (pageState === COMPONENT_STATE.LOADING) {
+  function onResend(e) {
+    e.target.disabled = true;
+    e.target.textContent = "Verification Sent.";
+
+    issueEmailVerification();
+  }
+
+  if (pageState === COMPONENT_STATE.verification_sent) {
     return (
-      <p>Sign-up successful. Logging you in...</p>
+      <>
+      <h1>
+        Please Verify Account
+      </h1>
+      <p>
+        Your account has been registered. An email has been sent to 
+        confirm your registration. Please check your email in the next few moments. 
+      </p>
+      <p>
+        Didn't see the verification email? Try checking your spam folder. If 
+        nothing is there, please click below to resend a verification email.
+      </p>
+      <button onClick={onResend}>Resend verification</button>
+      </>
     )
   }
 

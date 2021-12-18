@@ -5,7 +5,8 @@ import { getAuth,
          onAuthStateChanged,
          signOut,
          GoogleAuthProvider,
-         signInWithRedirect
+         signInWithRedirect,
+         sendEmailVerification
        } from "firebase/auth";
 
 
@@ -83,4 +84,14 @@ const manageUserState = (user, setState) => {
 };
 
 
-export {createUserAccount, signInUser, signOutUser, auth, authStateObserver, useGoogleSignIn};
+function issueEmailVerification() {
+  return sendEmailVerification(auth.currentUser);
+}
+
+export {createUserAccount,
+        signInUser,
+        signOutUser,
+        auth,
+        authStateObserver,
+        useGoogleSignIn,
+        issueEmailVerification};

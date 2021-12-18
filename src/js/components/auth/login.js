@@ -3,9 +3,6 @@ import { Link } from 'react-router-dom';
 import { signInUser, useGoogleSignIn } from '../../database/auth'
 import { UserContext } from '../Router';
 
-// auth data
-import { authStateObserver } from '../../database/auth'
-import { set } from 'lodash';
 
 function Login({ setUserInfo }) {
 
