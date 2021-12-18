@@ -2,10 +2,11 @@ import React, { useRef } from 'react'
 import TripCover from '../../../data/images/city-map-vector.png'
 import styled from 'styled-components';
 
-import { Link } from "react-router-dom";
+import { Link, useRouteMatch } from "react-router-dom";
 
 // hooks
 import useDropdown from '../../hooks/useDropdown';
+
 // components
 import Dropdown from '../studio/Dropdown';
 import { deleteTrip } from '../../database/data';
@@ -43,6 +44,9 @@ function TripCard({ trip, setTrips }) {
 
   const [dropdownVisible, setDropdownVisible, dropdownRef] = useDropdown();
 
+  const match = useRouteMatch();
+
+
   function onRemove() {
     let deleteId = trip.tripId;
 
@@ -64,10 +68,9 @@ function TripCard({ trip, setTrips }) {
   }
 
 
-
   return (
     <TripCardContainer>
-      <Link to={trip.tripId}>
+      <Link to={"/trips/" + trip.tripId}>
         <TripCardImg
           src={TripCover}
           alt="A colorful graphic representation of a map."
@@ -86,7 +89,7 @@ function TripCard({ trip, setTrips }) {
         <Dropdown visible={dropdownVisible} ref={dropdownRef}>
           <ul>
             <li>
-              <Link to={trip.tripid} target="_blank">
+              <Link to={"/trips/" + trip.tripId} target="_blank">
                 Open in New Tab
               </Link>
             </li>
