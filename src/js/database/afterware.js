@@ -354,6 +354,9 @@ async function deletePOIandPhotos(poi, state) {
 
   // do the splice
   while (requests.length) {
+    //// 2 at a time
+    // just 1 at a time for fear of mutation exception.
+    await Promise.allSettled(requests.splice(0, 1).map(f => f()));
   }
 
 }
