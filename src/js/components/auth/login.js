@@ -11,13 +11,38 @@ function Login({ setUserInfo }) {
 
   const [uid, setUid] = useState("test@test.com");
   const [pw, setPw] = useState("abc123!");
+  const [errorMsg, setErrorMsg] = useState("");
 
+  const userInfo = useContext(UserContext);
+
+  function determineErrorMsg(firebaseError) {
+    if (firebaseError.includes("wrong-password")) {
+      setErrorMsg("No account with that email and password combination was found.")
+    } else if (firebaseError.includes("internal-error")) {
+      setErrorMsg("Please enter in a password.")
+    } else if (firebaseError.includes("too-many-requests")) {
+      setErrorMsg("Too many invalid password attempts; account temporarily locked. Please try again later.")
+    } else {
+      setErrorMsg("Login failed.");
+    }
+  }
+  
   function onSignInSubmit(e) {
     e.preventDefault();
     signInUser(uid, pw).then((result) => {
+      if (!userInfo.verified) {
+        setErrorMsg("Please verify your email before signing in.");
+      } else {
+        setErrorMsg("");
+      }
       console.log(result);
+    }).catch((error) => {
+      console.warn("There was a sign-in error...:");
+      console.warn(error);
+      determineErrorMsg(error.message);
     })
   }
+  
 
 
   return (
@@ -43,6 +68,7 @@ function Login({ setUserInfo }) {
           />
         </label>
         <button>Login</button>
+        <p className="error-container">{errorMsg}</p>
       </form>
       <Link to="/signup/">Create a New Account</Link>
       <button onClick={useGoogleSignIn}>Sign in with Google</button>
