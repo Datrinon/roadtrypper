@@ -392,11 +392,12 @@ export function tripReducer(state, action) {
     case 'attach_ref_edit_photo_path': {
       // not only does this attach the ref but also edit the photo path.
       // added b/c of firestore.
-      const { id, ref, path } = action.payload;
+      const { id, ref, path, storageUri } = action.payload;
       const item = stateCopy['photos'].find(item => item.id === id);
 
       item.path = path;
       item.ref = ref;
+      item.storageUri = storageUri;
 
       return stateCopy;
     }

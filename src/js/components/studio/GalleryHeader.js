@@ -28,8 +28,6 @@ function GalleryHeader({ activePhoto, loading }) {
   async function addPhoto(e) {
     e.preventDefault();
 
-    debugger;
-
     let file = e.target.querySelector("#photo-file").files[0];
     // get the filename of the image.
     let description = e.target.querySelector("#photo-description").value;
@@ -138,7 +136,8 @@ function GalleryHeader({ activePhoto, loading }) {
           value: reader.result,
           realpath: path,
           file,
-          ref: activePhoto.ref
+          ref: activePhoto.ref,
+          storageUri: activePhoto.storageUri
         }
       })
     });
@@ -166,7 +165,8 @@ function GalleryHeader({ activePhoto, loading }) {
       payload: {
         type: "photos",
         id: activePhoto.id,
-        ref: activePhoto.ref
+        ref: activePhoto.ref,
+        storageUri: activePhoto.storageUri
       }
     })
   }
