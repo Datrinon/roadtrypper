@@ -111,14 +111,14 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
   // because the only possible changes that could occur while this component
   // is active are edits to the current day.
   useEffect(() => {
-    const updatedDay = trip.days.find(day => day.id === dayState.id);
+    const updatedDay = trip.days.find(tripDay => tripDay.id === day.id);
     
     setDayState(updatedDay);
     
     return () => {
       console.log("DayDetails.js: Dismounting DayDetails component...");
     }
-  }, [trip]);
+  }, [trip, day]);
 
   function renderColorPicker() {
     function changeDayColor(e) {

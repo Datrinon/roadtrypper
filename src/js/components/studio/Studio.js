@@ -91,65 +91,89 @@ function Studio() {
     }
   }, []);
 
-
   useEffect(() => {
-    console.log(activePin);
-    if (!activePin && !activeDay) {
-      sidebarSetter.setContent(null);
-      return;
-    } else if (activePin && !activeDay) {
-
-      sidebarSetter.setContent(<PoiDetails
-        activePin={activePin.data}
-        setActivePin={setActivePin}
-      />);
-      sidebarSetter.setVisible(true);
-    } else if (!activePin && activeDay) {
-
+    if (activeDay) {
       sidebarSetter.setContent(<DayDetails
         setActivePin={setActivePin}
         setActiveDay={setActiveDay}
         day={activeDay.data}
       />);
       sidebarSetter.setVisible(true);
-    } else if (activePin && activeDay) {
-      console.log("Determining which to render on sidebar: ");
-      // conflicting case
-      // whichever has the latest time gets to be set.
-      if (activePin.time > activeDay.time) {
-        sidebarSetter.setContent(<PoiDetails
-          activePin={activePin.data}
-          setActivePin={setActivePin}
-        />);
-        sidebarSetter.setVisible(true);
-
-      } else {
-
-        sidebarSetter.setContent(<DayDetails
-          setActivePin={setActivePin}
-          setActiveDay={setActiveDay}
-          day={activeDay.data}
-        />);
-        sidebarSetter.setVisible(true);
-
-      }
+    } else {
+      sidebarSetter.setContent(null);
     }
+  }, [activeDay])
 
-    // TODO
-    // If this is actually valid
-    // then you're gonna want to 
-    // refactor setVisible true to the end of the block.
-    
-    // if (activePin) {
-    //   sidebarSetter.setContent(<PoiDetails
-    //     activePin={activePin.data}
-    //     setActivePin={setActivePin}
-    //   />);
-    //   sidebarSetter.setVisible(true);
-    // } else {
-    //   sidebarSetter.setContent(null);
-    // }
-  }, [activePin, activeDay]);
+  useEffect(() => {
+    if (activePin) {
+      sidebarSetter.setContent(<PoiDetails
+        activePin={activePin.data}
+        setActivePin={setActivePin}
+      />);
+      sidebarSetter.setVisible(true);
+    } else {
+      sidebarSetter.setContent(null);
+    }
+  }, [activePin])
+
+  // useEffect(() => {
+  //   console.log(activePin);
+  //   if (!activePin && !activeDay) {
+  //     sidebarSetter.setContent(null);
+  //     return;
+  //   } else if (activePin && !activeDay) {
+
+  //     sidebarSetter.setContent(<PoiDetails
+  //       activePin={activePin.data}
+  //       setActivePin={setActivePin}
+  //     />);
+  //     sidebarSetter.setVisible(true);
+  //   } else if (!activePin && activeDay) {
+
+  //     sidebarSetter.setContent(<DayDetails
+  //       setActivePin={setActivePin}
+  //       setActiveDay={setActiveDay}
+  //       day={activeDay.data}
+  //     />);
+  //     sidebarSetter.setVisible(true);
+  //   } else if (activePin && activeDay) {
+  //     console.log("Determining which to render on sidebar: ");
+  //     // conflicting case
+  //     // whichever has the latest time gets to be set.
+  //     if (activePin.time > activeDay.time) {
+  //       sidebarSetter.setContent(<PoiDetails
+  //         activePin={activePin.data}
+  //         setActivePin={setActivePin}
+  //       />);
+  //       sidebarSetter.setVisible(true);
+
+  //     } else {
+
+  //       sidebarSetter.setContent(<DayDetails
+  //         setActivePin={setActivePin}
+  //         setActiveDay={setActiveDay}
+  //         day={activeDay.data}
+  //       />);
+  //       sidebarSetter.setVisible(true);
+
+  //     }
+  //   }
+
+  // TODO
+  // If this is actually valid
+  // then you're gonna want to 
+  // refactor setVisible true to the end of the block.
+
+  // if (activePin) {
+  //   sidebarSetter.setContent(<PoiDetails
+  //     activePin={activePin.data}
+  //     setActivePin={setActivePin}
+  //   />);
+  //   sidebarSetter.setVisible(true);
+  // } else {
+  //   sidebarSetter.setContent(null);
+  // }
+  // }, [activePin, activeDay]);
 
   //#region dead 
   // sets the active day. 
@@ -203,10 +227,10 @@ function Studio() {
   //       firstUpdate = refreshPoi;
   //       secondUpdate = refreshDay;
   //     }
-  
+
   //     firstUpdate();
   //     secondUpdate();
-  
+
   //   }    
   // }, [trip]);
   //#endregion
@@ -247,7 +271,7 @@ function Studio() {
               <StudioHeader />
               <div style={{ padding: "25px 5px" }}>
                 <TripTitle />
-                <LastUpdated time={trip.general.lastAccessed}/>
+                <LastUpdated time={trip.general.lastAccessed} />
                 <div className="add-options">
                   <AddDay activeDay={activeDay} setActiveDay={setActiveDay} />
                   <AddPOI activeDay={activeDay} />
