@@ -53,13 +53,14 @@ function handleAddPoi(post, payload) {
       debugger;
 
       addTripPhoto(post.tripId, photo.file, photo.realpath, signalRef)
-        .then(({ ref, path }) => {
+        .then(({ ref, path, storageUri }) => {
           dispatchRef({
             type: "attach_ref_edit_photo_path",
             payload: {
               id: postPhoto.id,
               ref: ref,
               path: path,
+              storageUri
             }
           });
 
@@ -139,7 +140,7 @@ function handleAdd(post, payload) {
       dataInState = post.photos.find(photo => photo.realpath === payload.realpath);
 
       addTripPhoto(post.tripId, payload.file, payload.realpath, signalRef)
-        .then(async ({ ref, path }) => {
+        .then(async ({ ref, path, storageUri }) => {
           let remainingData = new Photo(
             dataInState.poiId,
             dataInState.id,
@@ -153,6 +154,7 @@ function handleAdd(post, payload) {
               id: dataInState.id,
               ref: ref,
               path: path,
+              storageUri
             }
           });
 
@@ -222,7 +224,8 @@ function replacePhoto(post, payload) {
         payload: {
           id: payload.id,
           ref: payload.ref,
-          path: path
+          path: path,
+          storageUri
         }
       });
 
@@ -231,13 +234,13 @@ function replacePhoto(post, payload) {
         storageUri
       };
 
-      let oldStorageUri = await getPhotoStorageUri(payload.ref);
+      let oldStorageUri = payload.storageUri;
 
       await editTripData(data, payload.ref, signalRef);
 
       console.log("Photo changed successfully, we can delete now.");
 
-      await deleteFile(oldStorageUri, signalRef);
+      await deleteFile(oldStorageUri);
 
       console.log("Photo deleted.");
     }).catch((error) => {
@@ -257,16 +260,14 @@ function regenerateOrder(item) {
   return editTripData.bind(null, data, item.ref, signalRef);
 }
 
-function handleDelete(state, payload) {
+async function handleDelete(state, payload) {
   switch (payload.type) {
     case "photos": {
       // photos is an easy case to deal with, it's just about deleting
       // the photo. Nothing to reorder.
       // just have to delete the doc.
       // and then delete the file.
-      deletePhoto(payload.ref, signalRef);
-
-      console.log("Photo deleted successfully");
+      await deletePhoto(payload.ref, payload.storageUri ,signalRef);
       break;
     }
     case "pois": {
@@ -333,7 +334,7 @@ async function deletePOIandPhotos(poi, state) {
   const poiDeleteRequest = deleteTripData.bind(null, poi.ref, signalRef);
   
   const photoDeleteRequests = photosToDelete.map((photo) => {
-    return deletePhoto.bind(null, photo.ref, signalRef);
+    return deletePhoto.bind(null, photo.ref, photo.storageUri, signalRef);
   });
 
   const otherPOIsInSameDay = state.post.pois.filter(other => other.dayId === poi.dayId);
@@ -353,8 +354,6 @@ async function deletePOIandPhotos(poi, state) {
 
   // do the splice
   while (requests.length) {
-    // 2 at a time
-    await Promise.allSettled(requests.splice(0, 2).map(f => f()));
   }
 
 }
@@ -443,7 +442,7 @@ function handlePOIMove(state, payload) {
 }
 
 
-function handleGeneralEdit(state, action) {
+function handleGeneralEdit(state, payload) {
   // alright so we can use edit trip data
   // so we just need the general ref
   // then the key
@@ -455,7 +454,7 @@ function handleGeneralEdit(state, action) {
   // take the value from after dispatch in case some preprocessing is done
   // with it.
   let data = {
-    [action.payload.key]: state.post.general[action.payload.key]
+    [payload.key]: state.post.general[payload.key]
   };
 
   editTripData(data, state.post.ref, signalRef);
@@ -470,7 +469,8 @@ function handleGeneralEdit(state, action) {
  * Our goal is to keep both of these in synchronization.
  * @param {object} action - the action object sent to the dispatch.
  */
-function updateDatabase(dispatch, state, action, signal) {
+async function updateDatabase(dispatch, state, action, signal) {
+  let dbAction;
   let isDatabaseAction = true;
   // assign the two globals we have these references
   dispatchRef = dispatch;
@@ -498,11 +498,11 @@ function updateDatabase(dispatch, state, action, signal) {
       break;
     }
     case "delete": {
-      handleDelete(state, action.payload);
+      await handleDelete(state, action.payload);
       break;
     }
     case "edit_general": {
-      handleGeneralEdit(state, action);
+      handleGeneralEdit(state, action.payload);
       break;
     }
     default: {
@@ -511,15 +511,18 @@ function updateDatabase(dispatch, state, action, signal) {
     }
   }
 
+  // ! Temporarily disabled
+  // ! It is causing mutation issues 
+  // ! signals we need to await our changes here too.
   // if the user committed a database action,
   // we should update the last accessed time for the trip doc.
-  if (isDatabaseAction) {
-    let timestamp = {
-      lastAccessed: state.post.general.lastAccessed
-    };
+  // if (isDatabaseAction) {
+  //   let timestamp = {
+  //     lastAccessed: state.post.general.lastAccessed
+  //   };
     
-    editTripData(timestamp, state.post.ref, signalRef);
-  }
+  //   editTripData(timestamp, state.post.ref, signalRef);
+  // }
 }
 
 const logger = (action) => {
