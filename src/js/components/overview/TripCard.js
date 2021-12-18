@@ -51,10 +51,7 @@ function TripCard({ trip, setTrips }) {
     let deleteId = trip.tripId;
 
     console.log(deleteId);
-    deleteTrip(deleteId).then(() => {
-      console.log("deleted on server");
-    })
-    
+    deleteTrip(deleteId);
     setTrips(prevTrips => {
       let trips = cloneDeep(prevTrips)
 

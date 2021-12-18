@@ -18,7 +18,7 @@ function AddTrip() {
 
     addTrip(user, abort).then((docRef) => {
       console.log(docRef);
-      history.push(docRef.id);
+      history.push("/trips/" + docRef.id);
     })
   }
 

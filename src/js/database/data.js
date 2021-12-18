@@ -125,7 +125,14 @@ async function loadTrips(user,
  * TODO Need to also delete the documents in its subcollections too.
  */
 async function deleteTrip(tripId) {
-  await deleteDoc(doc(db, "trips", tripId));
+  try {
+    await deleteDoc(doc(db, "trips", tripId));
+    console.log("deleted on server");
+  } 
+  catch(error) {
+    console.error("Issues deleting trip...");
+    console.error(error);
+  }
 }
 
 //#region Sample Data
