@@ -56,23 +56,27 @@ function PoiDetails({ activePin, setActivePin }) {
     if (activePin) {
       updateData();
     }
-  }, [activePin]);
 
-  // ! Candidate for removal b/c of studio effect for [trip].
-  useEffect(() => {
-    console.log("New photos hook");
-    if (photos) {
-      setPhotos(trip.photos.filter(photo => photo.poiId === activePoi.id));
+    return () => {
+      console.log("POIDetails.js: Dismounting...");
     }
-  }, [trip.photos]);
+  }, [activePin, trip]);
 
-  useEffect(() => {
-    // if the days changes, that means we should update the day.
-    // this is important for reflecting the correct title...
-    if (day) {
-      setDay(trip.days.find(day => day.id === activePoi.dayId));
-    }
-  }, [trip.days]);
+  // // ! Candidate for removal b/c of studio effect for [trip].
+  // useEffect(() => {
+  //   console.log("New photos hook");
+  //   if (photos) {
+  //     setPhotos(trip.photos.filter(photo => photo.poiId === activePoi.id));
+  //   }
+  // }, [trip.photos]);
+
+  // useEffect(() => {
+  //   // if the days changes, that means we should update the day.
+  //   // this is important for reflecting the correct title...
+  //   if (day) {
+  //     setDay(trip.days.find(day => day.id === activePoi.dayId));
+  //   }
+  // }, [trip.days]);
 
   function launchGalleryView(index) {
     setGalleryStartingIndex(index);
