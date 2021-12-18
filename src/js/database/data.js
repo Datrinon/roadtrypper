@@ -278,8 +278,8 @@ async function editTripData(
   // const q = query(subcol, where(idAttr, "==", idVal), limit(1));
   // const querySnapshot = await getDocs(q);
 
-  // console.log({data})
-  console.log('Data being edited...');
+  console.log('The following data is being edited...');
+  console.log({data});
 
   await updateDoc(ref, data);
 }
@@ -314,7 +314,9 @@ async function addTripPhoto(tripId, file, path, signal, addDoc=true) {
   
     const docRef = await addTripData(tripId, "photos", photoDataForDoc, signal);
   
-    return {ref: docRef, path: publicImageUrl};
+    return {ref: docRef,
+      path: publicImageUrl,
+      storageUri: fileSnapshot.metadata.fullPath};
   } else {
     return {path: publicImageUrl, storageUri: fileSnapshot.metadata.fullPath};
   }
@@ -324,11 +326,7 @@ async function addTripPhoto(tripId, file, path, signal, addDoc=true) {
  * Delete a file held in storage.
  * @param {StoragePath} path - The path where the file is stored.
  */
-async function deleteFile(path, signal) {
-  if (signal.aborted) {
-    return Promise.reject(new Error("Operation failed; request was cancelled."));
-  }
-
+async function deleteFile(path) {
   return deleteObject(ref(storage, path));
 }
 
@@ -338,25 +336,45 @@ async function deleteFile(path, signal) {
  * @param {AbortController} signal 
  * @returns 
  */
-async function deletePhoto(ref, signal) {
+async function deletePhoto(ref, uri, signal) {
   if (signal.aborted) {
     return Promise.reject(new Error("Operation failed; request was cancelled."));
   }
-
-  const storageUri = await getPhotoStorageUri(ref);
-
   debugger;
 
-  // now delete both the file and the doc.
-  await Promise.allSettled([
-    deleteDoc(ref),
-    deleteFile(storageUri, signal)
-  ]);
+  await deleteDoc(ref);
+  await deleteFile(uri);
 
-  console.log("Photo deleted successfully.");
+  // console.log("BEGINNING DELETEPHOTO");
+  // // write this classically.
+  // getDoc(ref)
+  // .then(photo => {
+  //   console.log(photo);
+  //   return photo.get("storageUri");
+  // })
+  // .then(uri => {
+  //   console.log(uri);
+    
+  //   return deleteFile(uri, signal);
+  // })
+  // .then(() => {
+  //   console.log("photo file deleted.")
+  //   return deleteDoc(ref);
+  // })
+  // .then(() => {
+  //   console.log("photo doc deleted; photo was deleted successfully.")
+  // })
+  // .catch((error) => {
+  //   console.log("THE DELETE WAS NOT SUCCESSFUL...");
+  //   console.warn(error);
+  // })
+  // .finally(() => {
+  //   console.log("End of deletePhoto().");
+  // })
 }
 
 async function getPhotoStorageUri(ref) {
+  debugger;
   const photo = await getDoc(ref);
 
   return photo.get("storageUri");
