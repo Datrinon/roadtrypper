@@ -85,7 +85,11 @@ const manageUserState = (user, setState) => {
 
 
 function issueEmailVerification() {
-  return sendEmailVerification(auth.currentUser);
+  let actionCodeSettings = {
+    url: window.location.origin
+  };
+
+  return sendEmailVerification(auth.currentUser, actionCodeSettings);
 }
 
 export {createUserAccount,
