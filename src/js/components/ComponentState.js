@@ -6,7 +6,8 @@
 const COMPONENT_STATE = {
   LOADING: "loading",
   READY: "ready",
-  NOT_FOUND: "not_found"
+  NOT_FOUND: "not_found",
+  FAILURE: "failure"
 }
 
 export default COMPONENT_STATE;

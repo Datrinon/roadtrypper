@@ -24,6 +24,7 @@ import updateDB from '../../database/afterware';
 import LastUpdated from './LastUpdated';
 import { onUpdatingEnd, onUpdatingStart } from '../../database/middleware';
 import TripTitle from './TripTitle';
+import LoadFailure from '../shared/LoadFailure';
 
 
 // ! code begin
@@ -43,6 +44,7 @@ function Studio() {
     [onUpdatingStart],
     [updateDB, onUpdatingEnd]);
   const [pageState, setPageState] = useState(STATE.LOADING);
+  const [pageError, setPageError] = useState("");
   const [activePin, setActivePin] = useState(null);
   const [activeDay, setActiveDay] = useState(null);
 
@@ -83,7 +85,11 @@ function Studio() {
 
         setPageState(STATE.READY);
       })
-      .catch((e) => console.error(e));
+      .catch((e) => {
+        console.error(e);
+        setPageState(STATE.FAILURE);
+        setPageError(e.message);
+      });
 
     return () => {
       // Aborts any fetch request.
@@ -259,6 +265,8 @@ function Studio() {
   //#region :Render Logic
   if (pageState === STATE.LOADING) {
     return <div>Loading</div>;
+  } else if (pageState === STATE.FAILURE) {
+    return <LoadFailure error={pageError} />
   }
 
 
