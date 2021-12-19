@@ -11,6 +11,7 @@ import NotFound from './shared/NotFound';
 
 // db
 import { authStateObserver } from '../database/auth';
+import ForgotPW from './auth/ForgotPW';
 
 
 
@@ -21,7 +22,7 @@ function Router() {
   const [userInfo, setUserInfo] = useState(undefined);
 
   function isSignedIn() {
-    return (userInfo && userInfo.emailVerified) || (userInfo.isAnonymous);
+    return (userInfo && userInfo.emailVerified) || (userInfo?.isAnonymous);
   }
 
   // need this duplicate here so ourlogin doesnt clean up the observer.
@@ -73,7 +74,13 @@ function Router() {
           </Route>
           {/* Auth pages; redirect if the user is already signed in. */}
           <Route exact path="/signup/login">
-            {isSignedIn() ? <Redirect to="/trips/" /> : <Login/>}
+            {isSignedIn() ? <Redirect to="/trips/" /> : <Login />}
+          </Route>
+          <Route exact path="/login">
+            {isSignedIn() ? <Redirect to="/trips/" /> : <Login />}
+          </Route>
+          <Route exact path="/forgot_password">
+            <ForgotPW/>
           </Route>
           <Route exact path="/signup/" component={SignUp}>
             {isSignedIn() ? <Redirect to="/trips/" /> : <SignUp />}

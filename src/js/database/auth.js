@@ -7,7 +7,8 @@ import { getAuth,
          GoogleAuthProvider,
          signInWithRedirect,
          sendEmailVerification,
-         signInAnonymously
+         signInAnonymously,
+         sendPasswordResetEmail
        } from "firebase/auth";
 
 
@@ -97,6 +98,11 @@ function issueEmailVerification() {
   return sendEmailVerification(auth.currentUser, actionCodeSettings);
 }
 
+function issuePwReset(email) {
+  
+  return sendPasswordResetEmail(auth, email);
+}
+
 export {createUserAccount,
         signInUser,
         signOutUser,
@@ -104,4 +110,5 @@ export {createUserAccount,
         authStateObserver,
         useGoogleSignIn,
         issueEmailVerification,
+        issuePwReset,
         useGuestMode};

@@ -75,7 +75,7 @@ function Login({ setUserInfo }) {
         className={"verification-email-send no-display"}>
         Resend Verification Email
         </button>
-      <button>Forgot Password?</button>
+      <Link to="/forgot_password">Forgot Password?</Link>
       <Link to="/signup/">Create a New Account</Link>
       <button onClick={useGoogleSignIn}>Sign in with Google</button>
       <button onClick={useGuestMode}>View Demo Mode</button>
