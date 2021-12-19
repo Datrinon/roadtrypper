@@ -406,15 +406,17 @@ function handleRearrange(state, payload) {
     order: swapper.order
   }
 
-  Promise.all([
-    editTripData(swapperUpdate, swapper.ref, signalRef),
-    editTripData(swappeeUpdate, swappee.ref, signalRef)
-  ]).then(() => {
-    console.log("Rearrangement saved.");
-  }).catch((error) => {
-    console.log("Rearrangement failed; some error occurred");
-    console.error(error);
-  })
+  editTripData(swapperUpdate, swapper.ref, signalRef)
+    .then(() => {
+      return editTripData(swappeeUpdate, swappee.ref, signalRef)
+    })
+    .then(() => {
+      console.log("Rearrangement saved.");
+    })
+    .catch((error) => {
+      console.log("Rearrangement failed; some error occurred");
+      console.error(error);
+    })
 }
 
 function handlePOIMove(state, payload) {
@@ -444,7 +446,8 @@ function handlePOIMove(state, payload) {
 
     // limit concurrency 
     while (otherPOIRequests.length) {
-      await Promise.allSettled(otherPOIRequests.splice(0, 2).map(f => f()));
+      // one at a time, please.
+      await Promise.allSettled(otherPOIRequests.splice(0, 1).map(f => f()));
     }
   })
 }
