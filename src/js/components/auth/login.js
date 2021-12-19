@@ -1,7 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom';
-import { issueEmailVerification, signInUser, useGoogleSignIn } from '../../database/auth'
+import { issueEmailVerification, signInUser, useGoogleSignIn, useGuestMode } from '../../database/auth'
 import { UserContext } from '../Router';
+
 
 
 function Login({ setUserInfo }) {
@@ -77,7 +78,7 @@ function Login({ setUserInfo }) {
       <button>Forgot Password?</button>
       <Link to="/signup/">Create a New Account</Link>
       <button onClick={useGoogleSignIn}>Sign in with Google</button>
-      <button>View Demo Mode</button>
+      <button onClick={useGuestMode}>View Demo Mode</button>
     </div>
     /**
      * To add;

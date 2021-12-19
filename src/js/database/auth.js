@@ -103,4 +103,5 @@ export {createUserAccount,
         auth,
         authStateObserver,
         useGoogleSignIn,
-        issueEmailVerification};
+        issueEmailVerification,
+        useGuestMode};

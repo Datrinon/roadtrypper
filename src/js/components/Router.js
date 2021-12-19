@@ -21,7 +21,7 @@ function Router() {
   const [userInfo, setUserInfo] = useState(undefined);
 
   function isSignedIn() {
-    return userInfo && userInfo.emailVerified;
+    return (userInfo && userInfo.emailVerified) || (userInfo.isAnonymous);
   }
 
   // need this duplicate here so ourlogin doesnt clean up the observer.

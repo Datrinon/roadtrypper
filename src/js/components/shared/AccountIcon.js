@@ -41,7 +41,7 @@ function AccountIcon() {
     <div>
       <Icon onClick={setDropdownVisible.bind(null, true)}>
         <IconText>
-          {user.email[0]}
+          {user.email ? user.email[0] : "G"}
         </IconText>
         <Dropdown visible={dropdownVisible} ref={dropdownRef}>
           <ul>
