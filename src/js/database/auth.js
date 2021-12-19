@@ -6,7 +6,8 @@ import { getAuth,
          signOut,
          GoogleAuthProvider,
          signInWithRedirect,
-         sendEmailVerification
+         sendEmailVerification,
+         signInAnonymously
        } from "firebase/auth";
 
 
@@ -17,6 +18,10 @@ const googleProvider = new GoogleAuthProvider();
 
 function useGoogleSignIn() {
   signInWithRedirect(auth, googleProvider);
+}
+
+function useGuestMode() {
+  return signInAnonymously(auth);
 }
 
 /**

@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom';
-import { signInUser, useGoogleSignIn } from '../../database/auth'
+import { issueEmailVerification, signInUser, useGoogleSignIn } from '../../database/auth'
 import { UserContext } from '../Router';
 
 
@@ -27,8 +27,10 @@ function Login({ setUserInfo }) {
   function onSignInSubmit(e) {
     e.preventDefault();
     signInUser(uid, pw).then((result) => {
+      document.querySelector(".verification-email-send").classList.add("no-display");
       if (!userInfo.verified) {
         setErrorMsg("Please verify your email before signing in.");
+        document.querySelector(".verification-email-send").classList.remove("no-display");
       } else {
         setErrorMsg("");
       }
@@ -64,9 +66,15 @@ function Login({ setUserInfo }) {
             onChange={(e) => setPw(e.target.value)}
           />
         </label>
-        <button>Login</button>
+        <button type="submit">Login</button>
         <p className="error-container">{errorMsg}</p>
       </form>
+      <button 
+        onClick={issueEmailVerification}
+        className={"verification-email-send no-display"}>
+        Resend Verification Email
+        </button>
+      <button>Forgot Password?</button>
       <Link to="/signup/">Create a New Account</Link>
       <button onClick={useGoogleSignIn}>Sign in with Google</button>
       <button>View Demo Mode</button>
