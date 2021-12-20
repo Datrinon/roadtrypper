@@ -72,7 +72,7 @@ function SignUp() {
       <form onSubmit={onSignUpSubmit}>
         <label htmlFor="uid-email">
           Email
-          <input
+          <authStyle.Input
             type="email"
             id="uid-email"
             value={uid}
@@ -82,7 +82,7 @@ function SignUp() {
         <div>
           <label htmlFor="uid-pw">
             Password
-            <input
+            <authStyle.Input
               id="uid-pw"
               type="password"
               value={pw}
@@ -95,7 +95,7 @@ function SignUp() {
         </div>
         <label htmlFor="uid-confirm-pw">
           Confirm Password
-          <input
+          <authStyle.Input
             id="uid-confirm-pw"
             type="password"
             value={confirmPw}

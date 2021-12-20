@@ -21,7 +21,7 @@ function TripTitle() {
 
   return (
     <>
-      <input
+      <authStyle.Input
         className="trip-title"
         placeholder="Untitled Trip"
         defaultValue={trip.general.title}

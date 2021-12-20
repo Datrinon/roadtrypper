@@ -311,7 +311,7 @@ function NewPoiForm({ day }) {
         <h2>Poi Information</h2>
         <Label>
           Location
-          <input
+          <authStyle.Input
             disabled
             placeholder="No Location Selected."
             value={poiLoc}
@@ -320,10 +320,10 @@ function NewPoiForm({ day }) {
         </Label>
         <Label>
           Title
-          <input value={poiTitle} onChange={changePoiTitle} />
+          <authStyle.Input value={poiTitle} onChange={changePoiTitle} />
         </Label>
         <Label>
-          <input
+          <authStyle.Input
             ref={sameTitleCheckbox}
             type="checkbox"
             onChange={autosetPoiTitle}
@@ -337,7 +337,7 @@ function NewPoiForm({ day }) {
           <textarea value={poiDesc} onChange={onChangePoiDesc} />
         </Label>
         <div>
-          <input ref={fileInputRef} type="file" id="fileElem" multiple accept="image/*" style={{ display: "none" }} onChange={fileChange} />
+          <authStyle.Input ref={fileInputRef} type="file" id="fileElem" multiple accept="image/*" style={{ display: "none" }} onChange={fileChange} />
           <div ref={photosArea}>
             {
               photos.map((photo, index) => {

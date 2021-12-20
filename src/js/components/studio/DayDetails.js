@@ -76,7 +76,7 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
       displayDayTitle = (<h2 className="details day">{dayState.title}</h2>);
     }
     
-    let editDayTitle = <input
+    let editDayTitle = <authStyle.Input
       defaultValue={dayState.title}
       ref={dayTitleEditRef}
     />
@@ -145,7 +145,7 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
     return (
       <label key={dayState.color} htmlFor="day-color">
         Pin Color
-        <input
+        <authStyle.Input
           key={dayState.color}
           id="day-color"
           type="color"

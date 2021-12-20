@@ -241,7 +241,7 @@ const SearchField = React.forwardRef(({
       onFocus={onFormFocus}
       onSubmit={handleSearch}>
       <div>
-        <input
+        <authStyle.Input
           className="search-field"
           ref={ref}
           // Set to 1000 because of nominatim's usage policy requirements.

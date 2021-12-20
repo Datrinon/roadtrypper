@@ -183,7 +183,7 @@ function PoiDetails({ activePin, setActivePin }) {
       dayTitleDisplay = (<h2 className="details day">{day.title}</h2>);
     }
 
-    let dayTitleEdit = (<input
+    let dayTitleEdit = (<authStyle.Input
       className="details day-edit"
       defaultValue={day.title}
       ref={dayTitleEditRef} />);
@@ -210,7 +210,7 @@ function PoiDetails({ activePin, setActivePin }) {
     //#region POI Title
     let poiTitleDisplay = (<h3 className="details poi title">{activePoi.title}</h3>)
 
-    let poiTitleEdit = (<input
+    let poiTitleEdit = (<authStyle.Input
       className="details"
       defaultValue={activePoi.title}
       ref={poiTitleEditRef} />)
