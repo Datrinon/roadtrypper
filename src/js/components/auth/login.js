@@ -68,6 +68,7 @@ function Login({ setUserInfo }) {
             type="email"
             id="uid-email"
             value={uid}
+            placeholder={"Enter your email here."}
             onChange={(e) => setUid(e.target.value)}
           />
           <authStyle.Label htmlFor="uid-pw">
@@ -77,6 +78,7 @@ function Login({ setUserInfo }) {
             id="pw"
             type="password"
             value={pw}
+            placeholder={"Enter your password here."}
             onChange={(e) => setPw(e.target.value)}
           />
           <authStyle.FormSubmitButton type="submit">Login</authStyle.FormSubmitButton>

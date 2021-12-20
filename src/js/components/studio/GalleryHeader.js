@@ -70,7 +70,7 @@ function GalleryHeader({ activePhoto, loading }) {
     modalSetter.setDismiss("Cancel");
     modalSetter.setContent(
       <>
-        <authStyle.Input id={"photo-file"} accept="image/*" type="file" required={true} />
+        <input id={"photo-file"} accept="image/*" type="file" required={true} />
         <CountingTextArea
           textAreaId={"photo-description"}
           labelText={"Description (Optional)"}
@@ -146,7 +146,7 @@ function GalleryHeader({ activePhoto, loading }) {
     modalSetter.setDismiss("Cancel");
     modalSetter.setContent(
       <>
-        <authStyle.Input id="photo-file-update" accept="image/*" type="file" required={true} />
+        <input id="photo-file-update" accept="image/*" type="file" required={true} />
       </>
     )
   }

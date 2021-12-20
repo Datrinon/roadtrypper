@@ -49,7 +49,7 @@ function ForgotPW() {
         reset your password.
       </p>
       <form onSubmit={submitEmailRequest}>
-        <authStyle.Input
+        <input
           onChange={(e) => setEmail(e.target.value)}
           type="email"
           placeholder="Enter Email Address"

@@ -81,7 +81,7 @@ function NoPhotosFound({ poiId, startingIndex }) {
       <button onClick={() => setFormVisible(true)}>Click here to add photos.</button>
       <s.ToggleVisibilityDiv visible={formVisible}>
         <form onSubmit={addPhoto}>
-          <authStyle.Input ref={fileRef} id={"photo-file"} accept="image/*" type="file" required={true} />
+          <input ref={fileRef} id={"photo-file"} accept="image/*" type="file" required={true} />
           <CountingTextArea
             ref={descRef}
             textAreaId={"photo-description"}

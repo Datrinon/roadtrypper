@@ -28,7 +28,6 @@ export const Background = styled.div`
 
 export const AuthFormContainer = styled.div`
   background-color: white;
-  width: 100vw;
   margin: 0 auto;
   padding: 15px;
   border-radius: 5px;
@@ -105,6 +104,7 @@ export const FormSubmitButton = styled(Button)`
   background-color: ${color.primary};
   color: white;
   transition: background-color box-shadow 300ms;
+  width: 95%;
 
   &:hover {
     background-color: ${color.primaryHover};
