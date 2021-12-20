@@ -9,6 +9,9 @@ import Road from "../../../data/road.jpg";
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { FAIcon } from '../styled/template.style';
 
+import GoogleLogo from "../../../data/GoogleLogo.svg";
+import { GoogleIcon } from './styled/login.style';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 
 function Login({ setUserInfo }) {
@@ -100,10 +103,17 @@ function Login({ setUserInfo }) {
          lig={61}
          color={"rgb(255,255,255)"}
          onClick={useGoogleSignIn}>
-          <FAIcon icon={faGoogle}/>
+          <GoogleIcon src={GoogleLogo} alt={"Google's Logo-- a colored 'G'."}/>
           Sign in with Google
         </authStyle.Button>
-        <authStyle.Button onClick={useGuestMode}>Continue As Guest</authStyle.Button>
+        <authStyle.Button
+          hue={1}
+          sat={0}
+          lig={50}
+          onClick={useGuestMode}>
+          <FAIcon icon={faUser} />
+          Continue as Guest
+        </authStyle.Button>
       </authStyle.AuthFormContainer>
     </>
     /**
