@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { issueEmailVerification, signInUser, useGoogleSignIn, useGuestMode } from '../../database/auth'
 import { UserContext } from '../Router';
 
+import * as authStyle from './styled/auth.style';
 
 
 function Login({ setUserInfo }) {
@@ -46,7 +47,7 @@ function Login({ setUserInfo }) {
 
 
   return (
-    <div>
+    <authStyle.AuthForm>
       <h1>Log In</h1>
       <form onSubmit={onSignInSubmit}>
         <label htmlFor="uid-email">
@@ -79,7 +80,7 @@ function Login({ setUserInfo }) {
       <Link to="/signup/">Create a New Account</Link>
       <button onClick={useGoogleSignIn}>Sign in with Google</button>
       <button onClick={useGuestMode}>View Demo Mode</button>
-    </div>
+    </authStyle.AuthForm>
     /**
      * To add;
      * Form which lets sign up / login
