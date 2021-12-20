@@ -1,0 +1,20 @@
+/* This file provides a variety of animation classes to use.*/
+
+.shrink-fade {
+  animation: shrink-fade 0.5s;
+}
+
+.enlarge-unfade {
+  animation: shrink-fade 0.5s reverse;
+}
+
+@keyframes shrink-fade {
+  0% {
+    transform: scale(1.0);
+    opacity: 1.0;
+  }
+  100% {
+    transform: scale(0.65);
+    opacity: 0.0;
+  }
+}

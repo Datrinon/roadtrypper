@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import "./css/reset.css";
 import "./index.css";
 import "./css/App.css";
+import "./css/anim.css";
 
 
 import Router from "./js/components/Router";

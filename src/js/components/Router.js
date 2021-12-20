@@ -54,7 +54,7 @@ function Router() {
   if (userInfo === undefined) {
     // TODO
     // Remove this.
-    return <div>Initializing...</div>
+    return null;
   }
 
   return (

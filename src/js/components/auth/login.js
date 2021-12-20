@@ -104,7 +104,7 @@ function Login({ setUserInfo }) {
          color={"rgb(255,255,255)"}
          onClick={useGoogleSignIn}>
           <GoogleIcon src={GoogleLogo} alt={"Google's Logo-- a colored 'G'."}/>
-          Sign in with Google
+          <span>Sign in with Google</span>
         </authStyle.Button>
         <authStyle.Button
           hue={1}
@@ -112,7 +112,7 @@ function Login({ setUserInfo }) {
           lig={50}
           onClick={useGuestMode}>
           <FAIcon icon={faUser} />
-          Continue as Guest
+          <span>Continue as Guest</span>
         </authStyle.Button>
       </authStyle.AuthFormContainer>
     </>
