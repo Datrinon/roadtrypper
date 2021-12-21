@@ -24,5 +24,4 @@ export const Req = styled.p`
   & > .miss {
     color: #474747;
   }
-
 `

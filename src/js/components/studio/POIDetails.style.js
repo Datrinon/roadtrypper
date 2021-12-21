@@ -17,5 +17,5 @@ export const Modal = styled.div`
 `
 
 export const ToggleVisibilityDiv = styled.div`
-  display: ${props => props.visible ? "display" : "none"};
+  display: ${props => props.visible ? "block" : "none"};
 `

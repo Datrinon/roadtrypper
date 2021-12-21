@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useContext } from 'react'
 
 import * as s from '../styled/template.style'
-import * as overviewStyle from './Overview.style';
+import * as oS from './styled/Overview.style';
 
 // components
 import AccountIcon from '../shared/AccountIcon'
@@ -128,10 +128,10 @@ function Overview() {
   useEffect(() => {
 
     loadTrips(user, abort.current)
-    .then((trips) => {
-      setTrips(trips);
-    })
-    .catch((e) => console.log(e));
+      .then((trips) => {
+        setTrips(trips);
+      })
+      .catch((e) => console.log(e));
 
     return () => {
       abort.current.abort();
@@ -148,19 +148,20 @@ function Overview() {
 
   return (
     <div>
-      <s.Header>
-        Overview Header.
-        <HomeLogo/>
-        <AccountIcon />
-        <SearchField
-          ref={searchRef}
-          fetchForSuggestions={fetchTrips}
-          suggestionMap={mapSearchResultsToElem}
-          debounceTimer={400}
-          fasterFirstSearch={null}
-          placeholder={"Search for a trip..."}
-          classNames={["trips-search"]} />
-      </s.Header>
+      <oS.OverviewHeader>
+        <HomeLogo />
+        <oS.HeaderGroup>
+          <SearchField
+            ref={searchRef}
+            fetchForSuggestions={fetchTrips}
+            suggestionMap={mapSearchResultsToElem}
+            debounceTimer={400}
+            fasterFirstSearch={null}
+            placeholder={"Search for a trip..."}
+            classNames={["trips-search"]} />
+          <AccountIcon />
+        </oS.HeaderGroup>
+      </oS.OverviewHeader>
       <AddTrip />
       <div>
         Sorter.
@@ -171,15 +172,15 @@ function Overview() {
           Sort by date {dateDescOrder ? "desc" : "asc"}
         </button>
       </div>
-      <overviewStyle.TripCardLayout>
+      <oS.TripCardLayout>
         {trips.map(trip => {
           return <TripCard
             key={trip.tripId}
             trip={trip}
             setTrips={setTrips}
-            />
+          />
         })}
-      </overviewStyle.TripCardLayout>
+      </oS.TripCardLayout>
       Overview.
       {/* 
       To Add:
