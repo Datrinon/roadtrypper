@@ -107,10 +107,9 @@ function SignUp() {
               placeholder="Password"
               onChange={handlePwChange}
               onFocus={(e) => setShowPWRequirements(true)}
-              onBlur={(e) => setShowPWRequirements(false)}
               required
             />
-            <PWRequirements password={pw} setReqsMet={setReqsMet} />
+            <PWRequirements displayed={showPWRequirements} password={pw} setReqsMet={setReqsMet} />
           </div>
           <authStyle.Label htmlFor="uid-confirm-pw">
             Confirm Password

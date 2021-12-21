@@ -38,7 +38,7 @@ const PASSWORD_TESTS = [
 
 
 
-function PWRequirements({ password, setReqsMet }) {
+function PWRequirements({ displayed, password, setReqsMet }) {
 
   function mapReq(req, index) {
     let passed = req.test(password);
@@ -69,7 +69,7 @@ function PWRequirements({ password, setReqsMet }) {
   });
 
   return (
-    <PWReqs.ReqContainer className="pw-requirements">
+    <PWReqs.ReqContainer displayed={displayed} className="pw-requirements">
       {
         PASSWORD_TESTS.map(mapReq)
       }
