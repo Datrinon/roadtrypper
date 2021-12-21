@@ -7,7 +7,7 @@ import RoadTrypperIcon from "../../../data/Roadtrypper.png";
 const Logo = styled.div`
   font-family: "Segoe UI";
   display: flex;
-  font-weight: 400;
+  font-weight: 700;
   font-size: 1.5em;
   padding: 0 8px;
 `

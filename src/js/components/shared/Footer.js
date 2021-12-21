@@ -13,9 +13,9 @@ const FooterContainer = styled.div`
 
 function Footer() {
   return (
-    <FooterContainer>
+    <FooterContainer className="footer">
       <FAIcon icon={faGithub}/>
-      View Github here.
+      View Github here. (TODO)
     </FooterContainer>
   )
 }
