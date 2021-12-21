@@ -5,8 +5,9 @@ import { issuePwReset } from '../../database/auth';
 
 import * as authStyle from "./styled/auth.style";
 
-const ResultMessage = styled.p`
+const ResultMessage = styled(authStyle.FormText)`
   display: ${props => props.visible ? "initial" : "none"};
+  color: #188618;
 `
 
 const successMessageBody = `Success! If the email you entered is found on our record,

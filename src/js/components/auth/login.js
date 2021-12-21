@@ -15,8 +15,8 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 function Login({ setUserInfo }) {
 
-  const [uid, setUid] = useState("test@test.com");
-  const [pw, setPw] = useState("abc123!@");
+  const [uid, setUid] = useState("");
+  const [pw, setPw] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
   const userInfo = useContext(UserContext);
@@ -66,7 +66,7 @@ function Login({ setUserInfo }) {
             type="email"
             id="uid-email"
             value={uid}
-            placeholder={"Enter your email here."}
+            placeholder={"Email Address"}
             onChange={(e) => setUid(e.target.value)}
           />
           <authStyle.Label htmlFor="uid-pw">
@@ -76,7 +76,7 @@ function Login({ setUserInfo }) {
             id="pw"
             type="password"
             value={pw}
-            placeholder={"Enter your password here."}
+            placeholder={"Password"}
             onChange={(e) => setPw(e.target.value)}
           />
           <authStyle.FormTextError className="error-container">
