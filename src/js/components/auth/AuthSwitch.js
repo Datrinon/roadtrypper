@@ -9,6 +9,7 @@ import * as authStyle from "./styled/auth.style";
 import * as genStyle from "../../components/styled/template.style";
 import Road from "../../../data/road.jpg";
 import HomeLogo from '../shared/HomeLogo';
+import Footer from '../shared/Footer';
 
 
 /**
@@ -21,13 +22,12 @@ function AuthSwitch() {
 
   return (
     <>
-      (The Auth Switch Page.)
       <genStyle.Header>
         <HomeLogo/>
       </genStyle.Header>
       <authStyle.Background bg={Road}>
       </authStyle.Background>
-      <section className="auth-content">
+      <section className="content">
         <Switch>
           <Route exact path={`${match.path}/signup`}>
             <SignUp />
@@ -42,9 +42,7 @@ function AuthSwitch() {
           </Route>
         </Switch>
       </section>
-      <footer>
-        Le footer here.
-      </footer>
+      <Footer/>
     </>
   )
 }
