@@ -111,9 +111,11 @@ function SignUp() {
           </div>
           <authStyle.FormSubmitButton disabled={!reqsMet}>Submit</authStyle.FormSubmitButton>
         </authStyle.Form>
-        <Link to="/login/">
-          Existing User? Log in here.
-        </Link>
+        <authStyle.FormLink>
+          <Link to="/login/">
+            Existing User? Log in here.
+          </Link>
+        </authStyle.FormLink>
       </authStyle.AuthFormContainer>
     </>
   )

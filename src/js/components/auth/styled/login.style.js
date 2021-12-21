@@ -10,3 +10,12 @@ export const GoogleIcon = styled.img`
     top: 2px;
     right: 4px;
 `
+
+export const ButtonLink = styled.button`
+    all: unset;
+    text-decoration: underline;
+    font-weight: 600;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto;
+`

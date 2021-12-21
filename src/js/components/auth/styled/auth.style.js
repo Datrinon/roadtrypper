@@ -177,3 +177,15 @@ export const FormBreak = styled.hr`
     top: -13px;
 }
 `
+
+export const FormText = styled.p`
+  text-align: center;
+  width: 80%;
+  margin: 0 auto;
+  line-height: 1.25em;
+`
+
+export const FormTextError = styled(FormText)`
+  color: red;
+  font-size: 90%;
+`

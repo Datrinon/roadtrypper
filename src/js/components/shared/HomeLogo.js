@@ -22,7 +22,7 @@ const LogoTxt = styled.p`
 
 const linkStyled = {
   textDecoration: "none",
-  ["align-self"]: "center"
+  alignSelf: "center"
 }
 
 

@@ -9,14 +9,14 @@ import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { FAIcon } from '../styled/template.style';
 
 import GoogleLogo from "../../../data/GoogleLogo.svg";
-import { GoogleIcon } from './styled/login.style';
+import { GoogleIcon, ButtonLink } from './styled/login.style';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 
 function Login({ setUserInfo }) {
 
   const [uid, setUid] = useState("test@test.com");
-  const [pw, setPw] = useState("abc123!");
+  const [pw, setPw] = useState("abc123!@");
   const [errorMsg, setErrorMsg] = useState("");
 
   const userInfo = useContext(UserContext);
@@ -79,31 +79,34 @@ function Login({ setUserInfo }) {
             placeholder={"Enter your password here."}
             onChange={(e) => setPw(e.target.value)}
           />
+          <authStyle.FormTextError className="error-container">
+            {errorMsg}
+            <ButtonLink
+              onClick={issueEmailVerification}
+              className={"verification-email-send no-display"}>
+              Resend Verification Email
+            </ButtonLink>
+          </authStyle.FormTextError>
           <authStyle.FormSubmitButton type="submit">Login</authStyle.FormSubmitButton>
-          <p className="error-container">{errorMsg}</p>
         </authStyle.Form>
-        <button
-          onClick={issueEmailVerification}
-          className={"verification-email-send no-display"}>
-          Resend Verification Email
-        </button>
+
         <authStyle.FormLink>
           <Link to="/login/forgot_password/">Forgot password?</Link>
         </authStyle.FormLink>
         <authStyle.FormDivider>
-          <authStyle.FormDividerBreak/>
+          <authStyle.FormDividerBreak />
           <authStyle.FormDividerLabel>Not a member?</authStyle.FormDividerLabel>
         </authStyle.FormDivider>
         <authStyle.FormLink>
           <Link to="/login/signup/">Sign up here.</Link>
         </authStyle.FormLink>
         <authStyle.Button
-         hue={203}
-         sat={89}
-         lig={61}
-         color={"rgb(255,255,255)"}
-         onClick={useGoogleSignIn}>
-          <GoogleIcon src={GoogleLogo} alt={"Google's Logo-- a colored 'G'."}/>
+          hue={203}
+          sat={89}
+          lig={61}
+          color={"rgb(255,255,255)"}
+          onClick={useGoogleSignIn}>
+          <GoogleIcon src={GoogleLogo} alt={"Google's Logo-- a colored 'G'."} />
           <span>Sign in with Google</span>
         </authStyle.Button>
         <authStyle.Button
