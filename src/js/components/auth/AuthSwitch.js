@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Switch, useRouteMatch } from 'react-router-dom'
+import { Link, Route, Switch, useRouteMatch } from 'react-router-dom'
 
 import ForgotPW from './ForgotPW';
 import Login from './login';
@@ -25,6 +25,7 @@ function AuthSwitch() {
       <section className="content">
         <genStyle.Header>
           <HomeLogo />
+          <genStyle.NavLink>About (Coming Soon)</genStyle.NavLink>
         </genStyle.Header>
         <authStyle.Background bg={Road}>
         </authStyle.Background>

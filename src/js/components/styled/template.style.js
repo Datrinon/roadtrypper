@@ -1,4 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const Header = styled.div`
@@ -6,6 +7,12 @@ export const Header = styled.div`
   height: 48px;
   border: 1px dotted red;
   display: flex;
+  flex-direction: row;
+  align-items: center;
+`
+
+export const NavLink = styled(Link)`
+  text-decoration: none;
 `
 
 export const ListingBox = styled.div`
