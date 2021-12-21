@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import { createUserAccount, issueEmailVerification } from '../../database/auth';
 import PWRequirements from './PWrequirements';
@@ -15,11 +15,12 @@ const COMPONENT_STATE = {
 function SignUp() {
 
   const [pageState, setPageState] = useState(COMPONENT_STATE.ready);
-  const [uid, setUid] = useState("guest-account@gmail.com");
-  const [pw, setPw] = useState("Test12345!!");
+  const [uid, setUid] = useState("");
+  const [pw, setPw] = useState("");
   const [showPWRequirements, setShowPWRequirements] = useState(false);
-  const [confirmPw, setConfirmPw] = useState("Test12345!!");
+  const [confirmPw, setConfirmPw] = useState("");
   const [reqsMet, setReqsMet] = useState(false);
+  const [allFieldsFilled, setAllFieldsFilled] = useState(false);
   const [error, setError] = useState("");
 
   async function onSignUpSubmit(e) {
@@ -27,6 +28,7 @@ function SignUp() {
 
     if (confirmPw !== pw) {
       setError("Passwords do not match.");
+      return;
     }
 
     await createUserAccount(uid, pw);
@@ -49,22 +51,32 @@ function SignUp() {
     issueEmailVerification();
   }
 
+  useEffect(() => {
+    if(uid.length 
+    && pw.length 
+    && confirmPw.length) {
+      setAllFieldsFilled(true);
+    } else {
+      setAllFieldsFilled(false);
+    }
+  }, [uid, pw, confirmPw]);
+
   if (pageState === COMPONENT_STATE.verification_sent) {
     return (
-      <>
-        <h1>
+      <authStyle.AuthFormContainer>
+        <authStyle.Header>
           Please Verify Account
-        </h1>
-        <p>
+        </authStyle.Header>
+        <authStyle.FormText>
           Your account has been registered. An email has been sent to
           confirm your registration. Please check your email in the next few moments.
-        </p>
-        <p>
-          Didn't see the verification email? Try checking your spam folder. If
-          nothing is there, please click below to resend a verification email.
-        </p>
-        <button onClick={onResend}>Resend verification</button>
-      </>
+        </authStyle.FormText>
+        <br/>
+        <authStyle.FormText>
+          No verification email? Click below to resend a verification email.
+        </authStyle.FormText>
+        <authStyle.FormSubmitButton onClick={onResend}>Resend verification</authStyle.FormSubmitButton>
+      </authStyle.AuthFormContainer>
     )
   }
 
@@ -79,6 +91,7 @@ function SignUp() {
           <authStyle.Input
             type="email"
             id="uid-email"
+            placeholder="Email Address"
             value={uid}
             onChange={(e) => setUid(e.target.value)}
             required
@@ -91,9 +104,11 @@ function SignUp() {
               id="uid-pw"
               type="password"
               value={pw}
+              placeholder="Password"
               onChange={handlePwChange}
               onFocus={(e) => setShowPWRequirements(true)}
               onBlur={(e) => setShowPWRequirements(false)}
+              required
             />
             <PWRequirements password={pw} setReqsMet={setReqsMet} />
           </div>
@@ -103,13 +118,17 @@ function SignUp() {
           <authStyle.Input
             id="uid-confirm-pw"
             type="password"
+            placeholder="Confirm Password"
             value={confirmPw}
-            onChange={(e) => setPw(e.target.value)}
+            onChange={(e) => setConfirmPw(e.target.value)}
+            required
           />
-          <div className="error-field">
+          <authStyle.FormTextError className="error-field">
             {error}
-          </div>
-          <authStyle.FormSubmitButton disabled={!reqsMet}>Submit</authStyle.FormSubmitButton>
+          </authStyle.FormTextError>
+          <authStyle.FormSubmitButton
+          disabled={!reqsMet || !allFieldsFilled}>Submit
+          </authStyle.FormSubmitButton>
         </authStyle.Form>
         <authStyle.FormLink>
           <Link to="/login/">

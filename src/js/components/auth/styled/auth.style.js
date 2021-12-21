@@ -104,13 +104,18 @@ export const Button = styled.button`
 
   background-color: ${props => props.hue ? `hsl(${props.hue}, ${props.sat}%, ${props.lig}%)` : "darkgrey"};
 
-  &:hover {
+  &:hover:not([disabled]) {
     background-color: ${props => props.hue ? `hsl(${props.hue}, ${props.sat}%, ${props.lig + 15}%)` : "darkgrey"};
   }
 
-  &:active {
+  &:active:not([disabled]) {
     background-color: ${props => props.hue ? `hsl(${props.hue}, ${props.sat}%, ${props.lig - 15}%)` : "darkgrey"};
     box-shadow: inset 1px 2px 7px black;
+  }
+
+  &:disabled {
+    background-color: hsl(0, 0%, 50%);
+    cursor: not-allowed;
   }
 `
 
@@ -120,11 +125,11 @@ export const FormSubmitButton = styled(Button)`
   transition: background-color box-shadow 300ms;
   width: 95%;
 
-  &:hover {
+  &:hover:not([disabled]) {
     background-color: ${color.primaryHover};
   }
 
-  &:active {
+  &:active:not([disabled]) {
     background-color: ${color.primaryPress};
     box-shadow: inset 1px 2px 7px black;
   }

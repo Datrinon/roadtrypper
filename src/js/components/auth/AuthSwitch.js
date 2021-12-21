@@ -25,7 +25,7 @@ function AuthSwitch() {
       <section className="content">
         <genStyle.Header>
           <HomeLogo />
-          <genStyle.NavLink>About (Coming Soon)</genStyle.NavLink>
+          <genStyle.NavLink to="#">About (Coming Soon)</genStyle.NavLink>
         </genStyle.Header>
         <authStyle.Background bg={Road}>
         </authStyle.Background>
