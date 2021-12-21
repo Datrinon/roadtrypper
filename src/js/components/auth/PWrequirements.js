@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react'
 import PropTypes from 'prop-types';
 
+import * as PWReqs from "./styled/PWReqs.style";
+
 /**
  * Template for creating password requirements.
  */
@@ -43,12 +45,13 @@ function PWRequirements({ password, setReqsMet }) {
 
     return (
       <div key={index}>
-        <p>
-          {passed &&
-            <span>✔</span>
+        <PWReqs.Req passed={passed}>
+          {passed 
+            ? <span className={"mark pass"}>✔</span>
+            : <span className={"mark miss"}>○</span>
           }
           {req.description}
-        </p>
+        </PWReqs.Req>
       </div>
     )
   }
@@ -66,11 +69,11 @@ function PWRequirements({ password, setReqsMet }) {
   });
 
   return (
-    <div className="pw-requirements">
+    <PWReqs.ReqContainer className="pw-requirements">
       {
         PASSWORD_TESTS.map(mapReq)
       }
-    </div>
+    </PWReqs.ReqContainer>
   )
 }
 
