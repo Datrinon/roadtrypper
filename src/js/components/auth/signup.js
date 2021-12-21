@@ -107,7 +107,7 @@ function SignUp() {
         </label>
         <button disabled={!reqsMet}>Submit</button>
       </form>
-      <Link to="/signup/login/">
+      <Link to="/login/">
         Existing User? Log in here.
       </Link>
     </div>

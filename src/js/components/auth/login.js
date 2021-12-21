@@ -90,14 +90,14 @@ function Login({ setUserInfo }) {
           Resend Verification Email
         </button>
         <authStyle.FormLink>
-          <Link to="/forgot_password">Forgot password?</Link>
+          <Link to="/login/forgot_password/">Forgot password?</Link>
         </authStyle.FormLink>
         <authStyle.FormDivider>
           <authStyle.FormDividerBreak/>
           <authStyle.FormDividerLabel>Not a member?</authStyle.FormDividerLabel>
         </authStyle.FormDivider>
         <authStyle.FormLink>
-          <Link to="/signup/">Sign up here.</Link>
+          <Link to="/login/signup/">Sign up here.</Link>
         </authStyle.FormLink>
         <authStyle.Button
          hue={203}

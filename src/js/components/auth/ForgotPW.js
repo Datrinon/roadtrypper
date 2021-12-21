@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react'
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { issuePwReset } from '../../database/auth';
 
@@ -60,6 +61,7 @@ function ForgotPW() {
       <ResultMessage visible={emailSent}>
         {successMessageBody}
       </ResultMessage>
+      <Link to={"/login"}>Return to Login</Link>
     </section>
   )
 }
