@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import RoadTrypperIcon from "../../../data/Roadtrypper.png";
+import RoadTrypperIcon from "../../../data/logo.jpg";
 
 const Logo = styled.div`
   font-family: "Segoe UI";
@@ -31,7 +31,6 @@ function HomeLogo() {
       <Link to="/" style={linkStyled}>
         <Logo>
           <LogoImg src={RoadTrypperIcon} alt="logo" />
-          <LogoTxt>RoadTrypper</LogoTxt>
         </Logo>
       </Link>
   )

@@ -98,6 +98,7 @@ export const Button = styled.button`
   border: none;
   border-radius: 2px;
   transition: all 300ms;
+  cursor: pointer;
 
   color : ${props => props.color ?? "initial"};
 
