@@ -22,27 +22,27 @@ function AuthSwitch() {
 
   return (
     <>
-      <genStyle.Header>
-        <HomeLogo/>
-      </genStyle.Header>
-      <authStyle.Background bg={Road}>
-      </authStyle.Background>
       <section className="content">
-        <Switch>
-          <Route exact path={`${match.path}/signup`}>
-            <SignUp />
-          </Route>
-          <Route exact path={`${match.path}/forgot_password`}>
-            {/* Forgot PW here. */}
-            <ForgotPW />
-          </Route>
-          <Route path={match.path}>
-            <Login />
-            {/* Login Component Here */}
-          </Route>
-        </Switch>
+        <genStyle.Header>
+          <HomeLogo />
+        </genStyle.Header>
+        <authStyle.Background bg={Road}>
+        </authStyle.Background>
+          <Switch>
+            <Route exact path={`${match.path}/signup`}>
+              <SignUp />
+            </Route>
+            <Route exact path={`${match.path}/forgot_password`}>
+              {/* Forgot PW here. */}
+              <ForgotPW />
+            </Route>
+            <Route path={match.path}>
+              <Login />
+              {/* Login Component Here */}
+            </Route>
+          </Switch>
       </section>
-      <Footer/>
+      <Footer />
     </>
   )
 }

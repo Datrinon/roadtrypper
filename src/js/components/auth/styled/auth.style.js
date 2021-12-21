@@ -11,9 +11,10 @@ import { color } from '../../styled/colors.style';
  */
 
 export const Background = styled.div`
+  overflow: hidden;
 
   @media ${device.mobileL} {
-    background-image: ${props => props.bg ? `url(${props.bg})` : "initial"};
+    background-image: url(/static/media/road.39b249a8.jpg);
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -23,6 +24,19 @@ export const Background = styled.div`
     width: 100vw;
     height: 100vh;
     background-position-x: center;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    /* flex-direction: column; */
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    /* justify-content: center; */
+    position: fixed;
+    z-index: -1;
   }
 `
 
@@ -33,12 +47,12 @@ export const AuthFormContainer = styled.div`
   border-radius: 5px;
 
   @media ${device.mobileL} {
+    width: 90vw;
+    max-width: 325px;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 90vw;
-    max-width: 325px;
   }
 `
 
@@ -53,7 +67,6 @@ export const Form = styled.form`
   margin: 0 auto;
 
   @media ${device.mobileL} {
-
   }
 `
 
