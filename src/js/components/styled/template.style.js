@@ -3,8 +3,9 @@ import styled from 'styled-components';
 
 export const Header = styled.div`
   width: 100vw;
-  height: 100px;
+  height: 48px;
   border: 1px dotted red;
+  display: flex;
 `
 
 export const ListingBox = styled.div`

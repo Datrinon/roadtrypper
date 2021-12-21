@@ -5,6 +5,10 @@ import ForgotPW from './ForgotPW';
 import Login from './login';
 import SignUp from './signup';
 
+import * as authStyle from "./styled/auth.style";
+import * as genStyle from "../../components/styled/template.style";
+import Road from "../../../data/road.jpg";
+import HomeLogo from '../shared/HomeLogo';
 
 
 /**
@@ -18,12 +22,11 @@ function AuthSwitch() {
   return (
     <>
       (The Auth Switch Page.)
-      <header>
-        Header Here.
-      </header>
-      <div>
-        BG here.
-      </div>
+      <genStyle.Header>
+        <HomeLogo/>
+      </genStyle.Header>
+      <authStyle.Background bg={Road}>
+      </authStyle.Background>
       <section className="auth-content">
         <Switch>
           <Route exact path={`${match.path}/signup`}>

@@ -5,7 +5,6 @@ import { UserContext } from '../Router';
 
 import * as authStyle from './styled/auth.style';
 
-import Road from "../../../data/road.jpg";
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { FAIcon } from '../styled/template.style';
 
@@ -56,8 +55,7 @@ function Login({ setUserInfo }) {
 
   return (
     <>
-      <authStyle.Background bg={Road}>
-      </authStyle.Background>
+
       <authStyle.AuthFormContainer>
         <authStyle.Header>Log in to RoadTrypper</authStyle.Header>
         <authStyle.Form onSubmit={onSignInSubmit}>
