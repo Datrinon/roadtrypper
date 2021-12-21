@@ -12,6 +12,7 @@ import NotFound from './shared/NotFound';
 // db
 import { authStateObserver } from '../database/auth';
 import ForgotPW from './auth/ForgotPW';
+import AuthSwitch from './auth/AuthSwitch';
 
 
 
@@ -63,27 +64,18 @@ function Router() {
         <Switch>
           {/* Home page redirects to the studio. */}
           <Route exact path="/">
-            {isSignedIn() ? <Redirect to="/trips/" /> : <Redirect to="/signup/login" />}
+            {isSignedIn() ? <Redirect to="/trips/" /> : <Redirect to="/login" />}
           </Route>
           {/* Protected Content */}
           <Route path="/trips/:tripId">
-            {isSignedIn() ? <Studio /> : <Redirect to="/signup/login" />}
+            {isSignedIn() ? <Studio /> : <Redirect to="/login" />}
           </Route>
           <Route exact path="/trips">
-            {isSignedIn() ? <Overview /> : <Redirect to="/signup/login" />}
+            {isSignedIn() ? <Overview /> : <Redirect to="/login" />}
           </Route>
           {/* Auth pages; redirect if the user is already signed in. */}
-          <Route exact path="/signup/login">
-            {isSignedIn() ? <Redirect to="/trips/" /> : <Login />}
-          </Route>
-          <Route exact path="/login">
-            {isSignedIn() ? <Redirect to="/trips/" /> : <Login />}
-          </Route>
-          <Route exact path="/forgot_password">
-            <ForgotPW/>
-          </Route>
-          <Route exact path="/signup/" component={SignUp}>
-            {isSignedIn() ? <Redirect to="/trips/" /> : <SignUp />}
+          <Route path="/login">
+            {isSignedIn() ? <Redirect to="/trips/" /> : <AuthSwitch />}
           </Route>
           <Route component={NotFound} />
         </Switch>
