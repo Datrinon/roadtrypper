@@ -14,6 +14,8 @@ const Icon = styled.div`
     height: 32px;
     position: relative;
     cursor: pointer;
+    display: inline-block;
+    float: right;
 `
 
 const IconText = styled.div`
