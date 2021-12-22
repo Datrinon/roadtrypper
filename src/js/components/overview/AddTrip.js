@@ -1,9 +1,13 @@
 import React, {useState, useContext, useRef, useEffect} from 'react'
 
+import * as oS from "./styled/Overview.style";
+
 import { addTrip } from '../../database/data'
 import { UserContext } from '../Router'
 
 import { useHistory } from 'react-router-dom';
+import { FAIcon } from '../styled/template.style';
+import { faPlus, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
 function AddTrip() {
 
@@ -31,9 +35,9 @@ function AddTrip() {
 
   return (
     <div>
-      <button onClick={onAddTrip} disabled={disabled}>
-        (Floating Button) Start a New Trip
-      </button>
+      <oS.AddTripButton onClick={onAddTrip} disabled={disabled}>
+        <FAIcon icon={faPlus}/>
+      </oS.AddTripButton>
       {disabled &&
         <p>Creating a new trip... please wait.</p>
       }

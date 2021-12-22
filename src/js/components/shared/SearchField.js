@@ -255,7 +255,7 @@ const SearchField = React.forwardRef(({
       ref={component}
       className={`${[...classNames]} searcher`}>
       <sS.SearchFormContainer
-        visible={barVisible}
+        visible={barVisible.toString()}
         className={`${[...classNames]} srch-container`}>
         <form
           className={`${[...classNames]} form`}
