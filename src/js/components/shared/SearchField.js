@@ -246,14 +246,14 @@ const SearchField = React.forwardRef(({
   }
 
   return (
-    <div>
+    <sS.SearchFormContainer className={[...classNames], "srch-container"}>
       <sS.SearchForm
         visible={barVisible}
         className={`${[...classNames]}`}
         ref={formInput}
         onFocus={onFormFocus}
         onSubmit={handleSearch}>
-        <sS.SearchBar>
+        <sS.SearchBar className="searchbar">
           <div style={{display: "flex"}}>
             <sS.SearchBarIcon
               className={"searchbar-close"}
@@ -261,7 +261,7 @@ const SearchField = React.forwardRef(({
               onClick={() => setBarVisible(false)}
             />
             <sS.SearchInput
-              className="search-field"
+              className="searchbar-field"
               ref={ref}
               // Set to 1000 because of nominatim's usage policy requirements.
               onKeyDown={generateSuggestions}
@@ -271,7 +271,10 @@ const SearchField = React.forwardRef(({
               placeholder={placeholder}
             />
           </div>
-          <sS.SearchButton type="submit" disabled={submitPressed}>
+          <sS.SearchButton
+            className="searchbar-submit-button"
+            type="submit"
+            disabled={submitPressed}>
             <FAIcon icon={faSearch} />
           </sS.SearchButton>
           {
@@ -296,7 +299,7 @@ const SearchField = React.forwardRef(({
         className={"searchbar-toggle"}
         icon={faSearch}
         onClick={() => setBarVisible(!barVisible)} />
-    </div>
+    </sS.SearchFormContainer>
   )
 });
 

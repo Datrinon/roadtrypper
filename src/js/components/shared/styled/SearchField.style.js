@@ -4,6 +4,13 @@ import { device } from "../../styled/breakpoints.style";
 import { FAIcon } from "../../styled/template.style";
 
 
+export const SearchFormContainer = styled.div`
+  @media ${device.tablet} {
+    position: relative;
+    min-width: 500px;
+  }
+`
+
 export const SearchForm = styled.form`
   display: ${props => props.visible ? "initial" : "none"};
   position: absolute;
@@ -17,7 +24,6 @@ export const SearchForm = styled.form`
   width: 79%;
 
   @media ${device.tablet} {
-    /* display: block; */
   }
 `
 
@@ -41,7 +47,7 @@ export const SearchButton = styled.button`
 `
 
 export const SearchBarToggle = styled(FAIcon)`
-  display: ${props => props.visible ? "initial" : "none"};
+  visibility: ${props => props.visible ? "visible" : "hidden"};
   padding: 8px 10px;
   border-radius: 50%;
   font-size: 1.5em;
@@ -49,6 +55,10 @@ export const SearchBarToggle = styled(FAIcon)`
 
   &:hover {
     background-color: rgba(0,0,0,0.15);
+  }
+
+  @media ${device.tablet} {
+    float: right;
   }
 `
 

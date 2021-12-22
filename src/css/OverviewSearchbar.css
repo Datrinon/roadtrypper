@@ -1,0 +1,49 @@
+/* Lesson: Styled Components not good for agnostic components. */
+
+/* Container */
+.trips-search.srch-container {
+
+}
+
+/* Underlying form element, which contains search bar. */
+.trips-search {
+
+}
+
+/* Search bar */
+.trips-search .searchbar {
+
+}
+
+/* Search bar icon */
+.trips-search .searchbar-close {
+
+}
+
+/* Search bar field */
+.trips-search .searchbar-field {
+
+}
+
+/* Search bar field's submit button */
+.trips-search .searchbar-submit-button {
+
+}
+
+/* Loading spinner for search bar */
+.trips-search .loading {
+
+}
+
+/* Loading Error Diagnostic */
+.trips-search .search-result-failure {
+
+}
+
+/* Toggle button for mobile view */
+.trips-search .searchbar-toggle {
+
+}
+
+/* The plan is to write the desktop view first, then use the toggle for mobile view. */
+
