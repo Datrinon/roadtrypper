@@ -149,18 +149,20 @@ function Overview() {
   return (
     <div>
       <oS.OverviewHeader>
-        <HomeLogo />
-        <oS.HeaderGroup>
-          <SearchField
-            ref={searchRef}
-            fetchForSuggestions={fetchTrips}
-            suggestionMap={mapSearchResultsToElem}
-            debounceTimer={400}
-            fasterFirstSearch={null}
-            placeholder={"Search for a trip..."}
-            classNames={["trips-search"]} />
-          <AccountIcon />
-        </oS.HeaderGroup>
+        <oS.HeaderContent>
+          <HomeLogo />
+          <oS.HeaderGroup>
+            <SearchField
+              ref={searchRef}
+              fetchForSuggestions={fetchTrips}
+              suggestionMap={mapSearchResultsToElem}
+              debounceTimer={400}
+              fasterFirstSearch={null}
+              placeholder={"Search for a trip..."}
+              classNames={["trips-search"]} />
+            <AccountIcon />
+          </oS.HeaderGroup>
+        </oS.HeaderContent>
       </oS.OverviewHeader>
       <AddTrip />
       <div>

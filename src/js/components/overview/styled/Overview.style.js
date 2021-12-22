@@ -6,6 +6,14 @@ export const OverviewHeader = styled(Header)`
   position: relative;
 `
 
+export const HeaderContent = styled.div`
+  max-width: 800px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0 auto;
+`
+
 export const TripCardLayout = styled.div`
   display: flex;
   flex-direction: row;

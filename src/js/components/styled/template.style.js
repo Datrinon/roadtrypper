@@ -6,9 +6,6 @@ export const Header = styled.div`
   width: 100vw;
   height: 48px;
   border: 1px dotted red;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
 `
 
 export const NavLink = styled(Link)`
