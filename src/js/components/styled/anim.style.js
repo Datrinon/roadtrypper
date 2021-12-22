@@ -10,3 +10,12 @@ export const unravel = keyframes`
     transform: scaleY(1.0);
   }
 `
+
+export const appear = keyframes`
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1.0;
+  }
+`

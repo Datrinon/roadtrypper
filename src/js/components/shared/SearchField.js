@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import styled from 'styled-components';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faSpinner, faSearch } from '@fortawesome/free-solid-svg-icons'
+import { faSpinner, faSearch, faLongArrowAltLeft } from '@fortawesome/free-solid-svg-icons'
 
 import { debounce } from 'lodash';
 import { FAIcon } from '../styled/template.style';
@@ -49,7 +49,7 @@ const SearchField = React.forwardRef(({
   placeholder,
   classNames }, ref) => {
 
-  const [visible, setVisible] = useState(false);
+  const [barVisible, setBarVisible] = useState(false);
 
   const [suggestions, setSuggestions] = useState(null);
   const [displaySuggestions, setDisplaySuggestions] = useState(false);
@@ -142,11 +142,17 @@ const SearchField = React.forwardRef(({
 
     setSubmitPressed(false);
 
+    if (!results) {
+      return;
+    }
+
+
+
     if (results[0]) {
       onSearchCallback(results[0]);
       currentFocused.current = 0;
     } else {
-      // else invalid search, and just show the user no place found.  
+      // else invalid search, and just show the user no result found.  
       setInvalidSearchTerm(ref.current.value);
     }
   }
@@ -242,30 +248,39 @@ const SearchField = React.forwardRef(({
   return (
     <div>
       <sS.SearchForm
-        visible={visible}
+        visible={barVisible}
         className={`${[...classNames]}`}
         ref={formInput}
         onFocus={onFormFocus}
         onSubmit={handleSearch}>
-        <div>
-          <input
-            className="search-field"
-            ref={ref}
-            // Set to 1000 because of nominatim's usage policy requirements.
-            onKeyDown={generateSuggestions}
-            onChange={() => setInvalidSearchTerm(null)}
-            type="search"
-            disabled={submitPressed}
-            placeholder={placeholder}
-          />
-          <button type="submit" disabled={submitPressed}>Search</button>
+        <sS.SearchBar>
+          <div style={{display: "flex"}}>
+            <sS.SearchBarIcon
+              className={"searchbar-close"}
+              icon={faLongArrowAltLeft}
+              onClick={() => setBarVisible(false)}
+            />
+            <sS.SearchInput
+              className="search-field"
+              ref={ref}
+              // Set to 1000 because of nominatim's usage policy requirements.
+              onKeyDown={generateSuggestions}
+              onChange={() => setInvalidSearchTerm(null)}
+              type="search"
+              disabled={submitPressed}
+              placeholder={placeholder}
+            />
+          </div>
+          <sS.SearchButton type="submit" disabled={submitPressed}>
+            <FAIcon icon={faSearch} />
+          </sS.SearchButton>
           {
             submitPressed &&
             <span className="loading">
               <FontAwesomeIcon icon={faSpinner} />
             </span>
           }
-        </div>
+        </sS.SearchBar>
         <div className="search-results">
           {displaySuggestions && suggestions}
         </div>
@@ -276,10 +291,11 @@ const SearchField = React.forwardRef(({
           </div>
         }
       </sS.SearchForm>
-      <FAIcon
+      <sS.SearchBarToggle
+        visible={!barVisible}
         className={"searchbar-toggle"}
         icon={faSearch}
-        onClick={() => setVisible(!visible)}/>
+        onClick={() => setBarVisible(!barVisible)} />
     </div>
   )
 });

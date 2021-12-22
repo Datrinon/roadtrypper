@@ -3,6 +3,7 @@ import { Header } from "../../styled/template.style";
 
 export const OverviewHeader = styled(Header)`
   justify-content: space-evenly;
+  position: relative;
 `
 
 export const TripCardLayout = styled.div`
@@ -23,7 +24,7 @@ export const HeaderGroup = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 1em;
+  gap: 0.5em;
   @supports not (gap: 1em) {
 
   }
