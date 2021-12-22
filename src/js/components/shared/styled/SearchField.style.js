@@ -5,26 +5,15 @@ import { FAIcon } from "../../styled/template.style";
 
 
 export const SearchFormContainer = styled.div`
+  visibility: ${props => props.visible ? "initial" : "hidden"};
+
   @media ${device.tablet} {
-    position: relative;
-    min-width: 500px;
+    visibility: initial;
   }
 `
 
 export const SearchForm = styled.form`
   display: ${props => props.visible ? "initial" : "none"};
-  position: absolute;
-  top: 3px;
-  left: 0;
-  background-color: #d0d0d0;
-  border-radius: 20px;
-  padding: 0 8px 0 16px;
-  animation: ${appear} 300ms;
-  max-width: 410px;
-  width: 79%;
-
-  @media ${device.tablet} {
-  }
 `
 
 export const SearchInput = styled.input`
@@ -48,18 +37,6 @@ export const SearchButton = styled.button`
 
 export const SearchBarToggle = styled(FAIcon)`
   visibility: ${props => props.visible ? "visible" : "hidden"};
-  padding: 8px 10px;
-  border-radius: 50%;
-  font-size: 1.5em;
-  cursor: pointer;
-
-  &:hover {
-    background-color: rgba(0,0,0,0.15);
-  }
-
-  @media ${device.tablet} {
-    float: right;
-  }
 `
 
 export const SearchBarIcon = styled(FAIcon)`

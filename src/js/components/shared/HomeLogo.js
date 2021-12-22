@@ -21,14 +21,13 @@ const LogoTxt = styled.p`
 `
 
 const linkStyled = {
-  textDecoration: "none",
-  alignSelf: "center"
+  textDecoration: "none"
 }
 
 
 function HomeLogo() {
   return (
-      <Link to="/" style={linkStyled}>
+      <Link to="/" style={linkStyled} className="home-logo">
         <Logo>
           <LogoImg src={RoadTrypperIcon} alt="logo" />
         </Logo>

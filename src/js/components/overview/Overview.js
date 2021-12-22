@@ -14,6 +14,9 @@ import { faMap } from '@fortawesome/free-solid-svg-icons';
 import { stringify } from '@firebase/util';
 import HomeLogo from '../shared/HomeLogo';
 
+// css
+import "../../../css/OverviewSearchbar.css";
+
 /**
  * This shows us all the trips in the user's account.
  * @returns 
@@ -152,17 +155,15 @@ function Overview() {
       <oS.OverviewHeader>
         <oS.HeaderContent>
           <HomeLogo />
-          <oS.HeaderGroup>
-            <SearchField
-              ref={searchRef}
-              fetchForSuggestions={fetchTrips}
-              suggestionMap={mapSearchResultsToElem}
-              debounceTimer={400}
-              fasterFirstSearch={null}
-              placeholder={"Search for a trip..."}
-              classNames={["trips-search"]} />
-            <AccountIcon />
-          </oS.HeaderGroup>
+          <SearchField
+            ref={searchRef}
+            fetchForSuggestions={fetchTrips}
+            suggestionMap={mapSearchResultsToElem}
+            debounceTimer={400}
+            fasterFirstSearch={null}
+            placeholder={"Search for a trip..."}
+            classNames={["trips-search"]} />
+          <AccountIcon />
         </oS.HeaderContent>
       </oS.OverviewHeader>
       <AddTrip />

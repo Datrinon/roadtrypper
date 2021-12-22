@@ -8,11 +8,17 @@ export const OverviewHeader = styled(Header)`
 
 export const HeaderContent = styled.div`
   max-width: 800px;
-  display: flex;
+  /* display: flex;
   flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
+  justify-content: space-between;
+  align-items: center; */
+  display: grid;
+  grid-template-columns: 25% auto 50px;
   margin: 0 auto;
+  padding-top: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  gap: 1em 4px;
 `
 
 export const TripCardLayout = styled.div`
@@ -26,15 +32,5 @@ export const TripCardLayout = styled.div`
   @supports not (gap: 1em) {
     margin-left: 25px;
     margin-right: 25px;
-  }
-`
-
-export const HeaderGroup = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 0.5em;
-  @supports not (gap: 1em) {
-
   }
 `

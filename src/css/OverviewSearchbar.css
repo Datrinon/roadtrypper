@@ -1,33 +1,89 @@
 /* Lesson: Styled Components not good for agnostic components. */
 
-/* Container */
-.trips-search.srch-container {
 
+/* Container for the entire component */ 
+.trips-search.searcher {
+  display: grid;
+  /* although it takes up two rows, only one specification is necessary since one of two elements is hidden at any time. */
+  grid-template-columns: auto;
+}
+
+.trips-search svg {
+  transition: transform 100ms;
+  cursor: pointer;
+  color: rgb(72, 72, 72);
+}
+
+.trips-search svg:hover {
+  transform: scale(1.10);
+  color: black;
+}
+
+/* Container for just the search field form */
+.trips-search.srch-container {
+  background-color: #dddddd;
+  padding: 5px;
+  border-radius: 15px;
+  transition: all 200ms;
+  margin: 0 auto;
+  position: absolute;
+  left: 5px;
+}
+
+/* Container (Active State) */
+.trips-search.searcher.open .srch-container {
+  background-color: white;
+  padding: 7px;
+  box-shadow: 0px 1px 3px 0px #c5c5c5;
+  color: black;
+}
+
+@media (min-width: 768px) {
+  .trips-search.srch-container {
+    position: initial;
+    left: unset;
+    width: 75%;
+    max-width: 365px;
+  }
+  .trips-search.searcher.open .srch-container {
+    width: 77%;
+  }
 }
 
 /* Underlying form element, which contains search bar. */
-.trips-search {
-
+.trips-search.form {
+  height: 1.25em;
 }
 
 /* Search bar */
 .trips-search .searchbar {
-
+  display: grid;
+  grid-template-areas:
+  "return field submit waiting"
+  "result result result result";
+  grid-template-columns: 30px auto 30px 15px;
+  grid-template-rows: 1.25rem auto;
+  width: 360px;
+  max-width: 85vw;
 }
 
-/* Search bar icon */
+/* Search bar icon (to close) (only active on mobile) */
 .trips-search .searchbar-close {
 
+  
 }
 
-/* Search bar field */
-.trips-search .searchbar-field {
 
+/* Search bar field input */
+.trips-search .searchbar-field {
+  all: unset;
+  position: relative;
+  left: 5px;
 }
 
 /* Search bar field's submit button */
 .trips-search .searchbar-submit-button {
-
+  all: unset;
 }
 
 /* Loading spinner for search bar */
@@ -41,9 +97,20 @@
 }
 
 /* Toggle button for mobile view */
-.trips-search .searchbar-toggle {
-
+.trips-search.button-toggle {
+  justify-self: end;
+  color: rgb(110, 110, 110);
 }
 
+
+@media (min-width: 768px) {
+  .trips-search .searchbar-close {
+    visibility: hidden;
+  }
+
+  .trips-search.button-toggle {
+    visibility: hidden;
+  }
+}
 /* The plan is to write the desktop view first, then use the toggle for mobile view. */
 

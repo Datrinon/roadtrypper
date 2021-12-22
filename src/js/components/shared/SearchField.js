@@ -7,6 +7,7 @@ import { debounce } from 'lodash';
 import { FAIcon } from '../styled/template.style';
 
 import * as sS from "./styled/SearchField.style";
+import Utility from '../../util/utility';
 
 
 const BlockButton = styled.button`
@@ -250,57 +251,67 @@ const SearchField = React.forwardRef(({
   }
 
   return (
-    <div ref={component} className={`${[...classNames]} srch-container`}>
-      <form
+    <div
+      ref={component}
+      className={`${[...classNames]} searcher`}>
+      <sS.SearchFormContainer
         visible={barVisible}
-        className={`${[...classNames]} form`}
-        ref={formInput}
-        onFocus={onFormFocus}
-        onSubmit={handleSearch}>
-        <div className="searchbar">
-          <FAIcon
-            className={"searchbar-close"}
-            icon={faLongArrowAltLeft}
-            onClick={() => setBarVisible(false)}
-          />
-          <input
-            className="searchbar-field"
-            ref={ref}
-            // Set to 1000 because of nominatim's usage policy requirements.
-            onKeyDown={generateSuggestions}
-            onChange={() => setInvalidSearchTerm(null)}
-            type="search"
-            disabled={submitPressed}
-            placeholder={placeholder}
-          />
-          <button
-            className="searchbar-submit-button"
-            type="submit"
-            disabled={submitPressed}>
-            <FAIcon icon={faSearch} />
-          </button>
-          {
-            submitPressed &&
-            <span className="loading">
-              <FAIcon icon={faSpinner} />
-            </span>
-          }
-        </div>
-        <div className="search-results">
-          {displaySuggestions && suggestions}
-        </div>
-        {
-          invalidSearchTerm &&
-          <div className="search-result-failure">
-            No results found for '{invalidSearchTerm}'.
+        className={`${[...classNames]} srch-container`}>
+        <form
+          className={`${[...classNames]} form`}
+          ref={formInput}
+          onFocus={onFormFocus}
+          onSubmit={handleSearch}>
+          <div className="searchbar">
+            <FAIcon
+              className={"searchbar-close"}
+              icon={faLongArrowAltLeft}
+              onClick={() => {
+                setBarVisible(false);
+              }}
+            />
+            <input
+              id="search-field"
+              className="searchbar-field"
+              ref={ref}
+              // Set to 1000 because of nominatim's usage policy requirements.
+              onKeyDown={generateSuggestions}
+              onChange={() => setInvalidSearchTerm(null)}
+              type="search"
+              disabled={submitPressed}
+              placeholder={placeholder}
+            />
+            <button
+              className="searchbar-submit-button"
+              type="submit"
+              disabled={submitPressed}>
+              <FAIcon icon={faSearch} />
+            </button>
+            {
+              submitPressed &&
+              <span className="loading">
+                <FAIcon icon={faSpinner} />
+              </span>
+            }
           </div>
-        }
-      </form>
-      {/* <FAIcon
+          <div className="search-results">
+            {displaySuggestions && suggestions}
+          </div>
+          {
+            invalidSearchTerm &&
+            <div className="search-result-failure">
+              No results found for '{invalidSearchTerm}'.
+            </div>
+          }
+        </form>
+      </sS.SearchFormContainer>
+      <sS.SearchBarToggle
         visible={!barVisible}
-        className={"searchbar-toggle"}
+        className={`${[...classNames]} button-toggle`}
         icon={faSearch}
-        onClick={() => setBarVisible(!barVisible)} /> */}
+        onClick={() => {
+          setBarVisible(!barVisible);
+          }} />
     </div>
   )
 });

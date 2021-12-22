@@ -18,3 +18,35 @@
     opacity: 0.0;
   }
 }
+
+.disappear {
+  animation: simple-fade 150ms;
+}
+
+.appear {
+  animation: appear 150ms;
+}
+
+@keyframes appear {
+  0% {
+    opacity: 0;
+    transform: scale(1.0);
+  }
+  95% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1.0);
+    opacity: 1.0;
+  }
+}
+
+@keyframes simple-fade {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
