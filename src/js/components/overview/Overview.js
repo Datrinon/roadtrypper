@@ -10,7 +10,7 @@ import { loadSampleTrip, loadTrips } from '../../database/data';
 import TripCard from './TripCard';
 import AddTrip from './AddTrip';
 import { UserContext } from '../Router';
-import { faMap } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDown, faArrowUp, faMap } from '@fortawesome/free-solid-svg-icons';
 import { stringify } from '@firebase/util';
 import HomeLogo from '../shared/HomeLogo';
 
@@ -170,10 +170,16 @@ function Overview() {
       <div>
         Sorter.
         <button onClick={sortTrips.bind(null, "title")}>
-          Sort by title {titleDescOrder ? "desc" : "asc"}
+          Sort by title
+          {titleDescOrder 
+            ? <s.FAIcon icon={faArrowDown}/>
+            : <s.FAIcon icon={faArrowUp}/>}
         </button>
         <button onClick={sortTrips.bind(null, "date")}>
-          Sort by date {dateDescOrder ? "desc" : "asc"}
+          Sort by date
+          {dateDescOrder
+            ? <s.FAIcon icon={faArrowDown}/>
+            : <s.FAIcon icon={faArrowUp}/>}
         </button>
       </div>
       <oS.TripCardLayout>
@@ -195,5 +201,7 @@ function Overview() {
     </div>
   )
 }
+
+
 
 export default Overview
