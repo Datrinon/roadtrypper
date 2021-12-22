@@ -64,9 +64,9 @@ function SignUp() {
   if (pageState === COMPONENT_STATE.verification_sent) {
     return (
       <authStyle.AuthFormContainer>
-        <authStyle.Header>
+        <authStyle.Heading>
           Please Verify Account
-        </authStyle.Header>
+        </authStyle.Heading>
         <authStyle.FormText>
           Your account has been registered. An email has been sent to
           confirm your registration. Please check your email in the next few moments.
@@ -83,7 +83,7 @@ function SignUp() {
   return (
     <>
       <authStyle.AuthFormContainer>
-        <authStyle.Header>Sign Up</authStyle.Header>
+        <authStyle.Heading>Sign Up</authStyle.Heading>
         <authStyle.Form onSubmit={onSignUpSubmit}>
           <authStyle.Label htmlFor="uid-email">
             Email

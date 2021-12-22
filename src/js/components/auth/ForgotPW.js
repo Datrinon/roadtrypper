@@ -45,9 +45,9 @@ function ForgotPW() {
 
   return (
     <authStyle.AuthFormContainer>
-      <authStyle.Header>
+      <authStyle.Heading>
         Forgot Password?
-      </authStyle.Header>
+      </authStyle.Heading>
       <authStyle.FormText>Not a problem. Simply enter your email here to get a link to 
         reset your password.
       </authStyle.FormText>

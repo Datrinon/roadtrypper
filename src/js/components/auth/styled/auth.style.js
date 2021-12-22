@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { device } from '../../styled/breakpoints.style';
 import { color } from '../../styled/colors.style';
+import { Header } from '../../styled/template.style';
 
 /**
  * Stylings for authentication-related components of the website.
@@ -9,6 +10,12 @@ import { color } from '../../styled/colors.style';
 /**
  * Define the responsiveness... best way? Remember -- mobile-first approach!
  */
+
+export const AuthHeader = styled(Header)`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`
 
 export const Background = styled.div`
   overflow: hidden;
@@ -56,7 +63,7 @@ export const AuthFormContainer = styled.div`
   }
 `
 
-export const Header = styled.h1`
+export const Heading = styled.h1`
   text-align: center;
   margin: 15px 0;
   font-size: 125%;

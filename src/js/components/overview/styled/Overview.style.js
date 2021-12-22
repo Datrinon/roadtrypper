@@ -10,6 +10,7 @@ export const HeaderContent = styled.div`
   max-width: 800px;
   display: flex;
   flex-direction: row;
+  justify-content: space-around;
   align-items: center;
   margin: 0 auto;
 `

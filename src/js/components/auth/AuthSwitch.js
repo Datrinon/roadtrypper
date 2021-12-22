@@ -23,10 +23,10 @@ function AuthSwitch() {
   return (
     <>
       <section className="content">
-        <genStyle.Header>
+        <authStyle.AuthHeader>
           <HomeLogo />
-          <genStyle.NavLink to="#">About (Coming Soon)</genStyle.NavLink>
-        </genStyle.Header>
+          {/* <genStyle.NavLink to="#">About (Coming Soon)</genStyle.NavLink> */}
+        </authStyle.AuthHeader>
         <authStyle.Background bg={Road}>
         </authStyle.Background>
           <Switch>

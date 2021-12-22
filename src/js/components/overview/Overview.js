@@ -139,9 +139,10 @@ function Overview() {
   }, []);
 
   if (trips === null) {
-    return (
-      <p>Loading...</p>
-    )
+    return null;
+    // return (
+    //   <p>Loading...</p>
+    // )
   }
 
   console.log(trips);

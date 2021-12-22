@@ -57,7 +57,7 @@ function Login({ setUserInfo }) {
     <>
 
       <authStyle.AuthFormContainer>
-        <authStyle.Header>Log in to RoadTrypper</authStyle.Header>
+        <authStyle.Heading>Log in to RoadTrypper</authStyle.Heading>
         <authStyle.Form onSubmit={onSignInSubmit}>
           <authStyle.Label htmlFor="uid-email">
             Email
