@@ -110,3 +110,17 @@ export const SortButton = styled.button`
   }
 `
 
+
+export const AddTripMessage = styled.p`
+  position: absolute;
+  bottom: 5%;
+  left: 25%;
+  right: 25%;
+  text-align: center;
+  font-size: 1.15em;
+  padding: 12px 0;
+  background-color: #000000c9;
+  color: white;
+  border-radius: 8px;
+  animation: ${appear} 300ms;
+`

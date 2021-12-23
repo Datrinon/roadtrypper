@@ -39,7 +39,7 @@ function AddTrip() {
         <FAIcon icon={faPlus}/>
       </oS.AddTripButton>
       {disabled &&
-        <p>Creating a new trip... please wait.</p>
+        <oS.AddTripMessage>Creating a new trip... please wait.</oS.AddTripMessage>
       }
     </div>
   )

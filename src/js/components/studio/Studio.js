@@ -265,9 +265,8 @@ function Studio() {
   // }, [trip]);
 
   //#region :Render Logic
-  // if (pageState === STATE.LOADING) {
-  if (pageState){
-    
+  // if (pageState){
+  if (pageState === STATE.LOADING) {
     return <LoadingStudio/>;
   } else if (pageState === STATE.FAILURE) {
     return <LoadFailure error={pageError} />
