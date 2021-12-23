@@ -167,31 +167,31 @@ function Overview() {
         </oS.HeaderContent>
       </oS.OverviewHeader>
       <AddTrip />
-      <div>
-        Sorter.
-        <button onClick={sortTrips.bind(null, "title")}>
-          Sort by title
-          {titleDescOrder 
-            ? <s.FAIcon icon={faArrowDown}/>
-            : <s.FAIcon icon={faArrowUp}/>}
-        </button>
-        <button onClick={sortTrips.bind(null, "date")}>
-          Sort by date
-          {dateDescOrder
-            ? <s.FAIcon icon={faArrowDown}/>
-            : <s.FAIcon icon={faArrowUp}/>}
-        </button>
-      </div>
-      <oS.TripCardLayout>
-        {trips.map(trip => {
-          return <TripCard
-            key={trip.tripId}
-            trip={trip}
-            setTrips={setTrips}
-          />
-        })}
-      </oS.TripCardLayout>
-      Overview.
+      <oS.TripCardContainer>
+        <oS.SortContainer>
+          <oS.SortButton onClick={sortTrips.bind(null, "title")}>
+            <span>Title</span>
+            {titleDescOrder
+              ? <s.FAIcon icon={faArrowDown} />
+              : <s.FAIcon icon={faArrowUp} />}
+          </oS.SortButton>
+          <oS.SortButton onClick={sortTrips.bind(null, "date")}>
+            <span>Date</span>
+            {dateDescOrder
+              ? <s.FAIcon icon={faArrowDown} />
+              : <s.FAIcon icon={faArrowUp} />}
+          </oS.SortButton>
+        </oS.SortContainer>
+        <oS.TripCardLayout>
+          {trips.map(trip => {
+            return <TripCard
+              key={trip.tripId}
+              trip={trip}
+              setTrips={setTrips}
+            />
+          })}
+        </oS.TripCardLayout>
+      </oS.TripCardContainer>
       {/* 
       To Add:
       1. Trip Card Component

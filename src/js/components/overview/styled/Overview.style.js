@@ -23,14 +23,18 @@ export const HeaderContent = styled.div`
   gap: 1em 4px;
 `
 
+export const TripCardContainer = styled.div`
+  max-width: 710px;
+  margin: 0 auto;
+
+`
+
 export const TripCardLayout = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  max-width: 710px;
   justify-content: flex-start;
   gap: 30px;
-  margin: 0 auto;
   @supports not (gap: 1em) {
     margin-left: 25px;
     margin-right: 25px;
@@ -43,8 +47,8 @@ export const AddTripButton = styled.button`
   display: block;
   margin: 0 auto;
   position: fixed;
-  bottom: 15px;
-  right: 15px;
+  bottom: 2vh;
+  right: 5vw;
   padding: 25px 24px;
   border-radius: 50%;
   background-color: ${color.primary};
@@ -69,5 +73,35 @@ export const AddTripButton = styled.button`
     right: calc(100% + 5px);
     width: 100%;
     animation: ${appear} 300ms;
+  }
+`
+
+export const SortContainer = styled.div`
+  margin: 5px;
+  text-align: end;
+`
+
+export const SortButton = styled.button`
+  all: unset;
+  transition: all 150ms;
+  font-variant: all-petite-caps;
+  border: 1px solid black;
+  border-radius: 3px;
+  margin: 0 5px;
+  padding: 0 3px;
+  background-color: #dddddd;
+
+  & > .svg-inline--fa {
+    width: 0.85rem;
+  }
+
+  & > span {
+    position: relative;
+    bottom: 3px;
+  }
+
+  &:hover {
+    box-shadow: 0px 2px 5px 1px #9a9393;
+    color: #434343;
   }
 `
