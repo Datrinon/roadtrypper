@@ -74,12 +74,6 @@ function Overview() {
     }
 
     setTrips(tripsCopy);
-    /**
-     * TODO here.
-     * 1. Ascending Sorts
-     * 2. Descending Sorts
-     * 3. Sort aggregate.
-     */
   }
 
   function fetchTrips() {
@@ -192,12 +186,6 @@ function Overview() {
           })}
         </oS.TripCardLayout>
       </oS.TripCardContainer>
-      {/* 
-      To Add:
-      1. Trip Card Component
-      2. Click interactivity to make card redirect to the studio
-      3. Use a dummy ID please placed in the URL.
-       */}
     </div>
   )
 }

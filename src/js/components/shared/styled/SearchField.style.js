@@ -61,6 +61,8 @@ export const SearchResultContainer = styled.div`
   right: 5px;
   border-radius: 2px;
   box-shadow: 1px 3px 5px 0px #6c6a6a73;
+  position: relative;
+  z-index: 99;
 `
 
 export const SearchResult = styled.button`

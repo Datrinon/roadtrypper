@@ -79,8 +79,6 @@ export const AddTripButton = styled.button`
 export const SortContainer = styled.div`
   margin: 5px;
   text-align: end;
-  position: relative;
-  z-index: -1;
 `
 
 export const SortButton = styled.button`
@@ -95,6 +93,7 @@ export const SortButton = styled.button`
   color: #353535;
   background-color: #f9f9f9;
   box-shadow: 0px 1px 2px 0px #a9a9a9;
+  cursor: pointer;
 
   & > .svg-inline--fa {
     width: 0.85rem;
