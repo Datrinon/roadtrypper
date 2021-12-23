@@ -1,7 +1,7 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import "../../../css/Map.css";
-import { MapContainer, TileLayer, Marker, Popup, Tooltip, FeatureGroup } from 'react-leaflet';
+import { MapContainer, TileLayer, FeatureGroup } from 'react-leaflet';
 
 import L from "leaflet";
 import DayPins from './DayPins';
@@ -13,6 +13,8 @@ import "leaflet-geosearch/dist/geosearch.umd";
 import * as GeoSearch from 'leaflet-geosearch';
 import { MapInstance } from './Studio';
 
+import * as mS from "./styled/Map.styled";
+
 const LeafIcon = L.Icon.extend({
   options: {}
 });
@@ -23,11 +25,6 @@ const greenIcon = new LeafIcon({
 });
 
 
-const MapStyled = styled.div`
-  height: 300px;
-  width: 300px;
-  border: 5px solid red;
-`
 function Map({ data, setActivePin }) {
 
   const mapRef = React.useContext(MapInstance);
@@ -114,7 +111,7 @@ function Map({ data, setActivePin }) {
         disabled={data.pois.length === 0}>
           See Overview
       </button>
-      <MapStyled id="map" data-testid="map">
+      <mS.MapStyle id="map" data-testid="map">
         <MapContainer
           whenCreated={whenMapCreated}
           // defaults to NYC if there aren't any coordinates placed.
@@ -131,7 +128,7 @@ function Map({ data, setActivePin }) {
             {placeDayPOIPins()}
           </FeatureGroup>
         </MapContainer>
-      </MapStyled>
+      </mS.MapStyle>
     </>
   )
 }
