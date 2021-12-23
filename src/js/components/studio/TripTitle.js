@@ -1,6 +1,7 @@
 import React, {useContext} from 'react'
 import Studio, { TripContext, TripDispatch } from "./Studio"
 
+import * as ttS from "./styled/TripTitle.style";
 
 function TripTitle() {
 
@@ -8,6 +9,11 @@ function TripTitle() {
   const trip = useContext(TripContext);
 
   function onChangeTitle(e) {
+    // if no title update then return.
+    if (e.target.value === trip.general.title) {
+      return;
+    }
+
     dispatch({
       type: 'edit_general',
       payload: {
@@ -21,7 +27,7 @@ function TripTitle() {
 
   return (
     <>
-      <input
+      <ttS.TripTitle
         className="trip-title"
         placeholder="Untitled Trip"
         defaultValue={trip.general.title}
