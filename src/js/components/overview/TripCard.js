@@ -14,6 +14,9 @@ import { cloneDeep } from 'lodash';
 
 
 import * as tS from "./styled/TripCard.style";
+import { FAIcon } from '../styled/template.style';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 
 function convertMsToDate(ms) {
   let time = new Date(ms);
@@ -52,22 +55,22 @@ function TripCard({ trip, setTrips }) {
 
   return (
     <tS.TripCardContainer>
-      <Link to={"/trips/" + trip.tripId}>
+      <Link to={"/trips/" + trip.tripId} style={{textDecoration: "unset", cursor: "pointer"}}>
         <tS.TripCardImg
           src={TripCover}
           alt="A colorful graphic representation of a map."
           loading="lazy"/>
-        <h2 className="trip-title">
+        <tS.TripTitle className="trip-title">
           {trip.title}
-        </h2>
-        <p>
+        </tS.TripTitle>
+        <tS.TripDate>
           Last Opened {convertMsToDate(trip.lastAccessed)}
-        </p>
+        </tS.TripDate>
       </Link>
       <tS.Options>
-        <button onClick={setDropdownVisible.bind(null, true)} ref={dropdownRef}>
-          Options
-        </button>
+        <tS.OptionsButton onClick={setDropdownVisible.bind(null, true)} ref={dropdownRef}>
+          <FontAwesomeIcon icon={faEllipsisV}/>
+        </tS.OptionsButton>
         <Dropdown visible={dropdownVisible} ref={dropdownRef}>
           <ul>
             <li>

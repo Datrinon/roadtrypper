@@ -3,16 +3,51 @@ import styled from "styled-components";
 export const TripCardContainer = styled.div`
   width: 210px;
   height: 200px;
-  border: 1px solid black;
+  border: 1px solid #888888;
+  border-radius: 3px;
+  position: relative;
 `
 
 export const TripCardImg = styled.img`
   width: 100%;
-  height: 60%;
+  height: 75%;
   object-fit: cover;
+  border-bottom: 1px solid #888888;
 `
 
+export const TripTitle = styled.h2`
+    -webkit-text-decoration: none;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 5px;
+    height: 1em;
+    max-width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+`
+
+export const TripDate = styled.p`
+    font-size: 85%;
+    color: #565656;
+    margin: 0 5px;
+`
+
+
 export const Options = styled.div`
-  position: relative;
+  position: absolute;
   z-index: 1;
+  display: inline-block;
+  right: 2px;
+  bottom: 2px;
+`
+
+export const OptionsButton = styled.button`
+  all: unset;
+  padding: 4px 9px;
+  border-radius: 50%;
+
+  &:hover {
+    background-color: #dddddd;
+  }
 `
