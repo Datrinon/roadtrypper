@@ -12,23 +12,8 @@ import Dropdown from '../studio/Dropdown';
 import { deleteTrip } from '../../database/data';
 import { cloneDeep } from 'lodash';
 
-const TripCardContainer = styled.div`
-  width: 210px;
-  height: 200px;
-  border: 1px solid black;
-`
 
-const TripCardImg = styled.img`
-  width: 100%;
-  height: 60%;
-  object-fit: cover;
-`
-
-const Options = styled.div`
-  position: relative;
-  z-index: 1;
-`
-
+import * as tS from "./styled/TripCard.style";
 
 function convertMsToDate(ms) {
   let time = new Date(ms);
@@ -66,9 +51,9 @@ function TripCard({ trip, setTrips }) {
 
 
   return (
-    <TripCardContainer>
+    <tS.TripCardContainer>
       <Link to={"/trips/" + trip.tripId}>
-        <TripCardImg
+        <tS.TripCardImg
           src={TripCover}
           alt="A colorful graphic representation of a map."
           loading="lazy"/>
@@ -79,7 +64,7 @@ function TripCard({ trip, setTrips }) {
           Last Opened {convertMsToDate(trip.lastAccessed)}
         </p>
       </Link>
-      <Options>
+      <tS.Options>
         <button onClick={setDropdownVisible.bind(null, true)} ref={dropdownRef}>
           Options
         </button>
@@ -97,8 +82,8 @@ function TripCard({ trip, setTrips }) {
             </li>
           </ul>
         </Dropdown>
-      </Options>
-    </TripCardContainer>
+      </tS.Options>
+    </tS.TripCardContainer>
   )
 }
 
