@@ -21,7 +21,8 @@
 
 /* Container for just the search field form */
 .trips-search.srch-container {
-  background-color: #dddddd;
+  background-color: #ededed;
+  box-shadow: 0px 1px 1px 0px #dedede;
   padding: 5px;
   border-radius: 15px;
   transition: all 200ms;
@@ -42,11 +43,9 @@
   .trips-search.srch-container {
     position: initial;
     left: unset;
-    width: 75%;
-    max-width: 365px;
+    width: fit-content;
   }
   .trips-search.searcher.open .srch-container {
-    width: 77%;
   }
 }
 
