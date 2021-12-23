@@ -5,8 +5,7 @@
 import Photo from "../model/photo";
 import Day from "../model/day";
 import Poi from "../model/poi";
-import { addTripData, addTripPhoto, deleteFile, deletePhoto, deleteTrip, deleteTripData, editTripData, getPhotoStorageUri, updateTimestamp } from "./data";
-import { updateDoc } from "firebase/firestore";
+import { addTripData, addTripPhoto, deleteFile, deletePhoto, deleteTrip, deleteTripData, editTripData, getPhotoStorageUri, getRef, updateTimestamp } from "./data";
 
 // let these be global (in the span of this file) for easier use.
 let dispatchRef;
@@ -468,7 +467,16 @@ function handleGeneralEdit(state, payload) {
     [payload.key]: state.post.general[payload.key]
   };
 
-  editTripData(data, state.post.ref, signalRef);
+  editTripData(data, getRef(state.post.ref.path), signalRef);
+  // !
+  // Stale ref theory confirmed
+  // !
+  // Running this code, EVEN with the promise chain in the main func.,
+  // results in this error
+  /*
+  index.js:1 [2021-12-23T23:30:30.485Z]  @firebase/firestore: Firestore (9.6.1): INTERNAL UNHANDLED ERROR:  TypeError: Cannot read properties of undefined (reading 'mutations')
+  */
+  // editTripData(data, state.post.ref, signalRef);
 }
 
 
@@ -534,8 +542,9 @@ function updateDatabase(dispatch, state, action, signal) {
   };
 
 
-  updateTimestamp(state.post.ref.path, timestamp);
-  dbAction(state, action.payload);
+  updateTimestamp(state.post.ref.path, timestamp).then(() => {
+    dbAction(state, action.payload);
+  })
 
   
 

@@ -266,13 +266,19 @@ async function addTripData(tripId, collectionName, data, signal) {
 
 
 function updateTimestamp(tripPath, timestamp) {
-  updateDoc(doc(db, tripPath), timestamp);
+  return updateDoc(doc(db, tripPath), timestamp);
   //doc(db, tripPath).then(ref => {
  //   updateDoc(ref, timestamp);
  // })
 }
 
-
+/**
+ * Gets a ref to a document at a specified path.
+ * @param {string} path - Path to the file.
+ */
+function getRef(path) {
+  return doc(db, path);
+}
 
 /**
  * Edit a trip's data.
@@ -407,6 +413,7 @@ export {
   addTripData,
   addTripPhoto,
   getPhotoStorageUri,
+  getRef,
   loadTrips,
   loadTripData,
   deleteTrip,
