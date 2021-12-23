@@ -28,6 +28,8 @@ import LoadFailure from '../shared/LoadFailure';
 import LoadingGfx from '../shared/LoadingGfx';
 import LoadingStudio from './LoadingStudio';
 
+// CSS
+import * as stS from "./styled/Studio.styled";
 
 // ! code begin
 export const TripDispatch = React.createContext(null);
@@ -128,7 +130,7 @@ function Studio() {
   //#region :Render Logic
   // if (pageState){
   if (pageState === STATE.LOADING) {
-    return <LoadingStudio/>;
+    return <LoadingStudio />;
   } else if (pageState === STATE.FAILURE) {
     return <LoadFailure error={pageError} />
   }
@@ -141,9 +143,11 @@ function Studio() {
           <TripDispatch.Provider value={tripDispatch}>
             <SidebarSetter.Provider value={sidebarSetter}>
               <StudioHeader />
-              <div style={{ padding: "25px 5px" }}>
-                <TripTitle />
-                <LastUpdated time={trip.general.lastAccessed} />
+              <div className="studio-body">
+                <stS.TripGeneral className="trip-general-info">
+                  <TripTitle />
+                  <LastUpdated time={trip.general.lastAccessed} />
+                </stS.TripGeneral>
                 <div className="add-options">
                   <AddDay activeDay={activeDay} setActiveDay={setActiveDay} />
                   <AddPOI activeDay={activeDay} />

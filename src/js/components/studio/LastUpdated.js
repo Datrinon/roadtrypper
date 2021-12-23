@@ -2,6 +2,8 @@ import { faSave } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react'
 
+import * as lU from "./styled/LastUpdated.style";
+
 import "../../../"
 
 /**
@@ -49,7 +51,9 @@ function getTimestamp(ms) {
 function LastUpdated({ time }) {
   return (
     <>
-      <p className={"timestamp"}>Last Update: {getTimestamp(time)}</p>
+      <lU.Timestamp className={"timestamp"}>
+        <span>Last Update: </span>{getTimestamp(time)}
+      </lU.Timestamp>
       <FontAwesomeIcon
         icon={faSave}
         className={"loading no-display"} />
