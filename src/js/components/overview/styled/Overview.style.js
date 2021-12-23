@@ -1,7 +1,9 @@
 import styled from "styled-components";
 import { appear } from "../../styled/anim.style";
+import { device } from "../../styled/breakpoints.style";
 import { color } from "../../styled/colors.style";
 import { Header } from "../../styled/template.style";
+
 
 export const OverviewHeader = styled(Header)`
   justify-content: space-evenly;
@@ -123,4 +125,20 @@ export const AddTripMessage = styled.p`
   color: white;
   border-radius: 8px;
   animation: ${appear} 300ms;
+`
+
+
+export const TripCardHeading = styled.h1`
+  margin: 0 10px;
+  text-align: center;
+  
+  padding: 10px;
+  font-variant-caps: all-petite-caps;
+  font-weight: 300;
+  font-size: 225%;
+  border-bottom: 1px solid #494949;
+
+  @media ${device.tablet} {
+    margin: 15px auto;
+  }
 `

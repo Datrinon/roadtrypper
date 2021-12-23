@@ -162,6 +162,7 @@ function Overview() {
       </oS.OverviewHeader>
       <AddTrip />
       <oS.TripCardContainer>
+        <oS.TripCardHeading>My Trips</oS.TripCardHeading>
         <oS.SortContainer>
           <oS.SortButton onClick={sortTrips.bind(null, "title")}>
             <span>Title</span>
