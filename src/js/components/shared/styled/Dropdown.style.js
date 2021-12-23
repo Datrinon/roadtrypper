@@ -10,7 +10,7 @@ const appear = keyframes`
 `
 
 export const DropdownMenuContainer = styled.div`
-    display: ${props => props.visible ? "initial" : "none"};
+    display: ${props => props.visible ? "block" : "none"};
     border: 1px solid #bebebe;
     border-radius: 3px;
     position: absolute;

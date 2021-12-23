@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { signOutUser } from '../../database/auth';
 import useDropdown from '../../hooks/useDropdown';
 import { UserContext } from '../Router'
-import Dropdown from '../studio/Dropdown';
+import Dropdown from './Dropdown';
 
 
 const Icon = styled.div`

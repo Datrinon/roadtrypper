@@ -46,8 +46,34 @@ export const OptionsButton = styled.button`
   all: unset;
   padding: 4px 9px;
   border-radius: 50%;
+  cursor: pointer;
 
   &:hover {
+    background-color: #dddddd;
+  }
+`
+
+export const CardOptionsList = styled.ul`
+
+  list-style: none;
+    height: fit-content;
+    margin: 2px;
+
+  & li {
+    width: 100%;
+    height: 1.5rem;
+    font-size: 90%;
+    border-radius: 2px;
+  }
+  
+  & li > * {
+    all: unset;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  & li:hover {
     background-color: #dddddd;
   }
 `

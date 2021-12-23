@@ -8,7 +8,7 @@ import { Link, useRouteMatch } from "react-router-dom";
 import useDropdown from '../../hooks/useDropdown';
 
 // components
-import Dropdown from '../studio/Dropdown';
+import Dropdown from '../shared/Dropdown';
 import { deleteTrip } from '../../database/data';
 import { cloneDeep } from 'lodash';
 
@@ -72,7 +72,7 @@ function TripCard({ trip, setTrips }) {
           <FontAwesomeIcon icon={faEllipsisV}/>
         </tS.OptionsButton>
         <Dropdown visible={dropdownVisible} ref={dropdownRef}>
-          <ul>
+          <tS.CardOptionsList>
             <li>
               <Link to={"/trips/" + trip.tripId} target="_blank">
                 Open in New Tab
@@ -83,7 +83,7 @@ function TripCard({ trip, setTrips }) {
               Remove
               </button>
             </li>
-          </ul>
+          </tS.CardOptionsList>
         </Dropdown>
       </tS.Options>
     </tS.TripCardContainer>
