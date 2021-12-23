@@ -15,9 +15,10 @@ export const DropdownMenuContainer = styled.div`
     border-radius: 3px;
     position: absolute;
     top: 100%;
-    left: 0px;
+    left: ${props => props.position ? `${props.position}` : "0px"};
     animation: hjECeF 300ms;
     width: max-content;
     background-color: white;
     box-shadow: 0px 2px 3px 0px #3f3f3f54;
+    z-index: 999;
 `
