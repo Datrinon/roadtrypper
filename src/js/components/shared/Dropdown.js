@@ -1,13 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import styled from 'styled-components';
-
-const DropdownMenuContainer = styled.div`
-  border: 1px solid orange;
-  display: ${props => props.visible ? "initial" : "none"};
-  position: absolute;
-  top: 100%;
-  left: 0px;
-`
+import * as dS from "./styled/Dropdown.style";
 
 /**
  * It's a dropdown menu component. Shows when visible is TRUE; use
@@ -49,11 +41,11 @@ function Dropdown({ visible, children }, ref) {
 
   
   return (
-    <DropdownMenuContainer
+    <dS.DropdownMenuContainer
       visible={display}
       ref={ref}>
       {children}
-    </DropdownMenuContainer>
+    </dS.DropdownMenuContainer>
   )
 }
 
