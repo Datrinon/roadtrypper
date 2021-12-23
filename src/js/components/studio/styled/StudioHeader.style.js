@@ -8,4 +8,5 @@ export const StudioHeaderContents = styled.div`
   justify-content: space-between;
   align-items: center;
   height: 100%;
+  margin: 0 auto;
 `

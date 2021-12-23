@@ -5,7 +5,8 @@ import styled from 'styled-components';
 export const Header = styled.div`
   width: 100vw;
   height: 48px;
-  border: 1px dotted red;
+  border-bottom: 1px solid #d3d3d3;
+  box-shadow: 0px 1px 6px 0px #00000026;
 `
 
 export const NavLink = styled(Link)`
