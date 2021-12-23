@@ -15,7 +15,7 @@ export const HeaderContent = styled.div`
   justify-content: space-between;
   align-items: center; */
   display: grid;
-  grid-template-columns: 25% auto 50px;
+  grid-template-columns: minmax(25%, 170px) auto 40px;
   margin: 0 auto;
   padding-top: 5px;
   padding-left: 5px;
@@ -49,7 +49,7 @@ export const AddTripButton = styled.button`
   position: fixed;
   bottom: 2vh;
   right: 5vw;
-  padding: 25px 24px;
+  padding: 25px 22px;
   border-radius: 50%;
   background-color: ${color.primary};
   box-shadow: 2px 3px 6px 1px #686868;

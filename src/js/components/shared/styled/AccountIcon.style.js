@@ -10,6 +10,7 @@ export const Icon = styled.div`
     cursor: pointer;
     display: inline-block;
     float: right;
+    right: 5px;
 `
 
 export const IconText = styled.p`

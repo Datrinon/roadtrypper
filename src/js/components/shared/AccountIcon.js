@@ -14,12 +14,15 @@ function AccountIcon() {
   const [dropdownVisible, setDropdownVisible, dropdownRef] = useDropdown();
 
   return (
-    <div>
+    <div className="account-icon">
       <aS.Icon onClick={setDropdownVisible.bind(null, true)}>
         <aS.IconText>
           {user.email ? user.email[0] : "G"}
         </aS.IconText>
-        <Dropdown visible={dropdownVisible} ref={dropdownRef}>
+        <Dropdown
+          visible={dropdownVisible}
+          position={"-325%"}
+          ref={dropdownRef}>
           <aS.IconDropdownList>
             <aS.AccBullet className="account-info">
               Signed in as
