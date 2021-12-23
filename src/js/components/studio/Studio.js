@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useReducer, useRef } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import PropTypes from 'prop-types';
-import { TRIP_ACTIONS, tripReducer } from './tripDetailsReducer';
+import { tripReducer } from './tripDetailsReducer';
 
 import { MOCK_TRIP_ID } from '../../../data/sample-days';
 import * as DB from "../../database/data.js";
@@ -25,6 +25,8 @@ import LastUpdated from './LastUpdated';
 import { onUpdatingEnd, onUpdatingStart } from '../../database/middleware';
 import TripTitle from './TripTitle';
 import LoadFailure from '../shared/LoadFailure';
+import LoadingGfx from '../shared/LoadingGfx';
+import LoadingStudio from './LoadingStudio';
 
 
 // ! code begin
@@ -263,8 +265,10 @@ function Studio() {
   // }, [trip]);
 
   //#region :Render Logic
-  if (pageState === STATE.LOADING) {
-    return <div>Loading</div>;
+  // if (pageState === STATE.LOADING) {
+  if (pageState){
+    
+    return <LoadingStudio/>;
   } else if (pageState === STATE.FAILURE) {
     return <LoadFailure error={pageError} />
   }
