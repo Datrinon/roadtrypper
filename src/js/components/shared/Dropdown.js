@@ -23,9 +23,10 @@ function Dropdown({ visible, position, children }, ref) {
   }, [visible]);
 
   function closeMenu(e) {
-    if (!e.composedPath().includes(ref.current)) {
-      setDisplay(false);
-    }
+    // if (!e.composedPath().includes(ref.current)) {
+    //   setDisplay(false);
+    // }
+    setDisplay(false);
   }
 
   useEffect(() => {
