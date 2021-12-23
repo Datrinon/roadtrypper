@@ -56,14 +56,14 @@ export const OptionsButton = styled.button`
 export const CardOptionsList = styled.ul`
 
   list-style: none;
-    height: fit-content;
-    margin: 2px;
+  height: fit-content;
+  margin: 2px;
 
   & li {
-    width: 100%;
     height: 1.5rem;
     font-size: 90%;
     border-radius: 2px;
+    padding: 3px;
   }
   
   & li > * {
@@ -71,6 +71,7 @@ export const CardOptionsList = styled.ul`
     width: 100%;
     height: 100%;
     display: block;
+    cursor: pointer;
   }
 
   & li:hover {

@@ -1,37 +1,11 @@
 import React, { useContext, useRef, useState } from 'react'
-import styled from 'styled-components';
 import { signOutUser } from '../../database/auth';
 import useDropdown from '../../hooks/useDropdown';
 import { UserContext } from '../Router'
 import Dropdown from './Dropdown';
 
 
-const Icon = styled.div`
-    background-color: navy;
-    border-radius: 50%;
-    border: 1px solid black;
-    width: 32px;
-    height: 32px;
-    position: relative;
-    cursor: pointer;
-    display: inline-block;
-    float: right;
-`
-
-const IconText = styled.div`
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    top: 15%;
-    /* bottom: 25%; */
-    text-transform: capitalize;
-    color: white;
-    font-weight: 700;
-    font-size: 24px;
-    user-select: none;
-`
-
+import * as aS from "./styled/AccountIcon.style";
 
 
 function AccountIcon() {
@@ -41,17 +15,21 @@ function AccountIcon() {
 
   return (
     <div>
-      <Icon onClick={setDropdownVisible.bind(null, true)}>
-        <IconText>
+      <aS.Icon onClick={setDropdownVisible.bind(null, true)}>
+        <aS.IconText>
           {user.email ? user.email[0] : "G"}
-        </IconText>
+        </aS.IconText>
         <Dropdown visible={dropdownVisible} ref={dropdownRef}>
-          <ul>
-            <li>Here's your dropdown, bro.</li>
-            <li><button onClick={signOutUser}>Sign Out.</button></li>
-          </ul>
+          <aS.IconDropdownList>
+            <aS.AccBullet className="account-info">
+              Signed in as
+              <br/>
+              <span>{user.email}</span>
+            </aS.AccBullet>
+            <li><button className={"sign-out-button"} onClick={signOutUser}>Sign Out</button></li>
+          </aS.IconDropdownList>
         </Dropdown>
-      </Icon>
+      </aS.Icon>
     </div>
   )
 }
