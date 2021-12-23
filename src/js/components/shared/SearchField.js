@@ -291,10 +291,11 @@ const SearchField = React.forwardRef(({
             {displaySuggestions && suggestions}
           </sS.SearchResultContainer>
           {
+            displaySuggestions &&
             invalidSearchTerm &&
-            <div className="search-result-failure">
-              No results found for '{invalidSearchTerm}'.
-            </div>
+            <sS.SearchResultContainer className="search-result-failure">
+              <sS.SearchResultError>No results found for '{invalidSearchTerm}'.</sS.SearchResultError>
+            </sS.SearchResultContainer>
           }
         </form>
       </sS.SearchFormContainer>

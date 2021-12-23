@@ -80,3 +80,13 @@ padding: 8px 0;
   border: 1px solid blue;
 }
 `
+
+export const SearchResultError = styled(SearchResult)`
+  &:hover {
+    background-color: #fdfdfd;
+  }
+
+  &:focus {
+    border: 1px solid transparent;
+  }
+`
