@@ -6,6 +6,12 @@ export const TripCardContainer = styled.div`
   border: 1px solid #888888;
   border-radius: 3px;
   position: relative;
+  transition: transform 200ms;
+
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: 0px 2px 2px 0px #a5e8fc69;
+  }
 `
 
 export const TripCardImg = styled.img`
