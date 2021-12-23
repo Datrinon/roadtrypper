@@ -13,7 +13,9 @@ export const SearchFormContainer = styled.div`
 `
 
 export const SearchForm = styled.form`
-  display: ${props => props.visible ? "initial" : "none"};
+  display: flex;
+  flex-direction: column;
+  gap: 50%;
 `
 
 export const SearchInput = styled.input`
@@ -51,4 +53,30 @@ export const SearchBarIcon = styled(FAIcon)`
 `
 
 export const SearchBarBG = styled.div`
+`
+
+export const SearchResultContainer = styled.div`
+  position: relative;
+  top: 5px;
+  right: 5px;
+  border-radius: 2px;
+  box-shadow: 1px 3px 5px 0px #6c6a6a73;
+`
+
+export const SearchResult = styled.button`
+all: unset;
+display: block;
+width: 100%;
+height: 1.25rem;
+background-color: #fdfdfd;
+border: 1px solid transparent;
+padding: 8px 0;
+
+&:hover {
+  background-color: #dedede;
+}
+
+&:focus {
+  border: 1px solid blue;
+}
 `

@@ -10,14 +10,6 @@ import * as sS from "./styled/SearchField.style";
 import Utility from '../../util/utility';
 
 
-const BlockButton = styled.button`
-  display: block;
-
-  &:focus {
-    border: 1px solid red;
-    background-color: red;
-  }
-`
 
 /**
  * Generic Searchbar which provides an arrow-key navigatable list of suggestions. 
@@ -88,7 +80,7 @@ const SearchField = React.forwardRef(({
 
     listedResults = listedResults.map(elem => {
       return (
-        <BlockButton
+        <sS.SearchResult
           onClick={(e) => {
             setDisplaySuggestions(false);
           }}
@@ -99,7 +91,7 @@ const SearchField = React.forwardRef(({
           }}
           className="search-result">
           {elem}
-        </BlockButton>
+        </sS.SearchResult>
       )
     });
 
@@ -278,6 +270,7 @@ const SearchField = React.forwardRef(({
               onKeyDown={generateSuggestions}
               onChange={() => setInvalidSearchTerm(null)}
               type="search"
+              autoComplete="off"
               disabled={submitPressed}
               placeholder={placeholder}
             />
@@ -294,9 +287,9 @@ const SearchField = React.forwardRef(({
               </span>
             }
           </div>
-          <div className="search-results">
+          <sS.SearchResultContainer className="search-results">
             {displaySuggestions && suggestions}
-          </div>
+          </sS.SearchResultContainer>
           {
             invalidSearchTerm &&
             <div className="search-result-failure">
