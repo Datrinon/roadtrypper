@@ -19,7 +19,7 @@ function DayCard({ setActiveDay, day, pois }) {
     <dC.Card
       onClick={onCardClick.bind(null, day)}
       data-id={day.id}
-      className="day-card">
+      className={`day-card`}>
       <dC.DayNumLabel>Day <span>{day.order + 1}</span></dC.DayNumLabel>
       <dC.dayTitle>{day.title.length ?
         <dC.titledDay>day.title</dC.titledDay> :

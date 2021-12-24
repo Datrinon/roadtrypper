@@ -30,6 +30,7 @@ import LoadingStudio from './LoadingStudio';
 
 // CSS
 import * as stS from "./styled/Studio.styled";
+import "../../../css/studio.css";
 
 // ! code begin
 export const TripDispatch = React.createContext(null);
@@ -51,6 +52,7 @@ function Studio() {
   const [pageError, setPageError] = useState("");
   const [activePin, setActivePin] = useState(null);
   const [activeDay, setActiveDay] = useState(null);
+  const activeDayCard = useRef(null);
 
   const [sidebarValues, sidebarSetter, sidebarRef] = useSidebar();
 
@@ -112,7 +114,25 @@ function Studio() {
     } else {
       sidebarSetter.setContent(null);
     }
-  }, [activeDay])
+  }, [activeDay]);
+
+
+  useEffect(() => {
+    if (activeDayCard.current) {
+      activeDayCard.current.classList.remove("active");
+    }
+    // this use effect hook manages the view update for activeDay.
+    if (activeDay) {
+      console.log(activeDay);
+      const dayCard = document
+          .querySelector(`.day-card[data-id="${activeDay.data.id}"]`);
+      
+      dayCard.classList.add("active");
+
+      activeDayCard.current = dayCard;
+    }
+  }, [activeDay]);
+
 
   useEffect(() => {
     if (activePin) {
@@ -124,7 +144,7 @@ function Studio() {
     } else {
       sidebarSetter.setContent(null);
     }
-  }, [activePin])
+  }, [activePin]);
 
 
   //#region :Render Logic

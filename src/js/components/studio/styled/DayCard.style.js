@@ -12,7 +12,7 @@ export const Card = styled.div`
   transition: border 300ms;
 
   &:hover {
-    border: 1px solid red;
+    border: 2px solid #658dff;
   }
 `
 
