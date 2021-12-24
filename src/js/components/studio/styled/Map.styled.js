@@ -11,7 +11,25 @@ export const StyledMapContainer = styled(MapContainer)`
 `
 
 export const OverviewButton = styled.button`
-  position: absolute;
-  top: 0;
-  z-index: 2;
+    all: unset;
+    position: absolute;
+    top: 11px;
+    left: 60px;
+    z-index: 99999;
+    background: white;
+    padding: 7px;
+    border-radius: 5px;
+    font-size: 80%;
+    box-shadow: 0px 0px 3px 0px black;
+    cursor: pointer;
+
+    &:hover:not([disabled]) {
+      background-color: #eeeeee;
+    }
+
+    &:disabled {
+      background-color: #dedede;
+      color: #939393;
+      cursor: default;
+    }
 `

@@ -31,6 +31,7 @@ export const AddOptions = styled.div`
 export const Days = styled.div`
   grid-area: days;
   border: 1px solid black;
+  overflow-y: auto;
 `
 
 export const MapArea = styled.div`

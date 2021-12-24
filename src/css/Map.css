@@ -26,3 +26,8 @@
 .leaflet-popup-tip-container {
   width: 64px;
 }
+
+.leaflet-control-geosearch form input {
+  height: 30px !important;
+  font-family: "Segoe UI";
+}

@@ -31,6 +31,7 @@ function Map({ data, setActivePin }) {
   const masterFeatureGroup = useRef();
   const [search, setSearch] = useState(new GeoSearch.GeoSearchControl({
     provider: new GeoSearch.OpenStreetMapProvider(),
+    showMarker: false,
   }));
 
 
