@@ -11,6 +11,7 @@ function HoverToEditInput({ displayVer, editVer, onClickSave }) {
 
   const [visible, setVisible] = useState(false);
   const [editMode, setEditMode] = useState(false);
+  const height = useRef();
   const thisElement = useRef();
   
   const exitEditMode = (e) => {
@@ -27,6 +28,7 @@ function HoverToEditInput({ displayVer, editVer, onClickSave }) {
 
   useEffect(() => {
     if (editMode) {
+
       window.addEventListener("click", exitEditMode); 
     } else {
       window.removeEventListener("click", exitEditMode);
@@ -36,9 +38,16 @@ function HoverToEditInput({ displayVer, editVer, onClickSave }) {
     }
   }, [editMode]);
 
+  useEffect(() => {
+    if (!editMode) {
+      height.current = thisElement.current.clientHeight;
+    }
+  });
+
   return (
     <hS.Container
       ref={thisElement}
+      height={height.current}
       className={`editable ${editMode ? "editing" : ""}`}
       onMouseEnter={() => !editMode && setVisible(true)}
       onMouseLeave={() => !editMode && setVisible(false)}>

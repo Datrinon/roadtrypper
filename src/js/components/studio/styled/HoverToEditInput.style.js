@@ -4,7 +4,7 @@ import { BaseButton } from "./StudioButtons.style";
 export const Container = styled.div`
     display: flex;
     flex-wrap: nowrap;
-    min-height: 1.5rem;
+    height: ${props => props.height ? `${props.height}px` : "auto"};
     flex-direction: row;
     align-items: center;
 `

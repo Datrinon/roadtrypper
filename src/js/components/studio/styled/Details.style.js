@@ -49,3 +49,14 @@ export const deleteItemButton = styled.button`
     animation: dMBcsj 300ms;
   }
 `
+
+export const DayOrder = styled.h1`
+      /* font-variant-caps: all-small-caps; */
+  font-size: 200%;
+  font-weight: 300;
+  margin: 15px 5px;
+`
+
+export const DayOrderNum = styled.span`
+  font-weight: 500;
+`
