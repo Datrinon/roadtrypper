@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { TripTitle } from "../../overview/styled/TripCard.style";
 import { appear } from "../../styled/anim.style";
 import { UntitledDay } from "./DayCard.style";
 import { BaseButton } from "./StudioButtons.style";
@@ -80,11 +81,25 @@ export const DayOrderSelect = styled.select`
 `
 
 export const DayTitle = styled.h2`
-  font-size: 130%;
+  font-size: 150%;
   margin: 5px 0 15px 5px;
+  font-weight: 300;
 `
 
 export const UntitledDayDisp = styled(UntitledDay)`
 
     /* margin: 0 0 15px 5px; */
+`
+
+export const DayTitleEdit = styled.input`
+  all: unset;
+  padding: 2px 0;
+  border: 2px solid transparent;
+  border-bottom: 1px solid #dedede;
+  margin: 8px 3px;
+
+  &:focus {
+    border: 2px solid #54B4D3;
+    border-radius: 4px;
+  }
 `

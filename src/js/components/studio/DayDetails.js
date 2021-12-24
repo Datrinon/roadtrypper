@@ -87,7 +87,7 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
         <d.UntitledDayDisp>Untitled Day</d.UntitledDayDisp>
       }</d.DayTitle>);
 
-    let editDayTitle = <input
+    let editDayTitle = <d.DayTitleEdit
       defaultValue={dayState.title}
       ref={dayTitleEditRef}
     />

@@ -22,13 +22,14 @@ function DayCard({ setActiveDay, day, pois }) {
       className={`day-card`}>
       <dC.DayNumLabel>Day <span>{day.order + 1}</span></dC.DayNumLabel>
       <dC.dayTitle>{day.title.length ?
-        <dC.titledDay>day.title</dC.titledDay> :
+        <dC.titledDay>{day.title}</dC.titledDay> :
         <dC.UntitledDay>Untitled Day</dC.UntitledDay>
       }
       </dC.dayTitle>
       <p>Color Here</p>
       <ul>
-        {pois
+        { pois.length ? 
+          pois
           .sort((a, b) => a.order - b.order)
           .map((poi) => {
             return (
@@ -38,7 +39,9 @@ function DayCard({ setActiveDay, day, pois }) {
                 {poi.title}
               </li>
             )
-          })}
+          }) :
+          <li>No Points Added.</li>
+        }
       </ul>
     </dC.Card>
   )
