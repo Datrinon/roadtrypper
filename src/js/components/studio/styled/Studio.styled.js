@@ -12,7 +12,7 @@ export const StudioBody = styled.main`
   grid-template-columns: minmax(15%, 300px) auto;
   width: 100%;
   height: 100%;
-  overflow: hidden;
+  /* overflow: hidden; */
 `
 
 export const HeaderWrapper = styled.div`
@@ -89,5 +89,17 @@ export const DayCardContainer = styled.div`
 export const MapArea = styled.div`
   grid-area: map;
   position: relative;
-  box-shadow: 1px 1px 4px 0px black;
+  border-left: 1px solid #dedede;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -1px;
+    height: 100%;
+    width: 1px;
+    background-color: transparent;
+    box-shadow: 1px -1px 3px 0px #00000066;
+    z-index: 99999;
+  }
 `

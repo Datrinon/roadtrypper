@@ -6,7 +6,7 @@ function DayCard({ setActiveDay, day, pois }) {
 
   function onCardClick(day) {
     let time = Date.now();
-    
+
     let data = {
       time,
       data: day
@@ -21,10 +21,11 @@ function DayCard({ setActiveDay, day, pois }) {
       data-id={day.id}
       className="day-card">
       <dC.DayNumLabel>Day <span>{day.order + 1}</span></dC.DayNumLabel>
-      <p>{day.title.length ?
-      day.title :
-      <dC.UntitledDay>Untitled Day</dC.UntitledDay>
-      }</p>
+      <dC.dayTitle>{day.title.length ?
+        <dC.titledDay>day.title</dC.titledDay> :
+        <dC.UntitledDay>Untitled Day</dC.UntitledDay>
+      }
+      </dC.dayTitle>
       <ul>
         {pois
           .sort((a, b) => a.order - b.order)
@@ -36,7 +37,7 @@ function DayCard({ setActiveDay, day, pois }) {
                 {poi.title}
               </li>
             )
-        })}
+          })}
       </ul>
     </dC.Card>
   )

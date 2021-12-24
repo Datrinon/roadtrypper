@@ -1,8 +1,9 @@
 import styled from 'styled-components'
 
 export const Card = styled.div`
-  border: 1px solid #6a6a6a;
+  border: 2px solid #cccccc;
   width: 90%;
+  border: 1px solid transparent;
   border-radius: 3px;
   padding: 5px;
   /* max-width: 240px; */
@@ -25,6 +26,14 @@ export const DayNumLabel = styled.h2`
     font-weight: 600;
     font-size: 125%;
   }
+`
+
+export const dayTitle = styled.p`
+  text-align: center;
+`
+
+export const titledDay = styled.span`
+  font-weight: 400;
 `
 
 export const UntitledDay = styled.span`
