@@ -98,7 +98,6 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
       });
     };
 
-    //! Fix le bug with the day title
     return (<HoverToEditInput
       displayVer={displayDayTitle}
       editVer={editDayTitle}

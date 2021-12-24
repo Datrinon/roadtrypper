@@ -71,7 +71,7 @@ export const AddTripButton = styled.button`
     background-color: rgb(45 45 45 / 68%);
     padding: 3px;
     color: beige;
-    bottom: 15px;
+    bottom: 0;
     right: calc(100% + 5px);
     width: 100%;
     animation: ${appear} 300ms;

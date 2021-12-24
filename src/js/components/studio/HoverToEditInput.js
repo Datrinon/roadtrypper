@@ -4,19 +4,8 @@ import styled from 'styled-components'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit, faTrashAlt } from "@fortawesome/free-regular-svg-icons"
 
-const HoverEditButton = styled.button`
-  display: ${props => props.visible ? 'initial' : 'none'};
-`
-
-const EditModeOptions = styled.div`
-  border: 1px solid cyan;
-  display: ${props => props.visible ? 'inline' : 'none'};
-
-  & button {
-    border: 1px solid red;
-  }
-`
-
+import * as hS from "./styled/HoverToEditInput.style";
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 
 function HoverToEditInput({ displayVer, editVer, onClickSave }) {
 
@@ -48,25 +37,25 @@ function HoverToEditInput({ displayVer, editVer, onClickSave }) {
   }, [editMode]);
 
   return (
-    <div
+    <hS.Container
       ref={thisElement}
       className={`editable ${editMode ? "editing" : ""}`}
       onMouseEnter={() => !editMode && setVisible(true)}
       onMouseLeave={() => !editMode && setVisible(false)}>
       {editMode ? editVer : displayVer}
-      <HoverEditButton
+      <hS.HoverEditButton
         visible={visible}
         onClick={() => {
           setEditMode(true);
           setVisible(false);
         }}>
-        <FontAwesomeIcon icon={faEdit} />
-      </HoverEditButton>
-      <EditModeOptions visible={editMode}>
+        <FontAwesomeIcon icon={faPencilAlt} />
+      </hS.HoverEditButton>
+      <hS.EditModeOptions visible={editMode}>
         <button onClick={() => {onClickSave(); setEditMode(false)}}>Save</button>
         <button onClick={() => setEditMode(false)}>Cancel</button>
-      </EditModeOptions>
-    </div>
+      </hS.EditModeOptions>
+    </hS.Container>
   );
 }
 

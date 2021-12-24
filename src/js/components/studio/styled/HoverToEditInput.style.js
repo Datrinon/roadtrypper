@@ -1,0 +1,45 @@
+import styled from "styled-components";
+
+export const Container = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
+  min-height: 1.5rem;
+`
+
+export const HoverEditButton = styled.button`
+  all: unset;
+  display: ${props => props.visible ? 'initial' : 'none'};
+  cursor: pointer;
+  color: #4285F4;
+  padding: 4px;
+  margin-left: 5px;
+  border-radius: 50%;
+  position: relative;
+  bottom: 5px;
+
+  &:hover {
+    color: #75aaff;
+    background-color: #e9f0fb;
+  }
+
+  /* &:hover::after {
+    position: absolute;
+    content: "Edit";
+    font-variant-caps: all-small-caps;
+    border-radius: 5px;
+    background-color: rgb(45 45 45 / 68%);
+    padding: 3px;
+    color: beige;
+    left: 100%;
+    width: 100%;
+  } */
+`
+
+export const EditModeOptions = styled.div`
+  border: 1px solid cyan;
+  display: ${props => props.visible ? 'inline' : 'none'};
+
+  & button {
+    border: 1px solid red;
+  }
+`
