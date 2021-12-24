@@ -13,6 +13,7 @@ import PoiDetails from './POIDetails';
 import { v4 as uuidv4 } from 'uuid';
 import { getBase64 } from '../../util/getbase64';
 
+import * as btnS from "./styled/StudioButtons.style";
 
 const Label = styled.label`
   display: block;
@@ -400,11 +401,11 @@ function AddPoi({ activeDay }) {
   }
 
   return (
-    <button
+    <btnS.AddButton
       className="add-Poi"
       type="button"
       onClick={showAddPoi}
-      disabled={trip.days.length === 0}>Add POI</button>
+      disabled={trip.days.length === 0}>Add POI</btnS.AddButton>
   )
 }
 

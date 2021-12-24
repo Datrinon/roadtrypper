@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { TripDispatch, TripContext, TripId } from "./Studio";
 
+import * as btnS from "./styled/StudioButtons.style";
+
 export default function AddDay({activeDay, setActiveDay}) {
   const dispatch = useContext(TripDispatch);
   const trip = useContext(TripContext);
@@ -44,6 +46,6 @@ export default function AddDay({activeDay, setActiveDay}) {
   }
 
   return (
-    <button className="add-day" type="button" onClick={onAddDay}>Add Day</button>
+    <btnS.AddButton className="add-day" type="button" onClick={onAddDay}>Add Day</btnS.AddButton>
   )
 }

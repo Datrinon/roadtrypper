@@ -15,7 +15,7 @@ export const StudioBody = styled.main`
 `
 
 export const HeaderWrapper = styled.div`
-
+  grid-area: header;
 `
 
 export const TripGeneral = styled.div`
@@ -26,15 +26,20 @@ export const TripGeneral = styled.div`
 
 export const AddOptions = styled.div`
   grid-area: add;
+  display: flex;
+  justify-content: space-evenly;
+  /* margin: 8px 0; */
+  padding: 5px 0;
+  border-bottom: 1px solid #dedede;
 `
 
 export const Days = styled.div`
   grid-area: days;
-  border: 1px solid black;
   overflow-y: auto;
 `
 
 export const MapArea = styled.div`
   grid-area: map;
   position: relative;
+  box-shadow: 1px 1px 4px 0px black;
 `

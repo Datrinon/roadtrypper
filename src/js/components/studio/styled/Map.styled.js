@@ -19,7 +19,8 @@ export const OverviewButton = styled.button`
     background: white;
     padding: 7px;
     border-radius: 5px;
-    font-size: 80%;
+    font-size: 75%;
+    font-weight: 600;
     box-shadow: 0px 0px 3px 0px black;
     cursor: pointer;
 
