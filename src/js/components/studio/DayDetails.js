@@ -8,6 +8,7 @@ import POICard from './POICard';
 import { TripContext, TripDispatch } from './Studio';
 
 import * as d from "./styled/Details.style";
+import * as dD from "./styled/DayDetails.style";
 
 const POICardContainer = styled.div`
   display: flex;
@@ -31,23 +32,29 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
   function renderDayOrder() {
     // day order display
     let days = trip.days.sort((dayA, dayB) => dayA.order - dayB.order);
-    let displayDayOrder = <h1>Day {dayState.order + 1}</h1>;
-    let editDayOrder = (<select
-      name="poi-order"
-      id="poi-order-select"
-      defaultValue={dayState.order}
-      ref={dayOrderEditRef}>
-      {
-        days.map((day) => {
-          return (<option
-            key={day.id}
-            value={day.order}>
-            {day.order + 1}
-          </option>
-          );
-        })
-      }
-    </select>);
+    let displayDayOrder = <d.DayOrder>
+      Day <d.DayOrderNum>{dayState.order + 1}</d.DayOrderNum>
+    </d.DayOrder>;
+    let editDayOrder = (
+      <d.DayOrderEdit>
+        <d.EditHeading>Change Day to</d.EditHeading>
+        <d.DayOrderSelect
+          name="poi-order"
+          id="poi-order-select"
+          defaultValue={dayState.order}
+          ref={dayOrderEditRef}>
+          {
+            days.map((day) => {
+              return (<option
+                key={day.id}
+                value={day.order}>
+                Day {day.order + 1}
+              </option>
+              );
+            })
+          }
+        </d.DayOrderSelect>
+      </d.DayOrderEdit>);
     let updateDayOrder = () => {
       // if the selected order is the same, then don't update
       if (dayOrderEditRef.current.value === dayState.order) {
@@ -79,7 +86,7 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
     } else {
       displayDayTitle = (<h2 className="details day">{dayState.title}</h2>);
     }
-    
+
     let editDayTitle = <input
       defaultValue={dayState.title}
       ref={dayTitleEditRef}
@@ -108,16 +115,16 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
   //   colorEditRef.current.defaultValue = `#${day.color}`;
 
   // }, [day]);
-  
+
   // as long as this component is alive and trip is being changed,
   // we should refresh the day state.
   // because the only possible changes that could occur while this component
   // is active are edits to the current day.
   useEffect(() => {
     const updatedDay = trip.days.find(tripDay => tripDay.id === day.id);
-    
+
     setDayState(updatedDay);
-    
+
     return () => {
       console.log("DayDetails.js: Dismounting DayDetails component...");
     }
@@ -183,10 +190,10 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
       section = pois.map((poi, index) => (<POICard
         key={poi.id}
         poi={poi}
-        setActivePin={setActivePin}/>));
+        setActivePin={setActivePin} />));
     } else {
       const dayData = {
-        data : dayState
+        data: dayState
       }
       section = <AddPoi activeDay={dayData} />
     }
@@ -216,7 +223,7 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
     <div>
       <d.Heading>Day Overview</d.Heading>
       <d.deleteItemButton onClick={deleteDay} data-tip="Delete Day">
-        <FAIcon icon={faTrash}/>
+        <FAIcon icon={faTrash} />
       </d.deleteItemButton>
       {renderDayOrder()}
       {renderDayTitle()}

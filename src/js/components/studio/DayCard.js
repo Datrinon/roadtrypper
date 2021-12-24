@@ -26,6 +26,7 @@ function DayCard({ setActiveDay, day, pois }) {
         <dC.UntitledDay>Untitled Day</dC.UntitledDay>
       }
       </dC.dayTitle>
+      <p>Color Here</p>
       <ul>
         {pois
           .sort((a, b) => a.order - b.order)

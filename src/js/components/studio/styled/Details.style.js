@@ -60,3 +60,20 @@ export const DayOrder = styled.h1`
 export const DayOrderNum = styled.span`
   font-weight: 500;
 `
+
+export const EditHeading = styled.p`
+  font-variant-caps: all-petite-caps;
+`
+
+export const DayOrderEdit = styled.div`
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  padding: 0 5px;
+`
+
+export const DayOrderSelect = styled.select`
+  padding: 6px;
+  font-family: inherit;
+  font-weight: 700;
+`
