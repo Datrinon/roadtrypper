@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { appear } from "../../styled/anim.style";
+import { UntitledDay } from "./DayCard.style";
 import { BaseButton } from "./StudioButtons.style";
 
 /**
@@ -54,7 +55,7 @@ export const DayOrder = styled.h1`
       /* font-variant-caps: all-small-caps; */
   font-size: 200%;
   font-weight: 300;
-  margin: 15px 5px;
+  margin: 15px 5px 0 5px;
 `
 
 export const DayOrderNum = styled.span`
@@ -76,4 +77,14 @@ export const DayOrderSelect = styled.select`
   padding: 6px;
   font-family: inherit;
   font-weight: 700;
+`
+
+export const DayTitle = styled.h2`
+  font-size: 130%;
+  margin: 5px 0 15px 5px;
+`
+
+export const UntitledDayDisp = styled(UntitledDay)`
+
+    /* margin: 0 0 15px 5px; */
 `

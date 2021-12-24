@@ -9,6 +9,7 @@ import { TripContext, TripDispatch } from './Studio';
 
 import * as d from "./styled/Details.style";
 import * as dD from "./styled/DayDetails.style";
+import { UntitledDay } from './styled/DayCard.style';
 
 const POICardContainer = styled.div`
   display: flex;
@@ -80,12 +81,11 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
   }
 
   function renderDayTitle() {
-    let displayDayTitle;
-    if (dayState.title.length === 0) {
-      displayDayTitle = (<h2 className="details day untitled">Untitled Day</h2>);
-    } else {
-      displayDayTitle = (<h2 className="details day">{dayState.title}</h2>);
-    }
+    let displayDayTitle = (<d.DayTitle className="details day">{
+        dayState.title.length ?
+        dayState.title :
+        <d.UntitledDayDisp>Untitled Day</d.UntitledDayDisp>
+      }</d.DayTitle>);
 
     let editDayTitle = <input
       defaultValue={dayState.title}
