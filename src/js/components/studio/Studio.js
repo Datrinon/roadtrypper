@@ -142,23 +142,27 @@ function Studio() {
         <MapInstance.Provider value={mapRef}>
           <TripDispatch.Provider value={tripDispatch}>
             <SidebarSetter.Provider value={sidebarSetter}>
-              <StudioHeader />
               <stS.StudioBody className="studio-body">
-                
+
+                <stS.HeaderWrapper>
+                  <StudioHeader />
+
+                </stS.HeaderWrapper>
+
                 <stS.TripGeneral className="trip-general-info">
                   <TripTitle />
                   <LastUpdated time={trip.general.lastAccessed} />
                 </stS.TripGeneral>
-                
+
                 <stS.AddOptions className="add-options">
                   <AddDay activeDay={activeDay} setActiveDay={setActiveDay} />
                   <AddPOI activeDay={activeDay} />
                 </stS.AddOptions>
-                
+
                 <stS.Days className="days">
                   {mapDayDataToCards()}
                 </stS.Days>
-                
+
                 <stS.MapArea className="map-area">
                   <Map
                     data={trip}

@@ -106,13 +106,13 @@ function Map({ data, setActivePin }) {
 
   return (
     <>
-      <button
+      <mS.OverviewButton
         onClick={showOverview}
         disabled={data.pois.length === 0}>
           See Overview
-      </button>
+      </mS.OverviewButton>
       <mS.MapStyle id="map" data-testid="map">
-        <MapContainer
+        <mS.StyledMapContainer
           whenCreated={whenMapCreated}
           // defaults to NYC if there aren't any coordinates placed.
           center={data.pois.length !== 0 ? calcCoordinateAverage() : [40.730610, -73.935242]}
@@ -127,7 +127,7 @@ function Map({ data, setActivePin }) {
             ref={masterFeatureGroup}>
             {placeDayPOIPins()}
           </FeatureGroup>
-        </MapContainer>
+        </mS.StyledMapContainer>
       </mS.MapStyle>
     </>
   )
