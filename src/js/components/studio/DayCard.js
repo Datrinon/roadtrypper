@@ -1,18 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
-
-let Card = styled.div`
-  border: 1px solid black;
-  width: 30vw;
-  border-radius: 5px;
-  padding: 5px;
-  max-width: 240px;
-  margin: 5px;
-
-  &:hover {
-    border: 1px solid red;
-  }
-`;
+import * as dC from "./styled/DayCard.style";
 
 
 function DayCard({ setActiveDay, day, pois }) {
@@ -29,11 +16,15 @@ function DayCard({ setActiveDay, day, pois }) {
   }
 
   return (
-    <Card
+    <dC.Card
       onClick={onCardClick.bind(null, day)}
       data-id={day.id}
       className="day-card">
-      <h2>Day {day.order + 1}: {day.title}</h2>
+      <dC.DayNumLabel>Day <span>{day.order + 1}</span></dC.DayNumLabel>
+      <p>{day.title.length ?
+      day.title :
+      <dC.UntitledDay>Untitled Day</dC.UntitledDay>
+      }</p>
       <ul>
         {pois
           .sort((a, b) => a.order - b.order)
@@ -47,7 +38,7 @@ function DayCard({ setActiveDay, day, pois }) {
             )
         })}
       </ul>
-    </Card>
+    </dC.Card>
   )
 }
 

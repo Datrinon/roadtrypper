@@ -12,6 +12,7 @@ export const StudioBody = styled.main`
   grid-template-columns: minmax(15%, 300px) auto;
   width: 100%;
   height: 100%;
+  overflow: hidden;
 `
 
 export const HeaderWrapper = styled.div`
@@ -33,9 +34,56 @@ export const AddOptions = styled.div`
   border-bottom: 1px solid #dedede;
 `
 
+
+export const DayHeading = styled.h1`
+  text-align: center;
+  margin: 8px auto;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-size: 80%;
+  font-style: italic;
+`
+
+
 export const Days = styled.div`
   grid-area: days;
-  overflow-y: auto;
+`
+
+export const DayCardSectionHeading = styled.h1`
+  text-align: center;
+  /* font-variant: all-small-caps; */
+  margin: 8px auto;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-size: 80%;
+  font-style: italic;
+  /* font-family: "tw cen mt"; */
+`
+
+export const DayCardContainer = styled.div`
+  overflow-y: scroll;
+  height: 75vh;
+
+    /* width */
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    border-radius: 10px;
+  }
+  
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: darkgrey; 
+    border-radius: 10px;
+  }
+
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    background: #b30000; 
+  }
 `
 
 export const MapArea = styled.div`

@@ -160,7 +160,10 @@ function Studio() {
                 </stS.AddOptions>
 
                 <stS.Days className="days">
-                  {mapDayDataToCards()}
+                  <stS.DayCardSectionHeading>Days ({trip.days.length} total)</stS.DayCardSectionHeading>
+                  <stS.DayCardContainer>
+                    {mapDayDataToCards()}
+                  </stS.DayCardContainer>
                 </stS.Days>
 
                 <stS.MapArea className="map-area">
