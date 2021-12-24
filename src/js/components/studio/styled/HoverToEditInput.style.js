@@ -2,9 +2,11 @@ import styled from "styled-components";
 import { BaseButton } from "./StudioButtons.style";
 
 export const Container = styled.div`
-  display: flex;
-  flex-wrap: nowrap;
-  min-height: 1.5rem;
+    display: flex;
+    flex-wrap: nowrap;
+    min-height: 1.5rem;
+    flex-direction: row;
+    align-items: center;
 `
 
 export const HoverEditButton = styled.button`
@@ -12,11 +14,11 @@ export const HoverEditButton = styled.button`
   display: ${props => props.visible ? 'initial' : 'none'};
   cursor: pointer;
   color: #4285F4;
-  padding: 4px;
+  padding: 4px 6px;
   margin-left: 5px;
   border-radius: 50%;
-  position: relative;
-  bottom: 5px;
+  width: 16px;
+  height: 16px;
 
   &:hover {
     color: #75aaff;
