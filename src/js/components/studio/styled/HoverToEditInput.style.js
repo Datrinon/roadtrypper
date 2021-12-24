@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { BaseButton } from "./StudioButtons.style";
 
 export const Container = styled.div`
   display: flex;
@@ -36,10 +37,23 @@ export const HoverEditButton = styled.button`
 `
 
 export const EditModeOptions = styled.div`
-  border: 1px solid cyan;
   display: ${props => props.visible ? 'inline' : 'none'};
+`
 
-  & button {
-    border: 1px solid red;
+export const EditModeOptionButton = styled(BaseButton)`
+  margin: 0 5px;
+  padding: 3px;
+`
+
+export const EditModeOptionButtonPrimary = styled(EditModeOptionButton)`
+  color: white;
+  background-color: hsl(217, 75%, 46%);
+
+  &:hover:not([disabled]) {
+    background-color: hsl(217, 75%, 66%);
+  }
+
+  &:active:not([disabled]) {
+    background-color: hsl(217, 75%, 36%);
   }
 `

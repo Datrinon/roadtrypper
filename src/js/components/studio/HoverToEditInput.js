@@ -52,8 +52,10 @@ function HoverToEditInput({ displayVer, editVer, onClickSave }) {
         <FontAwesomeIcon icon={faPencilAlt} />
       </hS.HoverEditButton>
       <hS.EditModeOptions visible={editMode}>
-        <button onClick={() => {onClickSave(); setEditMode(false)}}>Save</button>
-        <button onClick={() => setEditMode(false)}>Cancel</button>
+        <hS.EditModeOptionButtonPrimary onClick={() => {onClickSave(); setEditMode(false)}}>
+          Save
+        </hS.EditModeOptionButtonPrimary>
+        <hS.EditModeOptionButton onClick={() => setEditMode(false)}>Cancel</hS.EditModeOptionButton>
       </hS.EditModeOptions>
     </hS.Container>
   );
