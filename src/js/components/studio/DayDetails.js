@@ -1,9 +1,13 @@
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import React, { useState, useEffect, useContext, useRef } from 'react'
 import styled from 'styled-components';
+import { FAIcon } from '../styled/template.style';
 import AddPoi from './AddPOI';
 import HoverToEditInput from './HoverToEditInput'
 import POICard from './POICard';
 import { TripContext, TripDispatch } from './Studio';
+
+import * as d from "./styled/Details.style";
 
 const POICardContainer = styled.div`
   display: flex;
@@ -208,17 +212,17 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
     setActiveDay(null);
   }
 
+
   return (
     <div>
-      <h1>Day Details</h1>
-      <button onClick={deleteDay}>Delete Day</button>
+      <d.Heading>Day Overview</d.Heading>
+      <d.deleteItemButton onClick={deleteDay} data-tip="Delete Day">
+        <FAIcon icon={faTrash}/>
+      </d.deleteItemButton>
       {renderDayOrder()}
       {renderDayTitle()}
       {renderColorPicker()}
       {renderPOICards()}
-      {/* 
-      
-       */}
     </div>
   )
 }

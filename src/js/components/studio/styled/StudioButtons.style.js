@@ -4,7 +4,7 @@ import styled from "styled-components";
  * Contains all stylings for buttons used in the trip studio (excluding the map).
  */
 
-const BaseButton = styled.button`
+export const BaseButton = styled.button`
   all: unset;
   text-align: center;
   border-radius: 3px;

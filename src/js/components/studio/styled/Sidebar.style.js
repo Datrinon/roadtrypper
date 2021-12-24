@@ -19,6 +19,7 @@ export const FlexWrapper = styled.div`
   height: 100%;
   width: 100%;
   box-shadow: -1px 0px 4px #a8a8a885;
+  position: relative;
 `
 
 export const SidebarContent = styled.div`

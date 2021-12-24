@@ -303,6 +303,7 @@ function PoiDetails({ activePin, setActivePin }) {
 
     return (
       <>
+        <h1>Point of Interest Overview</h1>
         <button onClick={deletePOI}>Delete</button>
         {belongsToDayElement}
         {poiOrderElement}

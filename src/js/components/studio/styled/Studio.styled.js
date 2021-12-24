@@ -50,14 +50,19 @@ export const Days = styled.div`
 `
 
 export const DayCardSectionHeading = styled.h1`
-  text-align: center;
-  /* font-variant: all-small-caps; */
-  margin: 8px auto;
+  /* text-align: center;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   font-size: 80%;
   font-style: italic;
-  /* font-family: "tw cen mt"; */
+  font-family: "tw cen mt"; */
+  margin: 8px auto;
+  font-size: 125%;
+  text-align: center;
+  font-variant: all-small-caps;
+  padding-bottom: 5px;
+  text-shadow: 1px 1px 11px #cfcfcf;
+  letter-spacing: 1px;
 `
 
 export const DayCardContainer = styled.div`
