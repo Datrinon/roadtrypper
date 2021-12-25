@@ -134,7 +134,12 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
 
     function changeDayColor(e) {
       let color = e.target.value;
+
       color = color.slice(1, color.length);
+
+      if (color === dayState.color) {
+        return;
+      }
 
       dispatch({
         type: "edit",
@@ -150,10 +155,9 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
     }
 
     return (
-      <div>
-        <label key={dayState.color} htmlFor="day-color">
-          Pin Color
-          <input
+      <dD.dayColorContainer>
+        <dD.dayColorLabel key={dayState.color} htmlFor="day-color">
+          <dD.dayColorInput
             key={dayState.color}
             id="day-color"
             type="color"
@@ -161,12 +165,11 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
             defaultValue={`#${dayState.color}`}
             onBlur={changeDayColor}
             ref={colorEditRef}
-            style={{opacity: "0", width: "1px", height: "1px"}}
           />
-          <input type="hidden" value={dayState.color}/>
-          <dD.dayColorPin color={dayState.color}/>
-        </label>
-      </div>
+          <dD.dayColorPin color={dayState.color} />
+          <span>Day Color</span>
+        </dD.dayColorLabel>
+      </dD.dayColorContainer>
     );
   }
 
@@ -216,9 +219,17 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
       <d.deleteItemButton onClick={deleteDay} data-tip="Delete Day">
         <FAIcon icon={faTrash} />
       </d.deleteItemButton>
-      {renderDayOrder()}
-      {renderDayTitle()}
-      {renderColorPicker()}
+      <dD.DayBodyHeading>
+        <div className="order">
+          {renderDayOrder()}
+        </div>
+        <div className="title">
+          {renderDayTitle()}
+        </div>
+        <div className="color">
+          {renderColorPicker()}
+        </div>
+      </dD.DayBodyHeading>
       {renderPOICards()}
     </div>
   )
