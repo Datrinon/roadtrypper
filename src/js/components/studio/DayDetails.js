@@ -11,10 +11,6 @@ import * as d from "./styled/Details.style";
 import * as dD from "./styled/DayDetails.style";
 import { UntitledDay } from './styled/DayCard.style';
 
-const POICardContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-`
 
 function DayDetails({ day, setActivePin, setActiveDay }) {
 
@@ -189,13 +185,21 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
       const dayData = {
         data: dayState
       }
-      section = <AddPoi activeDay={dayData} />
+      section = (
+        <div>
+          <p>No POIs listed for this day.</p>
+          <AddPoi activeDay={dayData} />
+        </div>
+      )
     }
 
     return (
-      <POICardContainer>
-        {section}
-      </POICardContainer>
+      <div>
+        <d.HeadingLv2>POInts</d.HeadingLv2>
+        <dD.POICardContainer>
+          {section}
+        </dD.POICardContainer>
+      </div>
     )
   }
 
@@ -230,6 +234,7 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
           {renderColorPicker()}
         </div>
       </dD.DayBodyHeading>
+      <dD.fightclubhr/>
       {renderPOICards()}
     </div>
   )

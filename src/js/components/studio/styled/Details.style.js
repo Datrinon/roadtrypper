@@ -103,3 +103,17 @@ export const DayTitleEdit = styled.input`
     border-radius: 4px;
   }
 `
+
+export const HeadingLv2 = styled.h2`
+  font-size: 150%;
+  margin: 30px 0 10px 0;
+  text-align: center;
+  font-variant: all-small-caps;
+  margin: 18px auto;
+  font-size: 125%;
+  text-align: center;
+  font-variant: all-small-caps;
+  padding-bottom: 5px;
+  text-shadow: 1px 1px 11px #cfcfcf;
+  letter-spacing: 1px;
+`

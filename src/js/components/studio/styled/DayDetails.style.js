@@ -43,6 +43,8 @@ export const DayBodyHeading = styled.header`
 "title title";
     grid-template-rows: 70% 30%;
     grid-template-columns: 70% 30%;
+    /* padding-bottom: 15px;
+    border-bottom: 1px solid #dedede; */
   /* & > div {
     border: 1px solid red;
   } */
@@ -62,4 +64,37 @@ export const DayBodyHeading = styled.header`
     justify-self: center;
     align-self: end;
   }
+`
+
+export const POICardContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  & .add-Poi {
+    width: 80%;
+    padding: 8px;
+    margin: 8px auto;
+    display: block;
+  }
+`
+
+export const fightclubhr = styled.hr`
+    border: none;
+    border-top: 3px double #ababab;
+    color: #565656;
+    overflow: visible;
+    text-align: center;
+    height: 5px;
+    margin: 25px 25% 0 25%;
+
+&:after {
+    background: #fff;
+    content: '§';
+    padding: 0 4px;
+    position: relative;
+    top: -10px;
+}
+
+
 `
