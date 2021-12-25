@@ -82,10 +82,10 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
 
   function renderDayTitle() {
     let displayDayTitle = (<d.DayTitle className="details day">{
-        dayState.title.length ?
+      dayState.title.length ?
         dayState.title :
         <d.UntitledDayDisp>Untitled Day</d.UntitledDayDisp>
-      }</d.DayTitle>);
+    }</d.DayTitle>);
 
     let editDayTitle = <d.DayTitleEdit
       defaultValue={dayState.title}
@@ -131,11 +131,10 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
   }, [trip, day]);
 
   function renderColorPicker() {
+
     function changeDayColor(e) {
       let color = e.target.value;
       color = color.slice(1, color.length);
-
-      console.log(color);
 
       dispatch({
         type: "edit",
@@ -150,32 +149,24 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
 
     }
 
-    console.log(dayState.color);
-
     return (
-      <label key={dayState.color} htmlFor="day-color">
-        Pin Color
-        <input
-          key={dayState.color}
-          id="day-color"
-          type="color"
-          name="day-color"
-          defaultValue={`#${dayState.color}`}
-          onBlur={changeDayColor}
-          ref={colorEditRef}
-        />
-        {/* TODO work on this later. */}
-        {/* <span 
-          className="day-color-pin"
-          style={{
-            "background-color" : `#${day.color}`,
-            width: "32px",
-            height: "32px"
-          }}
-          >
-          &nbsp;
-        </span> */}
-      </label>
+      <div>
+        <label key={dayState.color} htmlFor="day-color">
+          Pin Color
+          <input
+            key={dayState.color}
+            id="day-color"
+            type="color"
+            name="day-color"
+            defaultValue={`#${dayState.color}`}
+            onBlur={changeDayColor}
+            ref={colorEditRef}
+            style={{opacity: "0", width: "1px", height: "1px"}}
+          />
+          <input type="hidden" value={dayState.color}/>
+          <dD.dayColorPin color={dayState.color}/>
+        </label>
+      </div>
     );
   }
 
