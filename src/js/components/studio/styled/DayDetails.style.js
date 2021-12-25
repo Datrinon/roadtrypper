@@ -81,20 +81,20 @@ export const POICardContainer = styled.div`
 
 export const fightclubhr = styled.hr`
     border: none;
-    border-top: 3px double #ababab;
+    border-top: 1px solid #bcbcbc;
     color: #565656;
     overflow: visible;
     text-align: center;
     height: 5px;
-    margin: 25px 25% 0 25%;
+    margin: 15px 15% 0 15%;
 
-&:after {
+/* &:after {
     background: #fff;
     content: '§';
     padding: 0 4px;
     position: relative;
     top: -10px;
-}
+} */
 
 
 `

@@ -22,7 +22,7 @@ import * as s from '../styled/template.style';
  * with the coordinates of the shown location. Useful for adding or editing
  * a location.
  */
-function LocationInput({ onClickPOIMarker }) {
+function LocationInput({ onClickPOIMarker, classNames = [], placeholder="" }) {
   const mapRef = React.useContext(MapInstance);
   const searchRef = useRef();
 
@@ -89,12 +89,12 @@ function LocationInput({ onClickPOIMarker }) {
 
     return (
       <s.ListingBox
-        key={Date.now()}
+        key={index}
         onClick={registerPlaceOnMap.bind(null, result)}
         tabIndex={-1}>
         <s.FAIcon icon={faMapMarked} />
-        <s.ListingLabel>
-          <s.ListingName className="listing-name">
+        <s.ListingLabel className="listing-result-text"l>
+          <s.ListingName className="listing-result-text-match">
             {label.shift()}
           </s.ListingName>
           {label.length >= 1 && ", "}
@@ -119,7 +119,8 @@ function LocationInput({ onClickPOIMarker }) {
       onSearchCallback={registerPlaceOnMap}
       debounceTimer={1000}
       fasterFirstSearch={250}
-      classNames={["edit-location-poi"]} />
+      placeholder={placeholder}
+      classNames={[`edit-location-poi ${[...classNames]}`]} />
   )
 }
 

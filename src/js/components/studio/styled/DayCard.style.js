@@ -16,13 +16,14 @@ export const Card = styled.div`
   }
 
   position: relative;
+  cursor: pointer;
 `
 
 export const DayNumLabel = styled.h2`
   font-variant: all-petite-caps;
   font-weight: 400;
   font-size: 90%;
-  margin-left: 3px;
+  margin-left: 6px;
 
   & span {
     font-weight: 600;
@@ -61,4 +62,6 @@ export const DayColorLine = styled.div`
   position: absolute;
   bottom: 0;
   left: 2px;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
 `
