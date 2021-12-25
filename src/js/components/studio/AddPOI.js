@@ -15,13 +15,10 @@ import { getBase64 } from '../../util/getbase64';
 
 import * as btnS from "./styled/StudioButtons.style";
 
-const Label = styled.label`
-  display: block;
+import * as d from "./styled/Details.style";
 
-  & > * {
-    display: block;
-  }
-`
+import * as a from "./styled/Add.style";
+
 
 function NewPoiForm({ day }) {
   // global contexts
@@ -269,61 +266,66 @@ function NewPoiForm({ day }) {
 
   return (
     <div>
-      <h1>Adding Poi</h1>
-      <section>
-        <h2>Day Information</h2>
-        <Label>
+      <d.Heading>Adding Poi</d.Heading>
+      <a.FormSectionTop>
+        <a.HeadingLv2>Day Information</a.HeadingLv2>
+        <a.Label htmlFor="poi-day-select">
           For Day
-          <select
-            name="poi-day"
-            id="poi-day-select"
-            value={selDay?.order}
-            onChange={onChangeDayOrder}>
-            {
-              trip.days
-                .sort((dayA, dayB) => dayA.order - dayB.order)
-                .map((day, index) => {
-                  return <option
-                    key={day.id}
-                    value={day.order}>
-                    {day.order + 1}
-                  </option>
-                })
-            }
-          </select>
-        </Label>
-        <Label>
+        </a.Label>
+        <a.DaySelect
+          name="poi-day"
+          id="poi-day-select"
+          value={selDay?.order}
+          onChange={onChangeDayOrder}>
+          {
+            trip.days
+              .sort((dayA, dayB) => dayA.order - dayB.order)
+              .map((day, index) => {
+                return <option
+                  key={day.id}
+                  value={day.order}>
+                  {day.order + 1} - {day.title}
+                </option>
+              })
+          }
+        </a.DaySelect>
+        <a.Label htmlFor="poi-order-select">
           Order in Day
-          <select
-            key={selPoiOrder}
-            name="poi-order-in-day"
-            id="poi-order-select"
-            value={selPoiOrder}
-            onChange={onChangePOIOrder}>
-            {
-              selDayPois.length !== 0 ?
-                (enumeratePoiOrderOptions()) :
-                (<option value={0}>1</option>)
-            }
-          </select>
-        </Label>
-      </section>
-      <section>
-        <h2>Poi Information</h2>
-        <Label>
+        </a.Label>
+        <a.DaySelect
+          key={selPoiOrder}
+          name="poi-order-in-day"
+          id="poi-order-select"
+          value={selPoiOrder}
+          onChange={onChangePOIOrder}>
+          {
+            selDayPois.length !== 0 ?
+              (enumeratePoiOrderOptions()) :
+              (<option value={0}>1</option>)
+          }
+        </a.DaySelect>
+      </a.FormSectionTop>
+      <a.FormSectionBot>
+        <a.HeadingLv2>Poi Information</a.HeadingLv2>
+        <a.Label>
           Location
-          <input
+          <a.LocationInputContainer>
+            <LocationInput
+              onClickPOIMarker={confirmLocation}
+              placeholder="Enter a location..."
+              classNames={["add-location"]} />
+          </a.LocationInputContainer>
+          <a.LocationResult
             disabled
-            placeholder="No Location Selected."
+            placeholder="No location confirmed."
             value={poiLoc}
           />
-          <LocationInput onClickPOIMarker={confirmLocation} />
-        </Label>
-        <Label>
+        </a.Label>
+        <a.Label>
           Title
           <input value={poiTitle} onChange={changePoiTitle} />
-        </Label>
-        <Label>
+        </a.Label>
+        <a.Label>
           <input
             ref={sameTitleCheckbox}
             type="checkbox"
@@ -332,11 +334,11 @@ function NewPoiForm({ day }) {
             defaultChecked={false}
           />
           Title is same as location name
-        </Label>
-        <Label>
+        </a.Label>
+        <a.Label>
           Description
           <textarea value={poiDesc} onChange={onChangePoiDesc} />
-        </Label>
+        </a.Label>
         <div>
           <input ref={fileInputRef} type="file" id="fileElem" multiple accept="image/*" style={{ display: "none" }} onChange={fileChange} />
           <div ref={photosArea}>
@@ -361,7 +363,7 @@ function NewPoiForm({ day }) {
           </div>
           <button onClick={onAddPhoto}>Add Photo</button>
         </div>
-      </section>
+      </a.FormSectionBot>
       <button disabled={!poiLoc} onClick={addNewPoi}>Add POI</button>
     </div>
   )
