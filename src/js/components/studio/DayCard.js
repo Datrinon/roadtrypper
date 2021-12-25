@@ -26,7 +26,7 @@ function DayCard({ setActiveDay, day, pois }) {
         <dC.UntitledDay>Untitled Day</dC.UntitledDay>
       }
       </dC.dayTitle>
-      <p>Color Here</p>
+      <dC.DayColorLine color={day.color}></dC.DayColorLine>
       <ul>
         { pois.length ? 
           pois
@@ -40,7 +40,8 @@ function DayCard({ setActiveDay, day, pois }) {
               </li>
             )
           }) :
-          <li>No Points Added.</li>
+          // <li style={{fontStyle: "italic"}}>No Points Added.</li>
+          <></>
         }
       </ul>
     </dC.Card>

@@ -14,12 +14,15 @@ export const Card = styled.div`
   &:hover {
     border: 2px solid #658dff;
   }
+
+  position: relative;
 `
 
 export const DayNumLabel = styled.h2`
   font-variant: all-petite-caps;
   font-weight: 400;
   font-size: 90%;
+  margin-left: 3px;
 
   & span {
     font-weight: 600;
@@ -32,10 +35,30 @@ export const dayTitle = styled.p`
 `
 
 export const titledDay = styled.span`
-  font-weight: 400;
+  font-weight: 600;
 `
 
 export const UntitledDay = styled.span`
   font-style: italic;
   color: #bcbcbc;
+`
+
+export const DayColor = styled.div`
+  background-color: ${props => `#${props.color}`};
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+`
+
+export const DayColorLine = styled.div`
+  background-color: ${props => `#${props.color}`};
+  width: 5px;
+  height: 100%;
+  /* border-radius: 50%; */
+  position: absolute;
+  bottom: 0;
+  left: 2px;
 `
