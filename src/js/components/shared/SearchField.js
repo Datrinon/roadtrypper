@@ -168,7 +168,7 @@ const SearchField = React.forwardRef(({
 
     // now we can query select all the elements. (input field + all search results)
     const focusables = Array.from(document.body.querySelectorAll(
-      ".search-field, .search-results > *:not(.search-result-failure)"
+      ".searchbar-field, .search-results > *:not(.search-result-failure)"
     ));
 
     // focus on the element with index equal to currentFocused 
@@ -195,7 +195,7 @@ const SearchField = React.forwardRef(({
     if (currentFocused.current >= (focusables.length - 1)) {
       currentFocused.current = 0;
     } else {
-      currentFocused.current = currentFocused.current + 1;
+      currentFocused.current += 1;
     }
 
     focusables[currentFocused.current].focus();
@@ -220,7 +220,11 @@ const SearchField = React.forwardRef(({
    * or pressing ESCAPE.
    */
   function removeArrowKeyPress(e) {
-    if (e instanceof KeyboardEvent || !e.composedPath().includes(formInput.current)) {
+    console.log(e);
+    if (
+      (e instanceof KeyboardEvent
+      && e.code === "Escape")
+    || !e.composedPath().includes(formInput.current)) {
       window.onkeydown = null;
       window.onclick = null;
       currentFocused.current = 0;
@@ -269,6 +273,7 @@ const SearchField = React.forwardRef(({
               // Set to 1000 because of nominatim's usage policy requirements.
               onKeyDown={generateSuggestions}
               onChange={() => setInvalidSearchTerm(null)}
+              onFocus={() => currentFocused.current = 0}
               type="search"
               autoComplete="off"
               disabled={submitPressed}
