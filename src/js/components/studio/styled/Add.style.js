@@ -85,6 +85,7 @@ export const LocationInputContainer = styled.div`
     padding: 5px;
     font-weight: 400;
     cursor: text;
+    font-size: 0.85rem;
   }
 
   & .searchbar-submit-button {
@@ -109,7 +110,7 @@ export const LocationInputContainer = styled.div`
   & .search-results {
     font-size: 0.85rem;
     position: absolute;
-    top: 99%;
+    top: 98%;
     width: 100%;
     left: 0;
     border: 1px solid #565656;
@@ -137,4 +138,49 @@ export const LocationInputContainer = styled.div`
   & .listing-result-text-match {
     font-size: 1.1em;
   }
+`
+
+export const PoiTitleArr = styled.div`
+  display: grid;
+  grid-template-areas: 
+  "label checkbox"
+  "input input";
+  grid-template-columns: 20% 80%;
+  grid-template-rows: 60% auto;
+  align-items: center;
+
+  & .poi-title-label {
+    grid-area: label;
+    margin: 0;
+    margin-left: 12px;
+  }
+
+  & .poi-title-input {
+    grid-area: input;
+  }
+
+  & .poi-title-checkbox {
+    grid-area: checkbox;
+    font-size: 80%;
+    margin: 0;
+    font-weight: 400;
+
+    & input {
+      transform: scale(1.1);
+    }
+  }
+
+  & #poi-same-title-as-loc {
+    display: inline;
+  }
+`;
+
+export const PoiTitleInput = styled.input`
+  width: 88%;
+  margin: 0 auto;
+  display: block;
+  padding: 6px 5px;
+  font-family: inherit;
+  border-radius: 4px;
+  border: 1px solid #565656;
 `

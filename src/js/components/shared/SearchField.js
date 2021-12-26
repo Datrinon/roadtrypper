@@ -220,7 +220,6 @@ const SearchField = React.forwardRef(({
    * or pressing ESCAPE.
    */
   function removeArrowKeyPress(e) {
-    console.log(e);
     if (
       (e instanceof KeyboardEvent
       && e.code === "Escape")

@@ -321,20 +321,31 @@ function NewPoiForm({ day }) {
             value={poiLoc}
           />
         </a.Label>
-        <a.Label>
-          Title
-          <input value={poiTitle} onChange={changePoiTitle} />
-        </a.Label>
-        <a.Label>
-          <input
-            ref={sameTitleCheckbox}
-            type="checkbox"
-            onChange={autosetPoiTitle}
-            disabled={poiLoc.length === 0}
-            defaultChecked={false}
-          />
-          Title is same as location name
-        </a.Label>
+        <a.PoiTitleArr>
+          <a.Label 
+            className={"poi-title-label"}
+            htmlFor="poi-title">
+            Title
+          </a.Label>
+          <a.PoiTitleInput
+            id="poi-title"
+            className={"poi-title-input"}
+            placeholder="Enter a title..."
+            value={poiTitle}
+            onChange={changePoiTitle} />
+          <a.Label
+            className="poi-title-checkbox"
+            htmlFor="poi-same-title-as-loc">
+            <input
+                id={"poi-same-title-as-loc"}
+                ref={sameTitleCheckbox}
+                type="checkbox"
+                onChange={autosetPoiTitle}
+                disabled={poiLoc.length === 0}
+                defaultChecked={false}/>
+            Same as location name
+          </a.Label>
+        </a.PoiTitleArr>
         <a.Label>
           Description
           <textarea value={poiDesc} onChange={onChangePoiDesc} />
