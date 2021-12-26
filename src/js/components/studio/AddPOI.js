@@ -7,7 +7,6 @@ import L from "leaflet";
 import { getLIcon } from './LeafletIcon';
 import CountingTextArea from './CountingTextArea';
 import { cloneDeep, set } from 'lodash';
-import PoiDetails from './POIDetails';
 
 import { v4 as uuidv4 } from 'uuid';
 import { getBase64 } from '../../util/getbase64';
@@ -18,10 +17,11 @@ import * as d from "./styled/Details.style";
 import * as a from "./styled/Add.style";
 import { FAIcon } from '../styled/template.style';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { AddPoiSuccess } from './AddPoiSuccess';
 
 
 
-function NewPoiForm({ day }) {
+export function NewPoiForm({ day }) {
   // global contexts
   const dispatch = useContext(TripDispatch);
   const trip = useContext(TripContext);
@@ -368,7 +368,7 @@ function NewPoiForm({ day }) {
               photos.map((photo, index) => {
 
                 return (
-                  <div className="uploaded-photo" key={index}>
+                  <div className="uploaded-photo" key={"" + photo.name + photo.lastModified + Date.now()}>
                     <a.PhotoPreviewContainer>
                       <div style={{position: "relative"}}>
                         <a.PhotoHeading>{index + 1}</a.PhotoHeading>
@@ -398,35 +398,20 @@ function NewPoiForm({ day }) {
           <a.AddPhotoButton onClick={onAddPhoto}>Add Photo</a.AddPhotoButton>
         </a.FormSectionBot>
       </a.FormContainer>
+      <button onClick={(e) => {
+        sidebarSetter.setContent(<AddPoiSuccess
+          lastAddedPoi={{ dayId: 0, order: 0 }}
+        />);
+      }}>
+        Debug button
+
+      </button>
+
       <a.AddPOIButton
         disabled={!poiLoc}
         className="add-poi-button"
         onClick={addNewPoi}>Add POI</a.AddPOIButton>
     </a.AddPOIForm>
-  )
-}
-
-function AddPoiSuccess({ lastAddedPoi }) {
-  const sidebarSetter = useContext(SidebarSetter);
-  const trip = useContext(TripContext);
-
-  function displayForm() {
-    sidebarSetter.setContent(<NewPoiForm />);
-  }
-
-  function displayPoi() {
-    const poi = trip.pois.find(poi => poi.dayId === lastAddedPoi.dayId
-      && poi.order === lastAddedPoi.order);
-
-    sidebarSetter.setContent(<PoiDetails activePin={poi} />);
-  }
-
-  return (
-    <div>
-      <h1>Success! New Point of Interest added.</h1>
-      <button onClick={displayForm}>Add Another POI</button>
-      <button onClick={displayPoi}>View Added POI</button>
-    </div>
   )
 }
 
