@@ -69,3 +69,14 @@ export const DayColorLine = styled.div`
   border-left: 1px solid black;
   border-right: 1px solid black;
 `
+
+export const DayPOIList = styled.ol`
+  list-style: decimal;
+  width: 80%;
+  margin: 4px auto;
+  margin-top: 10px;
+`
+
+export const DayPOIBullet = styled.li`
+  font-variant-caps: all-petite-caps;
+`

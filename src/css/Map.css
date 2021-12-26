@@ -31,3 +31,21 @@
   height: 30px !important;
   font-family: "Segoe UI";
 }
+
+.leaflet-tooltip.leaflet-tooltip-bottom {
+  padding: 0 5px;
+  background-color: #000000;
+  /* box-shadow: unset; */
+  text-shadow: 1px 1px 2px #131313;
+  font-family: "Segoe UI";
+  font-size: 100%;
+  color: white;
+  font-weight: 700;
+  /* left: 100%; */
+  top: 10px;
+  left: 10px;
+}
+
+.leaflet-tooltip.leaflet-tooltip-bottom::before {
+  border: unset;
+}

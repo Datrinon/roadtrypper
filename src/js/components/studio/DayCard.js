@@ -27,23 +27,23 @@ function DayCard({ setActiveDay, day, pois }) {
       }
       </dC.dayTitle>
       <dC.DayColorLine color={day.color}></dC.DayColorLine>
-      <ul>
+      <dC.DayPOIList>
         { pois.length ? 
           pois
           .sort((a, b) => a.order - b.order)
           .map((poi) => {
             return (
-              <li
+              <dC.DayPOIBullet
                 key={poi.id}
                 className="day-point">
                 {poi.title}
-              </li>
+              </dC.DayPOIBullet>
             )
           }) :
           // <li style={{fontStyle: "italic"}}>No Points Added.</li>
           <></>
         }
-      </ul>
+      </dC.DayPOIList>
     </dC.Card>
   )
 }
