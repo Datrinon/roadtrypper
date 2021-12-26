@@ -36,6 +36,7 @@ export const AddButton = styled(BaseButton)`
     /* padding: 5px 13px; */
     width: 46%;
     font-size: 80%;
+    min-height: 42px;
 
   &:hover:not([disabled]) {
 

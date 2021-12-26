@@ -220,9 +220,9 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
   return (
     <div>
       <d.Heading>Day Overview</d.Heading>
-      <d.deleteItemButton onClick={deleteDay} data-tip="Delete Day">
+      <d.DeleteItemButton onClick={deleteDay} data-tip="Delete Day">
         <FAIcon icon={faTrash} />
-      </d.deleteItemButton>
+      </d.DeleteItemButton>
       <dD.DayBodyHeading>
         <div className="order">
           {renderDayOrder()}

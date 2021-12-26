@@ -2,7 +2,6 @@
 import React, { useState, useContext, useEffect, useRef } from 'react'
 import LocationInput from './LocationInput';
 import { MapInstance, TripDispatch, TripContext, TripId, SidebarSetter } from './Studio';
-import styled from 'styled-components';
 
 import L from "leaflet";
 import { getLIcon } from './LeafletIcon';
@@ -13,11 +12,13 @@ import PoiDetails from './POIDetails';
 import { v4 as uuidv4 } from 'uuid';
 import { getBase64 } from '../../util/getbase64';
 
+// styling
 import * as btnS from "./styled/StudioButtons.style";
-
 import * as d from "./styled/Details.style";
-
 import * as a from "./styled/Add.style";
+import { FAIcon } from '../styled/template.style';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+
 
 
 function NewPoiForm({ day }) {
@@ -265,92 +266,102 @@ function NewPoiForm({ day }) {
   }
 
   return (
-    <div>
-      <d.Heading>Adding Poi</d.Heading>
-      <a.FormSectionTop>
-        <a.HeadingLv2>Day Information</a.HeadingLv2>
-        <a.Label htmlFor="poi-day-select">
-          For Day
-        </a.Label>
-        <a.DaySelect
-          name="poi-day"
-          id="poi-day-select"
-          value={selDay?.order}
-          onChange={onChangeDayOrder}>
-          {
-            trip.days
-              .sort((dayA, dayB) => dayA.order - dayB.order)
-              .map((day, index) => {
-                return <option
-                  key={day.id}
-                  value={day.order}>
-                  {day.order + 1} - {day.title}
-                </option>
-              })
-          }
-        </a.DaySelect>
-        <a.Label htmlFor="poi-order-select">
-          Order in Day
-        </a.Label>
-        <a.DaySelect
-          key={selPoiOrder}
-          name="poi-order-in-day"
-          id="poi-order-select"
-          value={selPoiOrder}
-          onChange={onChangePOIOrder}>
-          {
-            selDayPois.length !== 0 ?
-              (enumeratePoiOrderOptions()) :
-              (<option value={0}>1</option>)
-          }
-        </a.DaySelect>
-      </a.FormSectionTop>
-      <a.FormSectionBot>
-        <a.HeadingLv2>Poi Information</a.HeadingLv2>
-        <a.Label>
-          Location
-          <a.LocationInputContainer>
-            <LocationInput
-              onClickPOIMarker={confirmLocation}
-              placeholder="Enter a location..."
-              classNames={["add-location"]} />
-          </a.LocationInputContainer>
-          <a.LocationResult
-            disabled
-            placeholder="No location confirmed."
-            value={poiLoc}
-          />
-        </a.Label>
-        <a.PoiTitleArr>
-          <a.Label 
-            className={"poi-title-label"}
-            htmlFor="poi-title">
-            Title
+    <a.AddPOIForm>
+      <a.AddPOIFormHeading>Adding Poi</a.AddPOIFormHeading>
+      <a.FormContainer className="form-container">
+        <a.FormSectionTop>
+          <a.HeadingLv2>Day Information</a.HeadingLv2>
+          <a.Label htmlFor="poi-day-select">
+            For Day
           </a.Label>
-          <a.PoiTitleInput
-            id="poi-title"
-            className={"poi-title-input"}
-            placeholder="Enter a title..."
-            value={poiTitle}
-            onChange={changePoiTitle} />
-          <a.Label
-            className="poi-title-checkbox"
-            htmlFor="poi-same-title-as-loc">
-            <input
+          <a.DaySelect
+            name="poi-day"
+            id="poi-day-select"
+            value={selDay?.order}
+            onChange={onChangeDayOrder}>
+            {
+              trip.days
+                .sort((dayA, dayB) => dayA.order - dayB.order)
+                .map((day, index) => {
+                  return <option
+                    key={day.id}
+                    value={day.order}>
+                    {day.order + 1} - {day.title}
+                  </option>
+                })
+            }
+          </a.DaySelect>
+          <a.Label htmlFor="poi-order-select">
+            Order in Day
+          </a.Label>
+          <a.DaySelect
+            key={selPoiOrder}
+            name="poi-order-in-day"
+            id="poi-order-select"
+            value={selPoiOrder}
+            onChange={onChangePOIOrder}>
+            {
+              selDayPois.length !== 0 ?
+                (enumeratePoiOrderOptions()) :
+                (<option value={0}>1</option>)
+            }
+          </a.DaySelect>
+        </a.FormSectionTop>
+        <a.FormSectionMid>
+          <a.HeadingLv2>Poi Information</a.HeadingLv2>
+          <a.Label>
+            Location
+            <a.LocationInputContainer>
+              <LocationInput
+                onClickPOIMarker={confirmLocation}
+                placeholder="Enter a location..."
+                classNames={["add-location"]} />
+            </a.LocationInputContainer>
+            <a.LocationResult
+              disabled
+              placeholder="No location confirmed."
+              value={poiLoc}
+            />
+          </a.Label>
+          <a.PoiTitleArr>
+            <a.Label
+              className={"poi-title-label"}
+              htmlFor="poi-title">
+              Title
+            </a.Label>
+            <a.PoiTitleInput
+              id="poi-title"
+              className={"poi-title-input"}
+              placeholder="Enter a title..."
+              value={poiTitle}
+              onChange={changePoiTitle} />
+            <a.Label
+              className="poi-title-checkbox"
+              htmlFor="poi-same-title-as-loc">
+              <input
                 id={"poi-same-title-as-loc"}
                 ref={sameTitleCheckbox}
                 type="checkbox"
                 onChange={autosetPoiTitle}
                 disabled={poiLoc.length === 0}
-                defaultChecked={false}/>
-            Same as location name
-          </a.Label>
-        </a.PoiTitleArr>
-        <a.Label>
-          Description
-          <textarea value={poiDesc} onChange={onChangePoiDesc} />
-        </a.Label>
-        <div>
+                defaultChecked={false} />
+              Same as location name
+            </a.Label>
+          </a.PoiTitleArr>
+          <a.DescArr>
+            <a.Label htmlFor="desc">
+              Description
+              <a.DescTextArea
+                id="desc"
+                placeholder="Enter a description about the point of interest here."
+                rows="15"
+                value={poiDesc}
+                onChange={onChangePoiDesc} />
+            </a.Label>
+          </a.DescArr>
+        </a.FormSectionMid>
+        <a.FormSectionBot>
+          <a.HeadingLv2>Photos (Optional)</a.HeadingLv2>
           <input ref={fileInputRef} type="file" id="fileElem" multiple accept="image/*" style={{ display: "none" }} onChange={fileChange} />
           <div ref={photosArea}>
             {
@@ -358,25 +369,40 @@ function NewPoiForm({ day }) {
 
                 return (
                   <div className="uploaded-photo" key={index}>
-                    <p>{photo.name}</p>
-                    <img src={URL.createObjectURL(photo)} alt={photo.name} />
-                    <CountingTextArea
-                      textAreaId={`new-photo-desc${index}`}
-                      labelText={"Description (Optional)"}
-                      limit={500}
-                      startText={""}
-                      classNames={["add-photo-description"]}
-                    />
-                    <button onClick={removePhotoFromBuffer.bind(null, index)}>Remove This Photo</button>
+                    <a.PhotoPreviewContainer>
+                      <div style={{position: "relative"}}>
+                        <a.PhotoHeading>{index + 1}</a.PhotoHeading>
+                        <a.RemovePhotoButton
+                          onClick={removePhotoFromBuffer.bind(null, index)}>
+                            <FAIcon icon={faTrash} />
+                        </a.RemovePhotoButton>
+                      </div>
+                      <a.ImgPreviewContainer>
+                        <a.ImgPreview src={URL.createObjectURL(photo)} alt={photo.name} />
+                      </a.ImgPreviewContainer>
+                    </a.PhotoPreviewContainer>
+                    <a.PhotoDescContainer>
+                      <CountingTextArea
+                        textAreaId={`new-photo-desc-${index}`}
+                        labelText={"Description"}
+                        limit={500}
+                        startText={""}
+                        placeholder="Describe this photo (optional)."
+                        classNames={["add-photo-description"]}
+                      />
+                    </a.PhotoDescContainer>
                   </div>)
               })
             }
           </div>
-          <button onClick={onAddPhoto}>Add Photo</button>
-        </div>
-      </a.FormSectionBot>
-      <button disabled={!poiLoc} onClick={addNewPoi}>Add POI</button>
-    </div>
+          <a.AddPhotoButton onClick={onAddPhoto}>Add Photo</a.AddPhotoButton>
+        </a.FormSectionBot>
+      </a.FormContainer>
+      <a.AddPOIButton
+        disabled={!poiLoc}
+        className="add-poi-button"
+        onClick={addNewPoi}>Add POI</a.AddPOIButton>
+    </a.AddPOIForm>
   )
 }
 

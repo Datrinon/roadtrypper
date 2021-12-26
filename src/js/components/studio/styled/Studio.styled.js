@@ -65,11 +65,8 @@ export const DayCardSectionHeading = styled.h1`
   letter-spacing: 1px;
 `
 
-export const DayCardContainer = styled.div`
-  overflow-y: scroll;
-  height: 75vh;
-
-    /* width */
+export const DivWithCustomScroll = styled.div`
+  /* width */
   &::-webkit-scrollbar {
     width: 8px;
   }
@@ -89,6 +86,13 @@ export const DayCardContainer = styled.div`
   &::-webkit-scrollbar-thumb:hover {
     background: #b30000; 
   }
+`
+
+export const DayCardContainer = styled(DivWithCustomScroll)`
+  overflow-y: scroll;
+  height: 75vh;
+
+
 `
 
 export const MapArea = styled.div`

@@ -10,7 +10,7 @@ export const SidebarContainer = styled.div`
   height: 100%;
   width: ${[props => props.collapsed ? "16px" : "325px"]};
   max-width: 33vw;
-  transition: all 300ms ease;
+  transition: width 300ms ease;
 `
 
 export const FlexWrapper = styled.div`
@@ -28,6 +28,10 @@ export const SidebarContent = styled.div`
   width: 100%;
   overflow: hidden;
   background-color: white;
+
+  & .sidebar-contents {
+    height: 100%;
+  }
 `
 
 export const CollapseButton = styled.button`

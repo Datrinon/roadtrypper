@@ -72,8 +72,8 @@ export const POICardContainer = styled.div`
   align-items: center;
 
   & .add-Poi {
-    width: 80%;
-    padding: 8px;
+    width: 50%;
+    padding: 2px 6px;
     margin: 8px auto;
     display: block;
   }

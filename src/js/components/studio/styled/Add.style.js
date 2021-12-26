@@ -1,7 +1,25 @@
 import styled from "styled-components";
+import { appear } from "../../styled/anim.style";
 import * as d from "./Details.style";
+import { DivWithCustomScroll } from "./Studio.styled";
+import { BaseButton } from "./StudioButtons.style";
 
-export const descriptionTextBox = styled.textarea``
+export const AddPOIForm = styled.div`
+  display: grid;
+  border: 1px solid fuchsia;
+  grid-template-rows: 5% 90% minmax(16px, 5%);
+  height: 100%;
+`
+
+export const AddPOIFormHeading = styled(d.Heading)`
+  margin: 0 auto;
+  width: 80%;
+  align-self: center;
+`
+
+export const FormContainer = styled(DivWithCustomScroll)`
+  overflow: scroll;
+`
 
 export const Label = styled.label`
   display: block;
@@ -16,6 +34,7 @@ export const Label = styled.label`
 export const HeadingLv2 = styled(d.HeadingLv2)`
   font-size: 115%;
 `
+
 
 export const DaySelect = styled(d.DayOrderSelect)`
   display: block;
@@ -32,6 +51,13 @@ const FormSection = styled.section`
 export const FormSectionTop = styled(FormSection)`
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+  margin-bottom: 0px;
+`
+
+export const FormSectionMid = styled(FormSection)`
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+  margin-top: 0px;
   margin-bottom: 0px;
 `
 
@@ -183,4 +209,113 @@ export const PoiTitleInput = styled.input`
   font-family: inherit;
   border-radius: 4px;
   border: 1px solid #565656;
+`
+
+export const DescArr = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+`
+
+export const DescTextArea = styled.textarea`
+  width: 97%;
+  resize: none;
+  font-family: inherit;
+  padding: 2px 3px;
+`
+
+export const AddPOIButton = styled.button`
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  position: relative;
+
+  &:hover[disabled]::after {
+    position: absolute;
+    content: "Add and confirm a location first.";
+    font-variant-caps: all-small-caps;
+    border-radius: 5px;
+    background-color: rgb(45 45 45 / 68%);
+    padding: 3px;
+    color: beige;
+    bottom: 100%;
+    left: 0;
+    width: 100%;
+    animation: ${appear} 300ms;
+  }
+`
+
+export const AddPhotoButton = styled(BaseButton)`
+    padding: 3px;
+    width: 95%;
+    margin: 0 auto;
+    margin-top: 15px;
+    display: block;
+`
+
+export const PhotoPreviewContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 0 5px;
+`
+
+
+export const ImgPreview = styled.img`
+  display: block;
+  width: 100%;
+  margin: 0 auto;
+  height: 100%;
+  object-fit: contain;
+`
+
+export const PhotoHeading = styled.h3`
+  font-size: 115%;
+  margin: 0;
+  font-weight: 400;
+  font-variant-caps: all-petite-caps;
+  height: fit-content;
+  text-align: center;
+`
+
+export const ImgPreviewContainer = styled.div`
+  width: 240px;
+  height: 128px;
+`
+
+export const PhotoDescContainer = styled.div`
+  & .add-photo-description {
+    display: flex;
+    flex-direction: column;
+    margin: 3px 12px;
+  }
+
+  & .label {
+    font-weight: 600;
+    font-size: 80%;
+  }
+
+  & .text-area {
+    font-family: inherit;
+    resize: vertical;
+    min-height: 32px;
+    height: 60px;
+    max-height: 128px;
+  }
+
+  & .char-rem {
+    font-weight: 600;
+    font-size: 80%;
+    text-align: end;
+  }
+`
+
+export const RemovePhotoButton = styled(d.DeleteItemButton)`
+  position: absolute;
+  top: 1.25rem;
+  left: -0.5rem;
+
+  &:hover::after {
+    all: unset;
+  }
 `

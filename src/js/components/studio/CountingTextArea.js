@@ -8,6 +8,7 @@ const CountingTextArea = React.forwardRef(
     labelText,
     limit,
     startText = "",
+    placeholder = "",
     classNames
   },
     ref) => {
@@ -24,18 +25,25 @@ const CountingTextArea = React.forwardRef(
 
     return (
       <div className={[...classNames]}>
-        <label htmlFor={textAreaId}>
+        <label
+          className="label"
+          htmlFor={textAreaId}>
           {labelText}
-          <textarea
-            ref={ref}
-            id={textAreaId}
-            type="text"
-            maxLength={limit}
-            value={text}
-            onChange={onTextAreaChange}
-          />
-          <span>{charRemaining} characters left</span>
         </label>
+        <textarea
+          ref={ref}
+          id={textAreaId}
+          className={"text-area"}
+          type="text"
+          maxLength={limit}
+          placeholder={placeholder}
+          value={text}
+          onChange={onTextAreaChange}
+          />
+        <span
+          className="char-rem">
+            {charRemaining} characters left
+        </span>
       </div>
     )
   }

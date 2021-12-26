@@ -19,7 +19,7 @@ export const Heading = styled.h1`
   letter-spacing: 1px;
 `
 
-export const deleteItemButton = styled.button`
+export const DeleteItemButton = styled.button`
   all: unset;
   position: absolute;
   top: -5px;
