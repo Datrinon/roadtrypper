@@ -193,6 +193,8 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
       )
     }
 
+
+
     return (
       <div>
         <d.HeadingLv2>POInts</d.HeadingLv2>

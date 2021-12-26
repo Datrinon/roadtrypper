@@ -234,13 +234,14 @@ export const AddPOIButton = styled.button`
     position: absolute;
     content: "Add and confirm a location first.";
     font-variant-caps: all-small-caps;
+    font-weight: 400;
     border-radius: 5px;
     background-color: rgb(45 45 45 / 68%);
     padding: 3px;
     color: beige;
     bottom: 100%;
-    left: 0;
-    width: 100%;
+    left: 5px;
+    width: 90%;
     animation: ${appear} 300ms;
   }
 `

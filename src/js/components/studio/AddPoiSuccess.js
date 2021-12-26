@@ -3,6 +3,10 @@ import { TripContext, SidebarSetter } from './Studio';
 import PoiDetails from './POIDetails';
 import { NewPoiForm } from './AddPOI';
 
+import * as apS from "./styled/AddPoiSuccess.styled";
+import * as d from './styled/Details.style';
+
+
 export function AddPoiSuccess({ lastAddedPoi }) {
   const sidebarSetter = useContext(SidebarSetter);
   const trip = useContext(TripContext);
@@ -19,11 +23,11 @@ export function AddPoiSuccess({ lastAddedPoi }) {
   }
 
   return (
-    <div>
-      <h1>Success</h1>
-      <p>New Point of Interest added.</p>
-      <button onClick={displayForm}>Add Another POI</button>
-      <button onClick={displayPoi}>View Added POI</button>
-    </div>
+    <apS.SuccessContainer>
+      <d.Heading>Success</d.Heading>
+      <apS.SuccessMessage>Point of Interest added!</apS.SuccessMessage>
+      <apS.Button onClick={displayForm}>Add Another POI</apS.Button>
+      <apS.Button onClick={displayPoi}>View Added POI</apS.Button>
+    </apS.SuccessContainer>
   );
 }
