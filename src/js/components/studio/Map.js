@@ -117,7 +117,7 @@ function Map({ data, setActivePin }) {
           whenCreated={whenMapCreated}
           // defaults to NYC if there aren't any coordinates placed.
           center={data.pois.length !== 0 ? calcCoordinateAverage() : [40.730610, -73.935242]}
-          zoom={7}
+          zoom={10}
           scrollWheelZoom={true}
         >
           <TileLayer

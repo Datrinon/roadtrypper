@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { expandWidth } from "../../styled/anim.style";
 
 export const SidebarContainer = styled.div`
   display: ${props => props.visible ? "flex" : "none"};
@@ -11,6 +12,7 @@ export const SidebarContainer = styled.div`
   width: ${[props => props.collapsed ? "16px" : "325px"]};
   max-width: 33vw;
   transition: width 300ms ease;
+  animation: ${expandWidth} 300ms ease-out;
 `
 
 export const FlexWrapper = styled.div`

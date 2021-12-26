@@ -19,3 +19,9 @@ export const appear = keyframes`
     opacity: 1.0;
   }
 `
+
+export const expandWidth = keyframes`
+  from {
+    width: 1px;
+  }
+`
