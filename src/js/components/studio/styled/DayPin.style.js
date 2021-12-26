@@ -10,5 +10,6 @@ export const TipText = styled.span`
   border-radius: 3px;
   border: 1px solid white;
   box-shadow: 0 0 3px 1px #0000006b;
+  text-shadow: 0 0 4px black;
   font-size: 110%;
 `

@@ -27,7 +27,7 @@ export const DayNumLabel = styled.h2`
   font-variant: all-petite-caps;
   font-weight: 400;
   font-size: 90%;
-  margin-left: 6px;
+  margin-left: 10px;
 
   & span {
     font-weight: 600;
@@ -60,14 +60,14 @@ export const DayColor = styled.div`
 
 export const DayColorLine = styled.div`
   background-color: ${props => `#${props.color}`};
-  width: 5px;
+  width: 10px;
   height: 100%;
-  /* border-radius: 50%; */
   position: absolute;
   bottom: 0;
   left: 2px;
-  border-left: 1px solid black;
-  border-right: 1px solid black;
+  border-left: 1px dotted #8a8a8ae6;
+  border-right: 1px dotted #8a8a8ae6;
+  z-index: -1;
 `
 
 export const DayPOIList = styled.ol`
