@@ -33,14 +33,15 @@
 }
 
 .leaflet-tooltip.leaflet-tooltip-bottom {
-  padding: 0 5px;
-  background-color: #000000;
-  /* box-shadow: unset; */
-  text-shadow: 1px 1px 2px #131313;
+  /* padding: 0 5px;
+  background-color: rgb(1, 107, 87);
+  text-shadow: 1px 1px 2px #131313; */
+  border: 0px solid transparent;
+  padding: 0;
   font-family: "Segoe UI";
   font-size: 100%;
   color: white;
-  font-weight: 700;
+  font-weight: 600;
   /* left: 100%; */
   top: 10px;
   left: 10px;

@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react'
 import L from "leaflet";
 import { FeatureGroup, Marker, Tooltip } from 'react-leaflet';
+import * as dp from './styled/DayPin.style';
 /**
  * It's a group of markers 
  * Each one has a ref
@@ -62,7 +63,7 @@ function DayPins({ pois, day, icon, mapRef, setActivePin }) {
             alt={`Waypoint for ${poi.coordinates}`}
             >
             <Tooltip direction="bottom" offset={[0, 20]} opacity={1} permanent={true}>
-              <span className="poi-title">{poi.title}</span>
+              <dp.TipText color={day.color} className="poi-title">{poi.title}</dp.TipText>
             </Tooltip>
           </Marker>);
         })
@@ -70,5 +71,7 @@ function DayPins({ pois, day, icon, mapRef, setActivePin }) {
     </FeatureGroup>
   );
 }
+
+
 
 export default DayPins
