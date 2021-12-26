@@ -12,11 +12,15 @@ export const Card = styled.div`
   transition: border 300ms;
 
   &:hover {
-    border: 2px solid #658dff;
+    border: 2px solid #a3bcff;
   }
 
   position: relative;
   cursor: pointer;
+
+  &.active-card {
+    border-color: #658dff;
+  }
 `
 
 export const DayNumLabel = styled.h2`

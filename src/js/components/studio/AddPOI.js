@@ -193,7 +193,7 @@ export function NewPoiForm({ day }) {
           realpath: `trips/${tripId}/${uuidv4()}/${photo.name}`,
           description: descriptions
             .item(index)
-            .querySelector(`#new-photo-desc${index}`).value
+            .querySelector(`#new-photo-desc-${index}`).value
         }
       }));
 
@@ -370,7 +370,7 @@ export function NewPoiForm({ day }) {
                 return (
                   <div className="uploaded-photo" key={"" + photo.name + photo.lastModified + Date.now()}>
                     <a.PhotoPreviewContainer>
-                      <div style={{position: "relative"}}>
+                      <div style={{position: "relative", width: "20px"}}>
                         <a.PhotoHeading>{index + 1}</a.PhotoHeading>
                         <a.RemovePhotoButton
                           onClick={removePhotoFromBuffer.bind(null, index)}>
@@ -398,14 +398,15 @@ export function NewPoiForm({ day }) {
           <a.AddPhotoButton onClick={onAddPhoto}>Add Photo</a.AddPhotoButton>
         </a.FormSectionBot>
       </a.FormContainer>
-      <button onClick={(e) => {
+      {/* //! ! !
+      Debug button for testing purposes. */}
+      {/* <button onClick={(e) => {
         sidebarSetter.setContent(<AddPoiSuccess
           lastAddedPoi={{ dayId: 0, order: 0 }}
         />);
       }}>
         Debug button
-
-      </button>
+      </button> */}
 
       <a.AddPOIButton
         disabled={!poiLoc}

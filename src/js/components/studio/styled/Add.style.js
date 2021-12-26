@@ -6,7 +6,6 @@ import { BaseButton } from "./StudioButtons.style";
 
 export const AddPOIForm = styled.div`
   display: grid;
-  border: 1px solid fuchsia;
   grid-template-rows: 5% 90% minmax(16px, 5%);
   height: 100%;
 `
@@ -315,6 +314,10 @@ export const RemovePhotoButton = styled(d.DeleteItemButton)`
   position: absolute;
   top: 1.25rem;
   left: -0.5rem;
+
+  &:hover {
+    background-color: rgb(255, 0, 0, 0.3)
+  }
 
   &:hover::after {
     all: unset;

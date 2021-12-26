@@ -52,7 +52,7 @@ function handleAddPoi(state, payload) {
       let postPhoto = post.photos.find(postPic => (
         postPic.realpath === photo.realpath));
 
-      debugger;
+      // debugger;
 
       addTripPhoto(post.tripId, photo.file, photo.realpath, signalRef)
         .then(({ ref, path, storageUri }) => {
@@ -354,7 +354,7 @@ async function deletePOIandPhotos(poi, state) {
   // now requests is full of async function binds.
   requests = [poiDeleteRequest, ...photoDeleteRequests, ...poiReorderReqs];
 
-  debugger;
+  // debugger;
 
   // do the splice
   while (requests.length) {

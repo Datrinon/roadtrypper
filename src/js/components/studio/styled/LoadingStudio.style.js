@@ -64,6 +64,6 @@ export const LoadingTxt = styled.p`
   font-size: 1.5rem;
   font-weight: 600;
   margin: 15px auto;
-  width: 100px;
+  width: fit-content;
   animation: ${hover} 5s ease-in-out infinite alternate;    
 `
