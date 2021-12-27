@@ -8,10 +8,11 @@ export const StudioBody = styled.main`
   " general map "
   " add map "
   " days map ";
-  grid-template-rows:    5% auto 5% 1fr;
+  grid-template-rows: 50px 80px 40px auto;
   grid-template-columns: minmax(15%, 300px) auto;
-  width: 100%;
+  width: 99%;
   height: 100%;
+  border: 9px solid rebeccapurple;
   /* overflow: hidden; */
 `
 
@@ -90,9 +91,6 @@ export const DivWithCustomScroll = styled.div`
 
 export const DayCardContainer = styled(DivWithCustomScroll)`
   overflow-y: scroll;
-  height: 75vh;
-
-
 `
 
 export const MapArea = styled.div`
