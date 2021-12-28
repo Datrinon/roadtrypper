@@ -1,4 +1,7 @@
 import styled from "styled-components";
+import { DivWithCustomScroll } from "./Studio.styled";
+
+
 
 export const dayColorContainer = styled.div`
   position: relative;
@@ -43,11 +46,7 @@ export const DayBodyHeading = styled.header`
 "title title";
     grid-template-rows: 70% 30%;
     grid-template-columns: 70% 30%;
-    /* padding-bottom: 15px;
-    border-bottom: 1px solid #dedede; */
-  /* & > div {
-    border: 1px solid red;
-  } */
+    height: 10%;
 
   & .order {
     grid-area: order;
@@ -67,9 +66,33 @@ export const DayBodyHeading = styled.header`
 `
 
 export const POICardContainer = styled.div`
-  display: flex;
+  /* display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: center; */
+
+  overflow-y: scroll;
+  border: 1px solid fuchsia;
+
+/* width */
+&::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+&::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+
+/* Handle */
+&::-webkit-scrollbar-thumb {
+  background: darkgrey; 
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+&::-webkit-scrollbar-thumb:hover {
+  background: #b30000; 
+}
 
   & .add-Poi {
     width: 50%;
@@ -79,7 +102,7 @@ export const POICardContainer = styled.div`
   }
 `
 
-export const fightclubhr = styled.hr`
+export const Divider = styled.hr`
     border: none;
     border-top: 1px solid #bcbcbc;
     color: #565656;
@@ -95,6 +118,25 @@ export const fightclubhr = styled.hr`
     position: relative;
     top: -10px;
 } */
+`
 
+export const POICardsSection = styled.div`
+  /* border: 2px solid black; */
+  flex: 1 1 auto;
+  height: 85%;
+`
 
+// TODO
+// ! In another release...
+// Fix this guesswork with the height %s, replace with a less specific solution.
+
+export const DayContents = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 93%;
+`
+
+export const POICardsContainer = styled(DivWithCustomScroll)`
+  overflow-y: auto;
+  height: 89%;
 `

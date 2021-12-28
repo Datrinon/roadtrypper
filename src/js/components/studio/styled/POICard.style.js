@@ -13,7 +13,6 @@ export const POICardBox = styled.div`
   cursor: pointer;
 
   &:hover {
-    transform: scale(1.05);
     border: 1px solid darkgrey;
   }
 `;

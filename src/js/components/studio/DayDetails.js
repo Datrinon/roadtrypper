@@ -196,12 +196,9 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
 
 
     return (
-      <div>
-        <d.HeadingLv2>POInts</d.HeadingLv2>
-        <dD.POICardContainer>
-          {section}
-        </dD.POICardContainer>
-      </div>
+      <dD.POICardContainer>
+        {section}
+      </dD.POICardContainer>
     )
   }
 
@@ -220,25 +217,33 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
 
 
   return (
-    <div>
-      <d.Heading>Day Overview</d.Heading>
+    <>
       <d.DeleteItemButton onClick={deleteDay} data-tip="Delete Day">
         <FAIcon icon={faTrash} />
       </d.DeleteItemButton>
-      <dD.DayBodyHeading>
-        <div className="order">
-          {renderDayOrder()}
-        </div>
-        <div className="title">
-          {renderDayTitle()}
-        </div>
-        <div className="color">
-          {renderColorPicker()}
-        </div>
-      </dD.DayBodyHeading>
-      <dD.fightclubhr/>
-      {renderPOICards()}
-    </div>
+      <d.Heading>Day Overview</d.Heading>
+      <dD.DayContents>
+        <dD.DayBodyHeading>
+          <div className="order">
+            {renderDayOrder()}
+          </div>
+          <div className="title">
+            {renderDayTitle()}
+          </div>
+          <div className="color">
+            {renderColorPicker()}
+          </div>
+        </dD.DayBodyHeading>
+        <dD.POICardsSection>
+          <dD.Divider />
+          <d.HeadingLv2>Points</d.HeadingLv2>
+          <dD.POICardsContainer>
+            {renderPOICards()}
+
+          </dD.POICardsContainer>
+        </dD.POICardsSection>
+      </dD.DayContents>
+    </>
   )
 }
 
