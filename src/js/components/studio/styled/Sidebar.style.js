@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { expandWidth } from "../../styled/anim.style";
 
 export const SidebarContainer = styled.div`
+  /* Need flex for the sidebar button. */
   display: ${props => props.visible ? "flex" : "none"};
   flex-direction: row;
   position: absolute;
@@ -15,25 +16,19 @@ export const SidebarContainer = styled.div`
   animation: ${expandWidth} 300ms ease-out;
 `
 
-export const FlexWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 100%;
-  box-shadow: -1px 0px 4px #a8a8a885;
-  position: relative;
-`
-
+/**
+ * This wrapper manages the width of the collapsible sidebar.
+ * It also provides a box shadow.
+ * 
+ * It is separate from the container so that we can set a variable 
+ * width on the container; such is necessary for managing the 
+ */
 export const SidebarContent = styled.div`
-  /* TODO debug this later with percentage height or just use vw. */
-  height: 100%;
   width: 100%;
-  overflow: hidden;
+  box-shadow: -1px 0px 6px 2px #69676785;
+  position: relative;
   background-color: white;
-
-  & .sidebar-contents {
-    height: 100%;
-  }
+  border: 4px solid red;
 `
 
 export const CollapseButton = styled.button`
@@ -55,7 +50,7 @@ export const CloseButton = styled.button`
   position: absolute;
   justify-self: end;
   right: 0;
-
+  z-index: 1;
   background-color: transparent;
   border: none;
   cursor: pointer;

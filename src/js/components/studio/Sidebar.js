@@ -38,22 +38,19 @@ function Sidebar({ visible, content }, ref) {
       visible={display}>
       <sbS.CollapseButton onClick={() => { setCollapsed(!collapsed) }}>
         {collapsed ?
-          <FAIcon icon={faAngleLeft}/> 
-        : <FAIcon icon={faAngleRight}/>}
+          <FAIcon icon={faAngleLeft} />
+          : <FAIcon icon={faAngleRight} />}
       </sbS.CollapseButton>
-      {/* Need flex wrapper for box shadow */}
-      <sbS.FlexWrapper>
-        <sbS.CloseButton onClick={() => { setDisplay(false) }}>
-          <FontAwesomeIcon icon={faTimes} />
-        </sbS.CloseButton>
-        <sbS.SidebarContent
-          ref={ref}
-          className={`sidebar ${collapsed && "collapsed"}`}>
-          <section className="sidebar-contents">
-            {!collapsed && (content ?? "No Day or POI currently selected.")}
-          </section>
-        </sbS.SidebarContent>
-      </sbS.FlexWrapper>
+      <sbS.CloseButton onClick={() => { setDisplay(false) }}>
+        <FontAwesomeIcon icon={faTimes} />
+      </sbS.CloseButton>
+      {/* Need wrapper for box shadow and to maintain a width of 100%
+      (that is, to the screen's edge.)*/}
+      <sbS.SidebarContent
+        ref={ref}
+        className={`sidebar-contents ${collapsed && "collapsed"}`}>
+        {!collapsed && (content ?? "No Day or POI currently selected.")}
+      </sbS.SidebarContent>
     </sbS.SidebarContainer>
   )
 }
