@@ -71,7 +71,7 @@ export const POICardContainer = styled.div`
   align-items: center; */
 
   overflow-y: scroll;
-  border: 1px solid fuchsia;
+  /* border: 1px solid fuchsia; */
 
 /* width */
 &::-webkit-scrollbar {

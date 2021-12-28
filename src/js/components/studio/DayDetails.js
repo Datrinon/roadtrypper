@@ -179,6 +179,7 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
     if (pois.length > 0) {
       section = pois.map((poi, index) => (<POICard
         key={poi.id}
+        day={day}
         poi={poi}
         setActivePin={setActivePin} />));
     } else {

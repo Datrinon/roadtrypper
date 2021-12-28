@@ -14,6 +14,7 @@ export const SidebarContainer = styled.div`
   max-width: 33vw;
   transition: width 300ms ease;
   animation: ${expandWidth} 300ms ease-out;
+  overflow: hidden;
 `
 
 /**
@@ -28,7 +29,6 @@ export const SidebarContent = styled.div`
   box-shadow: -1px 0px 6px 2px #69676785;
   position: relative;
   background-color: white;
-  border: 4px solid red;
 `
 
 export const CollapseButton = styled.button`
