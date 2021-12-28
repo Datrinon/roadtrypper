@@ -9,10 +9,10 @@ export const StudioBody = styled.main`
   " add map "
   " days map ";
   grid-template-rows: 50px 80px 40px auto;
+  /* 5% 10% 5% 80%;  This doesn't restrict height to 100%.*/
   grid-template-columns: minmax(15%, 300px) auto;
-  width: 99%;
+  width: 100%;
   height: 100%;
-  border: 9px solid rebeccapurple;
   /* overflow: hidden; */
 `
 
@@ -48,6 +48,7 @@ export const DayHeading = styled.h1`
 
 export const Days = styled.div`
   grid-area: days;
+  overflow: hidden;
 `
 
 export const DayCardSectionHeading = styled.h1`
@@ -64,6 +65,7 @@ export const DayCardSectionHeading = styled.h1`
   padding-bottom: 5px;
   text-shadow: 1px 1px 11px #cfcfcf;
   letter-spacing: 1px;
+  height: 3%;
 `
 
 export const DivWithCustomScroll = styled.div`
@@ -91,6 +93,7 @@ export const DivWithCustomScroll = styled.div`
 
 export const DayCardContainer = styled(DivWithCustomScroll)`
   overflow-y: scroll;
+  height: 95%;
 `
 
 export const MapArea = styled.div`

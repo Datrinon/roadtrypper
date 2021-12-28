@@ -75,6 +75,11 @@ function Studio() {
         />
       });
 
+    //! debug, remove later.
+    // for (let i = 0; i < 9; i++) {
+    //   cards.push(cards[0]);
+    // }
+
     return cards;
   }
 
