@@ -44,6 +44,7 @@ function PoiDetails({ activePin, setActivePin }) {
   const dayTitleEditRef = useRef();
   const poiTitleEditRef = useRef();
   const poiDescEditRef = useRef();
+  const poiDescSaveIntervalId = useRef(0);
 
   function updateData() {
     const currentPOI = trip.pois.find(poi => poi.id === activePin.id);
@@ -62,6 +63,7 @@ function PoiDetails({ activePin, setActivePin }) {
 
     return () => {
       console.log("POIDetails.js: Dismounting...");
+      clearInterval(poiDescSaveIntervalId.current);
     }
   }, [activePin, trip]);
 
@@ -249,7 +251,10 @@ function PoiDetails({ activePin, setActivePin }) {
       }
     </pD.Desc>);
 
-    const descEdit = (<textarea defaultValue={activePoi.description} ref={poiDescEditRef} />)
+    const descEdit = (
+    <textarea
+      defaultValue={activePoi.description}
+      ref={poiDescEditRef} />)
 
     const onDescSave = () => {
       dispatch({
@@ -271,6 +276,23 @@ function PoiDetails({ activePin, setActivePin }) {
         onClickSave={onDescSave}
       />
     )
+
+    let descElement2 = (
+      <textarea
+        defaultValue={activePoi.description}
+        ref={poiDescEditRef}
+        onFocus={() => {
+          // run autosave every 45 sec.
+          poiDescSaveIntervalId.current = setInterval(() => {
+            onDescSave();
+          }, 45000);
+        }}
+        onBlur={() => {
+          onDescSave();
+          // also clear the auto save function.
+          clearInterval(poiDescSaveIntervalId.current);
+        } }/>
+    );
     //#endregion
 
     function mapThumbnails(photo, index) {
@@ -326,7 +348,7 @@ function PoiDetails({ activePin, setActivePin }) {
         </pD.POIHeadingInfo>
         <EditLocation activePoi={activePoi} />
         <pD.DescDivider/>
-        {descElement}
+        {descElement2}
         {
           photos.length > 0 ?
             photos.map(mapThumbnails) :
