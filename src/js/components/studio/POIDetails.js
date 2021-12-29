@@ -128,7 +128,7 @@ function PoiDetails({ activePin, setActivePin }) {
           </span>
           <br/>
           <span className="location-value">
-            {activePoi.order + 1} / {trip.pois.length}
+            {activePoi.order + 1} / {dayPOIs.length}
           </span>
         </pD.POIOrderDisplay>);
 
@@ -182,10 +182,10 @@ function PoiDetails({ activePin, setActivePin }) {
       </pD.POIDayTitle>);
     } else {
       dayTitleDisplay = (
-      <pD.POIDayTitle className="details day">{day.title}</pD.POIDayTitle>);
+      <pD.POIDayTitle className="details day" title={day.title}>{day.title}</pD.POIDayTitle>);
     }
 
-    let dayTitleEdit = (<input
+    let dayTitleEdit = (<d.DayTitleEdit
       className="details day-edit"
       defaultValue={day.title}
       ref={dayTitleEditRef} />);

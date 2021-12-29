@@ -36,7 +36,7 @@ function DayCard({ setActiveDay, day, pois }) {
               <dC.DayPOIBullet
                 key={poi.id}
                 className="day-point">
-                {poi.title}
+                <dC.DayPOIBulletText>{poi.title}</dC.DayPOIBulletText>
               </dC.DayPOIBullet>
             )
           }) :

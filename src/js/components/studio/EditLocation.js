@@ -1,12 +1,8 @@
 import React, { useState } from 'react'
-import styled from 'styled-components';
+import * as eL from './styled/EditLocation.style';
 import LocationInput from './LocationInput';
 import { TripDispatch } from './Studio';
 
-
-const EditButton = styled.button`
-  display: ${props => props.visible ? 'none' : 'initial'};
-`
 
 // like the hover to edit component, but it's just the button directly.
 // cuz the display is on the map already.
@@ -34,10 +30,10 @@ function EditLocation({activePoi}) {
 
   return (
     <div>
-      <EditButton visible={editModeOn}
+      <eL.EditButton visible={editModeOn}
         onClick={() => setEditModeOn(true)}>
         Edit Location
-      </EditButton>
+      </eL.EditButton>
       {
         editModeOn &&
         <>

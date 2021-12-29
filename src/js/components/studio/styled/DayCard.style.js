@@ -80,3 +80,9 @@ export const DayPOIList = styled.ol`
 export const DayPOIBullet = styled.li`
   font-variant-caps: all-petite-caps;
 `
+
+export const DayPOIBulletText = styled.p`
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 110%;
+`
