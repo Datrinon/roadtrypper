@@ -1,6 +1,17 @@
 import styled, { keyframes } from "styled-components";
 
-export const unravel = keyframes`
+export const unravelX = keyframes`
+  0% {
+    opacity: 0;
+    transform: scaleX(0.5);
+  }
+  100% {
+    opacity: 1.0;
+    transform: scaleX(1.0);
+  }
+`
+
+export const unravelY = keyframes`
   0% {
     opacity: 0;
     transform: scaleY(0.5);

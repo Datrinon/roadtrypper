@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import { unravel } from "../../styled/anim.style";
+import { unravelY } from "../../styled/anim.style";
 
 export const ReqContainer = styled.div`
   width: 90%;
   margin: 0 auto;
   display: ${props => props.displayed ? "block" : "none"};
-  animation: ${unravel} 1s;
+  animation: ${unravelY} 1s;
 `
 
 export const Req = styled.p`

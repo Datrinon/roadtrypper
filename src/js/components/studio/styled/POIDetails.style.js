@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Divider } from './DayDetails.style';
 import { DayOrder, DayTitle } from './Details.style';
 
 export const Thumbnail = styled.img`
@@ -27,14 +28,12 @@ export const POIHeadingInfo = styled.div`
    "title title"
    "dayNum location"
    "dayTitle dayTitle";
-  min-height: 200px;
   width: 100%;
-  grid-template-rows: auto 32px 32px;
+  grid-template-rows: auto 32px auto;
   grid-template-columns: 65% 35%;
 
    & .poi-title {
     grid-area: title;
-    align-self: end;
     padding-bottom: 1em;
    }
 
@@ -59,7 +58,7 @@ export const POITitleDisplay = styled.h3`
   text-align: start;
   font-size: 2.5rem;
   font-weight: 300;
-  padding-left: 2px;
+  padding-left: 12px;
   /* height: 100%; */
   overflow: hidden;
   /* overflow-x: hidden; */
@@ -68,6 +67,7 @@ export const POITitleDisplay = styled.h3`
 
 // Day Numbering display
 export const POIDayOrder = styled(DayOrder)`
+  padding-left: 12px;
   margin: 5px 0;
   font-size: 150%;
   font-weight: 500;
@@ -75,16 +75,19 @@ export const POIDayOrder = styled(DayOrder)`
 
 // Day title display
 export const POIDayTitle = styled(DayTitle)`
+  padding-left: 12px;
   margin: 0;
   font-size: 125%;
   font-weight: 500;
 `
 
-export const POIDayTitleNone = styled(POIDayTitle)``
+export const POIDayTitleNone = styled(POIDayTitle)`
+`
 
 
 // POI Order display
 export const POIOrderDisplay = styled.p`
+  padding-left: 12px;
   width: max-content;
   & .location-label {
     font-variant: all-petite-caps;
@@ -95,4 +98,10 @@ export const POIOrderDisplay = styled.p`
     width: 100%;
     display: block;
   }
+`
+
+export const DescDivider = styled(Divider)``;
+
+export const Desc = styled.p`
+  padding: 12px;
 `

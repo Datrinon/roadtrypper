@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { appear, unravel } from "../../styled/anim.style";
+import { appear, unravelY } from "../../styled/anim.style";
 import { BaseButton } from "./StudioButtons.style";
 
 
@@ -11,7 +11,7 @@ export const SuccessContainer = styled.div`
     width: 80%;
     margin: 0 auto;
     text-align: center;
-    animation: ${unravel} ease-in-out 600ms;
+    animation: ${unravelY} ease-in-out 600ms;
 `
 
 

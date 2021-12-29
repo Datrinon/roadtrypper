@@ -22,6 +22,7 @@ import EditLocation from './EditLocation';
 
 import PLACEHOLDER_IMG from '../../../data/spin-32.gif';
 import { FAIcon } from '../styled/template.style';
+import { Divider } from './styled/DayDetails.style';
 
 
 let ItalicSpan = styled.span`
@@ -241,14 +242,12 @@ function PoiDetails({ activePin, setActivePin }) {
     //#endregion
 
     //#region Description
-
-
-    const descDisplay = (<p className="details desc">
+    const descDisplay = (<pD.Desc className="details desc">
       {activePoi.description.length === 0 ?
         <ItalicSpan>No description provided.</ItalicSpan> :
         activePoi.description
       }
-    </p>);
+    </pD.Desc>);
 
     const descEdit = (<textarea defaultValue={activePoi.description} ref={poiDescEditRef} />)
 
@@ -326,6 +325,7 @@ function PoiDetails({ activePin, setActivePin }) {
           </div>
         </pD.POIHeadingInfo>
         <EditLocation activePoi={activePoi} />
+        <pD.DescDivider/>
         {descElement}
         {
           photos.length > 0 ?
