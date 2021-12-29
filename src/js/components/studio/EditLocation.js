@@ -6,7 +6,7 @@ import { TripDispatch } from './Studio';
 
 // like the hover to edit component, but it's just the button directly.
 // cuz the display is on the map already.
-function EditLocation({activePoi}) {
+function EditLocation({ activePoi }) {
 
   const [editModeOn, setEditModeOn] = useState(false);
   const dispatch = React.useContext(TripDispatch);
@@ -29,7 +29,7 @@ function EditLocation({activePoi}) {
   }
 
   return (
-    <div>
+    <eL.EditLocationContainer>
       <eL.EditButton visible={editModeOn}
         onClick={() => setEditModeOn(true)}>
         Edit Location
@@ -37,11 +37,13 @@ function EditLocation({activePoi}) {
       {
         editModeOn &&
         <>
-          <LocationInput onClickPOIMarker={updatePOILocation} />
-          <button onClick={() => setEditModeOn(false)}>Close</button>
+          <eL.EditLocationTool>
+            <LocationInput onClickPOIMarker={updatePOILocation} />
+          </eL.EditLocationTool>
+          <eL.CloseButton onClick={() => setEditModeOn(false)}>Cancel</eL.CloseButton>
         </>
       }
-    </div>
+    </eL.EditLocationContainer>
   )
 }
 

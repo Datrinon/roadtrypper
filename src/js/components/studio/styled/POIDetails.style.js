@@ -59,6 +59,7 @@ export const POITitleDisplay = styled.h3`
   text-align: start;
   font-size: 2.5rem;
   font-weight: 300;
+  padding-left: 2px;
   /* height: 100%; */
   overflow: hidden;
   /* overflow-x: hidden; */
