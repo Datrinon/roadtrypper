@@ -26,25 +26,27 @@ export const POIHeadingInfo = styled.div`
   grid-template-areas:
    "title title"
    "dayNum location"
-   "dayTitle location";
-  border: 1px solid black;
-  height: 200px;
+   "dayTitle dayTitle";
+  min-height: 200px;
   width: 100%;
-  grid-template-rows: 50% 25% 25%;
-  grid-template-columns: 70% 30%;
+  grid-template-rows: auto 32px 32px;
+  grid-template-columns: 65% 35%;
 
    & .poi-title {
     grid-area: title;
-    align-self: center;
+    align-self: end;
+    padding-bottom: 1em;
+   }
+
+   & .day-num {
+    grid-area: dayNum;
+    /* align-self: end; */
    }
 
    & .day-title {
     grid-area: dayTitle;
+    /* align-self: top; */
    } 
-
-   & .day-num {
-    grid-area: dayNum;
-   }
 
    & .poi-order {
     grid-area: location;
@@ -53,15 +55,19 @@ export const POIHeadingInfo = styled.div`
 
 // POI title styling (display mode).
 export const POITitleDisplay = styled.h3`
-  width: 100%;
+  width: 84%;
   text-align: start;
   font-size: 2.5rem;
   font-weight: 300;
+  /* height: 100%; */
+  overflow: hidden;
+  /* overflow-x: hidden; */
+  text-overflow: ellipsis;
 `
 
 // Day Numbering display
 export const POIDayOrder = styled(DayOrder)`
-  margin: 0;
+  margin: 5px 0;
   font-size: 150%;
   font-weight: 500;
 `
@@ -78,9 +84,14 @@ export const POIDayTitleNone = styled(POIDayTitle)``
 
 // POI Order display
 export const POIOrderDisplay = styled.p`
-  width: 100%;
-  text-align: center;
+  width: max-content;
   & .location-label {
     font-variant: all-petite-caps;
+  }
+
+  & .location-value {
+    text-align: center;
+    width: 100%;
+    display: block;
   }
 `
