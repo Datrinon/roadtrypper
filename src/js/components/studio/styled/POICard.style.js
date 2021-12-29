@@ -11,7 +11,7 @@ export const POICardBox = styled.div`
   background: linear-gradient(90deg, var(--bg-color) 0%, rgba(255,255,255, 1) 100%);
   display: flex;
   align-items: center;
-  width: 75%;
+  width: 96%;
   height: 128px;
   transition: border 300ms;
   cursor: pointer;

@@ -2,11 +2,12 @@
 import React, { useState, useEffect, useContext, useRef } from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit, faTrashAlt } from "@fortawesome/free-regular-svg-icons"
-import { faCamera } from '@fortawesome/free-solid-svg-icons';
+import { faCamera, faTrash } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 import { point } from 'leaflet';
 // styled + css
-import * as s from "./POIDetails.style";
+import * as d from "./styled/Details.style";
+import * as pD from "./styled/POIDetails.style";
 import "../../../css/POIDetails.css";
 // components
 import HoverToEditInput from './HoverToEditInput';
@@ -20,6 +21,7 @@ import LocationInput from './LocationInput';
 import EditLocation from './EditLocation';
 
 import PLACEHOLDER_IMG from '../../../data/spin-32.gif';
+import { FAIcon } from '../styled/template.style';
 
 
 let ItalicSpan = styled.span`
@@ -62,21 +64,6 @@ function PoiDetails({ activePin, setActivePin }) {
     }
   }, [activePin, trip]);
 
-  // // ! Candidate for removal b/c of studio effect for [trip].
-  // useEffect(() => {
-  //   console.log("New photos hook");
-  //   if (photos) {
-  //     setPhotos(trip.photos.filter(photo => photo.poiId === activePoi.id));
-  //   }
-  // }, [trip.photos]);
-
-  // useEffect(() => {
-  //   // if the days changes, that means we should update the day.
-  //   // this is important for reflecting the correct title...
-  //   if (day) {
-  //     setDay(trip.days.find(day => day.id === activePoi.dayId));
-  //   }
-  // }, [trip.days]);
 
   function launchGalleryView(index) {
     setGalleryStartingIndex(index);
@@ -138,17 +125,17 @@ function PoiDetails({ activePin, setActivePin }) {
       id="poi-order-select"
       defaultValue={activePoi.order}
       ref={poiOrderEditRef}>
-        {
-          dayPOIs.map((poi) => {
-              return <option
-                key={poi.order}
-                value={poi.order}>
-                  {poi.order + 1}
-                </option>
+      {
+        dayPOIs.map((poi) => {
+          return <option
+            key={poi.order}
+            value={poi.order}>
+            {poi.order + 1}
+          </option>
 
-            })
-        }
-      </select>);
+        })
+      }
+    </select>);
     let poiOrderUpdate = () => {
       // if the selected order is the same, then don't update
       if (poiOrderEditRef.current.value === activePoi.order) {
@@ -174,7 +161,6 @@ function PoiDetails({ activePin, setActivePin }) {
     //#endregion
 
     //#region Day Title
-    // ! Fix le bug with this stale reference...
     let dayTitleDisplay;
 
     if (day.title.length === 0) {
@@ -208,9 +194,12 @@ function PoiDetails({ activePin, setActivePin }) {
     //#endregion
 
     //#region POI Title
-    let poiTitleDisplay = (<h3 className="details poi title">{activePoi.title}</h3>)
+    let poiTitleDisplay = (
+    <pD.POITitleDisplay
+      className="details poi title">{activePoi.title}</pD.POITitleDisplay>
+    );
 
-    let poiTitleEdit = (<input
+    let poiTitleEdit = (<d.DayTitleEdit
       className="details"
       defaultValue={activePoi.title}
       ref={poiTitleEditRef} />)
@@ -236,14 +225,14 @@ function PoiDetails({ activePin, setActivePin }) {
     //#endregion
 
     //#region Description
-    
+
 
     const descDisplay = (<p className="details desc">
       {activePoi.description.length === 0 ?
         <ItalicSpan>No description provided.</ItalicSpan> :
-        activePoi.description 
+        activePoi.description
       }
-      </p>);
+    </p>);
 
     const descEdit = (<textarea defaultValue={activePoi.description} ref={poiDescEditRef} />)
 
@@ -296,19 +285,30 @@ function PoiDetails({ activePin, setActivePin }) {
         type: "delete",
         payload: {
           type: "pois",
-          id : activePin.id
+          id: activePin.id
         }
       });
     }
-
     return (
       <>
-        <h1>Point of Interest Overview</h1>
-        <button onClick={deletePOI}>Delete</button>
-        {belongsToDayElement}
-        {poiOrderElement}
-        {dayTitleElement}
-        {poiTitleElement}
+        <d.Heading>Point of Interest Overview</d.Heading>
+        <d.DeleteItemButton onClick={deletePOI}>
+          <FAIcon icon={faTrash} />
+        </d.DeleteItemButton>
+        <pD.POIHeadingInfo className="poi-general-info">
+          <div className="poi-title">
+            {poiTitleElement}
+          </div>
+          <div className="day-num">
+            {belongsToDayElement}
+          </div>
+          <div className="poi-order">
+            {poiOrderElement}
+          </div>
+          <div className="day-title">
+            {dayTitleElement}
+          </div>
+        </pD.POIHeadingInfo>
         <EditLocation activePoi={activePoi} />
         {descElement}
         {
@@ -327,7 +327,6 @@ function PoiDetails({ activePin, setActivePin }) {
 
   return (
     <div className={`poi-details`}>
-      Show Pin Details here.
       <section className="poi-contents">
         {renderView()}
       </section>

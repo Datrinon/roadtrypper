@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight, faChevronLeft, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { faMehBlank } from '@fortawesome/free-regular-svg-icons';
 
-import * as s from "./POIDetails.style";
+import * as s from "./styled/POIDetails.style";
 
 import GalleryHeader from './GalleryHeader';
 import CountingTextArea from './CountingTextArea';
