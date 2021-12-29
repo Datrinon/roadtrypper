@@ -244,17 +244,6 @@ function PoiDetails({ activePin, setActivePin }) {
     //#endregion
 
     //#region Description
-    const descDisplay = (<pD.Desc className="details desc">
-      {activePoi.description.length === 0 ?
-        <ItalicSpan>No description provided.</ItalicSpan> :
-        activePoi.description
-      }
-    </pD.Desc>);
-
-    const descEdit = (
-    <textarea
-      defaultValue={activePoi.description}
-      ref={poiDescEditRef} />)
 
     const onDescSave = () => {
       dispatch({
@@ -270,14 +259,6 @@ function PoiDetails({ activePin, setActivePin }) {
     }
 
     let descElement = (
-      <HoverToEditInput
-        displayVer={descDisplay}
-        editVer={descEdit}
-        onClickSave={onDescSave}
-      />
-    )
-
-    let descElement2 = (
       <textarea
         defaultValue={activePoi.description}
         ref={poiDescEditRef}
@@ -348,7 +329,7 @@ function PoiDetails({ activePin, setActivePin }) {
         </pD.POIHeadingInfo>
         <EditLocation activePoi={activePoi} />
         <pD.DescDivider/>
-        {descElement2}
+        {descElement}
         {
           photos.length > 0 ?
             photos.map(mapThumbnails) :
