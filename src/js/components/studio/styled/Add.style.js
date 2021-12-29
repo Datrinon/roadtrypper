@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { appear } from "../../styled/anim.style";
+import { device } from "../../styled/breakpoints.style";
 import * as d from "./Details.style";
 import { DivWithCustomScroll } from "./Studio.styled";
 import { BaseButton } from "./StudioButtons.style";
@@ -83,10 +84,18 @@ export const LocationResult = styled.input`
   }
 `
 
+
 export const LocationInputContainer = styled.div`
   margin-top: 5px;
 
-  
+  & .srch-container {
+    visibility: initial;
+
+    @media ${device.tablet} {
+      visibility: initial;
+    }
+  }
+
   & .searchbar-close {
     display: none;
   }
