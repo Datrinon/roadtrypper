@@ -30,10 +30,8 @@ export const POIHeadingInfo = styled.div`
   border: 1px solid black;
   height: 200px;
   width: 100%;
-
-   & > div {
-     border: 1px solid red;
-   }
+  grid-template-rows: 50% 25% 25%;
+  grid-template-columns: 70% 30%;
 
    & .poi-title {
     grid-area: title;

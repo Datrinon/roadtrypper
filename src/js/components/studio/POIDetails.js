@@ -128,7 +128,7 @@ function PoiDetails({ activePin, setActivePin }) {
           </span>
           <br/>
           <span className="location-value">
-            {activePoi.order + 1} / {dayPOIs.length}
+            {activePoi.order + 1} / {trip.pois.length}
           </span>
         </pD.POIOrderDisplay>);
 
