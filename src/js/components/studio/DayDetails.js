@@ -35,7 +35,7 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
     let editDayOrder = (
       <d.DayOrderEdit>
         <d.EditHeading>Change Day to</d.EditHeading>
-        <d.DayOrderSelect
+        <d.OrderSelect
           name="poi-order"
           id="poi-order-select"
           defaultValue={dayState.order}
@@ -50,7 +50,7 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
               );
             })
           }
-        </d.DayOrderSelect>
+        </d.OrderSelect>
       </d.DayOrderEdit>);
     let updateDayOrder = () => {
       // if the selected order is the same, then don't update

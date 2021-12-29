@@ -74,7 +74,7 @@ export const DayOrderEdit = styled.div`
   padding: 0 5px;
 `
 
-export const DayOrderSelect = styled.select`
+export const OrderSelect = styled.select`
   padding: 6px;
   font-family: inherit;
   font-weight: 700;

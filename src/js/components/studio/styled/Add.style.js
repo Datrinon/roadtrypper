@@ -35,7 +35,7 @@ export const HeadingLv2 = styled(d.HeadingLv2)`
 `
 
 
-export const DaySelect = styled(d.DayOrderSelect)`
+export const DaySelect = styled(d.OrderSelect)`
   display: block;
   margin: 0 auto;
   width: 95%;

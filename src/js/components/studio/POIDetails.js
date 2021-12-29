@@ -75,7 +75,7 @@ function PoiDetails({ activePin, setActivePin }) {
     let belongsToDayDisplay = (
     <pD.POIDayOrder>Day {day.order + 1}</pD.POIDayOrder>);
     let belongsToDayEdit = (
-      <d.DayOrderSelect
+      <d.OrderSelect
         name="poi-day"
         id="poi-day-select"
         defaultValue={day.order}
@@ -90,7 +90,7 @@ function PoiDetails({ activePin, setActivePin }) {
             </option>
           })
         }
-      </d.DayOrderSelect>)
+      </d.OrderSelect>)
 
     let onBelongsToDayUpdate = () => {
       // if the selected day is the same, then don't update.
@@ -120,8 +120,19 @@ function PoiDetails({ activePin, setActivePin }) {
       .pois
       .filter(poi => poi.dayId === activePoi.dayId)
       .sort((poiA, poiB) => poiA.order - poiB.order);
-    let poiOrderDisplay = (<h2>Location {activePoi.order + 1} / {dayPOIs.length} </h2>);
-    let poiOrderEdit = (<select
+    
+      let poiOrderDisplay = (
+        <pD.POIOrderDisplay>
+          <span className="location-label">
+            Location
+          </span>
+          <br/>
+          <span className="location-value">
+            {activePoi.order + 1} / {dayPOIs.length}
+          </span>
+        </pD.POIOrderDisplay>);
+
+    let poiOrderEdit = (<d.OrderSelect
       name="poi-order"
       id="poi-order-select"
       defaultValue={activePoi.order}
@@ -136,7 +147,7 @@ function PoiDetails({ activePin, setActivePin }) {
 
         })
       }
-    </select>);
+    </d.OrderSelect>);
     let poiOrderUpdate = () => {
       // if the selected order is the same, then don't update
       if (poiOrderEditRef.current.value === activePoi.order) {
@@ -166,10 +177,12 @@ function PoiDetails({ activePin, setActivePin }) {
 
     if (day.title.length === 0) {
       dayTitleDisplay = (
-      <h2 className="details day untitled">Untitled Day</h2>);
+      <pD.POIDayTitle className="details day untitled">
+        <d.UntitledDayDisp>Untitled Day</d.UntitledDayDisp>
+      </pD.POIDayTitle>);
     } else {
       dayTitleDisplay = (
-      <h2 className="details day">{day.title}</h2>);
+      <pD.POIDayTitle className="details day">{day.title}</pD.POIDayTitle>);
     }
 
     let dayTitleEdit = (<input

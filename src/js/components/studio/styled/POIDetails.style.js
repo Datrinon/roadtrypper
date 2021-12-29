@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { DayOrder } from './Details.style';
+import { DayOrder, DayTitle } from './Details.style';
 
 export const Thumbnail = styled.img`
   width: 64px;
@@ -61,11 +61,28 @@ export const POITitleDisplay = styled.h3`
   font-weight: 300;
 `
 
-// POI title edit is from generic class details.
-
-// Day Numbering
+// Day Numbering display
 export const POIDayOrder = styled(DayOrder)`
   margin: 0;
   font-size: 150%;
   font-weight: 500;
+`
+
+// Day title display
+export const POIDayTitle = styled(DayTitle)`
+  margin: 0;
+  font-size: 125%;
+  font-weight: 500;
+`
+
+export const POIDayTitleNone = styled(POIDayTitle)``
+
+
+// POI Order display
+export const POIOrderDisplay = styled.p`
+  width: 100%;
+  text-align: center;
+  & .location-label {
+    font-variant: all-petite-caps;
+  }
 `
