@@ -29,6 +29,7 @@ export const SidebarContent = styled.div`
   box-shadow: -1px 0px 6px 2px #69676785;
   position: relative;
   background-color: white;
+  overflow-y: auto;
 `
 
 export const CollapseButton = styled.button`
