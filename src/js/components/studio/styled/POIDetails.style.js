@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Divider } from './DayDetails.style';
-import { DayOrder, DayTitle } from './Details.style';
+import { DayOrder, DayTitle, HeadingLv2 } from './Details.style';
 
 export const Thumbnail = styled.img`
   width: 64px;
@@ -102,6 +102,48 @@ export const POIOrderDisplay = styled.p`
 
 export const DescDivider = styled(Divider)``;
 
-export const Desc = styled.p`
-  padding: 12px;
+export const AboutHeading = styled(HeadingLv2)`
+  margin: 0;
+  text-align: start;
+  padding-left: 24px;
+`
+
+export const Desc = styled.textarea`
+    padding: 12px;
+    width: 85%;
+    height: 400px;
+    margin: 0 auto;
+    display: block;
+    border: 2px solid transparent;
+    border-left: 1px solid black;
+    font-family: inherit;
+    font-size: 100%;
+    resize: vertical;
+    max-height: 40vh;
+    min-height: 200px;
+
+    /* width */
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+      border-radius: 10px;
+    }
+
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+      background: darkgrey; 
+      border-radius: 10px;
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+      background: #b30000; 
+    }
+
+    &:focus {
+      border-color: #54B4D3;
+    }
 `

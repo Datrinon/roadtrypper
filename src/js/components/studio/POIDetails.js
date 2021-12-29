@@ -76,7 +76,7 @@ function PoiDetails({ activePin, setActivePin }) {
     console.log(day);
     //#region Belongs to Day
     let belongsToDayDisplay = (
-    <pD.POIDayOrder>Day {day.order + 1}</pD.POIDayOrder>);
+      <pD.POIDayOrder>Day {day.order + 1}</pD.POIDayOrder>);
     let belongsToDayEdit = (
       <d.OrderSelect
         name="poi-day"
@@ -123,17 +123,17 @@ function PoiDetails({ activePin, setActivePin }) {
       .pois
       .filter(poi => poi.dayId === activePoi.dayId)
       .sort((poiA, poiB) => poiA.order - poiB.order);
-    
-      let poiOrderDisplay = (
-        <pD.POIOrderDisplay>
-          <span className="location-label">
-            Location
-          </span>
-          <br/>
-          <span className="location-value">
-            {activePoi.order + 1} / {dayPOIs.length}
-          </span>
-        </pD.POIOrderDisplay>);
+
+    let poiOrderDisplay = (
+      <pD.POIOrderDisplay>
+        <span className="location-label">
+          Location
+        </span>
+        <br />
+        <span className="location-value">
+          {activePoi.order + 1} / {dayPOIs.length}
+        </span>
+      </pD.POIOrderDisplay>);
 
     let poiOrderEdit = (<d.OrderSelect
       name="poi-order"
@@ -180,12 +180,12 @@ function PoiDetails({ activePin, setActivePin }) {
 
     if (day.title.length === 0) {
       dayTitleDisplay = (
-      <pD.POIDayTitle className="details day untitled">
-        <d.UntitledDayDisp>Untitled Day</d.UntitledDayDisp>
-      </pD.POIDayTitle>);
+        <pD.POIDayTitle className="details day untitled">
+          <d.UntitledDayDisp>Untitled Day</d.UntitledDayDisp>
+        </pD.POIDayTitle>);
     } else {
       dayTitleDisplay = (
-      <pD.POIDayTitle className="details day" title={day.title}>{day.title}</pD.POIDayTitle>);
+        <pD.POIDayTitle className="details day" title={day.title}>{day.title}</pD.POIDayTitle>);
     }
 
     let dayTitleEdit = (<d.DayTitleEdit
@@ -214,8 +214,8 @@ function PoiDetails({ activePin, setActivePin }) {
 
     //#region POI Title
     let poiTitleDisplay = (
-    <pD.POITitleDisplay
-      className="details poi title">{activePoi.title}</pD.POITitleDisplay>
+      <pD.POITitleDisplay
+        className="details poi title">{activePoi.title}</pD.POITitleDisplay>
     );
 
     let poiTitleEdit = (<d.DayTitleEdit
@@ -259,20 +259,24 @@ function PoiDetails({ activePin, setActivePin }) {
     }
 
     let descElement = (
-      <textarea
-        defaultValue={activePoi.description}
-        ref={poiDescEditRef}
-        onFocus={() => {
-          // run autosave every 45 sec.
-          poiDescSaveIntervalId.current = setInterval(() => {
+      <>
+        <pD.AboutHeading>About</pD.AboutHeading>
+        <pD.Desc
+          placeholder={"Click here to edit the description."}
+          defaultValue={activePoi.description}
+          ref={poiDescEditRef}
+          onFocus={() => {
+            // run autosave every 45 sec.
+            poiDescSaveIntervalId.current = setInterval(() => {
+              onDescSave();
+            }, 450000);
+          }}
+          onBlur={() => {
             onDescSave();
-          }, 45000);
-        }}
-        onBlur={() => {
-          onDescSave();
-          // also clear the auto save function.
-          clearInterval(poiDescSaveIntervalId.current);
-        } }/>
+            // also clear the auto save function.
+            clearInterval(poiDescSaveIntervalId.current);
+          }} />
+      </>
     );
     //#endregion
 
@@ -328,7 +332,7 @@ function PoiDetails({ activePin, setActivePin }) {
           </div>
         </pD.POIHeadingInfo>
         <EditLocation activePoi={activePoi} />
-        <pD.DescDivider/>
+        {/* <pD.DescDivider/> */}
         {descElement}
         {
           photos.length > 0 ?
