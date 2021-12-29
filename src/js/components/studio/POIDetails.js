@@ -72,9 +72,10 @@ function PoiDetails({ activePin, setActivePin }) {
   function renderView() {
     console.log(day);
     //#region Belongs to Day
-    let belongsToDayDisplay = (<h1>Day {day.order + 1}</h1>);
+    let belongsToDayDisplay = (
+    <pD.POIDayOrder>Day {day.order + 1}</pD.POIDayOrder>);
     let belongsToDayEdit = (
-      <select
+      <d.DayOrderSelect
         name="poi-day"
         id="poi-day-select"
         defaultValue={day.order}
@@ -89,7 +90,7 @@ function PoiDetails({ activePin, setActivePin }) {
             </option>
           })
         }
-      </select>)
+      </d.DayOrderSelect>)
 
     let onBelongsToDayUpdate = () => {
       // if the selected day is the same, then don't update.
@@ -164,9 +165,11 @@ function PoiDetails({ activePin, setActivePin }) {
     let dayTitleDisplay;
 
     if (day.title.length === 0) {
-      dayTitleDisplay = (<h2 className="details day untitled">Untitled Day</h2>);
+      dayTitleDisplay = (
+      <h2 className="details day untitled">Untitled Day</h2>);
     } else {
-      dayTitleDisplay = (<h2 className="details day">{day.title}</h2>);
+      dayTitleDisplay = (
+      <h2 className="details day">{day.title}</h2>);
     }
 
     let dayTitleEdit = (<input

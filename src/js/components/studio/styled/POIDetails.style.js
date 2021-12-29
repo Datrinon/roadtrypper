@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { DayOrder } from './Details.style';
 
 export const Thumbnail = styled.img`
   width: 64px;
@@ -60,4 +61,11 @@ export const POITitleDisplay = styled.h3`
   font-weight: 300;
 `
 
-// POI title edit (use detail>)
+// POI title edit is from generic class details.
+
+// Day Numbering
+export const POIDayOrder = styled(DayOrder)`
+  margin: 0;
+  font-size: 150%;
+  font-weight: 500;
+`
