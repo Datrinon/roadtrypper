@@ -229,7 +229,12 @@ const SearchField = React.forwardRef(({
       currentFocused.current = 0;
       setDisplaySuggestions(false);
 
-      component.current.classList.remove("open");
+      try {
+        component.current.classList.remove("open");
+      } catch (e) {
+        console.warn("Error removing class 'open' from searchbar!");
+        console.error(e);
+      }
     }
   }
 
