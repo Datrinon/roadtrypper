@@ -246,6 +246,10 @@ function PoiDetails({ activePin, setActivePin }) {
     //#region Description
 
     const onDescSave = () => {
+      if (poiDescEditRef.current.value === activePoi.description) {
+        return;
+      }
+
       dispatch({
         type: "edit",
         payload: {
@@ -260,7 +264,7 @@ function PoiDetails({ activePin, setActivePin }) {
 
     let descElement = (
       <>
-        <pD.AboutHeading>About</pD.AboutHeading>
+        <pD.POIHeadingLv3>About</pD.POIHeadingLv3>
         <pD.Desc
           placeholder={"Click here to edit the description."}
           defaultValue={activePoi.description}
@@ -289,14 +293,14 @@ function PoiDetails({ activePin, setActivePin }) {
       }
 
       return (
-        <figure
+        <pD.Thumbnail
           key={"" + day.id + photo.id}>
           <LoadingImage
             src={photo.path}
             onClick={onClickAction}
             classNames={["thumbnail"]}
             alt={photo.description} />
-        </figure>
+        </pD.Thumbnail>
       );
     }
 
@@ -334,11 +338,14 @@ function PoiDetails({ activePin, setActivePin }) {
         <EditLocation activePoi={activePoi} />
         {/* <pD.DescDivider/> */}
         {descElement}
-        {
-          photos.length > 0 ?
-            photos.map(mapThumbnails) :
-            (<button onClick={launchGalleryView.bind(null, -1)}>Add Photos</button>)
-        }
+        <pD.POIHeadingLv3>Photos</pD.POIHeadingLv3>
+        <pD.POIPhotosContainer className='poi-photos'>
+          {
+            photos.length > 0 ?
+              photos.map(mapThumbnails) :
+              (<button onClick={launchGalleryView.bind(null, -1)}>Add Photos</button>)
+          }
+        </pD.POIPhotosContainer>
       </>
     )
   }

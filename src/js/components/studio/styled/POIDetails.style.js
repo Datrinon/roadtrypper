@@ -2,10 +2,6 @@ import styled from 'styled-components';
 import { Divider } from './DayDetails.style';
 import { DayOrder, DayTitle, HeadingLv2 } from './Details.style';
 
-export const Thumbnail = styled.img`
-  width: 64px;
-  height: 64px;
-`
 export const EditModeInput = styled.input`
   display: block;
 `
@@ -102,7 +98,7 @@ export const POIOrderDisplay = styled.p`
 
 export const DescDivider = styled(Divider)``;
 
-export const AboutHeading = styled(HeadingLv2)`
+export const POIHeadingLv3 = styled(HeadingLv2)`
   margin: 0;
   text-align: start;
   padding-left: 24px;
@@ -119,7 +115,7 @@ export const Desc = styled.textarea`
     font-family: inherit;
     font-size: 100%;
     resize: vertical;
-    max-height: 40vh;
+    max-height: 45vh;
     min-height: 200px;
 
     /* width */
@@ -146,4 +142,39 @@ export const Desc = styled.textarea`
     &:focus {
       border-color: #54B4D3;
     }
+`
+
+
+export const POIPhotosContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+`
+
+export const Thumbnail = styled.figure`
+  border: 1px solid rgb(45, 45, 45);
+  border-radius: 4px;
+  width: 85px;
+  height: 128px;
+  margin-left: 8px;
+  cursor: pointer;
+  transition: border 300ms, transform 300ms;
+  position: relative;
+  z-index: 3;
+
+  &:hover {
+    border: 1px solid #54B4D3;
+    transform: scale(1.05);
+  }
+
+  & button {
+    all: unset;
+    height: 100%;
+  }
+
+  & .thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
 `

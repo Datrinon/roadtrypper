@@ -42,6 +42,3 @@ export const FAIcon = styled(FontAwesomeIcon)`
   align-self: center;
 `
 
-export const Photo = styled.img`
-border: 1px solid orange;
-`

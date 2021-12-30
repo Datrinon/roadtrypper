@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react'
-import * as s from '../styled/template.style';
 
 /**
  * An image which shows a loading animation prior to it being loaded.
@@ -36,14 +35,21 @@ function LoadingImage({src, alt, callbackOnReady, onClick, classNames}) {
 
     loadImg(signal.current)
     .then((result) => {
-      setContent((
-        <s.Photo
+      if (onClick) {
+        setContent(
+        <button
+          onClick={onClick}>
+          <img
           src={result.src}
-          onClick={onClick}
           alt={alt}
-          className={classNames?.join(" ")}
-        />
-      ));
+          className={classNames?.join(" ")}/>
+        </button>);
+      } else {
+        setContent(<img
+            src={result.src}
+            alt={alt}
+            className={classNames?.join(" ")}/>);
+      }
 
       if (callbackOnReady) {
         callbackOnReady();
@@ -62,9 +68,9 @@ function LoadingImage({src, alt, callbackOnReady, onClick, classNames}) {
 
   
   return (
-    <div className="le-loading-image">
+    <>
       {content}
-    </div>
+    </>
   )
 }
 
