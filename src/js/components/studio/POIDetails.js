@@ -344,7 +344,7 @@ function PoiDetails({ activePin, setActivePin }) {
             photos.length > 3 && (
             <pD.POIHeadingLv3>
               <pD.SeeAll onClick={(launchGalleryView.bind(null, 3))}>
-                See All
+                See All ({photos.length})
               </pD.SeeAll>
             </pD.POIHeadingLv3>
             )
@@ -354,7 +354,7 @@ function PoiDetails({ activePin, setActivePin }) {
         <pD.POIPhotosContainer className='poi-photos'>
           {
             photos.length > 0 ?
-              photos.map(mapThumbnails) :
+              photos.slice(0, 2).map(mapThumbnails) :
               (<button onClick={launchGalleryView.bind(null, -1)}>Add Photos</button>)
           }
         </pD.POIPhotosContainer>
