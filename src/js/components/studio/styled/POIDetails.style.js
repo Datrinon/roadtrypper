@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { Divider } from './DayDetails.style';
 import { DayOrder, DayTitle, HeadingLv2 } from './Details.style';
+import { BaseButton } from './StudioButtons.style';
 
 export const EditModeInput = styled.input`
   display: block;
@@ -144,6 +145,11 @@ export const Desc = styled.textarea`
     }
 `
 
+export const POIPhotosHeadingWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+`
 
 export const POIPhotosContainer = styled.div`
   display: flex;
@@ -178,3 +184,15 @@ export const Thumbnail = styled.figure`
   }
 
 `
+
+export const SeeAll = styled(BaseButton)`
+  background-color: white;
+  box-shadow: none;
+  color: #54B4D3;
+
+  &:hover:not([disabled]) {
+    background-color: white;
+    box-shadow: initial;
+    text-shadow: 1px 1px 12px #92dff8;
+  }
+`;

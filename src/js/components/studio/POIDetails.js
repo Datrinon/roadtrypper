@@ -338,7 +338,19 @@ function PoiDetails({ activePin, setActivePin }) {
         <EditLocation activePoi={activePoi} />
         {/* <pD.DescDivider/> */}
         {descElement}
-        <pD.POIHeadingLv3>Photos</pD.POIHeadingLv3>
+        <pD.POIPhotosHeadingWrapper>
+          <pD.POIHeadingLv3>Photos</pD.POIHeadingLv3>
+          {
+            photos.length > 3 && (
+            <pD.POIHeadingLv3>
+              <pD.SeeAll onClick={(launchGalleryView.bind(null, 3))}>
+                See All
+              </pD.SeeAll>
+            </pD.POIHeadingLv3>
+            )
+          }
+          </pD.POIPhotosHeadingWrapper>
+
         <pD.POIPhotosContainer className='poi-photos'>
           {
             photos.length > 0 ?
