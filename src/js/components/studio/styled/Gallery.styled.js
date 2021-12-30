@@ -7,6 +7,7 @@ export const Gallery = styled.section`
   top: 0;
   left: 0;
   background: rgba(0, 0, 0, 0.9);
+  z-index: 9;
 `
 
 export const GalleryViewWrapper = styled.div`
