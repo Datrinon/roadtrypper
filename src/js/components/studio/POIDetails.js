@@ -8,6 +8,7 @@ import { point } from 'leaflet';
 // styled + css
 import * as d from "./styled/Details.style";
 import * as pD from "./styled/POIDetails.style";
+import * as g from "./styled/Gallery.styled";
 import "../../../css/POIDetails.css";
 // components
 import HoverToEditInput from './HoverToEditInput';
@@ -375,17 +376,19 @@ function PoiDetails({ activePin, setActivePin }) {
       </section>
     </div>
     {galleryStartingIndex !== null && (
-        <section className="gallery">
-          <GalleryView
-            startingPhoto={photos[galleryStartingIndex]}
-            startingIndex={galleryStartingIndex}
-            poiPhotos={photos}
-            poiId={activePoi.id}
-            closeGalleryView={() => {
-              setGalleryStartingIndex(null);
-            }}
-          />
-        </section>
+        <g.Gallery className="gallery">
+          <g.GalleryViewWrapper>
+            <GalleryView
+              startingPhoto={photos[galleryStartingIndex]}
+              startingIndex={galleryStartingIndex}
+              poiPhotos={photos}
+              poiId={activePoi.id}
+              closeGalleryView={() => {
+                setGalleryStartingIndex(null);
+              }}
+            />
+          </g.GalleryViewWrapper>
+        </g.Gallery>
       )}
     </>
   )

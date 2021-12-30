@@ -14,10 +14,9 @@ const loadingImageElement = (
  * @returns 
  */
 function LoadingImage({src, alt, callbackOnReady, onClick, classNames}) {
-  const foo = loadingImageElement;
 
   const signal = useRef(new AbortController());
-  const [content, setContent] = useState((<p>Loading!</p>));
+  const [content, setContent] = useState(loadingImageElement);
   
   function loadImg(signal) {
     return new Promise((resolve, reject) => {
@@ -52,13 +51,13 @@ function LoadingImage({src, alt, callbackOnReady, onClick, classNames}) {
           <img
           src={result.src}
           alt={alt}
-          className={classNames?.join(" ")}/>
+          className={classNames?.join(" ") + " result"}/>
         </button>);
       } else {
         setContent(<img
             src={result.src}
             alt={alt}
-            className={classNames?.join(" ")}/>);
+            className={classNames?.join(" ") + " result"}/>);
       }
 
       if (callbackOnReady) {
@@ -79,7 +78,7 @@ function LoadingImage({src, alt, callbackOnReady, onClick, classNames}) {
   
   return (
     <>
-      {foo}
+      {content}
     </>
   )
 }
