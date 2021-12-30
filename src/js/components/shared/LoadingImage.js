@@ -1,10 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { faSpinner, faImage } from '@fortawesome/free-solid-svg-icons';
+import { FAIcon } from '../styled/template.style';
+import { LoadingImgContainer } from './styled/LoadingImage.style';
+
+const loadingImageElement = (
+  <LoadingImgContainer>
+    <FAIcon icon={faSpinner} className="faImage"/>
+  </LoadingImgContainer>
+);
 
 /**
  * An image which shows a loading animation prior to it being loaded.
  * @returns 
  */
 function LoadingImage({src, alt, callbackOnReady, onClick, classNames}) {
+  const foo = loadingImageElement;
 
   const signal = useRef(new AbortController());
   const [content, setContent] = useState((<p>Loading!</p>));
@@ -69,7 +79,7 @@ function LoadingImage({src, alt, callbackOnReady, onClick, classNames}) {
   
   return (
     <>
-      {content}
+      {foo}
     </>
   )
 }

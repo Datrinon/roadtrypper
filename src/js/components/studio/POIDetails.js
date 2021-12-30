@@ -368,11 +368,13 @@ function PoiDetails({ activePin, setActivePin }) {
   }
 
   return (
+    <>
     <div className={`poi-details`}>
       <section className="poi-contents">
         {renderView()}
       </section>
-      {galleryStartingIndex !== null && (
+    </div>
+    {galleryStartingIndex !== null && (
         <section className="gallery">
           <GalleryView
             startingPhoto={photos[galleryStartingIndex]}
@@ -385,7 +387,7 @@ function PoiDetails({ activePin, setActivePin }) {
           />
         </section>
       )}
-    </div>
+    </>
   )
 }
 

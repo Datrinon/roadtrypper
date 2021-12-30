@@ -7,7 +7,7 @@ import { TripContext, TripDispatch } from './Studio';
 
 import { v4 as uuidv4 } from 'uuid';
 
-import Modal from './Modal';
+import Modal from '../shared/Modal';
 import useModal from '../../hooks/useModal';
 import CountingTextArea from './CountingTextArea';
 import { addTripPhoto } from '../../database/data';
