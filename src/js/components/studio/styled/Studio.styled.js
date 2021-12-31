@@ -92,7 +92,7 @@ export const DivWithCustomScroll = styled.div`
 `
 
 export const DayCardContainer = styled(DivWithCustomScroll)`
-  overflow-y: scroll;
+  overflow-y: auto;
   height: 95%;
 `
 

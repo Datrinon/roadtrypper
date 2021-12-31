@@ -70,7 +70,7 @@ export const POICardContainer = styled.div`
   flex-direction: column;
   align-items: center; */
 
-  overflow-y: scroll;
+  overflow-y: auto;
   /* border: 1px solid fuchsia; */
 
 /* width */
