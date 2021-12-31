@@ -363,7 +363,7 @@ async function deletePhoto(ref, uri, signal) {
   if (signal.aborted) {
     return Promise.reject(new Error("Operation failed; request was cancelled."));
   }
-  debugger;
+//debugger;
 
   await deleteDoc(ref);
   await deleteFile(uri);
@@ -400,7 +400,7 @@ async function deletePhoto(ref, uri, signal) {
 }
 
 async function getPhotoStorageUri(ref) {
-  debugger;
+//debugger;
   const photo = await getDoc(ref);
 
   return photo.get("storageUri");
