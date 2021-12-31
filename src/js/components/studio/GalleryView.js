@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext, useRef } from 'react'
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronRight, faChevronLeft, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faChevronRight, faChevronLeft, faTimes, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { faMehBlank } from '@fortawesome/free-regular-svg-icons';
 
 import * as s from "./styled/POIDetails.style";
+import * as g from "./styled/Gallery.styled";
 
 import GalleryHeader from './GalleryHeader';
 import CountingTextArea from './CountingTextArea';
@@ -54,20 +55,6 @@ function NoPhotosFound({ poiId, startingIndex }) {
         description
       }
     });
-
-    // dispatch({
-    //   type: "add",
-    //   payload: {
-    //     type: "photos",
-    //     fkname: "poiId",
-    //     fkid: poiId,
-    //     path,
-    //     description
-    //   }
-    // });
-    // TODO
-    // ! Combine View and Header's function into one.
-    // ! Got tripped up by duplication. Now we know why duplicating code == bad.
   }
 
 
@@ -101,13 +88,7 @@ let Warning = styled.h1`
 `
 
 
-const GalleryViewContainer = styled.div`
-border: 1px solid fuchsia;
-`
 
-const Photo = styled.img`
-border: 1px solid orange;
-`
 
 function GalleryView({ startingPhoto, startingIndex, poiPhotos, poiId, closeGalleryView }) {
   const [loading, setLoading] = useState(true);
@@ -232,31 +213,33 @@ function GalleryView({ startingPhoto, startingIndex, poiPhotos, poiId, closeGall
   }
 
   return (
-    <GalleryViewContainer>
-      <button onClick={() => closeGalleryView()}>
+    <g.GalleryViewContainer>
+      <g.GalleryButton
+        data-tip="Exit"
+        onClick={() => closeGalleryView()}>
         <span>
-          <FontAwesomeIcon icon={faTimes} />
+          <FontAwesomeIcon icon={faArrowLeft} />
         </span>
-        Exit Gallery View
-      </button>
-      <div className="exhibition">
-        {determineRender()}
-      </div>
-    </GalleryViewContainer>
+      </g.GalleryButton>
+      {determineRender()}
+    </g.GalleryViewContainer>
   )
 }
 
 function GalleryPhoto({ photo, callback }) {
   
   return (
-    <figure>
+    <g.GalleryFigure>
       <LoadingImage
         src={photo.path}
         alt={photo.description}
         callbackOnReady={callback}
+        classNames={["photo"]}
       />
-      <figcaption>{photo.description}</figcaption>
-    </figure>
+      <g.PhotoCaption
+        className="caption"
+        >{photo.description}</g.PhotoCaption>
+    </g.GalleryFigure>
   )
 }
 

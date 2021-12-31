@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, useRef } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileImage, faTrashAlt, faImage, faEdit } from '@fortawesome/free-regular-svg-icons';
-import { faPencilAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faPencilAlt, faPlus, faPlusCircle, faRetweet, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 import { TripContext, TripDispatch } from './Studio';
 
@@ -15,6 +15,8 @@ import useAbortController from '../../hooks/useAbortController';
 
 import PLACEHOLDER_IMG from '../../../data/spin-32.gif';
 import { getBase64 } from '../../util/getbase64';
+
+import * as g from "./styled/Gallery.styled";
 
 
 function GalleryHeader({ activePhoto, loading }) {
@@ -183,33 +185,47 @@ function GalleryHeader({ activePhoto, loading }) {
 
   return (
     <>
-      <header className="options-panel">
-        <button onClick={showAddPhotoModal} disabled={loading}>
+      <g.GalleryHeader className="options-panel">
+        <g.GalleryButton
+          data-tip="Add Photo"
+          className="add-photo-button"
+          onClick={showAddPhotoModal}
+          disabled={loading}>
           <span>
             <FontAwesomeIcon icon={faFileImage} />
+            <FontAwesomeIcon icon={faPlus} className="plus"/>
           </span>
-          Add Photo
-        </button>
-        <button onClick={showEditDescModal} disabled={loading}>
+          
+        </g.GalleryButton>
+        <g.GalleryButton
+          data-tip="Edit Description"
+          className="edit-desc-button"
+          onClick={showEditDescModal}
+          disabled={loading}>
           <span>
             <FontAwesomeIcon icon={faEdit} />
           </span>
-          Edit Description
-        </button>
-        <button onClick={showEditPhotoModal} disabled={loading}>
+        </g.GalleryButton>
+        <g.GalleryButton
+          data-tip="Change Photo"
+          className="change-photo-button"
+          onClick={showEditPhotoModal}
+          disabled={loading}>
           <span>
             <FontAwesomeIcon icon={faImage} />
-            <FontAwesomeIcon icon={faPencilAlt} />
+            <FontAwesomeIcon icon={faRetweet} className="edit" />
           </span>
-          Change Photo
-        </button>
-        <button onClick={showDeleteModal} disabled={loading}>
+        </g.GalleryButton>
+        <g.GalleryButton
+          data-tip="Delete Photo"
+          className="delete-photo-button"
+          onClick={showDeleteModal}
+          disabled={loading}>
           <span>
             <FontAwesomeIcon icon={faTrashAlt} />
           </span>
-          Delete
-        </button>
-      </header>
+        </g.GalleryButton>
+      </g.GalleryHeader>
       <Modal ref={modalRef}
         visible={modalValues.visible}
         title={modalValues.title}

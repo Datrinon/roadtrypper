@@ -47,8 +47,7 @@ export const DeleteItemButton = styled.button`
     top: calc(80% + 5px);
     left: calc(50% + 5px);
     /* width: 100%; */
-    -webkit-animation: dMBcsj 300ms;
-    animation: dMBcsj 300ms;
+    animation: ${appear} 300ms;
   }
 `
 
