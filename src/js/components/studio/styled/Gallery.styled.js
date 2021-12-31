@@ -83,7 +83,7 @@ export const GalleryHeader = styled.header`
 `
 
 export const GalleryViewContainer = styled.div`
-  border: 1px solid fuchsia;
+  /* border: 1px solid fuchsia; */
   position: relative;
   width: 100%;
   height: 100%;
@@ -159,6 +159,10 @@ export const GalleryModal = styled.div`
     min-width: 200px;
     width: 50vw;
     max-width: 400px;
+  }
+
+  & .modal-text {
+    padding: 1em;
   }
 `
 

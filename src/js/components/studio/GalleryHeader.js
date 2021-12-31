@@ -164,7 +164,7 @@ function GalleryHeader({ activePhoto, loading }) {
     modalSetter.setDismiss("Cancel");
     modalSetter.setContent(
       <>
-        <input id="photo-file-update" accept="image/*" type="file" required={true} />
+        <input id="photo-file-update" className="photo-upload" accept="image/*" type="file" required={true} />
       </>
     )
   }
@@ -192,7 +192,7 @@ function GalleryHeader({ activePhoto, loading }) {
     modalSetter.setDismiss("Cancel");
     modalSetter.setContent(
       <>
-        <p>Are you sure you want to delete this photo? This action cannot be
+        <p className="modal-text">Are you sure you want to delete this photo? This action cannot be
           undone.
         </p>
       </>
