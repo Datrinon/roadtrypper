@@ -5,8 +5,14 @@ import { ModalContainer, ModalHeader, ModalBody, ModalBG } from '../overview/sty
 
 /**
  * Create a modal element. For optimal use, from your parent component, control
- * its props as state variables. the useModal hook conveniently packages such 
- * state variables; recommend you use that. Anyhow, the props are as follows:
+ * its props as state variables. Please use with the useModal hook which provides
+ * the logic to sync the internal display state of the modal with the parent.
+ * 
+ * Note that you need to pass it a ref in order for it to communicate its
+ * display state to the parent, so define that in the parent.
+ * 
+ * Anyhow, the props are as follows (state variables for these are provided
+ * with useModal hook):
  * @param visible : true if visible; false if not. This controls the display (and visibility) of Modal.
  * @param title : The title of the window.
  * @param confirm :  Optional confirm button to implement in the modal. Provide as

@@ -110,6 +110,6 @@ export const MapArea = styled.div`
     width: 1px;
     background-color: transparent;
     box-shadow: 1px -1px 3px 0px #00000066;
-    z-index: 99999;
+    z-index: 99;
   }
 `
