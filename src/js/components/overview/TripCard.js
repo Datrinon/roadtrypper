@@ -61,7 +61,9 @@ function TripCard({ trip, setTrips }) {
           alt="A colorful graphic representation of a map."
           loading="lazy"/>
         <tS.TripTitle className="trip-title">
-          {trip.title}
+          {trip.title.length ?
+            trip.title :
+            <span className="untitled">Untitled Trip</span>}
         </tS.TripTitle>
         <tS.TripDate>
           Last Opened {convertMsToDate(trip.lastAccessed)}

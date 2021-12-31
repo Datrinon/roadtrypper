@@ -31,6 +31,11 @@ export const TripTitle = styled.h2`
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+
+    & .untitled {
+      font-style: italic;
+      color: darkgrey;
+    }
 `
 
 export const TripDate = styled.p`

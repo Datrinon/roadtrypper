@@ -54,7 +54,7 @@ async function addTrip(user, signal) {
   try {
     let trip = new Trip(
       user.email,
-      "Untitled Trip"
+      "New Trip"
     );
 
     // addDoc only wants objects, not custom objects, so let's try shallow copying properties.
