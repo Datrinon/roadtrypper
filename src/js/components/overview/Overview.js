@@ -13,6 +13,8 @@ import { UserContext } from '../Router';
 import { faArrowDown, faArrowUp, faMap } from '@fortawesome/free-solid-svg-icons';
 import { stringify } from '@firebase/util';
 import HomeLogo from '../shared/HomeLogo';
+import { useHistory } from 'react-router-dom';
+
 
 // css
 import "../../../css/OverviewSearchbar.css";
@@ -29,6 +31,7 @@ function Overview() {
   const user = useContext(UserContext);
 
   const searchRef = useRef();
+  const history = useHistory();
 
   // sorts
   const [titleDescOrder, setTitleDescOrder] = useState(false);
@@ -108,12 +111,15 @@ function Overview() {
     return matchingTrips;
   }
 
-  function mapSearchResultsToElem(result, index) {
+  function loadTripFromSearch(result) {
+    history.push("/trips/" + result.tripId);
+  }
 
+  function mapSearchResultsToElem(result, index) {
     return (
       <s.ListingBox
         key={index}
-        onClick={(e) => alert("TODO")}
+        onClick={loadTripFromSearch.bind(null, result)}
         tabIndex={-1}>
         <s.FAIcon icon={faMap} />
         <s.ListingLabel className="listing-name">
@@ -157,6 +163,8 @@ function Overview() {
             ref={searchRef}
             fetchForSuggestions={fetchTrips}
             suggestionMap={mapSearchResultsToElem}
+            // Intentionally pass in a stub to ensure nothing is done.
+            onSearchCallback={() => {}} 
             debounceTimer={400}
             fasterFirstSearch={null}
             placeholder={"Search for a trip..."}
