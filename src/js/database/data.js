@@ -301,6 +301,7 @@ async function editTripData(
 
   console.log('The following data is being edited...');
   console.log({data});
+  ref = doc(db, ref.path);
 
   await updateDoc(ref, data);
 }
