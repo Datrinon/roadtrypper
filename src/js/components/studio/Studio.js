@@ -31,6 +31,7 @@ import LoadingStudio from './LoadingStudio';
 // CSS
 import * as stS from "./styled/Studio.styled";
 import "../../../css/studio.css";
+import { Helmet } from 'react-helmet';
 
 // ! code begin
 export const TripDispatch = React.createContext(null);
@@ -130,8 +131,8 @@ function Studio() {
     if (activeDay) {
       console.log(activeDay);
       const dayCard = document
-          .querySelector(`.day-card[data-id="${activeDay.data.id}"]`);
-      
+        .querySelector(`.day-card[data-id="${activeDay.data.id}"]`);
+
       dayCard.classList.add("active");
 
       activeDayCard.current = dayCard;
@@ -156,9 +157,9 @@ function Studio() {
     if (!activePin) {
       return;
     }
-    
+
     const day = trip.days.find(day => day.id === activePin.data.dayId);
-    
+
     console.log("Changing the active day with this pin...");
     console.log(activePin);
 
@@ -179,51 +180,57 @@ function Studio() {
 
 
   return (
-    <TripId.Provider value={tripId}>
-      <TripContext.Provider value={trip}>
-        <MapInstance.Provider value={mapRef}>
-          <TripDispatch.Provider value={tripDispatch}>
-            <SidebarSetter.Provider value={sidebarSetter}>
-              <stS.StudioBody className="studio-body">
+    <>
+      <Helmet>
+        <title>{trip.general.title.length ?
+          trip.general.title : "Untitled Trip"} - RoadTrypper </title>
+      </Helmet>
+      <TripId.Provider value={tripId}>
+        <TripContext.Provider value={trip}>
+          <MapInstance.Provider value={mapRef}>
+            <TripDispatch.Provider value={tripDispatch}>
+              <SidebarSetter.Provider value={sidebarSetter}>
+                <stS.StudioBody className="studio-body">
 
-                <stS.HeaderWrapper>
-                  <StudioHeader />
+                  <stS.HeaderWrapper>
+                    <StudioHeader />
 
-                </stS.HeaderWrapper>
+                  </stS.HeaderWrapper>
 
-                <stS.TripGeneral className="trip-general-info">
-                  <TripTitle />
-                  <LastUpdated time={trip.general.lastAccessed} />
-                </stS.TripGeneral>
+                  <stS.TripGeneral className="trip-general-info">
+                    <TripTitle />
+                    <LastUpdated time={trip.general.lastAccessed} />
+                  </stS.TripGeneral>
 
-                <stS.AddOptions className="add-options">
-                  <AddDay activeDay={activeDay} setActiveDay={setActiveDay} />
-                  <AddPOI activeDay={activeDay} />
-                </stS.AddOptions>
+                  <stS.AddOptions className="add-options">
+                    <AddDay activeDay={activeDay} setActiveDay={setActiveDay} />
+                    <AddPOI activeDay={activeDay} />
+                  </stS.AddOptions>
 
-                <stS.Days className="days">
-                  <stS.DayCardSectionHeading>Days</stS.DayCardSectionHeading>
-                  <stS.DayCardContainer>
-                    {mapDayDataToCards()}
-                  </stS.DayCardContainer>
-                </stS.Days>
+                  <stS.Days className="days">
+                    <stS.DayCardSectionHeading>Days</stS.DayCardSectionHeading>
+                    <stS.DayCardContainer>
+                      {mapDayDataToCards()}
+                    </stS.DayCardContainer>
+                  </stS.Days>
 
-                <stS.MapArea className="map-area">
-                  <Map
-                    data={trip}
-                    setActivePin={setActivePin} />
-                  <Sidebar
-                    ref={sidebarRef}
-                    visible={sidebarValues.visible}
-                    content={sidebarValues.content}
-                  />
-                </stS.MapArea>
-              </stS.StudioBody>
-            </SidebarSetter.Provider>
-          </TripDispatch.Provider>
-        </MapInstance.Provider>
-      </TripContext.Provider>
-    </TripId.Provider>
+                  <stS.MapArea className="map-area">
+                    <Map
+                      data={trip}
+                      setActivePin={setActivePin} />
+                    <Sidebar
+                      ref={sidebarRef}
+                      visible={sidebarValues.visible}
+                      content={sidebarValues.content}
+                    />
+                  </stS.MapArea>
+                </stS.StudioBody>
+              </SidebarSetter.Provider>
+            </TripDispatch.Provider>
+          </MapInstance.Provider>
+        </TripContext.Provider>
+      </TripId.Provider>
+    </>
   )
   //#endregion
 }

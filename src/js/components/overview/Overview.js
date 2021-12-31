@@ -16,6 +16,7 @@ import HomeLogo from '../shared/HomeLogo';
 
 // css
 import "../../../css/OverviewSearchbar.css";
+import { Helmet } from 'react-helmet';
 
 /**
  * This shows us all the trips in the user's account.
@@ -146,6 +147,9 @@ function Overview() {
 
   return (
     <div>
+      <Helmet>
+        <title>My Trips - RoadTrypper</title>
+      </Helmet>
       <oS.OverviewHeader>
         <oS.HeaderContent>
           <HomeLogo />

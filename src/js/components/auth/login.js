@@ -12,6 +12,7 @@ import GoogleLogo from "../../../data/GoogleLogo.svg";
 import { GoogleIcon, ButtonLink } from './styled/login.style';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 
+import { Helmet } from "react-helmet";
 
 function Login({ setUserInfo }) {
 
@@ -55,7 +56,9 @@ function Login({ setUserInfo }) {
 
   return (
     <>
-
+      <Helmet>
+        <title>Log In - RoadTrypper</title>
+      </Helmet>
       <authStyle.AuthFormContainer>
         <authStyle.Heading>Log in to RoadTrypper</authStyle.Heading>
         <authStyle.Form onSubmit={onSignInSubmit}>

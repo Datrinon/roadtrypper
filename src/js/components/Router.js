@@ -53,8 +53,6 @@ function Router() {
   }, []);
 
   if (userInfo === undefined) {
-    // TODO
-    // Remove this.
     return null;
   }
 

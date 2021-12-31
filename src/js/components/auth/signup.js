@@ -2,10 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import { createUserAccount, issueEmailVerification } from '../../database/auth';
 import PWRequirements from './PWrequirements';
-import { UserContext } from '../Router';
-
-
 import * as authStyle from "./styled/auth.style";
+import { Helmet } from 'react-helmet';
 
 const COMPONENT_STATE = {
   ready: "ready",
@@ -82,6 +80,9 @@ function SignUp() {
 
   return (
     <>
+      <Helmet>
+        <title>Sign Up - RoadTrypper</title>
+      </Helmet>
       <authStyle.AuthFormContainer>
         <authStyle.Heading>Sign Up</authStyle.Heading>
         <authStyle.Form onSubmit={onSignUpSubmit}>
