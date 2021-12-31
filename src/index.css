@@ -1,6 +1,12 @@
+@font-face {
+  font-family: "Segoe UI Hosted";
+  src: url(./data/fonts/segoeui.ttf);
+}
+/* Note: Not used in favor of other OS' native fonts. */
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
