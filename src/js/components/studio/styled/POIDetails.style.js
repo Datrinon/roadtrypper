@@ -60,6 +60,7 @@ export const POITitleDisplay = styled.h3`
   overflow: hidden;
   /* overflow-x: hidden; */
   text-overflow: ellipsis;
+  padding-bottom: 0.5em;
 `
 
 // Day Numbering display
@@ -154,6 +155,15 @@ export const POIPhotosHeadingWrapper = styled.div`
 export const POIPhotosContainer = styled.div`
   display: flex;
   flex-direction: row;
+
+  & .add-photos-button {
+    width: 80%;
+    padding: 5px;
+    margin: 0 auto;
+    position: relative;
+    top: 25%;
+    bottom: 25%;
+  }
 `
 
 export const Thumbnail = styled.figure`

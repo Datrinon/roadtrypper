@@ -48,7 +48,7 @@ function HoverToEditInput({ displayVer, editVer, onClickSave }) {
     <hS.Container
       ref={thisElement}
       // ! TODO REENABLE THIS AFTER CSSING COMPLETE.
-      // height={height.current}
+      height={height.current}
       className={`editable ${editMode ? "editing" : ""}`}
       onMouseEnter={() => !editMode && setVisible(true)}
       onMouseLeave={() => !editMode && setVisible(false)}>

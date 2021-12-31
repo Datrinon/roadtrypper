@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext, useRef } from 'react'
-import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight, faChevronLeft, faTimes, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { faMehBlank } from '@fortawesome/free-regular-svg-icons';
 
 import * as pD from "./styled/POIDetails.style";
 import * as g from "./styled/Gallery.styled";
+import * as gA from "./styled/GalleryAddPhoto.style";
 
 import GalleryHeader from './GalleryHeader';
 import CountingTextArea from './CountingTextArea';
@@ -60,13 +60,15 @@ function NoPhotosFound({ poiId, startingIndex }) {
 
 
   return (
-    <div className="no-photos-found">
-      <Warning visible={startingIndex !== -1}>
-        <FontAwesomeIcon icon={faMehBlank} />
+    <gA.AddAPhotoContainer className="no-photos-found">
+      <gA.Warning visible={true}>
+        {/* Original condition: startingIndex !== -1 */}
+        <FontAwesomeIcon icon={faMehBlank} className="icon-error"/>
         No Photos Found
-      </Warning>
-      <button onClick={() => setFormVisible(true)}>Click here to add photos.</button>
-      <pD.ToggleVisibilityDiv visible={formVisible}>
+      </gA.Warning>
+      <gA.AddPhotoButton onClick={() => setFormVisible(true)}>Click to add photos.</gA.AddPhotoButton>
+      <pD.ToggleVisibilityDiv visible={false}>
+        {/* Original Value: formVisible */}
         <form onSubmit={addPhoto}>
           <input ref={fileRef} id={"photo-file"} accept="image/*" type="file" required={true} />
           <CountingTextArea
@@ -79,16 +81,9 @@ function NoPhotosFound({ poiId, startingIndex }) {
           <button type="submit">Add Photo</button>
         </form>
       </pD.ToggleVisibilityDiv>
-    </div>
+    </gA.AddAPhotoContainer>
   )
 }
-
-let Warning = styled.h1`
-  display: ${props => props.visible ? "initial" : "none"};
-`
-
-
-
 
 function GalleryView({ startingPhoto, startingIndex, poiPhotos, poiId, closeGalleryView }) {
   const [loading, setLoading] = useState(true);
@@ -141,7 +136,7 @@ function GalleryView({ startingPhoto, startingIndex, poiPhotos, poiId, closeGall
     setLoading(true);
 
     setActivePhoto(photos[activeIndex]);
-  }, [photos[activeIndex].path, activeIndex])
+  }, [photos[activeIndex]?.path, activeIndex])
 
   // need to keep activeIndex to keep forward/backward cycling.
   // changing the activeIndex will change the activeId.

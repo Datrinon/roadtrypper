@@ -9,6 +9,7 @@ import { point } from 'leaflet';
 import * as d from "./styled/Details.style";
 import * as pD from "./styled/POIDetails.style";
 import * as g from "./styled/Gallery.styled";
+import * as sB from "./styled/StudioButtons.style";
 import "../../../css/POIDetails.css";
 // components
 import HoverToEditInput from './HoverToEditInput';
@@ -356,7 +357,11 @@ function PoiDetails({ activePin, setActivePin }) {
           {
             photos.length > 0 ?
               photos.slice(0, 2).map(mapThumbnails) :
-              (<button onClick={launchGalleryView.bind(null, -1)}>Add Photos</button>)
+              (<sB.AddButton
+                  className="add-photos-button"
+                  onClick={launchGalleryView.bind(null, -1)}>
+                    Add Photos
+              </sB.AddButton>)
           }
         </pD.POIPhotosContainer>
       </>
