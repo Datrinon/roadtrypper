@@ -26,7 +26,7 @@ function GalleryLoading() {
 
 function NoPhotosFound({ poiId, startingIndex }) {
   // if starting index = -1, then we send the user here immediately upon opening gallery view.
-  const [formVisible, setFormVisible] = useState(startingIndex === -1 ? true : false);
+  const [formVisible, setFormVisible] = useState((startingIndex === -1 || startingIndex === null) ? true : false);
 
   const fileRef = useRef();
   const descRef = useRef();
@@ -61,16 +61,27 @@ function NoPhotosFound({ poiId, startingIndex }) {
 
   return (
     <gA.AddAPhotoContainer className="no-photos-found">
-      <gA.Warning visible={true}>
+      <gA.Warning visible={startingIndex !== -1}>
         {/* Original condition: startingIndex !== -1 */}
+        {/* Test Value: true */}
         <FontAwesomeIcon icon={faMehBlank} className="icon-error"/>
         No Photos Found
       </gA.Warning>
-      <gA.AddPhotoButton onClick={() => setFormVisible(true)}>Click to add photos.</gA.AddPhotoButton>
-      <pD.ToggleVisibilityDiv visible={false}>
+      <gA.ShowFormButton
+        visible={!formVisible}
+        onClick={() => setFormVisible(true)}>
+          Click to add photos.
+      </gA.ShowFormButton>
+      <gA.AddPhotoForm visible={formVisible}>
         {/* Original Value: formVisible */}
+        {/* Test Value: false */}
         <form onSubmit={addPhoto}>
-          <input ref={fileRef} id={"photo-file"} accept="image/*" type="file" required={true} />
+          <input ref={fileRef}
+            id={"photo-file"}
+            className={"photo-upload"}
+            accept="image/*"
+            type="file"
+            required={true} />
           <CountingTextArea
             ref={descRef}
             textAreaId={"photo-description"}
@@ -78,9 +89,9 @@ function NoPhotosFound({ poiId, startingIndex }) {
             limit={500}
             classNames={["photo-description"]}
           />
-          <button type="submit">Add Photo</button>
+          <gA.AddPhotoButton type="submit" className="add-photo-button">Add Photo</gA.AddPhotoButton>
         </form>
-      </pD.ToggleVisibilityDiv>
+      </gA.AddPhotoForm>
     </gA.AddAPhotoContainer>
   )
 }
