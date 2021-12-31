@@ -154,3 +154,50 @@ export const GalleryModal = styled.div`
     text-align: end;
   }
 `
+
+export const GalleryControls = styled.div`
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+
+  & .thumbnails {
+    display: flex;
+    justify-content: center;
+  }
+`
+
+export const NavArrow = styled.button`
+  all: unset;
+  color: white;
+  font-size: 1.5rem;
+  margin: 0 1em;
+  cursor: pointer;
+  padding: 4px 12px;
+  border-radius: 50%;
+  transition: background-color 300ms;
+
+  &:hover {
+    background-color: rgba(255,255,255,0.15);
+  }
+`
+
+export const NavThumbnails = styled.button`
+  all: unset;
+  width: 64px;
+  height: 64px;
+  cursor: pointer;
+  border: 1px solid white;
+  margin: 0.5em;
+  transition: transform 300ms;
+
+  & .img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &:hover {
+    transform: scale(1.05);
+  }
+`

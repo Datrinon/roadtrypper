@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight, faChevronLeft, faTimes, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { faMehBlank } from '@fortawesome/free-regular-svg-icons';
 
-import * as s from "./styled/POIDetails.style";
+import * as pD from "./styled/POIDetails.style";
 import * as g from "./styled/Gallery.styled";
 
 import GalleryHeader from './GalleryHeader';
@@ -66,7 +66,7 @@ function NoPhotosFound({ poiId, startingIndex }) {
         No Photos Found
       </Warning>
       <button onClick={() => setFormVisible(true)}>Click here to add photos.</button>
-      <s.ToggleVisibilityDiv visible={formVisible}>
+      <pD.ToggleVisibilityDiv visible={formVisible}>
         <form onSubmit={addPhoto}>
           <input ref={fileRef} id={"photo-file"} accept="image/*" type="file" required={true} />
           <CountingTextArea
@@ -78,7 +78,7 @@ function NoPhotosFound({ poiId, startingIndex }) {
           />
           <button type="submit">Add Photo</button>
         </form>
-      </s.ToggleVisibilityDiv>
+      </pD.ToggleVisibilityDiv>
     </div>
   )
 }
@@ -166,31 +166,34 @@ function GalleryView({ startingPhoto, startingIndex, poiPhotos, poiId, closeGall
   }
 
   const controls = (
-    <>
-      <div className="controls">
-        <button className="previous-arrow" onClick={prevPic}>
+    <g.GalleryControls classNames="gallery-controls">
+      <div className="arrow-controls">
+        <g.NavArrow className="previous-arrow" onClick={prevPic}>
           <FontAwesomeIcon icon={faChevronLeft} size="2x" />
-        </button>
-        <button className="forward-arrow" onClick={nextPic}>
+        </g.NavArrow>
+        <g.NavArrow className="forward-arrow" onClick={nextPic}>
           <FontAwesomeIcon icon={faChevronRight} size="2x" />
-        </button>
+        </g.NavArrow>
       </div>
 
       <div className="thumbnails">
         {
           photos.map((photo, index) => {
             return (
-              <s.Thumbnail
-                key={"" + photo.id + index}
-                src={photo.path}
-                alt={"Thumbnail for image about: " + photo.description}
-                onClick={setActiveIndex.bind(null, index)}
-              />
+              <g.NavThumbnails
+                onClick={setActiveIndex.bind(null, index)}>
+                <img
+                  className="img"
+                  key={"" + photo.id + index}
+                  src={photo.path}
+                  alt={"Thumbnail for image about: " + photo.description}
+                />
+              </g.NavThumbnails>
             )
           })
         }
       </div>
-    </>
+    </g.GalleryControls>
   );
 
   function determineRender() {
