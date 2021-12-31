@@ -3,7 +3,6 @@ import { color } from '../../styled/colors.style';
 import { BaseButton } from './StudioButtons.style';
 
 export const AddAPhotoContainer = styled.div`
-  border: 1px solid fuchsia;
   color: darkgrey;
   top: 50%;
   position: absolute;
