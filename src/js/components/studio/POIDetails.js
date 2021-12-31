@@ -99,15 +99,34 @@ function PoiDetails({ activePin, setActivePin }) {
 
     let onBelongsToDayUpdate = () => {
       // if the selected day is the same, then don't update.
-      if (poiDayEditRef.current.value === day.order) {
+      const newDayOrder = parseInt(poiDayEditRef.current.value);
+
+      if (newDayOrder === day.order) {
         return;
       }
+
+      setActivePin(pinState => {
+        const time = Date.now();
+
+        const data = {...pinState.data};
+
+        // find the day id with this given order.
+
+        const newDay = trip.days.find(day => day.order === newDayOrder);
+
+        data.dayId = newDay.id;
+
+        return {
+          data,
+          time
+        }
+      });
 
       dispatch({
         type: "move_poi",
         payload: {
           id: activePoi.id,
-          newDay: parseInt(poiDayEditRef.current.value)
+          newDay: newDayOrder
         }
       })
     }
@@ -154,8 +173,9 @@ function PoiDetails({ activePin, setActivePin }) {
       }
     </d.OrderSelect>);
     let poiOrderUpdate = () => {
+      const newOrder = parseInt(poiOrderEditRef.current.value);
       // if the selected order is the same, then don't update
-      if (poiOrderEditRef.current.value === activePoi.order) {
+      if (newOrder === activePoi.order) {
         return;
       }
 
@@ -164,7 +184,7 @@ function PoiDetails({ activePin, setActivePin }) {
         payload: {
           type: "pois",
           id: activePoi.id,
-          newOrder: parseInt(poiOrderEditRef.current.value),
+          newOrder,
           fk: "dayId",
           ref: activePoi.ref
         }

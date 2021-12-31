@@ -152,6 +152,23 @@ function Studio() {
   }, [activePin]);
 
 
+  useEffect(() => {
+    if (!activePin) {
+      return;
+    }
+    
+    const day = trip.days.find(day => day.id === activePin.data.dayId);
+    
+    console.log("Changing the active day with this pin...");
+    console.log(activePin);
+
+    setActiveDay({
+      data: day,
+      time: Date.now()
+    });
+  }, [activePin?.data.dayId]);
+
+
   //#region :Render Logic
   // if (pageState){
   if (pageState === STATE.LOADING) {

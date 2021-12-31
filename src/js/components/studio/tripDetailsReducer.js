@@ -344,7 +344,7 @@ export function tripReducer(state, action) {
 
       otherDayPOIs.sort((poiA, poiB) => poiA.order - poiB.order);
 
-      debugger;
+//debugger;
 
       otherDayPOIs.forEach((poi, index) => {
         poi.order = index;
