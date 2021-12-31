@@ -46,7 +46,9 @@ const Modal = React.forwardRef(
     let Wrapper;
 
     const dismissButton = (
-      <button onClick={closeModal}>{dismissMsg}</button>
+      <button
+        className="cancel"
+        onClick={closeModal}>{dismissMsg}</button>
     )
 
     if (confirm === null) {
@@ -67,7 +69,9 @@ const Modal = React.forwardRef(
             {content}
             <LoadingGfx visible={runningSubmitOp} />
             <div className="controls">
-              <button type="" ref={submitButton}>{confirm.msg}</button>
+              <button type=""
+                ref={submitButton}
+                className="confirm">{confirm.msg}</button>
               {dismissButton}
             </div>
           </form>

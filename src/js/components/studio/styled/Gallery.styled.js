@@ -64,6 +64,7 @@ export const GalleryHeader = styled.header`
   top: 0;
   right: 0;
   width: 40%;
+  max-width: 400px;
   display: flex;
   justify-content: space-around;
 
@@ -120,5 +121,36 @@ export const GalleryFigure = styled.figure`
     text-align: center;
     padding: 1rem;
     font-size: 110%;
+  }
+`
+
+export const GalleryModal = styled.div`
+
+  & .photo-upload {
+    font-family: inherit;
+    font-size: 100%;
+    background-color: white;
+    padding: 1em 0;
+  }
+
+  & .photo-description .label {
+    display: block;
+    padding: 3px;
+    font-size: 110%;
+    font-weight: 600;
+    font-variant-caps: all-petite-caps;
+  }
+
+  & .photo-description .text-area {
+    width: 100%;
+    resize: none;
+    height: 10em;
+    font-family: inherit;
+    font-size: 100%;
+  }
+
+  & .photo-description .char-rem {
+    display: block;
+    text-align: end;
   }
 `

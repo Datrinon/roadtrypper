@@ -26,6 +26,8 @@ function GalleryHeader({ activePhoto, loading }) {
 
   const [modalValues, modalSetter, modalRef] = useModal();
 
+  const photoToAdd = useRef("");
+
 
   async function addPhoto(e) {
     e.preventDefault();
@@ -72,10 +74,24 @@ function GalleryHeader({ activePhoto, loading }) {
     modalSetter.setDismiss("Cancel");
     modalSetter.setContent(
       <>
-        <input id={"photo-file"} accept="image/*" type="file" required={true} />
+        <input
+          id={"photo-file"}
+          className="photo-upload"
+          accept="image/*"
+          type="file"
+          onChange={(e) => {
+            photoToAdd.current = e.currentTarget.files[0];
+            console.log(photoToAdd.current);
+          }}
+          required={true} />
+        {
+          photoToAdd.current &&
+          <img src={photoToAdd.current} alt="A preview of the pic you will add."/>
+        }        
         <CountingTextArea
           textAreaId={"photo-description"}
           labelText={"Description (Optional)"}
+          placeholder={"Type a short description about the photo here..."}
           limit={500}
           classNames={["photo-description"]}
         />
@@ -193,9 +209,9 @@ function GalleryHeader({ activePhoto, loading }) {
           disabled={loading}>
           <span>
             <FontAwesomeIcon icon={faFileImage} />
-            <FontAwesomeIcon icon={faPlus} className="plus"/>
+            <FontAwesomeIcon icon={faPlus} className="plus" />
           </span>
-          
+
         </g.GalleryButton>
         <g.GalleryButton
           data-tip="Edit Description"
@@ -226,13 +242,15 @@ function GalleryHeader({ activePhoto, loading }) {
           </span>
         </g.GalleryButton>
       </g.GalleryHeader>
-      <Modal ref={modalRef}
-        visible={modalValues.visible}
-        title={modalValues.title}
-        confirm={modalValues.confirm}
-        dismissMsg={modalValues.dismiss}
-        content={modalValues.content}
-      />
+      <g.GalleryModal>
+        <Modal ref={modalRef}
+          visible={modalValues.visible}
+          title={modalValues.title}
+          confirm={modalValues.confirm}
+          dismissMsg={modalValues.dismiss}
+          content={modalValues.content}
+        />
+      </g.GalleryModal>
     </>
   )
 }
