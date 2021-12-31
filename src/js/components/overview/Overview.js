@@ -164,7 +164,7 @@ function Overview() {
             fetchForSuggestions={fetchTrips}
             suggestionMap={mapSearchResultsToElem}
             // Intentionally pass in a stub to ensure nothing is done.
-            onSearchCallback={() => {}} 
+            onSearchCallback={loadTripFromSearch} 
             debounceTimer={400}
             fasterFirstSearch={null}
             placeholder={"Search for a trip..."}
