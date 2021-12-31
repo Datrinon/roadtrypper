@@ -124,7 +124,7 @@ function GalleryHeader({ activePhoto, loading }) {
           labelText={"Description (Optional)"}
           limit={500}
           startText={activePhoto.description}
-          classNames={["photo-description"]}
+          classNames={["edit photo-description"]}
         />
       </>
     );

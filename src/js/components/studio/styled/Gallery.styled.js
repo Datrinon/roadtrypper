@@ -95,12 +95,13 @@ export const Photo = styled.img`
 
 export const PhotoCaption = styled.figcaption`
   color: white;
+  max-width: 800px;
 `
 
 export const GalleryFigure = styled.figure`
   /* height: 100%; */
   position: relative;
-  top: 50%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
   height: 55vh;
@@ -152,6 +153,12 @@ export const GalleryModal = styled.div`
   & .photo-description .char-rem {
     display: block;
     text-align: end;
+  }
+
+  & .edit.photo-description {
+    min-width: 200px;
+    width: 50vw;
+    max-width: 400px;
   }
 `
 

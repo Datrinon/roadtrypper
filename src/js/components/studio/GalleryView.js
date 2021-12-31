@@ -141,7 +141,7 @@ function GalleryView({ startingPhoto, startingIndex, poiPhotos, poiId, closeGall
     setLoading(true);
 
     setActivePhoto(photos[activeIndex]);
-  }, [JSON.stringify(photos[activeIndex]), activeIndex])
+  }, [photos[activeIndex].path, activeIndex])
 
   // need to keep activeIndex to keep forward/backward cycling.
   // changing the activeIndex will change the activeId.
