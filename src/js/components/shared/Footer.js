@@ -15,7 +15,12 @@ function Footer() {
   return (
     <FooterContainer className="footer">
       <FAIcon icon={faGithub}/>
-      View Github here. (TODO)
+      <a
+        style={{"text-decoration": "none",
+                "color": "rgb(246 210 80)"}}
+        rel="noreferrer"
+        href="https://github.com/Datrinon/roadtrypper"
+        target="_blank">View Github here.</a>
     </FooterContainer>
   )
 }
