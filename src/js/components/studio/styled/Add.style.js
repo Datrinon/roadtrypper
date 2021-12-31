@@ -18,7 +18,7 @@ export const AddPOIFormHeading = styled(d.Heading)`
 `
 
 export const FormContainer = styled(DivWithCustomScroll)`
-  overflow: scroll;
+  overflow-y: auto;
 `
 
 export const Label = styled.label`

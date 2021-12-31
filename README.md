@@ -1,70 +1,46 @@
-# Getting Started with Create React App
+# RoadTrypper
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## About
+<p align="center">
+<img src="./src/data/logo.jpg" alt="RoadTrypper Logo" style="display: block; width: 250px;">
+</p>
 
-## Available Scripts
+**RoadTrypper** is a web app built for the purpose of being a tool to record one's travels. Users can use this to to plan trips or journalize them if they've already happened.
 
-In the project directory, you can run:
+### Inspiration
+The COVID-19 pandemic has everybody cooped up at home. That feeling of wanderlust inevitably arises, as it had for me, and I found myself awfully nostalgic for past trips I've taken. Unsatisfied with what Google Maps offered, I set out to build my own travel journal application. With this, I could record the details of my vacation to a much greater extent, allowing me to relive them more vividly. 
 
-### `npm start`
+***
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Features
+<p align="center">
+<img src="./demo.png" alt="RoadTrypper Logo" style="display: block; width: 100%;">
+</p>
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Robust Journalization
+For each trip, the user can customize the days, points of interests they'll be visiting, and add photos onto each point of interest. Extensive editing controls allow the user to manage and place the points onto different days as needed.
 
-### `npm test`
+### Live Map
+The live map in the center of the app allows users to see which points belong to which day and as to where they are located. The points are displayed and categorized as the user creates them.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Cloud Storage
+Access Roadtrypper anywhere you go. All information is saved on the cloud and protected via user-authentication, courtesy of Google servers. The user can even log in with their Google account if they wish rather than sign up with their email.
 
-### `npm run build`
+***
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Technical Details
+This project was built with:
+- Front-end: React + Styled Components.
+- Back-end: Google Firebase.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+The following libraries were used:
+- FontAwesome Icons
+- Jest Testing Framework
+- Leaflet OpenStreetMaps API
+- Leaflet Control Geocoder with Nominatim.
+- React Helmet
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+# Further Plans for RoadTrypper
+- Use My Location feature for the map.
+- Better responsive design for mobile devices.

@@ -57,8 +57,9 @@ export const SearchBarBG = styled.div`
 
 export const SearchResultContainer = styled.div`
   position: relative;
-  top: 5px;
+  top: 8px;
   right: 5px;
+  width: 102%;
   border-radius: 2px;
   box-shadow: 1px 3px 5px 0px #6c6a6a73;
   position: relative;
