@@ -160,6 +160,12 @@ function Studio() {
 
     const day = trip.days.find(day => day.id === activePin.data.dayId);
 
+    // if the active day is still the same though, don't bother updating it.
+    if (activeDay && activeDay.data.id === day.id) {
+      console.log("Same day, returning from this hook early...");
+      return;
+    } 
+
     console.log("Changing the active day with this pin...");
     console.log(activePin);
 
