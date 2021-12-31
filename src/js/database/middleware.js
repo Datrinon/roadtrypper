@@ -1,7 +1,7 @@
-function unloadWarning() {
+function unloadWarning(e) {
   // browser support: 
   // https://developer.mozilla.org/en-US/docs/Web/API/WindowEventHandlers/onbeforeunload
-  let confirmationMessage = "\o/";
+  let confirmationMessage = "\\o/";
   e.returnValue = confirmationMessage; // Gecko, Trident, Chrome 34-51
   return confirmationMessage;          // Gecko, WebKit, Chrome <34
 }
