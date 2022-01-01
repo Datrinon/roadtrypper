@@ -54,7 +54,7 @@ function Sidebar({ visible, content }, ref) {
           && (content ??
               <NoContentMessage>
                 <FAIcon icon={faMapSigns} className="sign-icon"/>
-                <p>No Day or POI currently selected.</p>
+                <span>No Day or POI currently selected.</span>
               </NoContentMessage>
           )
         }

@@ -52,8 +52,7 @@ function HoverToEditInput({ displayVer, editVer, onClickSave }) {
       className={`editable ${editMode ? "editing" : ""}`}
       onMouseEnter={() => !editMode && setVisible(true)}
       onMouseLeave={() => !editMode && setVisible(false)}
-      onTouchStart={() => !editMode && setVisible(true)}
-      onTouchLeave={() => !editMode && setVisible(false)}>
+      onTouchStart={() => !editMode && setVisible(!visible)}>
       <div>
         {editMode ? editVer : displayVer}
       </div>
