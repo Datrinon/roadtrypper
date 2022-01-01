@@ -10,7 +10,7 @@
 **RoadTrypper** is a web app built for the purpose of being a tool to record one's travels. Users can use this to to plan trips or journalize them if they've already happened.
 
 ### Inspiration
-The COVID-19 pandemic has everybody cooped up at home. That feeling of wanderlust inevitably arises, as it had for me, and I found myself awfully nostalgic for past trips I've taken. Unsatisfied with what Google Maps offered, I set out to build my own travel journal application. With this, I could record the details of my vacation to a much greater extent, allowing me to relive them more vividly. 
+The COVID-19 pandemic has everybody cooped up at home. That feeling of wanderlust inevitably arises, as it had for me, and I found myself awfully nostalgic for past trips I've taken. Unsatisfied with what Google Maps offered, I set out to build my own travel journal application. By combining the spatial sense received from a map with a journalization system, I can record the details of my vacation to a much greater extent, allowing me to remember and relive them more vividly. 
 
 ***
 

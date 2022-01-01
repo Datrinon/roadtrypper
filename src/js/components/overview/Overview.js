@@ -190,13 +190,18 @@ function Overview() {
           </oS.SortButton>
         </oS.SortContainer>
         <oS.TripCardLayout>
-          {trips.map(trip => {
-            return <TripCard
-              key={trip.tripId}
-              trip={trip}
-              setTrips={setTrips}
-            />
-          })}
+          {
+            trips < 0 ?
+            trips.map(trip => {
+              return <TripCard
+                key={trip.tripId}
+                trip={trip}
+                setTrips={setTrips}
+              />
+            }) :
+            <oS.NoTripsWarning>No trips available. Click the + below to add a new trip.</oS.NoTripsWarning>
+            
+        }
         </oS.TripCardLayout>
       </oS.TripCardContainer>
     </div>

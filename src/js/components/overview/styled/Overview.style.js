@@ -142,3 +142,16 @@ export const TripCardHeading = styled.h1`
     margin: 15px auto;
   }
 `
+
+
+export const NoTripsWarning = styled.p`
+  font-style: italic;
+  padding: 1em;
+  max-width: 60vw;
+  margin: 0 auto;
+  width: fit-content;
+  border: 1px solid grey;
+  font-weight: 400;
+  color: grey;
+  border-radius: 3px;
+`
