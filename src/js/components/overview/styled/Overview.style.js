@@ -35,11 +35,17 @@ export const TripCardLayout = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: center;
   gap: 30px;
+  margin: 10px;
   @supports not (gap: 1em) {
     margin-left: 25px;
     margin-right: 25px;
+  }
+  align-items: center;
+
+  @media ${device.mobileL} {
+    justify-content: flex-start;
   }
 `
 
@@ -148,10 +154,11 @@ export const NoTripsWarning = styled.p`
   font-style: italic;
   padding: 1em;
   max-width: 60vw;
-  margin: 0 auto;
+  margin: 25% auto;
   width: fit-content;
-  border: 1px solid grey;
   font-weight: 400;
   color: grey;
-  border-radius: 3px;
+  border-radius: 8px;
+  text-align: center;
+  border: 1px solid #ababab;
 `
