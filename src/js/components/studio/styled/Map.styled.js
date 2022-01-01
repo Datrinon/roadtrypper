@@ -15,7 +15,7 @@ export const StyledMapContainer = styled(MapContainer)`
 export const OverviewButton = styled.button`
     all: unset;
     position: absolute;
-    bottom: 1em;
+    bottom: 2em;
     left: 50%;
     transform: translateX(-50%);
     background: white;

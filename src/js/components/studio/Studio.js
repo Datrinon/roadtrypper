@@ -201,40 +201,39 @@ function Studio() {
             <TripDispatch.Provider value={tripDispatch}>
               <SidebarSetter.Provider value={sidebarSetter}>
                 <stS.StudioBody className="studio-body">
-                  <stS.PrimarySidebar collapsed={mainSidebarCollapsed}>
-                    <stS.HeaderWrapper>
-                      <StudioHeader />
-                    </stS.HeaderWrapper>
-
-                    <stS.TripGeneral className="trip-general-info">
-                      <TripTitle />
-                      <LastUpdated time={trip.general.lastAccessed} />
-                    </stS.TripGeneral>
-
-                    <stS.AddOptions className="add-options">
-                      <AddDay activeDay={activeDay} setActiveDay={setActiveDay} />
-                      <AddPOI activeDay={activeDay} />
-                    </stS.AddOptions>
-
-                    <stS.Days className="days">
-                      <stS.DayCardSectionHeading>Days</stS.DayCardSectionHeading>
-                      <stS.DayCardContainer>
-                        {mapDayDataToCards()}
-                      </stS.DayCardContainer>
-                    </stS.Days>
-                      <button className="collapse-button" onClick={() => setMainSidebarCollapsed(prev => !prev)}>
-                        <span className="icon">
-                        {
-                          mainSidebarCollapsed ?
-                            <FAIcon icon={faAngleRight} />
-                            : <FAIcon icon={faAngleLeft} />
-                        }
-                        </span>
-                      </button>
-                  </stS.PrimarySidebar>
-
 
                   <stS.MapArea className="map-area">
+                    <stS.PrimarySidebar collapsed={mainSidebarCollapsed}>
+                      <stS.HeaderWrapper>
+                        <StudioHeader />
+                      </stS.HeaderWrapper>
+
+                      <stS.TripGeneral className="trip-general-info">
+                        <TripTitle />
+                        <LastUpdated time={trip.general.lastAccessed} />
+                      </stS.TripGeneral>
+
+                      <stS.AddOptions className="add-options">
+                        <AddDay activeDay={activeDay} setActiveDay={setActiveDay} />
+                        <AddPOI activeDay={activeDay} />
+                      </stS.AddOptions>
+
+                      <stS.Days className="days">
+                        <stS.DayCardSectionHeading>Days</stS.DayCardSectionHeading>
+                        <stS.DayCardContainer>
+                          {mapDayDataToCards()}
+                        </stS.DayCardContainer>
+                      </stS.Days>
+                      <button className="collapse-button" onClick={() => setMainSidebarCollapsed(prev => !prev)}>
+                        <span className="icon">
+                          {
+                            mainSidebarCollapsed ?
+                              <FAIcon icon={faAngleRight} />
+                              : <FAIcon icon={faAngleLeft} />
+                          }
+                        </span>
+                      </button>
+                    </stS.PrimarySidebar>
                     <Map
                       data={trip}
                       setActivePin={setActivePin} />
@@ -244,6 +243,7 @@ function Studio() {
                       content={sidebarValues.content}
                     />
                   </stS.MapArea>
+                  
                 </stS.StudioBody>
               </SidebarSetter.Provider>
             </TripDispatch.Provider>
