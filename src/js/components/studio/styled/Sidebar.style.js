@@ -45,6 +45,7 @@ export const CollapseButton = styled.button`
   z-index: 1;
   position: relative;
   top: 1px;
+  margin-left: 1px;
 `
 
 export const CloseButton = styled.button`

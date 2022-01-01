@@ -26,7 +26,7 @@ export const POIDetailsMasterContainer = styled.div`
     height: inherit;
 
     & .contents-excl-window-title {
-      height: 90%;
+      height: 91%;
       overflow-y: auto;
     }
   }

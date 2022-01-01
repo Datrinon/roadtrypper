@@ -25,7 +25,7 @@ const greenIcon = new LeafIcon({
 });
 
 
-function Map({ data, setActivePin }) {
+function Map({ data, setActivePin, setActiveDay }) {
 
   const mapRef = React.useContext(MapInstance);
   const masterFeatureGroup = useRef();
@@ -52,6 +52,7 @@ function Map({ data, setActivePin }) {
           day={day}
           mapRef={mapRef}
           setActivePin={setActivePin}
+          setActiveDay={setActiveDay}
           />
       )
     });

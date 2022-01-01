@@ -162,6 +162,8 @@ function Studio() {
       return;
     }
 
+    console.log(activePin);
+
     const day = trip.days.find(day => day.id === activePin.data.dayId);
 
     // if the active day is still the same though, don't bother updating it.
@@ -236,7 +238,8 @@ function Studio() {
                     </stS.PrimarySidebar>
                     <Map
                       data={trip}
-                      setActivePin={setActivePin} />
+                      setActivePin={setActivePin}
+                      setActiveDay={setActiveDay} />
                     <Sidebar
                       ref={sidebarRef}
                       visible={sidebarValues.visible}

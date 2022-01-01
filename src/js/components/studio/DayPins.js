@@ -14,7 +14,7 @@ import * as dp from './styled/DayPin.style';
  * day. Requires the points of interests for that given day and the
  * user assigned color.
  */
-function DayPins({ pois, day, icon, mapRef, setActivePin }) {
+function DayPins({ pois, day, icon, mapRef, setActivePin, setActiveDay }) {
 
   const groupRef = useRef();
 
@@ -40,6 +40,11 @@ function DayPins({ pois, day, icon, mapRef, setActivePin }) {
   function onMarkerClick(poi) {
     const lastClicked = Date.now();
     
+    setActiveDay({
+      data: day,
+      lastClicked
+    });
+
     setActivePin({
       data: poi,
       lastClicked
