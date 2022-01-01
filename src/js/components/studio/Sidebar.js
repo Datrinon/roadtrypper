@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faTimes, faAngleRight, faAngleLeft, } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faAngleRight, faAngleLeft, faMapSigns, } from '@fortawesome/free-solid-svg-icons';
 
 import * as sbS from './styled/Sidebar.style';
 import { FAIcon } from '../styled/template.style';
+import { NoContentMessage } from './styled/Details.style';
 
 
 
@@ -49,7 +50,14 @@ function Sidebar({ visible, content }, ref) {
       <sbS.SidebarContent
         ref={ref}
         className={`sidebar-contents ${collapsed && "collapsed"}`}>
-        {!collapsed && (content ?? "No Day or POI currently selected.")}
+        {!collapsed
+          && (content ??
+              <NoContentMessage>
+                <FAIcon icon={faMapSigns} className="sign-icon"/>
+                <p>No Day or POI currently selected.</p>
+              </NoContentMessage>
+          )
+        }
       </sbS.SidebarContent>
     </sbS.SidebarContainer>
   )

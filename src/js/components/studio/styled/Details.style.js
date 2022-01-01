@@ -116,3 +116,18 @@ export const HeadingLv2 = styled.h2`
   text-shadow: 1px 1px 11px #cfcfcf;
   letter-spacing: 1px;
 `
+
+export const NoContentMessage = styled.p`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 80%;
+  color: grey;
+  font-style: italic;
+
+  & .sign-icon {
+    font-size: 2.5em;
+  }
+`;

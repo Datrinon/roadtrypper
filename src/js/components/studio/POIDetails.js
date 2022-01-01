@@ -51,6 +51,11 @@ function PoiDetails({ activePin, setActivePin }) {
   function updateData() {
     const currentPOI = trip.pois.find(poi => poi.id === activePin.id);
 
+    // guard clause to prevent crashes.
+    if (currentPOI === undefined) {
+      return;
+    }
+
     setActivePoi(currentPOI);
     setDay(trip.days.find(day => day.id === currentPOI.dayId));
     setPhotos(trip.photos.filter(photo => photo.poiId === currentPOI.id));
