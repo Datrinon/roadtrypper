@@ -133,6 +133,7 @@ export const POICardsSection = styled.div`
 export const DayContents = styled.div`
   display: flex;
   flex-direction: column;
+  height: 89%;
 `
 
 export const POICardsContainer = styled(DivWithCustomScroll)`
