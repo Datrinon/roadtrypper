@@ -39,7 +39,9 @@ export const POIHeadingInfo = styled.div`
    "title title"
    "dayNum location"
    "dayTitle dayTitle";
-  width: 100%;
+  width: 95%;
+  min-height: 128px;
+  margin: 0 auto;
   grid-template-rows: auto 32px auto;
   grid-template-columns: 65% 35%;
 

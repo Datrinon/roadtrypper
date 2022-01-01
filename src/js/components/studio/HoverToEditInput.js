@@ -13,7 +13,7 @@ function HoverToEditInput({ displayVer, editVer, onClickSave }) {
   const [editMode, setEditMode] = useState(false);
   const height = useRef();
   const thisElement = useRef();
-  
+
   const exitEditMode = (e) => {
     // debugger;
     // console.log(thisElement.current);
@@ -29,7 +29,7 @@ function HoverToEditInput({ displayVer, editVer, onClickSave }) {
   useEffect(() => {
     if (editMode) {
 
-      window.addEventListener("click", exitEditMode); 
+      window.addEventListener("click", exitEditMode);
     } else {
       window.removeEventListener("click", exitEditMode);
     }
@@ -51,8 +51,18 @@ function HoverToEditInput({ displayVer, editVer, onClickSave }) {
       // height={height.current}
       className={`editable ${editMode ? "editing" : ""}`}
       onMouseEnter={() => !editMode && setVisible(true)}
-      onMouseLeave={() => !editMode && setVisible(false)}>
-      {editMode ? editVer : displayVer}
+      onMouseLeave={() => !editMode && setVisible(false)}
+      onTouchStart={() => !editMode && setVisible(true)}
+      onTouchLeave={() => !editMode && setVisible(false)}>
+      <div>
+        {editMode ? editVer : displayVer}
+      </div>
+      <hS.EditModeOptions visible={editMode}>
+        <hS.EditModeOptionButtonPrimary onClick={() => { onClickSave(); setEditMode(false) }}>
+          Save
+        </hS.EditModeOptionButtonPrimary>
+        <hS.EditModeOptionButton onClick={() => setEditMode(false)}>Cancel</hS.EditModeOptionButton>
+      </hS.EditModeOptions>
       <hS.HoverEditButton
         visible={visible}
         onClick={() => {
@@ -61,12 +71,6 @@ function HoverToEditInput({ displayVer, editVer, onClickSave }) {
         }}>
         <FontAwesomeIcon icon={faPencilAlt} />
       </hS.HoverEditButton>
-      <hS.EditModeOptions visible={editMode}>
-        <hS.EditModeOptionButtonPrimary onClick={() => {onClickSave(); setEditMode(false)}}>
-          Save
-        </hS.EditModeOptionButtonPrimary>
-        <hS.EditModeOptionButton onClick={() => setEditMode(false)}>Cancel</hS.EditModeOptionButton>
-      </hS.EditModeOptions>
     </hS.Container>
   );
 }

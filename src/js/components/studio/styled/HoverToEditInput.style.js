@@ -11,13 +11,14 @@ export const Container = styled.div`
 
 export const HoverEditButton = styled.button`
   all: unset;
-  display: ${props => props.visible ? 'initial' : 'none'};
+  visibility: ${props => props.visible ? 'visible' : 'hidden'};
+  /* display: ${props => props.visible ? 'initial' : 'none'}; */
   cursor: pointer;
   color: #4285F4;
-  padding: 4px 6px;
-  margin-left: 5px;
   border-radius: 50%;
-  width: 16px;
+  padding: ${props => props.visible ? '4px 6px' : '0px'};
+  margin-left: ${props => props.visible ? '5px' : '0px'};
+  width: ${props => props.visible ? '16px' : '1px'};
   height: 16px;
 
   &:hover {
@@ -39,6 +40,8 @@ export const HoverEditButton = styled.button`
 `
 
 export const EditModeOptions = styled.div`
+  /* visibility: ${props => props.visible ? 'visible' : 'hidden'}; */
+
   display: ${props => props.visible ? 'inline' : 'none'};
 `
 
