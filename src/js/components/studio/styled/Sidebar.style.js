@@ -51,7 +51,7 @@ export const CollapseButton = styled.button`
 export const CloseButton = styled.button`
   position: absolute;
   justify-self: end;
-  right: -5px;
+  right: -4px;
   z-index: 1;
   background-color: transparent;
   border: none;

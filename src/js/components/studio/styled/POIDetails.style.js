@@ -28,6 +28,7 @@ export const POIDetailsMasterContainer = styled.div`
     & .contents-excl-window-title {
       height: 91%;
       overflow-y: auto;
+      overflow-x: hidden;
     }
   }
 `
@@ -175,7 +176,7 @@ export const POIPhotosContainer = styled.div`
   & .add-photos-button {
     width: 80%;
     padding: 5px;
-    margin: 0 auto;
+    margin: 1em auto;
     position: relative;
     top: 25%;
     bottom: 25%;
