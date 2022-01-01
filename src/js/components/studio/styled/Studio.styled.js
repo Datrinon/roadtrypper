@@ -44,7 +44,7 @@ export const PrimarySidebar = styled.main`
   grid-template-columns: 225px;
   position: absolute;
   background-color: white;
-  z-index: 2;
+  z-index: 3;
   height: 100%;
   left: ${props => props.collapsed ? "-225px" : "0"};
   box-shadow: -1px 0px 6px 2px #69676785;
