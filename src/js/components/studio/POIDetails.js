@@ -108,7 +108,7 @@ function PoiDetails({ activePin, setActivePin }) {
       setActivePin(pinState => {
         const time = Date.now();
 
-        const data = {...pinState.data};
+        const data = { ...pinState.data };
 
         // find the day id with this given order.
 
@@ -343,47 +343,49 @@ function PoiDetails({ activePin, setActivePin }) {
         <d.DeleteItemButton onClick={deletePOI}>
           <FAIcon icon={faTrash} />
         </d.DeleteItemButton>
-        <pD.POIHeadingInfo className="poi-general-info">
-          <div className="poi-title">
-            {poiTitleElement}
-          </div>
-          <div className="day-num">
-            {belongsToDayElement}
-          </div>
-          <div className="poi-order">
-            {poiOrderElement}
-          </div>
-          <div className="day-title">
-            {dayTitleElement}
-          </div>
-        </pD.POIHeadingInfo>
-        <EditLocation activePoi={activePoi} />
-        {/* <pD.DescDivider/> */}
-        {descElement}
-        <pD.POIPhotosHeadingWrapper>
-          <pD.POIHeadingLv3>Photos</pD.POIHeadingLv3>
-          {
-            photos.length > 3 && (
-            <pD.POIHeadingLv3>
-              <pD.SeeAll onClick={(launchGalleryView.bind(null, 3))}>
-                See All ({photos.length})
-              </pD.SeeAll>
-            </pD.POIHeadingLv3>
-            )
-          }
+        <div className="contents-excl-window-title">
+          <pD.POIHeadingInfo className="poi-general-info">
+            <div className="poi-title">
+              {poiTitleElement}
+            </div>
+            <div className="day-num">
+              {belongsToDayElement}
+            </div>
+            <div className="poi-order">
+              {poiOrderElement}
+            </div>
+            <div className="day-title">
+              {dayTitleElement}
+            </div>
+          </pD.POIHeadingInfo>
+          <EditLocation activePoi={activePoi} />
+          {/* <pD.DescDivider/> */}
+          {descElement}
+          <pD.POIPhotosHeadingWrapper>
+            <pD.POIHeadingLv3>Photos</pD.POIHeadingLv3>
+            {
+              photos.length > 3 && (
+                <pD.POIHeadingLv3>
+                  <pD.SeeAll onClick={(launchGalleryView.bind(null, 3))}>
+                    See All ({photos.length})
+                  </pD.SeeAll>
+                </pD.POIHeadingLv3>
+              )
+            }
           </pD.POIPhotosHeadingWrapper>
 
-        <pD.POIPhotosContainer className='poi-photos'>
-          {
-            photos.length > 0 ?
-              photos.slice(0, 2).map(mapThumbnails) :
-              (<sB.AddButton
+          <pD.POIPhotosContainer className='poi-photos'>
+            {
+              photos.length > 0 ?
+                photos.slice(0, 2).map(mapThumbnails) :
+                (<sB.AddButton
                   className="add-photos-button"
                   onClick={launchGalleryView.bind(null, -1)}>
-                    Add Photos
-              </sB.AddButton>)
-          }
-        </pD.POIPhotosContainer>
+                  Add Photos
+                </sB.AddButton>)
+            }
+          </pD.POIPhotosContainer>
+        </div>
       </>
     )
   }
@@ -395,12 +397,12 @@ function PoiDetails({ activePin, setActivePin }) {
 
   return (
     <>
-    <div className={`poi-details`}>
-      <section className="poi-contents">
-        {renderView()}
-      </section>
-    </div>
-    {galleryStartingIndex !== null && (
+      <pD.POIDetailsMasterContainer className={`poi-details`}>
+        <section className="poi-contents">
+          {renderView()}
+        </section>
+      </pD.POIDetailsMasterContainer>
+      {galleryStartingIndex !== null && (
         <g.Gallery className="gallery">
           <g.GalleryViewWrapper>
             <GalleryView

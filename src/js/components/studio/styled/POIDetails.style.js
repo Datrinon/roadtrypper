@@ -19,6 +19,20 @@ export const ToggleVisibilityDiv = styled.div`
   display: ${props => props.visible ? "block" : "none"};
 `
 
+export const POIDetailsMasterContainer = styled.div`
+  height: 100%;
+
+  & .poi-contents {
+    height: inherit;
+
+    & .contents-excl-window-title {
+      height: 90%;
+      overflow-y: auto;
+    }
+  }
+`
+
+
 export const POIHeadingInfo = styled.div`
   display: grid;
   grid-template-areas:

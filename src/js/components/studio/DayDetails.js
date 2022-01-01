@@ -182,6 +182,12 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
         day={day}
         poi={poi}
         setActivePin={setActivePin} />));
+      
+      // TODO
+      // debug, remove this later
+      for ( let i = 0 ; i < 3; i++ ) {
+        section.push(section[0]);
+      }
     } else {
       const dayData = {
         data: dayState
