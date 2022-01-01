@@ -45,4 +45,5 @@ The following libraries were used:
 
 # Further Plans for RoadTrypper
 - Use My Location feature for the map.
-- Better responsive design for mobile devices.
+- Ability to share trips with other users.
+- 

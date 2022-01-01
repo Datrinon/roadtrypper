@@ -15,10 +15,11 @@ export const StyledMapContainer = styled(MapContainer)`
 export const OverviewButton = styled.button`
     all: unset;
     position: absolute;
-    top: 11px;
-    left: 60px;
+    bottom: 1em;
+    left: 50%;
+    transform: translateX(-50%);
     background: white;
-    padding: 7px;
+    padding: 1em;
     border-radius: 5px;
     font-size: 75%;
     font-weight: 600;

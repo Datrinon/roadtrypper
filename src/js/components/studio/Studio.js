@@ -32,6 +32,8 @@ import LoadingStudio from './LoadingStudio';
 import * as stS from "./styled/Studio.styled";
 import "../../../css/studio.css";
 import { Helmet } from 'react-helmet';
+import { FAIcon } from '../styled/template.style';
+import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 
 // ! code begin
 export const TripDispatch = React.createContext(null);
@@ -54,6 +56,8 @@ function Studio() {
   const [activePin, setActivePin] = useState(null);
   const [activeDay, setActiveDay] = useState(null);
   const activeDayCard = useRef(null);
+
+  const [mainSidebarCollapsed, setMainSidebarCollapsed] = useState(false);
 
   const [sidebarValues, sidebarSetter, sidebarRef] = useSidebar();
 
@@ -164,7 +168,7 @@ function Studio() {
     if (activeDay && activeDay.data.id === day.id) {
       console.log("Same day, returning from this hook early...");
       return;
-    } 
+    }
 
     console.log("Changing the active day with this pin...");
     console.log(activePin);
@@ -197,28 +201,38 @@ function Studio() {
             <TripDispatch.Provider value={tripDispatch}>
               <SidebarSetter.Provider value={sidebarSetter}>
                 <stS.StudioBody className="studio-body">
+                  <stS.PrimarySidebar collapsed={mainSidebarCollapsed}>
+                    <stS.HeaderWrapper>
+                      <StudioHeader />
+                    </stS.HeaderWrapper>
 
-                  <stS.HeaderWrapper>
-                    <StudioHeader />
+                    <stS.TripGeneral className="trip-general-info">
+                      <TripTitle />
+                      <LastUpdated time={trip.general.lastAccessed} />
+                    </stS.TripGeneral>
 
-                  </stS.HeaderWrapper>
+                    <stS.AddOptions className="add-options">
+                      <AddDay activeDay={activeDay} setActiveDay={setActiveDay} />
+                      <AddPOI activeDay={activeDay} />
+                    </stS.AddOptions>
 
-                  <stS.TripGeneral className="trip-general-info">
-                    <TripTitle />
-                    <LastUpdated time={trip.general.lastAccessed} />
-                  </stS.TripGeneral>
+                    <stS.Days className="days">
+                      <stS.DayCardSectionHeading>Days</stS.DayCardSectionHeading>
+                      <stS.DayCardContainer>
+                        {mapDayDataToCards()}
+                      </stS.DayCardContainer>
+                    </stS.Days>
+                      <button className="collapse-button" onClick={() => setMainSidebarCollapsed(prev => !prev)}>
+                        <span className="icon">
+                        {
+                          mainSidebarCollapsed ?
+                            <FAIcon icon={faAngleRight} />
+                            : <FAIcon icon={faAngleLeft} />
+                        }
+                        </span>
+                      </button>
+                  </stS.PrimarySidebar>
 
-                  <stS.AddOptions className="add-options">
-                    <AddDay activeDay={activeDay} setActiveDay={setActiveDay} />
-                    <AddPOI activeDay={activeDay} />
-                  </stS.AddOptions>
-
-                  <stS.Days className="days">
-                    <stS.DayCardSectionHeading>Days</stS.DayCardSectionHeading>
-                    <stS.DayCardContainer>
-                      {mapDayDataToCards()}
-                    </stS.DayCardContainer>
-                  </stS.Days>
 
                   <stS.MapArea className="map-area">
                     <Map

@@ -11,7 +11,6 @@ export const SidebarContainer = styled.div`
   z-index: 1000;
   height: 100%;
   width: ${[props => props.collapsed ? "16px" : "325px"]};
-  max-width: 33vw;
   transition: width 300ms ease;
   animation: ${expandWidth} 300ms ease-out;
   overflow: hidden;
@@ -45,12 +44,14 @@ export const CollapseButton = styled.button`
   cursor: pointer;
   position: relative;
   z-index: 1;
+  position: relative;
+  top: 1px;
 `
 
 export const CloseButton = styled.button`
   position: absolute;
   justify-self: end;
-  right: 0;
+  right: -5px;
   z-index: 1;
   background-color: transparent;
   border: none;
