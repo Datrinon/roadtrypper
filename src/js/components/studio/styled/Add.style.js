@@ -23,6 +23,7 @@ export const FormContainer = styled(DivWithCustomScroll)`
 
 export const Label = styled.label`
   display: block;
+  position: relative;
   margin: 12px 12px 4px 12px;
   font-weight: 600;
 
@@ -330,5 +331,42 @@ export const RemovePhotoButton = styled(d.DeleteItemButton)`
 
   &:hover::after {
     all: unset;
+  }
+`
+
+export const UsageTip = styled.span`
+    display: ${props => props.display ? "block" : "none"};
+    position: absolute;
+    top: -50%;
+    background-color: white;
+    font-size: 80%;
+    border: 1px solid black;
+    border-radius: 1em;
+    padding: 5px;
+    transform: translateY(-25%);
+    font-weight: initial;
+    animation: ${appear} 300ms;
+
+  &::before {
+    content: "Tip";
+    display: block;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  /* Triangle */
+  &::after {
+    position: absolute;
+    content: "";
+    /* background-color: black; */
+    /* width: 1em; */
+    /* height: 1em; */
+    border-top: 10px solid black;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    top: 100%;
+    left: 10%;
+    transform: translateX(-50%);
   }
 `

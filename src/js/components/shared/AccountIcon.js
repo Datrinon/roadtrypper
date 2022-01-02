@@ -27,7 +27,7 @@ function AccountIcon() {
             <aS.AccBullet className="account-info">
               Signed in as
               <br/>
-              <span>{user.email}</span>
+              <span>{user.email ? user.email : "Guest"}</span>
             </aS.AccBullet>
             <li><button className={"sign-out-button"} onClick={signOutUser}>Sign Out</button></li>
           </aS.IconDropdownList>

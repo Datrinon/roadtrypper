@@ -44,6 +44,8 @@ export function NewPoiForm({ day }) {
   const [poiDesc, setPoiDesc] = useState("");
   // - photos
   const [photos, setPhotos] = useState([]);
+  // - display location search usage tip
+  const [locationTipShown, setLocationTipShown] = useState(false);
 
   const fileInputRef = useRef();
   const photosArea = useRef();
@@ -311,7 +313,10 @@ export function NewPoiForm({ day }) {
           <a.HeadingLv2>Poi Information</a.HeadingLv2>
           <a.Label>
             Location
-            <a.LocationInputContainer>
+            <a.LocationInputContainer
+              onFocus={() => {setLocationTipShown(true)}}
+              onBlur={() => {setLocationTipShown(false)}}
+            >
               <LocationInput
                 onClickPOIMarker={confirmLocation}
                 placeholder="Enter a location..."
@@ -319,9 +324,12 @@ export function NewPoiForm({ day }) {
             </a.LocationInputContainer>
             <a.LocationResult
               disabled
-              placeholder="No location confirmed."
+              placeholder="No location confirmed. "
               value={poiLoc}
             />
+            <a.UsageTip display={locationTipShown}>
+            You can confirm a location by pressing OK on the pin that appears on the map.
+            </a.UsageTip>
           </a.Label>
           <a.PoiTitleArr>
             <a.Label
