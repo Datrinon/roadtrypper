@@ -46,7 +46,7 @@ export const DayBodyHeading = styled.header`
 "title title";
     grid-template-rows: 70% 30%;
     grid-template-columns: 70% 30%;
-    height: 10%;
+    height: auto;
 
   & .order {
     grid-area: order;
@@ -69,8 +69,7 @@ export const POICardContainer = styled.div`
   /* display: flex;
   flex-direction: column;
   align-items: center; */
-
-  overflow-y: auto;
+  height: 100%;
   /* border: 1px solid fuchsia; */
 
 /* width */
@@ -123,7 +122,7 @@ export const Divider = styled.hr`
 export const POICardsSection = styled.div`
   /* border: 2px solid black; */
   flex: 1 1 auto;
-  height: 85%;
+  height: auto;
 `
 
 // TODO
@@ -134,9 +133,9 @@ export const DayContents = styled.div`
   display: flex;
   flex-direction: column;
   height: 89%;
+  overflow-y: auto;
 `
 
 export const POICardsContainer = styled(DivWithCustomScroll)`
-  overflow-y: auto;
   height: 89%;
 `

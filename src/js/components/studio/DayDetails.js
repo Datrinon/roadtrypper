@@ -189,13 +189,9 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
       //   section.push(section[0]);
       // }
     } else {
-      const dayData = {
-        data: dayState
-      }
       section = (
         <div>
           <d.NoPOIsWarning>No POIs listed for this day.</d.NoPOIsWarning>
-          <AddPoi activeDay={dayData} />
         </div>
       )
 
@@ -207,6 +203,7 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
     return (
       <dD.POICardContainer>
         {section}
+        <AddPoi activeDay={{data : dayState}} />
       </dD.POICardContainer>
     )
   }

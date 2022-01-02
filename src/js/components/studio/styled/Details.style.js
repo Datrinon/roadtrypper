@@ -10,7 +10,7 @@ import { BaseButton } from "./StudioButtons.style";
  */
 
 export const Heading = styled.h1`
-  margin: 25px 5px;
+  margin: 25px 5px 0px 5px;
   font-size: 125%;
   text-align: center;
   font-variant: all-small-caps;
@@ -18,6 +18,8 @@ export const Heading = styled.h1`
   padding-bottom: 5px;
   text-shadow: 1px 1px 11px #cfcfcf;
   letter-spacing: 1px;
+
+
 `
 
 export const DeleteItemButton = styled.button`
@@ -109,7 +111,7 @@ export const HeadingLv2 = styled.h2`
   margin: 30px 0 10px 0;
   text-align: center;
   font-variant: all-small-caps;
-  margin: 18px auto;
+  margin: 10px auto 5px auto;
   font-size: 125%;
   text-align: center;
   font-variant: all-small-caps;
