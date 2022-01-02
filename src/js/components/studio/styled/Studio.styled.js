@@ -65,7 +65,8 @@ export const PrimarySidebar = styled.main`
     border-bottom-right-radius: 25px;
     position: absolute;
     left: 100%;
-    bottom: 46%;
+    bottom: 50%;
+    transform: translateY(50%);
     cursor: pointer;
     box-shadow: 4px 0px 4px 1px #6967673d;
 
