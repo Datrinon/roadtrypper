@@ -62,7 +62,7 @@ function Map({ data, setActivePin, setActiveDay }) {
     // debugger;
     const map = mapRef.current;
     const group = masterFeatureGroup.current;
-    map.flyToBounds(group.getBounds(), { padding: L.point(15, 15) });
+    map.flyToBounds(group.getBounds(), { padding: L.point(35, 35), maxZoom: 13.7 });
 
   }
 
