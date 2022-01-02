@@ -50,13 +50,12 @@ function Sidebar({ visible, content }, ref) {
       <sbS.SidebarContent
         ref={ref}
         className={`sidebar-contents ${collapsed && "collapsed"}`}>
-        {!collapsed
-          && (content ??
-              <NoContentMessage>
-                <FAIcon icon={faMapSigns} className="sign-icon"/>
-                <span>No Day or POI currently selected.</span>
-              </NoContentMessage>
-          )
+        {
+          content ??
+          <NoContentMessage>
+            <FAIcon icon={faMapSigns} className="sign-icon"/>
+            <span>No Day or POI currently selected.</span>
+          </NoContentMessage>
         }
       </sbS.SidebarContent>
     </sbS.SidebarContainer>

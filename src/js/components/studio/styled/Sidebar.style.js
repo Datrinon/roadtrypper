@@ -10,8 +10,10 @@ export const SidebarContainer = styled.div`
   right: 0;
   z-index: 1000;
   height: 100%;
-  width: ${[props => props.collapsed ? "16px" : "325px"]};
-  transition: width 300ms ease;
+  transform: ${[props => props.collapsed ? "translateX(306px)" : "none"]};
+  width: 325px;
+  /* width: ${[props => props.collapsed ? "16px" : "325px"]}; */
+  transition: transform 300ms ease;
   animation: ${expandWidth} 300ms ease-out;
   overflow: hidden;
 `

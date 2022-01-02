@@ -311,23 +311,27 @@ export function NewPoiForm({ day }) {
         </a.FormSectionTop>
         <a.FormSectionMid>
           <a.HeadingLv2>Poi Information</a.HeadingLv2>
-          <a.Label>
+          <a.Label
+            onFocus={(e) => {
+              setLocationTipShown(true)}}
+            onBlur={(e) => {
+              // note relatedTarget refers to the element previously focused on.
+              // this occurs when the user tabs between items
+              // thus, if the relatedTarget is not part of the children we're 
+              // tabbing around, (the search results in this case),
+              // we close the tooltip.
+              // so to include this label element we also include the tab index
+              // which means it will be a relatedTarget when the user clicks away.
+              console.log(e.relatedTarget)
+              console.log(e.target);
+              console.log(e.currentTarget);
+      
+              if(!e.currentTarget.contains(e.relatedTarget)) {
+                setLocationTipShown(false)}
+              }}
+              tabindex={-1}>
             Location
-            <a.LocationInputContainer
-              onFocus={(e) => {
-                setLocationTipShown(true)}}
-              onBlur={(e) => {
-                // note relatedTarget refers to the element previously focused on.
-                // this occurs when the user tabs between items
-                // thus, if the relatedTarget is not part of the children we're 
-                // tabbing around, (the search results in this case),
-                // we close the tooltip.
-                console.log(e.relatedTarget)
-        
-                if(!e.currentTarget.contains(e.relatedTarget)) {
-                  console.log(e.target)
-                  setLocationTipShown(false)}
-                }}>
+            <a.LocationInputContainer>
               <LocationInput
                 onClickPOIMarker={confirmLocation}
                 placeholder="Enter a location..."
