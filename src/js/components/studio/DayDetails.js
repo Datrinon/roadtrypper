@@ -10,6 +10,7 @@ import { TripContext, TripDispatch } from './Studio';
 import * as d from "./styled/Details.style";
 import * as dD from "./styled/DayDetails.style";
 import { UntitledDay } from './styled/DayCard.style';
+import { NoDataWarning } from '../overview/styled/Overview.style';
 
 
 function DayDetails({ day, setActivePin, setActiveDay }) {
@@ -193,10 +194,12 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
       }
       section = (
         <div>
-          <p>No POIs listed for this day.</p>
+          <d.NoPOIsWarning>No POIs listed for this day.</d.NoPOIsWarning>
           <AddPoi activeDay={dayData} />
         </div>
       )
+
+      
     }
 
 

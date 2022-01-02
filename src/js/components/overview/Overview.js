@@ -200,7 +200,7 @@ function Overview() {
               />
             }) :
             <>
-              <oS.NoTripsWarning>No trips available. Click the + below to add a new trip.</oS.NoTripsWarning>
+              <oS.NoDataWarning>No trips available. Click the + below to add a new trip.</oS.NoDataWarning>
             </>
         }
         </oS.TripCardLayout>

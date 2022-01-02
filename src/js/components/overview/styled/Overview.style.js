@@ -150,7 +150,7 @@ export const TripCardHeading = styled.h1`
 `
 
 
-export const NoTripsWarning = styled.p`
+export const NoDataWarning = styled.p`
   font-style: italic;
   padding: 1em;
   max-width: 60vw;

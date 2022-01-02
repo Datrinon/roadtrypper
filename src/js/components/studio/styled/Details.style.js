@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { NoDataWarning } from "../../overview/styled/Overview.style";
 import { TripTitle } from "../../overview/styled/TripCard.style";
 import { appear } from "../../styled/anim.style";
 import { UntitledDay } from "./DayCard.style";
@@ -131,3 +132,8 @@ export const NoContentMessage = styled.p`
     font-size: 2.5em;
   }
 `;
+
+
+export const NoPOIsWarning = styled(NoDataWarning)`
+  margin: 0 auto;
+`
