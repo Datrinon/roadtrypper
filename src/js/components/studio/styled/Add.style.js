@@ -373,3 +373,27 @@ export const UsageTip = styled.span`
     transform: translateX(-50%);
   }
 `
+
+// Checkbox
+export const Checkbox = styled.input`
+  
+  cursor: pointer;
+  
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  &:hover:disabled::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: 100%;
+    width: max-content;
+    padding: 3px;
+    border-radius: 3px;
+    /* border: 1px solid black; */
+    font-size: 80%;
+    background-color: #8a8a8a;
+    color: white;
+    font-family: inherit;
+  }
+`

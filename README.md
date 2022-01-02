@@ -46,4 +46,5 @@ The following libraries were used:
 # Further Plans for RoadTrypper
 - Use My Location feature for the map.
 - Ability to share trips with other users.
-- 
+
+(Version 1.02)

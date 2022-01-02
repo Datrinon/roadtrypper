@@ -363,10 +363,11 @@ export function NewPoiForm({ day }) {
             <a.Label
               className="poi-title-checkbox"
               htmlFor="poi-same-title-as-loc">
-              <input
+              <a.Checkbox
                 id={"poi-same-title-as-loc"}
                 ref={sameTitleCheckbox}
                 type="checkbox"
+                data-tip={"Confirm a location first."}
                 onChange={autosetPoiTitle}
                 disabled={poiLoc.length === 0}
                 defaultChecked={false} />
