@@ -109,7 +109,11 @@ function LocationInput({ onClickPOIMarker, classNames = [], placeholder="" }) {
     searchMarker.current.bindPopup(container).openPopup();
 
     // now fit the bounds of the map.
-    mapRef.current.flyToBounds(result.bounds, { padding: L.point(15, 15) });
+    mapRef.current
+        .flyToBounds(result.bounds,
+            { padding: L.point(15, 15),
+              maxZoom: 13
+            });
   }
 
   function mapLocationResultsToElem(result, index) {

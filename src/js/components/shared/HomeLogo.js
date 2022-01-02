@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import RoadTrypperIcon from "../../../data/logo.jpg";
 
 const Logo = styled.div`
-  font-family: "Segoe UI";
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   display: flex;
   font-weight: 700;
   font-size: 1.5em;
