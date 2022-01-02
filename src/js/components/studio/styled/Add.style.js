@@ -338,14 +338,17 @@ export const UsageTip = styled.span`
     display: ${props => props.display ? "block" : "none"};
     position: absolute;
     top: -50%;
-    background-color: white;
+    background-color: #1333a7;
     font-size: 80%;
-    border: 1px solid black;
+    color: white;
+    /* border: 1px solid black; */
+    box-shadow: 0 0 6px 1px #00000069;
     border-radius: 1em;
     padding: 5px;
     transform: translateY(-25%);
     font-weight: initial;
     animation: ${appear} 300ms;
+    animation-iteration-count: 1;
 
   &::before {
     content: "Tip";
@@ -361,7 +364,7 @@ export const UsageTip = styled.span`
     /* background-color: black; */
     /* width: 1em; */
     /* height: 1em; */
-    border-top: 10px solid black;
+    border-top: 10px solid #1333a7;
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
     border-bottom: 10px solid transparent;

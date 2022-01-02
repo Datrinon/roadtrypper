@@ -314,9 +314,20 @@ export function NewPoiForm({ day }) {
           <a.Label>
             Location
             <a.LocationInputContainer
-              onFocus={() => {setLocationTipShown(true)}}
-              onBlur={() => {setLocationTipShown(false)}}
-            >
+              onFocus={(e) => {
+                setLocationTipShown(true)}}
+              onBlur={(e) => {
+                // note relatedTarget refers to the element previously focused on.
+                // this occurs when the user tabs between items
+                // thus, if the relatedTarget is not part of the children we're 
+                // tabbing around, (the search results in this case),
+                // we close the tooltip.
+                console.log(e.relatedTarget)
+        
+                if(!e.currentTarget.contains(e.relatedTarget)) {
+                  console.log(e.target)
+                  setLocationTipShown(false)}
+                }}>
               <LocationInput
                 onClickPOIMarker={confirmLocation}
                 placeholder="Enter a location..."
