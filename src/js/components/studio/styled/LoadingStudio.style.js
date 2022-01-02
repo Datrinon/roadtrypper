@@ -46,6 +46,7 @@ export const LoadContainer = styled.div`
 `
 
 export const MovingCarBox = styled.div`
+    min-height: 200px;
     min-width: 200px;
     width: 200px;
     max-width: 50vw;

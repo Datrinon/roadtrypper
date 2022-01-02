@@ -7,7 +7,7 @@ import { BaseButton } from "./StudioButtons.style";
 
 export const AddPOIForm = styled.div`
   display: grid;
-  grid-template-rows: 5% 90% minmax(16px, 5%);
+  grid-template-rows: 5% auto 40px;
   height: 100%;
 `
 
