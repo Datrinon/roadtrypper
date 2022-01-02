@@ -15,7 +15,7 @@ import { NoContentMessage } from './styled/Details.style';
  * @param {*} param0 
  * @returns 
  */
-function Sidebar({ visible, content }, ref) {
+function Sidebar({ visible, content, classNames=[] }, ref) {
   const [display, setDisplay] = useState(visible);
   const [collapsed, setCollapsed] = useState(false);
 
@@ -36,7 +36,8 @@ function Sidebar({ visible, content }, ref) {
   return (
     <sbS.SidebarContainer
       collapsed={collapsed}
-      visible={display}>
+      visible={display}
+      className={[...classNames]}>
       <sbS.CollapseButton onClick={() => { setCollapsed(!collapsed) }}>
         {collapsed ?
           <FAIcon icon={faAngleLeft} />

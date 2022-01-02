@@ -244,6 +244,7 @@ function Studio() {
                       ref={sidebarRef}
                       visible={sidebarValues.visible}
                       content={sidebarValues.content}
+                      classNames={["details-sidebar"]}
                     />
                   </stS.MapArea>
                   

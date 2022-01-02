@@ -35,6 +35,34 @@ function LocationInput({ onClickPOIMarker, classNames = [], placeholder="" }) {
     }
   }));
 
+  const sidebarObserver = useRef();
+
+  
+  useEffect(() => {
+    // monitor the sidebar
+    const detailsSidebar = document.querySelector(".details-sidebar");
+    // specifically its attributes
+    const config = { attributes : true };
+    const removeSearchMarker = () => {
+      // get the display of the element.
+      // if set to none, we remove the searchMarker.
+      // as that indicates the user has exited the sidebar.
+      const displayStatus = window.getComputedStyle(detailsSidebar).getPropertyValue('display');
+      console.log(displayStatus);
+      if (displayStatus === "none") {
+        searchMarker.current?.remove();
+      }
+    }
+
+    sidebarObserver.current = new MutationObserver(removeSearchMarker);
+
+    sidebarObserver.current.observe(detailsSidebar, config);
+
+    return () => {
+      sidebarObserver.current.disconnect();
+    }
+  }, []);
+
   function registerPlaceOnMap(result) {
     // set the suggestion on the search box.
     searchRef.current.value = result.label;
@@ -110,6 +138,7 @@ function LocationInput({ onClickPOIMarker, classNames = [], placeholder="" }) {
       query: searchRef.current.value,
     });
   }
+
 
   return (
     <SearchField
