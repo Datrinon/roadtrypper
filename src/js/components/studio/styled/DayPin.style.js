@@ -12,4 +12,12 @@ export const TipText = styled.span`
   box-shadow: 0 0 3px 1px #0000006b;
   text-shadow: 0 0 4px black;
   font-size: 110%;
+
+  & .abbrev-divider {
+    position: relative;
+    bottom: 1px;
+    font-size: 80%;
+    font-weight: 100;
+    /* padding: 0 3px; */
+  }
 `

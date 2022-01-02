@@ -29,7 +29,7 @@ function DayPins({ pois, day, icon, mapRef, setActivePin, setActiveDay }) {
       }
 
       const map = mapRef.current;
-      map.flyToBounds(group.getBounds(), {padding: L.point(25, 40), maxZoom: 14});
+      map.flyToBounds(group.getBounds(), {padding: L.point(25, 40), maxZoom: 15});
     }
   }
 
@@ -67,8 +67,12 @@ function DayPins({ pois, day, icon, mapRef, setActivePin, setActiveDay }) {
             }}
             alt={`Waypoint for ${poi.coordinates}`}
             >
-            <Tooltip direction="bottom" offset={[0, 20]} opacity={1} permanent={true}>
-              <dp.TipText color={day.color} className="poi-title">{poi.title}</dp.TipText>
+            <Tooltip direction="bottom" offset={[0, 20]} opacity={0.95} permanent={true} className="chosen-location">
+              <dp.TipText color={day.color} className="poi-title">
+                {day.order + 1}
+                <span className="abbrev-divider">-</span>
+                {poi.order + 1}: {poi.title}
+              </dp.TipText>
             </Tooltip>
           </Marker>);
         })
