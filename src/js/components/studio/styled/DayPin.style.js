@@ -17,7 +17,7 @@ export const TipText = styled.span`
     position: relative;
     bottom: 1px;
     font-size: 80%;
-    font-weight: default;
+    font-weight: bolder;
     color: rgb(220,220,220);
     /* padding: 0 3px; */
   }

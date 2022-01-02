@@ -144,6 +144,8 @@ export function NewPoiForm({ day }) {
     poiMarker.current.bindTooltip(placeName).openTooltip();
 
     poiMarker.current.addTo(mapRef.current);
+
+    return poiMarker.current;
   }
 
   function changePoiTitle(e) {
@@ -214,7 +216,7 @@ export function NewPoiForm({ day }) {
       }
     });
 
-    // remove marker...
+    // remove marker since we won't need it anymore...
     poiMarker.current.remove();
     // prompt option to add or view.
     sidebarSetter.setContent(<AddPoiSuccess

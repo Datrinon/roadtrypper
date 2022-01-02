@@ -26,7 +26,8 @@ function LocationInput({ onClickPOIMarker, classNames = [], placeholder="" }) {
   const mapRef = React.useContext(MapInstance);
   const searchRef = useRef();
 
-  const searchMarker = useRef();
+  const savedSearchResultMarker = useRef();
+  const searchResultMarker = useRef();
 
   const provider = useRef(new OpenStreetMapProvider({
     params: {
@@ -50,7 +51,9 @@ function LocationInput({ onClickPOIMarker, classNames = [], placeholder="" }) {
       const displayStatus = window.getComputedStyle(detailsSidebar).getPropertyValue('display');
       console.log(displayStatus);
       if (displayStatus === "none") {
-        searchMarker.current?.remove();
+        searchResultMarker.current?.remove();
+
+        savedSearchResultMarker.current?.remove();
       }
     }
 
@@ -63,6 +66,7 @@ function LocationInput({ onClickPOIMarker, classNames = [], placeholder="" }) {
     }
   }, []);
 
+
   function registerPlaceOnMap(result) {
     // set the suggestion on the search box.
     searchRef.current.value = result.label;
@@ -70,18 +74,18 @@ function LocationInput({ onClickPOIMarker, classNames = [], placeholder="" }) {
     const newPlaceIcon = getLIcon("ea4335");
     const placeNameText = result.label.split(", ")[0];
 
-    if (searchMarker.current) {
-      searchMarker.current.remove();
+    if (searchResultMarker.current) {
+      searchResultMarker.current.remove();
     }
 
-    searchMarker.current = L.marker([result.y, result.x],
+    searchResultMarker.current = L.marker([result.y, result.x],
       {
         icon: newPlaceIcon,
         zIndexOffset: 1000,
         title: placeNameText
       });
 
-    searchMarker.current.addTo(mapRef.current);
+    searchResultMarker.current.addTo(mapRef.current);
 
     // tooltip displaying the name of the place.
     const placeName = L.tooltip({
@@ -91,7 +95,7 @@ function LocationInput({ onClickPOIMarker, classNames = [], placeholder="" }) {
     });
     placeName.setContent(placeNameText);
 
-    searchMarker.current.bindTooltip(placeName).openTooltip();
+    searchResultMarker.current.bindTooltip(placeName).openTooltip();
 
     let container = document.createElement("div");
     let prompt = document.createElement('p');
@@ -100,13 +104,13 @@ function LocationInput({ onClickPOIMarker, classNames = [], placeholder="" }) {
     saveButton.textContent = "Confirm";
 
     saveButton.addEventListener("click", (e) => {
-      onClickPOIMarker(result);
-      searchMarker.current.remove();
+      savedSearchResultMarker.current = onClickPOIMarker(result);
+      searchResultMarker.current.remove();
     });
 
     container.append(prompt, saveButton);
 
-    searchMarker.current.bindPopup(container).openPopup();
+    searchResultMarker.current.bindPopup(container).openPopup();
 
     // now fit the bounds of the map.
     mapRef.current
@@ -125,7 +129,7 @@ function LocationInput({ onClickPOIMarker, classNames = [], placeholder="" }) {
         onClick={registerPlaceOnMap.bind(null, result)}
         tabIndex={-1}>
         <s.FAIcon icon={faMapMarked} />
-        <s.ListingLabel className="listing-result-text"l>
+        <s.ListingLabel className="listing-result-text">
           <s.ListingName className="listing-result-text-match">
             {label.shift()}
           </s.ListingName>
