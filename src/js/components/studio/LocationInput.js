@@ -71,6 +71,9 @@ function LocationInput({ onClickPOIMarker, classNames = [], placeholder = "" }) 
     // is the user below mobile breakpoint? if so, we want to target the two sidebars
     // only if they're open, though. only then do we want to collapse them.
     if (document.documentElement.clientWidth < 768) {
+      // also unfocus the fields so that it collapses completely.
+      document.querySelector(".sidebar #search-field").blur();
+
       document
         .querySelectorAll(".sidebar.not-collapsed .sidebar-toggle-button")
         .forEach(button => {

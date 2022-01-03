@@ -68,7 +68,6 @@ export const POIHeadingInfo = styled.div`
 
 // POI title styling (display mode).
 export const POITitleDisplay = styled.h3`
-  width: 84%;
   text-align: start;
   font-size: 2.5rem;
   font-weight: 300;
