@@ -205,7 +205,9 @@ function Studio() {
                 <stS.StudioBody className="studio-body">
 
                   <stS.MapArea className="map-area">
-                    <stS.PrimarySidebar collapsed={mainSidebarCollapsed}>
+                    <stS.PrimarySidebar
+                      collapsed={mainSidebarCollapsed}
+                      className={`sidebar ${mainSidebarCollapsed ? "collapsed" : "not-collapsed"}`}>
                       <stS.HeaderWrapper>
                         <StudioHeader />
                       </stS.HeaderWrapper>
@@ -226,7 +228,9 @@ function Studio() {
                           {mapDayDataToCards()}
                         </stS.DayCardContainer>
                       </stS.Days>
-                      <button className="collapse-button" onClick={() => setMainSidebarCollapsed(prev => !prev)}>
+                      <button
+                        className={`sidebar-toggle-button collapse-button`}
+                        onClick={() => setMainSidebarCollapsed(prev => !prev)}>
                         <span className="icon">
                           {
                             mainSidebarCollapsed ?

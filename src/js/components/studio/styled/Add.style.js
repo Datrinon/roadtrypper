@@ -199,6 +199,8 @@ export const PoiTitleArr = styled.div`
     font-size: 80%;
     margin: 0;
     font-weight: 400;
+    user-select: none;
+
 
     & input {
       transform: scale(1.1);

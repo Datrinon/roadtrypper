@@ -22,7 +22,7 @@ import * as s from '../styled/template.style';
  * with the coordinates of the shown location. Useful for adding or editing
  * a location.
  */
-function LocationInput({ onClickPOIMarker, classNames = [], placeholder="" }) {
+function LocationInput({ onClickPOIMarker, classNames = [], placeholder = "" }) {
   const mapRef = React.useContext(MapInstance);
   const searchRef = useRef();
 
@@ -38,12 +38,12 @@ function LocationInput({ onClickPOIMarker, classNames = [], placeholder="" }) {
 
   const sidebarObserver = useRef();
 
-  
+
   useEffect(() => {
     // monitor the sidebar
     const detailsSidebar = document.querySelector(".details-sidebar");
     // specifically its attributes
-    const config = { attributes : true };
+    const config = { attributes: true };
     const removeSearchMarker = () => {
       // get the display of the element.
       // if set to none, we remove the searchMarker.
@@ -68,6 +68,16 @@ function LocationInput({ onClickPOIMarker, classNames = [], placeholder="" }) {
 
 
   function registerPlaceOnMap(result) {
+    // is the user below mobile breakpoint? if so, we want to target the two sidebars
+    // only if they're open, though. only then do we want to collapse them.
+    if (document.documentElement.clientWidth < 768) {
+      document
+        .querySelectorAll(".sidebar.not-collapsed .sidebar-toggle-button")
+        .forEach(button => {
+          button.click();
+        })
+    }
+
     // set the suggestion on the search box.
     searchRef.current.value = result.label;
 
@@ -114,10 +124,11 @@ function LocationInput({ onClickPOIMarker, classNames = [], placeholder="" }) {
 
     // now fit the bounds of the map.
     mapRef.current
-        .flyToBounds(result.bounds,
-            { padding: L.point(15, 15),
-              maxZoom: 13
-            });
+      .flyToBounds(result.bounds,
+        {
+          padding: L.point(15, 15),
+          maxZoom: 13
+        });
   }
 
   function mapLocationResultsToElem(result, index) {

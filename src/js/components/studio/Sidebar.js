@@ -37,8 +37,8 @@ function Sidebar({ visible, content, classNames=[] }, ref) {
     <sbS.SidebarContainer
       collapsed={collapsed}
       visible={display}
-      className={[...classNames]}>
-      <sbS.CollapseButton onClick={() => { setCollapsed(!collapsed) }}>
+      className={`sidebar ${[...classNames]} ${collapsed ? "collapsed" : "not-collapsed"}`}>
+      <sbS.CollapseButton className="sidebar-toggle-button" onClick={() => { setCollapsed(!collapsed) }}>
         {collapsed ?
           <FAIcon icon={faAngleLeft} />
           : <FAIcon icon={faAngleRight} />}
