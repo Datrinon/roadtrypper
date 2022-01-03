@@ -116,6 +116,9 @@ function LocationInput({ onClickPOIMarker, classNames = [], placeholder = "" }) 
     saveButton.addEventListener("click", (e) => {
       savedSearchResultMarker.current = onClickPOIMarker(result);
       searchResultMarker.current.remove();
+      document
+        .querySelector(".details-sidebar.collapsed .sidebar-toggle-button")
+        .click();
     });
 
     container.append(prompt, saveButton);
