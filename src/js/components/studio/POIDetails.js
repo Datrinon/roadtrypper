@@ -338,7 +338,7 @@ function PoiDetails({ activePin, setActivePin }) {
         type: "delete",
         payload: {
           type: "pois",
-          id: activePin.id
+          id: activePoi.id
         }
       });
     }

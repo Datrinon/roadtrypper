@@ -11,7 +11,6 @@ import * as dS from "./styled/Dropdown.style";
  * element.
  * 
  * @param visible : whether or not the element is visible.
- * @param position : position of the dropdown menu (optional).
  * @param children : the contents of the dropdown to display.
  */
 function Dropdown({ visible, position, children }, ref) {

@@ -29,7 +29,7 @@ function DayPins({ pois, day, icon, mapRef, setActivePin, setActiveDay }) {
       }
 
       const map = mapRef.current;
-      map.flyToBounds(group.getBounds(), {padding: L.point(25, 40), maxZoom: 15});
+      map.flyToBounds(group.getBounds(), {padding: L.point(25, 40), maxZoom: 12});
     }
   }
 

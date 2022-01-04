@@ -1,6 +1,5 @@
 import React, { useRef } from 'react'
 import TripCover from '../../../data/images/city-map-vector.png'
-import styled from 'styled-components';
 
 import { Link, useRouteMatch } from "react-router-dom";
 
@@ -14,7 +13,6 @@ import { cloneDeep } from 'lodash';
 
 
 import * as tS from "./styled/TripCard.style";
-import { FAIcon } from '../styled/template.style';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 
@@ -31,8 +29,6 @@ function convertMsToDate(ms) {
 function TripCard({ trip, setTrips }) {
 
   const [dropdownVisible, setDropdownVisible, dropdownRef] = useDropdown();
-
-  const match = useRouteMatch();
 
 
   function onRemove() {

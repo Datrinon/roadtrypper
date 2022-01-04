@@ -131,7 +131,7 @@ function Overview() {
 
   useEffect(() => {
 
-    loadTrips(user, abort.current)
+    loadTrips(user)
       .then((trips) => {
         setTrips(trips);
       })
