@@ -44,6 +44,7 @@ export function NewPoiForm({ day }) {
   const [poiDesc, setPoiDesc] = useState("");
   // - photos
   const [photos, setPhotos] = useState([]);
+  const [photoDescs, setPhotoDesc] = useState([]);
   // - display location search usage tip
   const [locationTipShown, setLocationTipShown] = useState(false);
 
@@ -394,7 +395,7 @@ export function NewPoiForm({ day }) {
               photos.map((photo, index) => {
 
                 return (
-                  <div className="uploaded-photo" key={"" + photo.name + photo.lastModified + Date.now()}>
+                  <div className="uploaded-photo" key={"" + photo.name + photo.lastModified}>
                     <a.PhotoPreviewContainer>
                       <div style={{position: "relative", width: "20px"}}>
                         <a.PhotoHeading>{index + 1}</a.PhotoHeading>
