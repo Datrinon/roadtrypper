@@ -35,13 +35,7 @@ const db = getFirestore(fbService);
 const tripsStore = collection(db, "trips");
 
 const storage = getStorage(fbService);
-const storageRef = ref(storage);
 
-// TODO
-// remove later
-function getSubcollection(tripId, category) {
-  return collection(db, "trips", tripId, category);
-}
 
 /**
  * Adds a trip to the database. Just provide the author name; other attributes
@@ -50,7 +44,7 @@ function getSubcollection(tripId, category) {
  * @param {UserImpl} User authentication object associated with the log-in.
  * @returns 
  */
-async function addTrip(user, signal) {
+async function addTrip(user) {
   try {
     let trip = new Trip(
       user.email,
@@ -66,10 +60,6 @@ async function addTrip(user, signal) {
 
     const docRef = await addDoc(tripsStore, trip);
 
-    if (signal.aborted) {
-      return Promise.reject(new Error("The request was cancelled early."));
-    }
-
     console.log("Document written: ", docRef);
 
     return docRef;
@@ -81,13 +71,11 @@ async function addTrip(user, signal) {
 /**
  * Load the user's trips.
  * @param {UserImpl} user - The authenticated user's information.
- * @param {AbortController} signal - Allows request to be canceled if user navigates before finish.
  * @param {string} orderByAttr - The attribute on trip to order by (title / date).
  * @param {string} direction - Direction to sort by; 'asc' or 'desc'.
  * @returns 
  */
 async function loadTrips(user,
-  signal,
   orderByAttr = 'lastAccessed',
   direction = 'desc') {
   const trips = [];
@@ -97,10 +85,6 @@ async function loadTrips(user,
     orderBy(orderByAttr, direction));
 
   const querySnapshot = await getDocs(q);
-
-  if (signal.aborted) {
-    return Promise.reject(new Error("The request was cancelled early."));
-  }
 
   querySnapshot.forEach((doc) => {
     const data = doc.data();
@@ -139,13 +123,12 @@ async function deleteTrip(tripId) {
 
 /**
  * Load a sample trip
- * @param {AbortController} signal - Allows for aborting
  * @param {boolean} duplicate - Whether or not to duplicate the trip,
  * which is useful for layout purposes. Duplicated trips
  * get a random name and timestamp.
  * @returns 
  */
-async function loadSampleTrip(signal, duplicate = false) {
+async function loadSampleTrip(duplicate = false) {
   let trips = [];
 
   let trip = (await import("../../data/sample-trip.json")).default;
@@ -162,11 +145,6 @@ async function loadSampleTrip(signal, duplicate = false) {
       tripClone.id = i + 1;
       trips.push(tripClone);
     }
-  }
-
-
-  if (signal.aborted) {
-    return Promise.reject(new Error("The request was cancelled early."));
   }
 
   return Promise.resolve(trips);
@@ -201,14 +179,10 @@ async function loadSampleProjectData(tripId, signal) {
 //#endregion
 
 
-async function loadTripData(tripId, signal) {
+async function loadTripData(tripId) {
   let tripData = {};
 
   let collectionNames = ["days", "pois", "photos"];
-
-  if (signal.aborted) {
-    return Promise.reject(new Error("The request was cancelled early."));
-  }
 
   for (let name of collectionNames) {
     let docsArr = [];
@@ -248,14 +222,8 @@ async function loadTripData(tripId, signal) {
  * @param {*} collectionName 
  * @param {*} data 
  */
-async function addTripData(tripId, collectionName, data, signal) {
+async function addTripData(tripId, collectionName, data) {
   let subcol = collection(db, "trips", tripId, collectionName);
-
-
-  if (signal.aborted) {
-    return Promise.reject(new Error("Operation failed; request was cancelled."));
-  }
-
 
   const docRef = await addDoc(subcol, data);
 
@@ -289,12 +257,7 @@ function getRef(path) {
  */
 async function editTripData(
   data,
-  ref,
-  signal) {
-  if (signal.aborted) {
-    return Promise.reject(new Error("Operation failed; request was cancelled."));
-  }
-
+  ref) {
   // let subcol = collection(db, "trips", tripId, collectionName, ref);
   // const q = query(subcol, where(idAttr, "==", idVal), limit(1));
   // const querySnapshot = await getDocs(q);
@@ -307,10 +270,7 @@ async function editTripData(
 }
 
 
-async function deleteTripData(ref, signal) {
-  if (signal.aborted) {
-    return Promise.reject(new Error("Operation failed; request was cancelled."));
-  }
+async function deleteTripData(ref) {
 
   await deleteDoc(ref);
 
@@ -318,11 +278,7 @@ async function deleteTripData(ref, signal) {
 }
 
 
-async function addTripPhoto(tripId, file, path, signal, addDoc=true) {
-  if (signal.aborted) {
-    return Promise.reject(new Error("Operation failed; request was cancelled."));
-  }
-
+async function addTripPhoto(tripId, file, path, addDoc=true) {
   const imgRef = ref(storage, path);
 
   // upload the photo and get the filepath.
@@ -336,7 +292,7 @@ async function addTripPhoto(tripId, file, path, signal, addDoc=true) {
       storageUri: fileSnapshot.metadata.fullPath
     };
   
-    const docRef = await addTripData(tripId, "photos", photoDataForDoc, signal);
+    const docRef = await addTripData(tripId, "photos", photoDataForDoc);
   
     return {ref: docRef,
       path: publicImageUrl,
@@ -357,14 +313,9 @@ async function deleteFile(path) {
 /**
  * Deletes the photo referenced via the given ref.
  * @param {DocumentReference} ref 
- * @param {AbortController} signal 
  * @returns 
  */
-async function deletePhoto(ref, uri, signal) {
-  if (signal.aborted) {
-    return Promise.reject(new Error("Operation failed; request was cancelled."));
-  }
-//debugger;
+async function deletePhoto(ref, uri) {
 
   await deleteDoc(ref);
   await deleteFile(uri);

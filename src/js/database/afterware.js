@@ -5,11 +5,19 @@
 import Photo from "../model/photo";
 import Day from "../model/day";
 import Poi from "../model/poi";
-import { addTripData, addTripPhoto, deleteFile, deletePhoto, deleteTrip, deleteTripData, editTripData, getPhotoStorageUri, getRef, updateTimestamp } from "./data";
+import { addTripData,
+  addTripPhoto,
+  deleteFile,
+  deletePhoto,
+  deleteTrip,
+  deleteTripData,
+  editTripData,
+  getPhotoStorageUri,
+  getRef,
+  updateTimestamp } from "./data";
 
 // let these be global (in the span of this file) for easier use.
 let dispatchRef;
-let signalRef;
 /**
  * Make sure the following reducer functions work.
  * 1. Add
@@ -33,7 +41,7 @@ function handleAddPoi(state, payload) {
     poi.coordinates);
 
   // this trip data
-  addTripData(post.tripId, "pois", { ...data }, signalRef).then(docRef => {
+  addTripData(post.tripId, "pois", { ...data }).then(docRef => {
     // use the ref to attach 
     dispatchRef({
       type: "attach_ref",
@@ -54,7 +62,7 @@ function handleAddPoi(state, payload) {
 
       // debugger;
 
-      addTripPhoto(post.tripId, photo.file, photo.realpath, signalRef)
+      addTripPhoto(post.tripId, photo.file, photo.realpath)
         .then(({ ref, path, storageUri }) => {
           dispatchRef({
             type: "attach_ref_edit_photo_path",
@@ -75,8 +83,7 @@ function handleAddPoi(state, payload) {
 
           editTripData(
             { ...photoInfo },
-            ref,
-            signalRef
+            ref
           );
         })
 
@@ -101,8 +108,7 @@ function handleAddPhoto(post, payload) {
   // the logic that the dispatch ran.
   editTripData(
     { ...remainingPhotoInfo },
-    payload.ref,
-    signalRef);
+    payload.ref);
 
 }
 
@@ -124,7 +130,7 @@ function handleAdd(state, payload) {
         dataInState.title,
         dataInState.color);
 
-      addTripData(post.tripId, payload.type, { ...data }, signalRef).then(docRef => {
+      addTripData(post.tripId, payload.type, { ...data }).then(docRef => {
         // use the ref to attach 
         dispatchRef({
           type: "attach_ref",
@@ -142,7 +148,7 @@ function handleAdd(state, payload) {
     case "photos": {
       dataInState = post.photos.find(photo => photo.realpath === payload.realpath);
 
-      addTripPhoto(post.tripId, payload.file, payload.realpath, signalRef)
+      addTripPhoto(post.tripId, payload.file, payload.realpath)
         .then(async ({ ref, path, storageUri }) => {
           let remainingData = new Photo(
             dataInState.poiId,
@@ -163,8 +169,9 @@ function handleAdd(state, payload) {
 
           //debugger; // remove this one and let's role afterward.
 
-          await editTripData({ ...remainingData }, ref, signalRef);
+          await editTripData({ ...remainingData }, ref);
         })
+      break;
     }
     default: {
       break;
@@ -182,7 +189,7 @@ function makeStandardEdit(payload) {
     [payload.key]: payload.value
   }
 
-  editTripData(data, payload.ref, signalRef).then(() => {
+  editTripData(data, getRef(payload.ref.path)).then(() => {
     console.log("Trip data edited successfully.");
   })
 }
@@ -221,7 +228,7 @@ function handleEdit(state, payload) {
 }
 
 function replacePhoto(post, payload) {
-  addTripPhoto(post.tripId, payload.file, payload.realpath, signalRef, false)
+  addTripPhoto(post.tripId, payload.file, payload.realpath, false)
     .then(async ({ path, storageUri }) => {
       dispatchRef({
         type: "attach_ref_edit_photo_path",
@@ -240,7 +247,7 @@ function replacePhoto(post, payload) {
 
       let oldStorageUri = payload.storageUri;
 
-      await editTripData(data, payload.ref, signalRef);
+      await editTripData(data, getRef(payload.ref.path));
 
       console.log("Photo changed successfully, we can delete now.");
 
@@ -261,7 +268,7 @@ function regenerateOrder(item) {
   };
 
   // return an array of promises for each POI in that day...
-  return editTripData.bind(null, data, item.ref, signalRef);
+  return editTripData.bind(null, data, item.ref);
 }
 
 async function handleDelete(state, payload) {
@@ -271,7 +278,7 @@ async function handleDelete(state, payload) {
       // the photo. Nothing to reorder.
       // just have to delete the doc.
       // and then delete the file.
-      await deletePhoto(payload.ref, payload.storageUri, signalRef);
+      await deletePhoto(payload.ref, payload.storageUri);
       break;
     }
     case "pois": {
@@ -305,7 +312,7 @@ async function handleDelete(state, payload) {
         }
 
         // then after that runs, we can delete the day itself.
-        await deleteTripData(payload.ref, signalRef);
+        await deleteTripData(payload.ref);
 
         // then we just need to reorder all of the days...
         const dayOrderReqs = state.post.days.map(regenerateOrder);
@@ -335,10 +342,10 @@ async function deletePOIandPhotos(poi, state) {
   // then, delete the photos with the same poiId.
   const photosToDelete = state.pre.photos.filter(photo => photo.poiId === poi.id);
 
-  const poiDeleteRequest = deleteTripData.bind(null, poi.ref, signalRef);
+  const poiDeleteRequest = deleteTripData.bind(null, poi.ref);
 
   const photoDeleteRequests = photosToDelete.map((photo) => {
-    return deletePhoto.bind(null, photo.ref, photo.storageUri, signalRef);
+    return deletePhoto.bind(null, photo.ref, photo.storageUri);
   });
 
   const otherPOIsInSameDay = state.post.pois.filter(other => other.dayId === poi.dayId);
@@ -348,7 +355,7 @@ async function deletePOIandPhotos(poi, state) {
       order: poi.order
     };
 
-    return editTripData.bind(null, data, poi.ref, signalRef);
+    return editTripData.bind(null, data, poi.ref);
   });
 
   // now requests is full of async function binds.
@@ -405,9 +412,9 @@ function handleRearrange(state, payload) {
     order: swapper.order
   }
 
-  editTripData(swapperUpdate, swapper.ref, signalRef)
+  editTripData(swapperUpdate, swapper.ref)
     .then(() => {
-      return editTripData(swappeeUpdate, swappee.ref, signalRef)
+      return editTripData(swappeeUpdate, swappee.ref)
     })
     .then(() => {
       console.log("Rearrangement saved.");
@@ -440,7 +447,7 @@ function handlePOIMove(state, payload) {
 
   const otherPOIRequests = otherDayPOIs.map(regenerateOrder);
 
-  editTripData(movedItemData, movedPoi.ref, signalRef).then(async () => {
+  editTripData(movedItemData, movedPoi.ref).then(async () => {
     console.log("The POI was moved successfully on Firestore.");
 
     // limit concurrency 
@@ -467,7 +474,7 @@ function handleGeneralEdit(state, payload) {
     [payload.key]: state.post.general[payload.key]
   };
 
-  editTripData(data, getRef(state.post.ref.path), signalRef);
+  editTripData(data, getRef(state.post.ref.path));
   // !
   // Stale ref theory confirmed
   // !
@@ -489,11 +496,11 @@ function handleGeneralEdit(state, payload) {
  * @param {object} action - the action object sent to the dispatch.
  */
 function updateDatabase(dispatch, state, action, signal) {
+
   let dbAction;
   let isDatabaseAction = true;
   // assign the two globals we have these references
   dispatchRef = dispatch;
-  signalRef = signal;
   // 
   switch (action.type) {
     case "add": {
