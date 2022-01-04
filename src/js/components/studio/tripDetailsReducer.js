@@ -41,12 +41,13 @@ function deleteItem(stateCopy, action) {
   const { type, id } = action.payload;
   let typesToReorder = [];
 
-  // first, delete the record.
+  // first, find the item to be deleted.
   const deleteIndex = stateCopy[type].findIndex(record => record.id === id);
 
   // does it need to be reordered? Yes if not the end of the array
   // and the item of that array has an order attribute
-  // we need to also get the parent key to narrow each categorization.
+  // We get the parent key value to determine which other items also share that
+  // so we can reorder them later.
   if (deleteIndex !== stateCopy[type].length - 1
     && stateCopy[type][deleteIndex].order !== undefined) {
 
@@ -64,6 +65,7 @@ function deleteItem(stateCopy, action) {
     });
   }
 
+  // Now, we actually delete the item.
   stateCopy[type].splice(deleteIndex, 1);
 
   // now we need to recursively delete anything else containing that id as
@@ -122,7 +124,8 @@ function deleteItem(stateCopy, action) {
     // repeat until null to delete.
   }
 
-  // filter out duplicate objects
+  // time to reorder.
+  // filter out any duplicate values found in the reordering.
   let inSet = [];
   let typesSet = [];
   for (let i = 0; i < typesToReorder.length; i++) {
@@ -136,16 +139,16 @@ function deleteItem(stateCopy, action) {
 
   typesToReorder = typesSet;
 
-  for (let attr of typesToReorder) {
+  for (let unorderedCollection of typesToReorder) {
     // use reduce to group each of these items by their parentKey.
 
-    if (attr.parentKey) {
+    if (unorderedCollection.parentKey) {
       const groups = [];
 
-      for (let i = 0; i < attr.parentKeyVals; i++) {
+      for (let i = 0; i < unorderedCollection.parentKeyVals.length; i++) {
         let group =
-          stateCopy[attr.type]
-            .filter(item => item[attr.parentKey] === attr.parentKeyVals[i]);
+          stateCopy[unorderedCollection.type]
+            .filter(item => item[unorderedCollection.parentKey] === unorderedCollection.parentKeyVals[i]);
 
         groups.push(group);
       }
