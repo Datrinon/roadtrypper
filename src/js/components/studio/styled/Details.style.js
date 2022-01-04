@@ -132,6 +132,8 @@ export const NoContentMessage = styled.p`
 
   & .sign-icon {
     font-size: 2.5em;
+    display: block;
+    margin: 0 auto;
   }
 `;
 
