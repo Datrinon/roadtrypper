@@ -106,6 +106,9 @@ export const GalleryFigure = styled.figure`
   transform: translate(-50%, -50%);
   height: 55vh;
   width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
   & .photo {
     width: auto;
