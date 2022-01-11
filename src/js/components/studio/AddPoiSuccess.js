@@ -7,26 +7,41 @@ import * as apS from "./styled/AddPoiSuccess.styled";
 import * as d from './styled/Details.style';
 
 
-export function AddPoiSuccess({ lastAddedPoi, setActivePin }) {
+export function AddPoiSuccess({ lastAddedPoi, setActiveDay, setActivePin }) {
   const sidebarSetter = useContext(SidebarSetter);
   const trip = useContext(TripContext);
 
   function displayForm() {
+    const lastClicked = Date.now();
     const day = trip.days.find(day => day.id === lastAddedPoi.dayId);
 
     sidebarSetter.setContent(<NewPoiForm
-      day={day}
+      day={{data: day}}
       setActivePin={setActivePin}/>);
   }
 
   function displayPoi() {
+    const lastClicked = Date.now();
+
+    const day = trip.days.find(day => day.id === lastAddedPoi.dayId);
+
     const poi = trip.pois.find(poi => poi.dayId === lastAddedPoi.dayId
       && poi.order === lastAddedPoi.order);
 
-    sidebarSetter.setContent(<PoiDetails
-      activePin={poi}
-      setActivePin={setActivePin}/>
-    );
+    setActiveDay({
+      data: day,
+      lastClicked
+    });
+
+    setActivePin({
+      data: poi,
+      lastClicked
+    });
+
+    // sidebarSetter.setContent(<PoiDetails
+    //   activePin={poi}
+    //   setActivePin={setActivePin}/>
+    // );
   }
 
   return (
