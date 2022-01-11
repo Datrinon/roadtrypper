@@ -121,7 +121,7 @@ function LocationInput({ onClickPOIMarker, classNames = [], placeholder = "" }) 
       searchResultMarker.current.remove();
       document
         .querySelector(".details-sidebar.collapsed .sidebar-toggle-button")
-        .click();
+        ?.click();
     });
 
     container.append(prompt, saveButton);
