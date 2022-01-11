@@ -268,7 +268,7 @@ function regenerateOrder(item) {
   };
 
   // return an array of promises for each POI in that day...
-  return editTripData.bind(null, data, item.ref);
+  return editTripData.bind(null, data, getRef(item.ref.path));
 }
 
 async function handleDelete(state, payload) {
@@ -278,7 +278,7 @@ async function handleDelete(state, payload) {
       // the photo. Nothing to reorder.
       // just have to delete the doc.
       // and then delete the file.
-      await deletePhoto(payload.ref, payload.storageUri);
+      await deletePhoto(getRef(payload.ref.path), payload.storageUri);
       break;
     }
     case "pois": {
@@ -312,14 +312,14 @@ async function handleDelete(state, payload) {
         }
 
         // then after that runs, we can delete the day itself.
-        await deleteTripData(payload.ref);
+        await deleteTripData(getRef(payload.ref.path));
 
         // then we just need to reorder all of the days...
         const dayOrderReqs = state.post.days.map(regenerateOrder);
 
 
         while (dayOrderReqs.length) {
-          await Promise.allSettled(dayOrderReqs.splice(0, 2).map(f => f()))
+          await Promise.allSettled(dayOrderReqs.splice(0, 1).map(f => f()))
         }
 
         // and then we'll be done after that.
@@ -342,10 +342,10 @@ async function deletePOIandPhotos(poi, state) {
   // then, delete the photos with the same poiId.
   const photosToDelete = state.pre.photos.filter(photo => photo.poiId === poi.id);
 
-  const poiDeleteRequest = deleteTripData.bind(null, poi.ref);
+  const poiDeleteRequest = deleteTripData.bind(null, getRef(poi.ref.path));
 
   const photoDeleteRequests = photosToDelete.map((photo) => {
-    return deletePhoto.bind(null, photo.ref, photo.storageUri);
+    return deletePhoto.bind(null, getRef(photo.ref.path), photo.storageUri);
   });
 
   const otherPOIsInSameDay = state.post.pois.filter(other => other.dayId === poi.dayId);
@@ -355,7 +355,7 @@ async function deletePOIandPhotos(poi, state) {
       order: poi.order
     };
 
-    return editTripData.bind(null, data, poi.ref);
+    return editTripData.bind(null, data, getRef(poi.ref.path));
   });
 
   // now requests is full of async function binds.
@@ -412,9 +412,9 @@ function handleRearrange(state, payload) {
     order: swapper.order
   }
 
-  editTripData(swapperUpdate, swapper.ref)
+  editTripData(swapperUpdate, getRef(swapper.ref.path))
     .then(() => {
-      return editTripData(swappeeUpdate, swappee.ref)
+      return editTripData(swappeeUpdate, getRef(swappee.ref.path))
     })
     .then(() => {
       console.log("Rearrangement saved.");
@@ -447,7 +447,7 @@ function handlePOIMove(state, payload) {
 
   const otherPOIRequests = otherDayPOIs.map(regenerateOrder);
 
-  editTripData(movedItemData, movedPoi.ref).then(async () => {
+  editTripData(movedItemData, getRef(movedPoi.ref.path)).then(async () => {
     console.log("The POI was moved successfully on Firestore.");
 
     // limit concurrency 
