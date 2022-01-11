@@ -17,6 +17,7 @@ export function AddPoiSuccess({ lastAddedPoi, setActiveDay, setActivePin }) {
 
     sidebarSetter.setContent(<NewPoiForm
       day={{data: day}}
+      setActiveDay={setActiveDay}
       setActivePin={setActivePin}/>);
   }
 

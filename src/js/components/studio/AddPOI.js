@@ -155,8 +155,9 @@ export function NewPoiForm({ day, setActiveDay, setActivePin }) {
 
   function autosetPoiTitle(e) {
     if (e.target.checked) {
+      const result = poiLoc.split(",")[0];
       // set to location's name.
-      setPoiTitle(poiLoc);
+      setPoiTitle(result);
     } else {
       // reset Poi Title
       setPoiTitle("");
