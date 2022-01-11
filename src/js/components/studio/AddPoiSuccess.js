@@ -12,14 +12,21 @@ export function AddPoiSuccess({ lastAddedPoi, setActivePin }) {
   const trip = useContext(TripContext);
 
   function displayForm() {
-    sidebarSetter.setContent(<NewPoiForm />);
+    const day = trip.days.find(day => day.id === lastAddedPoi.dayId);
+
+    sidebarSetter.setContent(<NewPoiForm
+      day={day}
+      setActivePin={setActivePin}/>);
   }
 
   function displayPoi() {
     const poi = trip.pois.find(poi => poi.dayId === lastAddedPoi.dayId
       && poi.order === lastAddedPoi.order);
 
-    sidebarSetter.setContent(<PoiDetails activePin={poi} setActivePin={setActivePin}/>);
+    sidebarSetter.setContent(<PoiDetails
+      activePin={poi}
+      setActivePin={setActivePin}/>
+    );
   }
 
   return (
