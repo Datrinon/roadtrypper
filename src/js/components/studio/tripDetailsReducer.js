@@ -49,7 +49,7 @@ function deleteItem(stateCopy, action) {
   // We get the parent key value to determine which other items also share that
   // so we can reorder them later.
   if (deleteIndex !== stateCopy[type].length - 1
-    && stateCopy[type][deleteIndex].order !== undefined) {
+    && Object.keys(stateCopy[type][deleteIndex]).includes("order")) {
 
     let parentKey = DATA_SCHEMA[type].parentKey;
     let parentKeyVals = [];
