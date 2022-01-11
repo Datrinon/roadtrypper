@@ -203,7 +203,9 @@ function DayDetails({ day, setActivePin, setActiveDay }) {
     return (
       <dD.POICardContainer>
         {section}
-        <AddPoi activeDay={{data : dayState}} setActivePin={setActivePin} />
+        <AddPoi activeDay={{data : dayState}}
+          setActiveDay={setActiveDay}
+          setActivePin={setActivePin} />
       </dD.POICardContainer>
     )
   }
