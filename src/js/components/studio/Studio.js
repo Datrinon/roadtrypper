@@ -219,7 +219,7 @@ function Studio() {
 
                       <stS.AddOptions className="add-options">
                         <AddDay activeDay={activeDay} setActiveDay={setActiveDay} />
-                        <AddPOI activeDay={activeDay} />
+                        <AddPOI activeDay={activeDay} setActivePin={setActivePin} />
                       </stS.AddOptions>
 
                       <stS.Days className="days">

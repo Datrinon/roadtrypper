@@ -21,7 +21,7 @@ import { AddPoiSuccess } from './AddPoiSuccess';
 
 
 
-export function NewPoiForm({ day }) {
+export function NewPoiForm({ day, setActivePin }) {
   // global contexts
   const dispatch = useContext(TripDispatch);
   const trip = useContext(TripContext);
@@ -222,6 +222,7 @@ export function NewPoiForm({ day }) {
     // prompt option to add or view.
     sidebarSetter.setContent(<AddPoiSuccess
       lastAddedPoi={{ dayId: selDay.id, order: selPoiOrder }}
+      setActivePin={setActivePin}
     />);
   }
 
@@ -443,12 +444,12 @@ export function NewPoiForm({ day }) {
   )
 }
 
-function AddPoi({ activeDay }) {
+function AddPoi({ activeDay, setActivePin }) {
   const sidebarSetter = useContext(SidebarSetter);
   const trip = useContext(TripContext);
 
   function showAddPoi() {
-    sidebarSetter.setContent(<NewPoiForm day={activeDay} />);
+    sidebarSetter.setContent(<NewPoiForm day={activeDay} setActivePin={setActivePin}/>);
     sidebarSetter.setVisible(true);
   }
 

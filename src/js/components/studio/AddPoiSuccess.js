@@ -7,7 +7,7 @@ import * as apS from "./styled/AddPoiSuccess.styled";
 import * as d from './styled/Details.style';
 
 
-export function AddPoiSuccess({ lastAddedPoi }) {
+export function AddPoiSuccess({ lastAddedPoi, setActivePin }) {
   const sidebarSetter = useContext(SidebarSetter);
   const trip = useContext(TripContext);
 
@@ -19,7 +19,7 @@ export function AddPoiSuccess({ lastAddedPoi }) {
     const poi = trip.pois.find(poi => poi.dayId === lastAddedPoi.dayId
       && poi.order === lastAddedPoi.order);
 
-    sidebarSetter.setContent(<PoiDetails activePin={poi} />);
+    sidebarSetter.setContent(<PoiDetails activePin={poi} setActivePin={setActivePin}/>);
   }
 
   return (

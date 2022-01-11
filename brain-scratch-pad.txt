@@ -1,0 +1,300 @@
+Goal: (Ad-hoc)
+• Reconfigure the use of eslintrc
+• You need to use tests. 
+	• We decide to take a detour and watch a Tests tutorial before beginning.
+	• Complete this tutorial before proceeding.
+• Install router and styled components (with babel)
+• Draw components for overview.
+
+Learnings
+Careful of DIV spam.
+
+*Limiting the number of promises that are in progress at any given time*; btw this is well written question.
+https://stackoverflow.com/questions/40639432/what-is-the-best-way-to-limit-concurrency-when-using-es6s-promise-all
+
+Use the library pLimit.
+We run npm run eject, which allows us to rely on our own babel presets and use .babelrc.
+
+
+(Did I write this down earlier?) 
+Renaming objects after destructuring them
+const { "oldId": newId } = { object };
+
+Async Map on Add POI.
+
+Issues with firebase?
+Just hit the reinstall
+
+FILE UPLOADING
+Get the file object; pass it to the upload function.
+
+
+uuid is a good way to ensure unique file paths while maintining their na,e.
+
+The CSS imported in a parent applies to every child thereafter.
+
+You don't need useRouteMatch if you don't use a leading forward slash (aka root).
+
+--- AUTH PHASE ---
+
+Lesson: If you can avoid assigning the INDEX to the KEY prop.
+The key is how React keeps track of the state of components.
+
+If you delete an item not the last elem of the array, the index references for the elements (and their derived components) will
+be misaligned...?
+
+	Issue:
+	- Assume a two day trip array.
+	- Deleted Day id=0. [0, 1] -> [1]
+	- Clicked on the card for Day id=1. Crashed!
+	! React complains that the useRef used in the component
+	! is undefined.
+	? S'pose it lost the reference for index=1 component, so 
+	? it doesn't know what to do now.
+	
+	
+	
+	
+
+
+How to set up a password requirement component?
+SignUp
+ \
+ (password, setReqsMet)
+   \
+    PasswordRequirements
+
+- Signup (parent) spawns the PWRequirements component and passes it the captured password and the ability to unlock the submit button through the passwords field.
+- The password check runs through TWO loops -- one for the view and another for the test. This is the key.
+- The test runs on each update, which is specified in a UE hook without a dependency array; there's no issue with infinite re-renders because *_NO_ internal state variable is being altered* in this hook.
+- If all requirements are met, button is unlocked b/c reqsMet is true.
+- If password is changed again, we set to false over in SignUp, but this will be set to true as long as the password meets the requirements.
+
+useEffect for the password reuiqrement
+"The order you call them in matters, as far as I'm aware, two useEffect calls in a component will always run in the same order."
+
+dependency array containing outer scope values?
+Nope. Only props; outer scope values aren't valid dependencies.
+
+The React Router Redirect Element! Powerful.
+
+
+SOLID design and proper abstraction pays massive dividends later down the road. (Dispatch, Modal, Sidebar)
+
+stale state in a child component?
+Ran into the issue with activePin not being refreshed (unless clicked again by the user). Then, I just realized that I could just use a useEffect hook in the parent component (studio), and refresh the state variable there. The change will then propagate down without me having to refresh rewrite code to refresh it in child.
+
+Note: Only drawback is that there's a slight milliseconds delay in the update, so the user will see the old title previously. So there is some merit to keeping it in the state.
+
+.onclick and onClick on a react component
+will not conflict, luckily. You can have both at the same time. See DayCard.js
+
+foreach doesn't mutate?
+Well, not if you have an array of objects, no. The reference is still the same so those will be mutated.
+
+Don't use array splice or push on react updates
+Struggled with this when implementing the file input.
+Even with a functional update?!
+
+I thought that would not count. let's see...
+Yeah!
+CLONEDEEP WORKS FOR THE FUNCTIONAL UPDATE, but not directly workign with it.
+
+DO NOT MUTATE PREVSTATE IF IT IS A COMPLEX TYPE!!
+YOU CAN MUTATE IT IF IT IS A PRIMITIVE TYPE!!
+
+
+input type file struggles
+This input is uncontrolled and even if it changes, will not update accordingly!
+
+onChange Woes
+Only works on user input manipulation, those changed programatically are not changes. Instead, use useEffect hook.
+
+Default value woes
+We needed to change the default value for our add day
+Changing the value of defaultValue attribute after a component has mounted will not cause any update of the value in the DOM.
+
+So it's only once and it's done.
+
+To circumvent this, we just need to assign a key prop to the input with the value of that state variable, which will cause it to rerender each time it changes.
+
+Wrapper component with variable children
+You can send it in using the children prop. This is a reserved keyword prop which will account for any 
+<Sidebar collapseState={!activePin}>
+	<PoiDetails activePin={activePin} />
+</Sidebar>
+here.
+
+keydown for an element works if the element has focus.
+..."As long as it's in focus key events should be captured on it."
+
+No DOM side effects in the setState callbacks
+Bad:
+  function nextFocused(focusables) {
+    setCurrentFocused(prevFocused => {
+      if (prevFocused + 1 > focusables.length - 1) {
+        focusables[0].focus();
+        return 0;
+      } else {
+        focusables[prevFocused + 1].focus();
+        return prevFocused + 1;
+      }
+    })
+  }
+
+bubbling
+https://i.stack.imgur.com/liJ5u.png
+
+DXX: 
+Power of debounce
+For repeating events, only invokes after X milliseconds since thel ast time the debounced function was invoked. Thus, if it is called again before that timer expires, it will reset the timer again. Useful for onChange events.
+
+Stale props reminder
+- Any function inside a component, including event handlers and effects, “sees” the props and state from the render it was created in. 
+- Updates, thus, are ignored.
+- If you intentionally want to read the latest state from some asynchronous callback, you could keep it in a ref, mutate it, and read from it.
+
+Carousel Lesson
+• You really only need the indexes to control movement, not IDs.not
+
+REACT USEEFFECT "Referential Equality"
+- WE RARELY EVER OFTEN WANT TO HAVE A USEEFFECT HOOK WITHOUT A DEPENDENCY
+- REFERENCE COMPARISONS ARE MADE, NOT DEEP COMAPRISONS (https://twitter.com/dan_abramov/status/1104414469629898754)
+	> Deep Equality was intentionally not used because it is slow.
+	> Only recommended for shallow objects.
+	> In such cases recommend you use JSON.stringify(). (From Dan Abramov)
+- "OBJECTS ARE RECREATED ON SUBSEQUENT RERENDERS..."
+	> React uses the Object.is comparison algorithm
+	> Objects being recreated mean different memory addresses.
+	> Other values are also recreated but are primitives, though.
+	> Thus, since {} === {} is always false, useEffect will rerun the effect with the object in the dependency array.
+	> https://dev.to/tylerthehaas/referential-equality-in-react-127h
+
+DO NOT USE AN FUNCTION RETURN VALUE AS THE INITIAL ARG FOR STATE VARIABLES
+
+Cool regex for filenames
+Given this:
+string = `C:\fakepath\\url04.jpg`
+use match regex and a property to get it immediately!
+.match(/(\\|\/)(?!.+(\\|\/).+)(?<path>.+)/).groups.path;
+
+We learn how to use getComputedStyle to get the current styling of a component. (normal style just gets the inline).
+
+We learn how to use ForwardRef to a pass a reference variable to a child component from its ancestor.
+
+How to make children listen to state changes in parent?
+useEffect with the prop in the DA.
+
+Destructuring objects warning
+Make sure the variable names ar the same as the objects.
+Otherwise, you can alias them like this:
+const { "id" : poiId, "newDay" : newDayOrder } = action.payload;
+provide the original keys as strings, and then the new variable names as normal variable names.
+
+Note that you'll need parentheses ( ... ) around the assignment statement are required when using object literal destructuring assignment without a declaration.
+
+Example 2
+( { "name" : a, "occupation" : b, ...c } = {name: "dan", occupation: "obtainer", age: 69, quality: "nice"} )
+Object { name: "dan", occupation: "obtainer", age: 99, quality: "nice" }
+
+a = dan
+b = obtainer
+c = { age: 99 quality: nice }
+
+Selective Edit for Day Title: Issues with DefaultValue and updating state in POIDetails.
+
+There were multiple issues that came up because of the design:
+
+1. the input form using a defaultValue, which means it was uncontrolled.
+- Had to convert the display view to a heading so it wouldn't switch from controlled to uncontrolled component.
+- Had to implement 'ref' feature to get its current value.
+
+2. That value not updating after we changed the value.
+- I first tried to call getPOIData after the dispatch call; this did not work since we found out the these state updates are asynchronous.
+- Instead, we had to use useEffect and then call a refresh of setting the data by manually triggering a dummy state variable.
+
+Hm, this doesn't seem optimal. Is there somewhere else that we're going at this incorrectly?
+
+* It's not a problem with FIND. FIND returns you a direct reference to the element you're working with.
+** I tried to useState for trip, since I thought that usingContext would fail to trigger a re-render, but then I realized that because of closure it just keeps that stale reference alive. That wasn't right.
+> I find out that rerendering is triggered for a component that uses useContext, so if trip is changed, shouldn' that change too?
+* Oh it did; so all I had to do was add the dependency trip to the useEffect code I already had.
+
+detect a click outside an element
+use composedPath with a ref assigned to the current element.
+
+target v curTarget
+consider a window event listener for clicks.
+target - the element that triggered the event (a random div)
+currentTarget- the element that the event listener is attached to (the window object itself)
+
+React initial state has to be synchronous -- cannot be async!! If you want async thats where the lifecycle methods come in.
+
+D5:
+React state variables that're objects.
+Just simply use the spread operator to get a copy of the object, and then
+the properties you need.
+EXAMPLE:
+setTrip({
+	...trip,
+	title: e.target.value,
+	lastUpdated: Date.now()
+});
+
+D4:
+Fix react-leaflet bug by adding the css and then setting a height.
+We use react-leaflet
+Move to leaflet
+
+D3:
+Act() inconsistent state issue
+- Probably since we've built in dummy data into the library, once we start fetching real data, we'll want to fix this issue later. Right now, the tests are passing so we're good.
+
+- Eh, solved this by removing the async code for sample data cuz we'll never even use it anyways in prod.
+
+How to give object to useState
+Just give it an object but destructure it in the initial values.
+ Then when you set state, you just pass a new object with ONLY the property you want to change.
+const [{status, error}, setState] = React.useState({
+ status: 'idle',
+ error: null
+})
+
+setState({status: 'pending'});
+
+Cleaning up fetch requests in components
+If your component unmounts, the fetch requests (and any code thereafter) will execute and cause memory leaks. Additionally, your user may be clicking around and leave abunch of stale requests behind (of which has a max of 6 - 8 requests). The stale requests block new requests to be executed.
+
+However, a new feature in the DOM API called AbortController will let us cancel fetch requests.
+
+Thus, I recall that async await functions still return promises, they don't pause the program. So I wrap it in an async IIFE and then use .then() segment to set the page state. Addition
+
+defaultProps
+The default Props property can assign default values for props, which is useful for our sample data usage.
+
+ESLint Errors failing to compile
+We use .env.development to set the parameter ESLINT_NO_DEV_ERRORS. This retains the problems but prevents it from blocking a build. You may only think this is because we used that one Medium article to install the airbnb shit. 
+
+D2: Testing
+* "Make sure you're using the right query."
+* I created a router with one route for now, the Studio, and then moved to working on the studio, through its test file.
+- We use the `MemoryRouter`, a type of Router which keeps the URL in memory; this is useful in tests.
+
+D1: The Project Wants
+Note about SOLID:
+- Please use Dependency inversion to divorce the back-end from your components.
+
+Note about styled components:
+https://www.robinwieruch.de/styled-components
+How to organize? Follow this guide.
+
+Note about custom hooks though:
+"Try to resist adding abstraction too early. Now that function components can do more, it’s likely that the average function component in your codebase will become longer. This is normal — don’t feel like you have to immediately split it into Hooks."
+
+Custom hooks are just like partitions of stateful logic.
+As FB says, "there’s nothing new inside of it — the logic is copied from the components above. Just call it at the top level since it includes references to the hook useState." Then, when we use the hook, it could either return a pair of values or just one value.
+
+The Mocha testing framework is good for browser-specific behaviors.
+
+You can organize components by the feature they provide.
+
